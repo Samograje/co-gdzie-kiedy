@@ -13,4 +13,5 @@ Baza danych zawiera:
 - gwarancje
 - lokalizacje
 - użytkowników
+- osoby
 - itd
