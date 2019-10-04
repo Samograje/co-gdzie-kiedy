@@ -10,6 +10,7 @@ Baza danych zawiera:
 - klucze instalacyjne
 - daty zakupu
 - daty złomowania
+- gwarancje
 - lokalizacje
 - użytkowników
 - itd
