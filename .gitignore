@@ -1,6 +1,6 @@
 inventory/bin/
 inventory/target/
-inventory/*.iml
+inventory/**/*.iml
 inventory/.mvn/wrapper/maven-wrapper.jar
 inventory/src/main/resources/application.properties
 
