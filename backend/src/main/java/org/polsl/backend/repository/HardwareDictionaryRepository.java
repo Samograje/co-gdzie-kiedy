@@ -1,6 +1,6 @@
-package org.polsl.inventory.repository;
+package org.polsl.backend.repository;
 
-import org.polsl.inventory.entity.HardwareDictionary;
+import org.polsl.backend.entity.HardwareDictionary;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

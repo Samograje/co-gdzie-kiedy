@@ -1,4 +1,4 @@
-package org.polsl.inventory.entity;
+package org.polsl.backend.entity;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -7,26 +7,29 @@ import java.util.Set;
  *
  */
 @Entity
-@Table(name = "computer_sets")
-public class ComputerSet {
-
+@Table(name = "affiliations")
+public class Affiliation {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String name;
 
-    @ManyToMany(mappedBy = "computerSets")
-    private Set<Affiliation> affiliations;
-
     @ManyToMany
-    @JoinTable(name = "computer_sets_hardwares",
-            joinColumns = @JoinColumn(name = "computer_set_id"),
+    @JoinTable(name = "affiliations_hardware",
+            joinColumns = @JoinColumn(name = "affiliation_id"),
             inverseJoinColumns = @JoinColumn(name = "hardware_id"))
     private Set<Hardware> hardware;
 
-    public ComputerSet() {
+    @ManyToMany
+    @JoinTable(name = "affiliations_computer_sets",
+            joinColumns = @JoinColumn(name = "affiliation_id"),
+            inverseJoinColumns = @JoinColumn(name = "computer_set_id"))
+    private Set<ComputerSet> computerSets;
+
+    public Affiliation() {
     }
+
 
     public Long getId() {
         return id;
@@ -44,19 +47,19 @@ public class ComputerSet {
         this.name = name;
     }
 
-    public Set<Affiliation> getAffiliations() {
-        return affiliations;
-    }
-
-    public void setAffiliations(Set<Affiliation> affiliations) {
-        this.affiliations = affiliations;
-    }
-
     public Set<Hardware> getHardware() {
         return hardware;
     }
 
     public void setHardware(Set<Hardware> hardware) {
         this.hardware = hardware;
+    }
+
+    public Set<ComputerSet> getComputerSets() {
+        return computerSets;
+    }
+
+    public void setComputerSets(Set<ComputerSet> computerSets) {
+        this.computerSets = computerSets;
     }
 }

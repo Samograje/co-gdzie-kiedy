@@ -1,17 +1,17 @@
-package org.polsl.inventory;
+package org.polsl.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication
-public class InventoryApplication {
+public class BackendApplication {
 
     public static void main(String[] args) {
 
-        //SpringApplication.run(InventoryApplication.class, args);
+        //SpringApplication.run(BackendApplication.class, args);
 
-        ConfigurableApplicationContext ctx = SpringApplication.run(InventoryApplication.class, args);
+        ConfigurableApplicationContext ctx = SpringApplication.run(BackendApplication.class, args);
         ctx.close();
 
     }

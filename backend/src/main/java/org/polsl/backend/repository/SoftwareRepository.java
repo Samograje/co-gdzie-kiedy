@@ -1,7 +1,7 @@
-package org.polsl.inventory.repository;
+package org.polsl.backend.repository;
 
 
-import org.polsl.inventory.entity.Software;
+import org.polsl.backend.entity.Software;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

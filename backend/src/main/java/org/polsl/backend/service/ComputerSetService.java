@@ -1,6 +1,6 @@
-package org.polsl.inventory.service;
+package org.polsl.backend.service;
 
-import org.polsl.inventory.repository.ComputerSetRepository;
+import org.polsl.backend.repository.ComputerSetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

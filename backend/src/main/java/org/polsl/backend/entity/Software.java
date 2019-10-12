@@ -1,4 +1,4 @@
-package org.polsl.inventory.entity;
+package org.polsl.backend.entity;
 
 import javax.persistence.*;
 

@@ -1,7 +1,7 @@
-inventory/bin/
-inventory/target/
-inventory/**/*.iml
-inventory/src/main/resources/application.properties
+backend/bin/
+backend/target/
+backend/**/*.iml
+backend/src/main/resources/application.properties
 
 .idea/
 *.iml
