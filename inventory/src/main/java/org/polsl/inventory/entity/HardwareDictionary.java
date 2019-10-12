@@ -7,7 +7,7 @@ import javax.persistence.*;
  *
  */
 @Entity
-@Table(name="hardware_dictionary")
+@Table(name = "hardware_dictionary")
 public class HardwareDictionary {
 
     @Id

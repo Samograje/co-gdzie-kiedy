@@ -7,7 +7,7 @@ import java.util.Set;
  *
  */
 @Entity
-@Table(name="affiliations")
+@Table(name = "affiliations")
 public class Affiliation {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -16,15 +16,15 @@ public class Affiliation {
     private String name;
 
     @ManyToMany
-    @JoinTable(name="affiliations_hardwares",
-    joinColumns = @JoinColumn(name = "affiliation_id"),
-    inverseJoinColumns = @JoinColumn(name="hardware_id"))
+    @JoinTable(name = "affiliations_hardwares",
+            joinColumns = @JoinColumn(name = "affiliation_id"),
+            inverseJoinColumns = @JoinColumn(name = "hardware_id"))
     private Set<Hardware> hardwares;
 
     @ManyToMany
-    @JoinTable(name="affiliations_computer_sets",
+    @JoinTable(name = "affiliations_computer_sets",
             joinColumns = @JoinColumn(name = "affiliation_id"),
-            inverseJoinColumns = @JoinColumn(name="computer_set_id"))
+            inverseJoinColumns = @JoinColumn(name = "computer_set_id"))
     private Set<ComputerSet> computerSets;
 
     public Affiliation() {

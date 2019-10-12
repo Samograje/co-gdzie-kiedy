@@ -7,13 +7,13 @@ import org.springframework.context.ConfigurableApplicationContext;
 @SpringBootApplication
 public class InventoryApplication {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		//SpringApplication.run(InventoryApplication.class, args);
+        //SpringApplication.run(InventoryApplication.class, args);
 
-		ConfigurableApplicationContext ctx = SpringApplication.run(InventoryApplication.class, args);
-		ctx.close();
+        ConfigurableApplicationContext ctx = SpringApplication.run(InventoryApplication.class, args);
+        ctx.close();
 
-	}
+    }
 
 }

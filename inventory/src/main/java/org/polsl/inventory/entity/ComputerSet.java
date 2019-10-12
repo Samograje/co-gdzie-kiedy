@@ -7,7 +7,7 @@ import java.util.Set;
  *
  */
 @Entity
-@Table(name="computer_sets")
+@Table(name = "computer_sets")
 public class ComputerSet {
 
     @Id
@@ -20,9 +20,9 @@ public class ComputerSet {
     private Set<Affiliation> affiliations;
 
     @ManyToMany
-    @JoinTable(name="computer_sets_hardwares",
+    @JoinTable(name = "computer_sets_hardwares",
             joinColumns = @JoinColumn(name = "computer_set_id"),
-            inverseJoinColumns = @JoinColumn(name="hardware_id"))
+            inverseJoinColumns = @JoinColumn(name = "hardware_id"))
     private Set<Hardware> hardwares;
 
     public ComputerSet() {
