@@ -2,7 +2,7 @@ inventory/bin/
 inventory/target/
 inventory/*.iml
 inventory/.mvn/wrapper/maven-wrapper.jar
-inventory/application.properties
+inventory/src/main/resources/application.properties
 
 .idea/
 *.iml
