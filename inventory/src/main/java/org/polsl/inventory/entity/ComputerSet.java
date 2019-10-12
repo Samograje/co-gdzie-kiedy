@@ -59,6 +59,4 @@ public class ComputerSet {
     public void setHardware(Set<Hardware> hardware) {
         this.hardware = hardware;
     }
-
-
 }

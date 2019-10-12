@@ -44,6 +44,4 @@ public class HardwareDictionary {
     public void setHardware(Hardware hardware) {
         this.hardware = hardware;
     }
-
-
 }
