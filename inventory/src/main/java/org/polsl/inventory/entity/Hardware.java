@@ -7,7 +7,7 @@ import java.util.Set;
  *
  */
 @Entity
-@Table(name = "hardwares")
+@Table(name = "hardware")
 public class Hardware {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -20,10 +20,10 @@ public class Hardware {
     @JoinColumn(name = "hardware_dictionary_id", referencedColumnName = "id")
     private HardwareDictionary hardwareDictionary;
 
-    @ManyToMany(mappedBy = "hardwares")
+    @ManyToMany(mappedBy = "hardware")
     private Set<Affiliation> affiliations;
 
-    @ManyToMany(mappedBy = "hardwares")
+    @ManyToMany(mappedBy = "hardware")
     private Set<ComputerSet> computerSets;
 
 
