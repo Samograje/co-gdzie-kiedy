@@ -1,2 +1,8 @@
-.idea
+inventory/bin/
+inventory/target/
+inventory/*.iml
+inventory/.mvn/wrapper/maven-wrapper.jar
+inventory/application.properties
+
+.idea/
 *.iml
