@@ -1,2 +1,7 @@
-.idea
-co-gdzie-kiedy.iml
+backend/bin/
+backend/target/
+backend/**/*.iml
+backend/src/main/resources/application.properties
+
+.idea/
+*.iml
