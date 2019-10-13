@@ -20,7 +20,7 @@ public class ComputerSet {
     private Set<Affiliation> affiliations;
 
     @ManyToMany
-    @JoinTable(name = "computer_sets_hardware",
+    @JoinTable(name = "computer_sets_hardwares",
             joinColumns = @JoinColumn(name = "computer_set_id"),
             inverseJoinColumns = @JoinColumn(name = "hardware_id"))
     private Set<Hardware> hardware;
