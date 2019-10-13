@@ -16,10 +16,10 @@ public class Affiliation {
     private String name;
 
     @ManyToMany
-    @JoinTable(name = "affiliations_hardware",
+    @JoinTable(name = "affiliations_hardwares",
             joinColumns = @JoinColumn(name = "affiliation_id"),
             inverseJoinColumns = @JoinColumn(name = "hardware_id"))
-    private Set<Hardware> hardware;
+    private Set<Hardware> hardwares;
 
     @ManyToMany
     @JoinTable(name = "affiliations_computer_sets",
@@ -47,12 +47,12 @@ public class Affiliation {
         this.name = name;
     }
 
-    public Set<Hardware> getHardware() {
-        return hardware;
+    public Set<Hardware> getHardwares() {
+        return hardwares;
     }
 
-    public void setHardware(Set<Hardware> hardware) {
-        this.hardware = hardware;
+    public void setHardwares(Set<Hardware> hardwares) {
+        this.hardwares = hardwares;
     }
 
     public Set<ComputerSet> getComputerSets() {

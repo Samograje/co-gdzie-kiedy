@@ -6,7 +6,7 @@ import javax.persistence.*;
  *
  */
 @Entity
-@Table(name = "software")
+@Table(name = "softwares")
 public class Software {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

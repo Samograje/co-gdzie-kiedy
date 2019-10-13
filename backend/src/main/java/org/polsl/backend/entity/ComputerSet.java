@@ -23,7 +23,7 @@ public class ComputerSet {
     @JoinTable(name = "computer_sets_hardwares",
             joinColumns = @JoinColumn(name = "computer_set_id"),
             inverseJoinColumns = @JoinColumn(name = "hardware_id"))
-    private Set<Hardware> hardware;
+    private Set<Hardware> hardwares;
 
     public ComputerSet() {
     }
@@ -52,11 +52,11 @@ public class ComputerSet {
         this.affiliations = affiliations;
     }
 
-    public Set<Hardware> getHardware() {
-        return hardware;
+    public Set<Hardware> getHardwares() {
+        return hardwares;
     }
 
-    public void setHardware(Set<Hardware> hardware) {
-        this.hardware = hardware;
+    public void setHardwares(Set<Hardware> hardwares) {
+        this.hardwares = hardwares;
     }
 }
