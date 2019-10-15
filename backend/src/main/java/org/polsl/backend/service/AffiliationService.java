@@ -64,6 +64,8 @@ public class AffiliationService {
     affiliation.setFirstName(request.getFirstName());
     affiliation.setLastName(request.getLastName());
     affiliation.setLocation(request.getLocation());
+
+    // TODO: błąd przy wykonywaniu poniższej metody
     affiliationRepository.save(affiliation);
   }
 
