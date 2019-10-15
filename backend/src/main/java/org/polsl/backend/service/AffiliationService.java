@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Logika biznesowa przeznaczeń.
@@ -29,7 +30,26 @@ public class AffiliationService {
     for (Affiliation affiliation : affiliations) {
       if (!affiliation.getDeleted()) {
         AffiliationOutputDTO dto = new AffiliationOutputDTO();
-        dto.setName(affiliation.getFirstName() + " - " + affiliation.getLastName() + " - " + affiliation.getLocation());
+        StringBuilder stringBuilder = new StringBuilder();
+        boolean isSeparatorNeeded = false;
+        if (!Objects.equals(affiliation.getFirstName(), "")) {
+          stringBuilder.append(affiliation.getFirstName());
+          isSeparatorNeeded = true;
+        }
+        if (!Objects.equals(affiliation.getLastName(), "")) {
+          if (isSeparatorNeeded) {
+            stringBuilder.append(" ");
+          }
+          stringBuilder.append(affiliation.getLastName());
+          isSeparatorNeeded = true;
+        }
+        if (!Objects.equals(affiliation.getLocation(), "")) {
+          if (isSeparatorNeeded) {
+            stringBuilder.append(" - ");
+          }
+          stringBuilder.append(affiliation.getLocation());
+        }
+        dto.setName(stringBuilder.toString());
         dtos.add(dto);
       }
     }
