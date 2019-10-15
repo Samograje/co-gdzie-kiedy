@@ -10,53 +10,53 @@ import java.util.Set;
 @Table(name = "computer_sets")
 public class ComputerSet {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  private Long id;
 
-    private String name;
+  private String name;
 
-    @ManyToMany(mappedBy = "computerSets")
-    private Set<Affiliation> affiliations;
+  @ManyToMany(mappedBy = "computerSets")
+  private Set<Affiliation> affiliations;
 
-    @ManyToMany
-    @JoinTable(name = "computer_sets_hardware",
-            joinColumns = @JoinColumn(name = "computer_set_id"),
-            inverseJoinColumns = @JoinColumn(name = "hardware_id"))
-    private Set<Hardware> hardware;
+  @ManyToMany
+  @JoinTable(name = "computer_sets_hardware",
+    joinColumns = @JoinColumn(name = "computer_set_id"),
+    inverseJoinColumns = @JoinColumn(name = "hardware_id"))
+  private Set<Hardware> hardware;
 
-    public ComputerSet() {
-    }
+  public ComputerSet() {
+  }
 
-    public Long getId() {
-        return id;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public Set<Affiliation> getAffiliations() {
-        return affiliations;
-    }
+  public Set<Affiliation> getAffiliations() {
+    return affiliations;
+  }
 
-    public void setAffiliations(Set<Affiliation> affiliations) {
-        this.affiliations = affiliations;
-    }
+  public void setAffiliations(Set<Affiliation> affiliations) {
+    this.affiliations = affiliations;
+  }
 
-    public Set<Hardware> getHardware() {
-        return hardware;
-    }
+  public Set<Hardware> getHardware() {
+    return hardware;
+  }
 
-    public void setHardware(Set<Hardware> hardware) {
-        this.hardware = hardware;
-    }
+  public void setHardware(Set<Hardware> hardware) {
+    this.hardware = hardware;
+  }
 }

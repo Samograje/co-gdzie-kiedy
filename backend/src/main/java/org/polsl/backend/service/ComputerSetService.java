@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ComputerSetService {
-    private ComputerSetRepository computerSetRepository;
+  private ComputerSetRepository computerSetRepository;
 
-    @Autowired
-    public ComputerSetService(ComputerSetRepository computerSetRepository) {
-        this.computerSetRepository = computerSetRepository;
-    }
+  @Autowired
+  public ComputerSetService(ComputerSetRepository computerSetRepository) {
+    this.computerSetRepository = computerSetRepository;
+  }
 }
