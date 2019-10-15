@@ -1,6 +1,13 @@
 package org.polsl.backend.entity;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import java.util.Set;
 
 /**
@@ -9,57 +16,86 @@ import java.util.Set;
 @Entity
 @Table(name = "affiliations")
 public class Affiliation {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  private Long id;
 
-    private String name;
+  private String firstName;
 
-    @ManyToMany
-    @JoinTable(name = "affiliations_hardware",
-            joinColumns = @JoinColumn(name = "affiliation_id"),
-            inverseJoinColumns = @JoinColumn(name = "hardware_id"))
-    private Set<Hardware> hardware;
+  private String lastName;
 
-    @ManyToMany
-    @JoinTable(name = "affiliations_computer_sets",
-            joinColumns = @JoinColumn(name = "affiliation_id"),
-            inverseJoinColumns = @JoinColumn(name = "computer_set_id"))
-    private Set<ComputerSet> computerSets;
+  private String location;
 
-    public Affiliation() {
-    }
+  @ManyToMany
+  @JoinTable(name = "affiliations_hardware",
+    joinColumns = @JoinColumn(name = "affiliation_id"),
+    inverseJoinColumns = @JoinColumn(name = "hardware_id"))
+  private Set<Hardware> hardware;
 
+  @ManyToMany
+  @JoinTable(name = "affiliations_computer_sets",
+    joinColumns = @JoinColumn(name = "affiliation_id"),
+    inverseJoinColumns = @JoinColumn(name = "computer_set_id"))
+  private Set<ComputerSet> computerSets;
 
-    public Long getId() {
-        return id;
-    }
+  private Boolean isDeleted;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public Affiliation() {
+  }
 
-    public String getName() {
-        return name;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public Set<Hardware> getHardware() {
-        return hardware;
-    }
+  public String getFirstName() {
+    return firstName;
+  }
 
-    public void setHardware(Set<Hardware> hardware) {
-        this.hardware = hardware;
-    }
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
 
-    public Set<ComputerSet> getComputerSets() {
-        return computerSets;
-    }
+  public String getLastName() {
+    return lastName;
+  }
 
-    public void setComputerSets(Set<ComputerSet> computerSets) {
-        this.computerSets = computerSets;
-    }
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
+  public String getLocation() {
+    return location;
+  }
+
+  public void setLocation(String location) {
+    this.location = location;
+  }
+
+  public Boolean getDeleted() {
+    return isDeleted;
+  }
+
+  public void setDeleted(Boolean deleted) {
+    isDeleted = deleted;
+  }
+
+  public Set<Hardware> getHardware() {
+    return hardware;
+  }
+
+  public void setHardware(Set<Hardware> hardware) {
+    this.hardware = hardware;
+  }
+
+  public Set<ComputerSet> getComputerSets() {
+    return computerSets;
+  }
+
+  public void setComputerSets(Set<ComputerSet> computerSets) {
+    this.computerSets = computerSets;
+  }
 }

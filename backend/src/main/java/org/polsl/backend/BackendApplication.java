@@ -8,12 +8,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class BackendApplication {
 
     public static void main(String[] args) {
-
-        //SpringApplication.run(BackendApplication.class, args);
-
-        ConfigurableApplicationContext ctx = SpringApplication.run(BackendApplication.class, args);
-        ctx.close();
-
+        SpringApplication.run(BackendApplication.class, args);
     }
 
 }
