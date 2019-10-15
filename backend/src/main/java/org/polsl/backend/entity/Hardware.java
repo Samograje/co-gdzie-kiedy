@@ -26,6 +26,10 @@ public class Hardware {
     @ManyToMany(mappedBy = "hardware")
     private Set<ComputerSet> computerSets;
 
+    @OneToMany
+    @JoinColumn(name="software")
+    private Set<Software> software;
+
 
     public Hardware() {
     }
@@ -68,5 +72,13 @@ public class Hardware {
 
     public void setComputerSets(Set<ComputerSet> computerSets) {
         this.computerSets = computerSets;
+    }
+
+    public Set<Software> getSoftware() {
+        return software;
+    }
+
+    public void setSoftware(Set<Software> software) {
+        this.software = software;
     }
 }

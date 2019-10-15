@@ -14,6 +14,10 @@ public class Software {
 
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name="hardware")
+    private Hardware hardware;
+
     public Software() {
     }
 
@@ -31,5 +35,13 @@ public class Software {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Hardware getHardware() {
+        return hardware;
+    }
+
+    public void setHardware(Hardware hardware) {
+        this.hardware = hardware;
     }
 }
