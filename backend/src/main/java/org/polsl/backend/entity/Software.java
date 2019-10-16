@@ -1,6 +1,7 @@
 package org.polsl.backend.entity;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  *
@@ -14,9 +15,8 @@ public class Software {
 
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name="hardware")
-    private Hardware hardware;
+    @ManyToMany(mappedBy = "software")
+    private Set<Hardware> hardware;
 
     public Software() {
     }
@@ -37,11 +37,12 @@ public class Software {
         this.name = name;
     }
 
-    public Hardware getHardware() {
+
+    public Set<Hardware> getHardware() {
         return hardware;
     }
 
-    public void setHardware(Hardware hardware) {
+    public void setHardware(Set<Hardware> hardware) {
         this.hardware = hardware;
     }
 }

@@ -26,8 +26,10 @@ public class Hardware {
     @ManyToMany(mappedBy = "hardware")
     private Set<ComputerSet> computerSets;
 
-    @OneToMany
-    @JoinColumn(name="software")
+    @ManyToMany
+    @JoinTable(name = "software_hardware",
+            joinColumns = @JoinColumn(name = "software_id"),
+            inverseJoinColumns = @JoinColumn(name = "hardware_id"))
     private Set<Software> software;
 
 
