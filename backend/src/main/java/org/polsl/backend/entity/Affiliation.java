@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import java.util.Set;
 
 /**
- *
+ * Klasa reprezentująca bazodanową encję przeznaczenia.
  */
 @Entity
 @Table(name = "affiliations")

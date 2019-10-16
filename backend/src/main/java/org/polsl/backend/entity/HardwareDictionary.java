@@ -4,7 +4,7 @@ package org.polsl.backend.entity;
 import javax.persistence.*;
 
 /**
- *
+ * Klasa reprezentująca bazodanową encję słownika hardware'u.
  */
 @Entity
 @Table(name = "hardware_dictionary")

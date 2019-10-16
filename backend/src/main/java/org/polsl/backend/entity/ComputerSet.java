@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 /**
- *
+ * Klasa reprezentująca bazodanową encję zestawu komputerowego.
  */
 @Entity
 @Table(name = "computer_sets")
