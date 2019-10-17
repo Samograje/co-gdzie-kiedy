@@ -4,6 +4,7 @@ import org.polsl.backend.dto.PaginatedResult;
 import org.polsl.backend.dto.affiliation.AffiliationInputDTO;
 import org.polsl.backend.dto.affiliation.AffiliationOutputDTO;
 import org.polsl.backend.entity.Affiliation;
+import org.polsl.backend.exception.NotFoundException;
 import org.polsl.backend.repository.AffiliationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,23 +64,22 @@ public class AffiliationService {
     affiliation.setFirstName(request.getFirstName());
     affiliation.setLastName(request.getLastName());
     affiliation.setLocation(request.getLocation());
-
-    // TODO: błąd przy wykonywaniu poniższej metody
     affiliationRepository.save(affiliation);
   }
 
-  public void editAffiliation(Long id, AffiliationInputDTO request) {
-    Affiliation affiliation = affiliationRepository.findById(id)
-      .orElseThrow(() -> new RuntimeException("Nie znaleziono przynależności o podanym ID"));
+  public void editAffiliation(Long id, AffiliationInputDTO request) throws NotFoundException {
+    Affiliation affiliation = affiliationRepository.findByIdAndIsDeletedIsFalse(id)
+      .orElseThrow(() -> new NotFoundException("przynależność", "id", id));
     affiliation.setFirstName(request.getFirstName());
     affiliation.setLastName(request.getLastName());
     affiliation.setLocation(request.getLocation());
     affiliationRepository.save(affiliation);
   }
 
-  public void deleteAffiliation(Long id) {
-    Affiliation affiliation = affiliationRepository.findById(id)
-      .orElseThrow(() -> new RuntimeException("Nie znaleziono przynależności o podanym ID"));
+  public void deleteAffiliation(Long id) throws NotFoundException {
+    Affiliation affiliation = affiliationRepository.findByIdAndIsDeletedIsFalse(id)
+      .orElseThrow(() -> new NotFoundException("przynależność", "id", id));
     affiliation.setDeleted(true);
+    affiliationRepository.save(affiliation);
   }
 }
