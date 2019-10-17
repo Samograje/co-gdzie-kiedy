@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 /**
- * Kontroler odpowiedzialny za zarządzanie przeznaczeniami.
+ * Kontroler odpowiedzialny za zarządzanie przynależnościami.
  */
 @RestController
 @RequestMapping("api/affiliations")
@@ -30,9 +30,9 @@ public class AffiliationController {
   }
 
   /**
-   * Endpoint obsługujący uzyskiwanie listy przeznaczeń.
+   * Endpoint obsługujący uzyskiwanie listy przynależności.
    *
-   * @return lista przeznaczeń
+   * @return lista przynależności
    */
   @GetMapping
   public ResponseEntity<?> getAllAffiliations() {
@@ -40,22 +40,22 @@ public class AffiliationController {
   }
 
   /**
-   * Endpoint obsługujący dodawanie nowego przeznaczenia.
+   * Endpoint obsługujący dodawanie nowej przynależności.
    *
-   * @param request stuktura {@link AffiliationInputDTO} zawierająca dane nowego przeznaczenia
-   * @return informacja o poprawnym utworzeniu przeznaczenia
+   * @param request stuktura {@link AffiliationInputDTO} zawierająca dane nowej przynależności
+   * @return informacja o poprawnym utworzeniu przynależności
    */
   @PostMapping
   public ResponseEntity<?> createAffiliation(@Valid @RequestBody AffiliationInputDTO request) {
     affiliationService.createAffiliation(request);
-    return ResponseEntity.ok(new ApiBasicResponse(true, "Utworzono przeznaczenie"));
+    return ResponseEntity.ok(new ApiBasicResponse(true, "Utworzono przynależność"));
   }
 
   /**
-   * Endpoint obsługujący edycję parametrów przeznaczenia.
+   * Endpoint obsługujący edycję parametrów przynależności.
    *
-   * @param request stuktura {@link AffiliationInputDTO} zawierająca nowe dane przeznaczenia
-   * @return informacja o poprawnym zaktualizowaniu parametrów przeznaczenia
+   * @param request stuktura {@link AffiliationInputDTO} zawierająca nowe dane przynależności
+   * @return informacja o poprawnym zaktualizowaniu parametrów przynależności
    */
   @PutMapping("/{id}")
   public ResponseEntity<?> editAffiliation(
@@ -63,18 +63,18 @@ public class AffiliationController {
     @Valid @RequestBody AffiliationInputDTO request
   ) {
     affiliationService.editAffiliation(id, request);
-    return ResponseEntity.ok(new ApiBasicResponse(true, "Zaktualizowano parametry przeznaczenia"));
+    return ResponseEntity.ok(new ApiBasicResponse(true, "Zaktualizowano parametry przynależności"));
   }
 
   /**
-   * Endpoint obsługujący usuwanie przeznaczenia.
+   * Endpoint obsługujący usuwanie przynależności.
    *
-   * @param id ID wybranego przeznaczenia
-   * @return informacja o poprawnym usunięciu przeznaczenia
+   * @param id ID wybranej przynależności
+   * @return informacja o poprawnym usunięciu przynależności
    */
   @DeleteMapping("/{id}")
   public ResponseEntity<?> deleteAffiliation(@PathVariable(value = "id") Long id) {
     affiliationService.deleteAffiliation(id);
-    return ResponseEntity.ok(new ApiBasicResponse(true, "Usunięto przeznaczenie"));
+    return ResponseEntity.ok(new ApiBasicResponse(true, "Usunięto przynależność"));
   }
 }

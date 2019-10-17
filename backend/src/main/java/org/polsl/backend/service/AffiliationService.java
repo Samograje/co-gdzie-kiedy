@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Logika biznesowa przeznaczeń.
+ * Logika biznesowa przynależności.
  */
 @Service
 public class AffiliationService {
@@ -70,7 +70,7 @@ public class AffiliationService {
 
   public void editAffiliation(Long id, AffiliationInputDTO request) {
     Affiliation affiliation = affiliationRepository.findById(id)
-      .orElseThrow(() -> new RuntimeException("Nie znaleziono przeznaczenia o podanym ID"));
+      .orElseThrow(() -> new RuntimeException("Nie znaleziono przynależności o podanym ID"));
     affiliation.setFirstName(request.getFirstName());
     affiliation.setLastName(request.getLastName());
     affiliation.setLocation(request.getLocation());
@@ -79,7 +79,7 @@ public class AffiliationService {
 
   public void deleteAffiliation(Long id) {
     Affiliation affiliation = affiliationRepository.findById(id)
-      .orElseThrow(() -> new RuntimeException("Nie znaleziono przeznaczenia o podanym ID"));
+      .orElseThrow(() -> new RuntimeException("Nie znaleziono przynależności o podanym ID"));
     affiliation.setDeleted(true);
   }
 }
