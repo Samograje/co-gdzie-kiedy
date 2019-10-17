@@ -4,9 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.Set;
 
@@ -26,26 +24,20 @@ public class Affiliation {
 
   private String location;
 
-  @ManyToMany
-  @JoinTable(name = "affiliations_hardware",
-    joinColumns = @JoinColumn(name = "affiliation_id"),
-    inverseJoinColumns = @JoinColumn(name = "hardware_id"))
-  private Set<Hardware> hardware;
+    @OneToMany(mappedBy = "affiliation")
+    private Set<AffiliationHardware> affiliationHardwareSet;
 
-  @ManyToMany
-  @JoinTable(name = "affiliations_computer_sets",
-    joinColumns = @JoinColumn(name = "affiliation_id"),
-    inverseJoinColumns = @JoinColumn(name = "computer_set_id"))
-  private Set<ComputerSet> computerSets;
+    @OneToMany(mappedBy = "affiliation")
+    private Set<AffiliationComputerSet> affiliationComputerSetSet;
 
   private Boolean isDeleted;
 
   public Affiliation() {
   }
 
-  public Long getId() {
-    return id;
-  }
+    public Long getId() {
+        return id;
+    }
 
   public void setId(Long id) {
     this.id = id;
@@ -83,19 +75,19 @@ public class Affiliation {
     isDeleted = deleted;
   }
 
-  public Set<Hardware> getHardware() {
-    return hardware;
-  }
+    public Set<AffiliationHardware> getAffiliationHardwareSet() {
+        return affiliationHardwareSet;
+    }
 
-  public void setHardware(Set<Hardware> hardware) {
-    this.hardware = hardware;
-  }
+    public void setAffiliationHardwareSet(Set<AffiliationHardware> affiliationHardwareSet) {
+        this.affiliationHardwareSet = affiliationHardwareSet;
+    }
 
-  public Set<ComputerSet> getComputerSets() {
-    return computerSets;
-  }
+    public Set<AffiliationComputerSet> getAffiliationComputerSetSet() {
+        return affiliationComputerSetSet;
+    }
 
-  public void setComputerSets(Set<ComputerSet> computerSets) {
-    this.computerSets = computerSets;
-  }
+    public void setAffiliationComputerSetSet(Set<AffiliationComputerSet> affiliationComputerSetSet) {
+        this.affiliationComputerSetSet = affiliationComputerSetSet;
+    }
 }
