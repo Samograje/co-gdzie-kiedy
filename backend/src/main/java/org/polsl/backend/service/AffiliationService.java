@@ -29,6 +29,7 @@ public class AffiliationService {
     List<AffiliationOutputDTO> dtos = new ArrayList<>();
     for (Affiliation affiliation : affiliations) {
       AffiliationOutputDTO dto = new AffiliationOutputDTO();
+      dto.setId(affiliation.getId());
       StringBuilder stringBuilder = new StringBuilder();
       boolean isSeparatorNeeded = false;
       if (!Objects.equals(affiliation.getFirstName(), "")) {
