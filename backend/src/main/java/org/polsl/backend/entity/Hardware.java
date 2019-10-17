@@ -20,18 +20,14 @@ public class Hardware {
     @JoinColumn(name = "hardware_dictionary_id", referencedColumnName = "id")
     private HardwareDictionary hardwareDictionary;
 
-    @ManyToMany(mappedBy = "hardware")
-    private Set<Affiliation> affiliations;
+    @OneToMany(mappedBy = "hardware")
+    private Set<SoftwareHardware> softwareHardwareSet;
 
-    @ManyToMany(mappedBy = "hardware")
-    private Set<ComputerSet> computerSets;
+    @OneToMany(mappedBy = "hardware")
+    private Set<AffiliationHardware> affiliationHardwareSet;
 
-    @ManyToMany
-    @JoinTable(name = "software_hardware",
-            joinColumns = @JoinColumn(name = "software_id"),
-            inverseJoinColumns = @JoinColumn(name = "hardware_id"))
-    private Set<Software> software;
-
+    @OneToMany(mappedBy = "hardware")
+    private Set<ComputerSetHardware> computerSetHardwareSet;
 
     public Hardware() {
     }
@@ -60,27 +56,27 @@ public class Hardware {
         this.hardwareDictionary = hardwareDictionary;
     }
 
-    public Set<Affiliation> getAffiliations() {
-        return affiliations;
+    public Set<SoftwareHardware> getSoftwareHardwareSet() {
+        return softwareHardwareSet;
     }
 
-    public void setAffiliations(Set<Affiliation> affiliations) {
-        this.affiliations = affiliations;
+    public void setSoftwareHardwareSet(Set<SoftwareHardware> softwareHardwareSet) {
+        this.softwareHardwareSet = softwareHardwareSet;
     }
 
-    public Set<ComputerSet> getComputerSets() {
-        return computerSets;
+    public Set<AffiliationHardware> getAffiliationHardwareSet() {
+        return affiliationHardwareSet;
     }
 
-    public void setComputerSets(Set<ComputerSet> computerSets) {
-        this.computerSets = computerSets;
+    public void setAffiliationHardwareSet(Set<AffiliationHardware> affiliationHardwareSet) {
+        this.affiliationHardwareSet = affiliationHardwareSet;
     }
 
-    public Set<Software> getSoftware() {
-        return software;
+    public Set<ComputerSetHardware> getComputerSetHardwareSet() {
+        return computerSetHardwareSet;
     }
 
-    public void setSoftware(Set<Software> software) {
-        this.software = software;
+    public void setComputerSetHardwareSet(Set<ComputerSetHardware> computerSetHardwareSet) {
+        this.computerSetHardwareSet = computerSetHardwareSet;
     }
 }
