@@ -12,18 +12,16 @@ public class ComputerSet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id")
     private Long id;
 
     private String name;
 
-    @ManyToMany(mappedBy = "computerSets")
-    private Set<Affiliation> affiliations;
+    @OneToMany(mappedBy = "computerSet")
+    private Set<AffiliationComputerSet> affiliationComputerSetSet;
 
-    @ManyToMany
-    @JoinTable(name = "computer_sets_hardware",
-            joinColumns = @JoinColumn(name = "computer_set_id"),
-            inverseJoinColumns = @JoinColumn(name = "hardware_id"))
-    private Set<Hardware> hardware;
+    @OneToMany(mappedBy = "computerSet")
+    private Set<ComputerSetHardware> computerSetHardwareSet;
 
     public ComputerSet() {
     }
@@ -44,19 +42,19 @@ public class ComputerSet {
         this.name = name;
     }
 
-    public Set<Affiliation> getAffiliations() {
-        return affiliations;
+    public Set<AffiliationComputerSet> getAffiliationComputerSetSet() {
+        return affiliationComputerSetSet;
     }
 
-    public void setAffiliations(Set<Affiliation> affiliations) {
-        this.affiliations = affiliations;
+    public void setAffiliationComputerSetSet(Set<AffiliationComputerSet> affiliationComputerSetSet) {
+        this.affiliationComputerSetSet = affiliationComputerSetSet;
     }
 
-    public Set<Hardware> getHardware() {
-        return hardware;
+    public Set<ComputerSetHardware> getComputerSetHardwareSet() {
+        return computerSetHardwareSet;
     }
 
-    public void setHardware(Set<Hardware> hardware) {
-        this.hardware = hardware;
+    public void setComputerSetHardwareSet(Set<ComputerSetHardware> computerSetHardwareSet) {
+        this.computerSetHardwareSet = computerSetHardwareSet;
     }
 }
