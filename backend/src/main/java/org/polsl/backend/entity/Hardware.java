@@ -9,74 +9,74 @@ import java.util.Set;
 @Entity
 @Table(name = "hardware")
 public class Hardware {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id")
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @Column(name = "id")
+  private Long id;
 
-    private String name;
+  private String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "hardware_dictionary_id", referencedColumnName = "id")
-    private HardwareDictionary hardwareDictionary;
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "hardware_dictionary_id", referencedColumnName = "id")
+  private HardwareDictionary hardwareDictionary;
 
-    @OneToMany(mappedBy = "hardware")
-    private Set<SoftwareHardware> softwareHardwareSet;
+  @OneToMany(mappedBy = "hardware")
+  private Set<SoftwareHardware> softwareHardwareSet;
 
-    @OneToMany(mappedBy = "hardware")
-    private Set<AffiliationHardware> affiliationHardwareSet;
+  @OneToMany(mappedBy = "hardware")
+  private Set<AffiliationHardware> affiliationHardwareSet;
 
-    @OneToMany(mappedBy = "hardware")
-    private Set<ComputerSetHardware> computerSetHardwareSet;
+  @OneToMany(mappedBy = "hardware")
+  private Set<ComputerSetHardware> computerSetHardwareSet;
 
-    public Hardware() {
-    }
+  public Hardware() {
+  }
 
-    public Long getId() {
-        return id;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public HardwareDictionary getHardwareDictionary() {
-        return hardwareDictionary;
-    }
+  public HardwareDictionary getHardwareDictionary() {
+    return hardwareDictionary;
+  }
 
-    public void setHardwareDictionary(HardwareDictionary hardwareDictionary) {
-        this.hardwareDictionary = hardwareDictionary;
-    }
+  public void setHardwareDictionary(HardwareDictionary hardwareDictionary) {
+    this.hardwareDictionary = hardwareDictionary;
+  }
 
-    public Set<SoftwareHardware> getSoftwareHardwareSet() {
-        return softwareHardwareSet;
-    }
+  public Set<SoftwareHardware> getSoftwareHardwareSet() {
+    return softwareHardwareSet;
+  }
 
-    public void setSoftwareHardwareSet(Set<SoftwareHardware> softwareHardwareSet) {
-        this.softwareHardwareSet = softwareHardwareSet;
-    }
+  public void setSoftwareHardwareSet(Set<SoftwareHardware> softwareHardwareSet) {
+    this.softwareHardwareSet = softwareHardwareSet;
+  }
 
-    public Set<AffiliationHardware> getAffiliationHardwareSet() {
-        return affiliationHardwareSet;
-    }
+  public Set<AffiliationHardware> getAffiliationHardwareSet() {
+    return affiliationHardwareSet;
+  }
 
-    public void setAffiliationHardwareSet(Set<AffiliationHardware> affiliationHardwareSet) {
-        this.affiliationHardwareSet = affiliationHardwareSet;
-    }
+  public void setAffiliationHardwareSet(Set<AffiliationHardware> affiliationHardwareSet) {
+    this.affiliationHardwareSet = affiliationHardwareSet;
+  }
 
-    public Set<ComputerSetHardware> getComputerSetHardwareSet() {
-        return computerSetHardwareSet;
-    }
+  public Set<ComputerSetHardware> getComputerSetHardwareSet() {
+    return computerSetHardwareSet;
+  }
 
-    public void setComputerSetHardwareSet(Set<ComputerSetHardware> computerSetHardwareSet) {
-        this.computerSetHardwareSet = computerSetHardwareSet;
-    }
+  public void setComputerSetHardwareSet(Set<ComputerSetHardware> computerSetHardwareSet) {
+    this.computerSetHardwareSet = computerSetHardwareSet;
+  }
 }

@@ -16,18 +16,18 @@ import java.util.Set;
 @Table(name = "computer_sets")
 public class ComputerSet {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id")
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @Column(name = "id")
+  private Long id;
 
   private String name;
 
-    @OneToMany(mappedBy = "computerSet")
-    private Set<AffiliationComputerSet> affiliationComputerSetSet;
+  @OneToMany(mappedBy = "computerSet")
+  private Set<AffiliationComputerSet> affiliationComputerSetSet;
 
-    @OneToMany(mappedBy = "computerSet")
-    private Set<ComputerSetHardware> computerSetHardwareSet;
+  @OneToMany(mappedBy = "computerSet")
+  private Set<ComputerSetHardware> computerSetHardwareSet;
 
   public ComputerSet() {
   }
@@ -48,19 +48,19 @@ public class ComputerSet {
     this.name = name;
   }
 
-    public Set<AffiliationComputerSet> getAffiliationComputerSetSet() {
-        return affiliationComputerSetSet;
-    }
+  public Set<AffiliationComputerSet> getAffiliationComputerSetSet() {
+    return affiliationComputerSetSet;
+  }
 
-    public void setAffiliationComputerSetSet(Set<AffiliationComputerSet> affiliationComputerSetSet) {
-        this.affiliationComputerSetSet = affiliationComputerSetSet;
-    }
+  public void setAffiliationComputerSetSet(Set<AffiliationComputerSet> affiliationComputerSetSet) {
+    this.affiliationComputerSetSet = affiliationComputerSetSet;
+  }
 
-    public Set<ComputerSetHardware> getComputerSetHardwareSet() {
-        return computerSetHardwareSet;
-    }
+  public Set<ComputerSetHardware> getComputerSetHardwareSet() {
+    return computerSetHardwareSet;
+  }
 
-    public void setComputerSetHardwareSet(Set<ComputerSetHardware> computerSetHardwareSet) {
-        this.computerSetHardwareSet = computerSetHardwareSet;
-    }
+  public void setComputerSetHardwareSet(Set<ComputerSetHardware> computerSetHardwareSet) {
+    this.computerSetHardwareSet = computerSetHardwareSet;
+  }
 }

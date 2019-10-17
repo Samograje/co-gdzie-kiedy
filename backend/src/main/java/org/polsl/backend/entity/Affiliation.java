@@ -24,20 +24,20 @@ public class Affiliation {
 
   private String location;
 
-    @OneToMany(mappedBy = "affiliation")
-    private Set<AffiliationHardware> affiliationHardwareSet;
+  @OneToMany(mappedBy = "affiliation")
+  private Set<AffiliationHardware> affiliationHardwareSet;
 
-    @OneToMany(mappedBy = "affiliation")
-    private Set<AffiliationComputerSet> affiliationComputerSetSet;
+  @OneToMany(mappedBy = "affiliation")
+  private Set<AffiliationComputerSet> affiliationComputerSetSet;
 
   private Boolean isDeleted;
 
   public Affiliation() {
   }
 
-    public Long getId() {
-        return id;
-    }
+  public Long getId() {
+    return id;
+  }
 
   public void setId(Long id) {
     this.id = id;
@@ -75,19 +75,19 @@ public class Affiliation {
     isDeleted = deleted;
   }
 
-    public Set<AffiliationHardware> getAffiliationHardwareSet() {
-        return affiliationHardwareSet;
-    }
+  public Set<AffiliationHardware> getAffiliationHardwareSet() {
+    return affiliationHardwareSet;
+  }
 
-    public void setAffiliationHardwareSet(Set<AffiliationHardware> affiliationHardwareSet) {
-        this.affiliationHardwareSet = affiliationHardwareSet;
-    }
+  public void setAffiliationHardwareSet(Set<AffiliationHardware> affiliationHardwareSet) {
+    this.affiliationHardwareSet = affiliationHardwareSet;
+  }
 
-    public Set<AffiliationComputerSet> getAffiliationComputerSetSet() {
-        return affiliationComputerSetSet;
-    }
+  public Set<AffiliationComputerSet> getAffiliationComputerSetSet() {
+    return affiliationComputerSetSet;
+  }
 
-    public void setAffiliationComputerSetSet(Set<AffiliationComputerSet> affiliationComputerSetSet) {
-        this.affiliationComputerSetSet = affiliationComputerSetSet;
-    }
+  public void setAffiliationComputerSetSet(Set<AffiliationComputerSet> affiliationComputerSetSet) {
+    this.affiliationComputerSetSet = affiliationComputerSetSet;
+  }
 }
