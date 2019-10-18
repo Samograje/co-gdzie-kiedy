@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 /**
@@ -30,6 +31,7 @@ public class Affiliation {
   @OneToMany(mappedBy = "affiliation")
   private Set<AffiliationComputerSet> affiliationComputerSetSet;
 
+  @NotNull
   private Boolean isDeleted;
 
   public Affiliation() {
