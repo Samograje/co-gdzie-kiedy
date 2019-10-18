@@ -32,7 +32,7 @@ public class Affiliation {
   private Set<AffiliationComputerSet> affiliationComputerSetSet;
 
   @NotNull
-  private Boolean isDeleted;
+  private boolean isDeleted;
 
   public Affiliation() {
   }
@@ -69,11 +69,11 @@ public class Affiliation {
     this.location = location;
   }
 
-  public Boolean getDeleted() {
+  public boolean getDeleted() {
     return isDeleted;
   }
 
-  public void setDeleted(Boolean deleted) {
+  public void setDeleted(boolean deleted) {
     isDeleted = deleted;
   }
 
