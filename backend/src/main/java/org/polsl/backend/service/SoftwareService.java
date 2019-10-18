@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SoftwareService {
-    private SoftwareRepository softwareRepository;
+  private SoftwareRepository softwareRepository;
 
-    @Autowired
-    public SoftwareService(SoftwareRepository softwareRepository) {
-        this.softwareRepository = softwareRepository;
-    }
+  @Autowired
+  public SoftwareService(SoftwareRepository softwareRepository) {
+    this.softwareRepository = softwareRepository;
+  }
 }

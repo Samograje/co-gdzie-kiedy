@@ -1,58 +1,95 @@
 package org.polsl.backend.entity;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 /**
- *
+ * Klasa reprezentująca bazodanową encję przynależności.
  */
 @Entity
 @Table(name = "affiliations")
 public class Affiliation {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  private Long id;
 
-    private String name;
+  private String firstName;
 
-    @OneToMany(mappedBy = "affiliation")
-    private Set<AffiliationHardware> affiliationHardwareSet;
+  private String lastName;
 
-    @OneToMany(mappedBy = "affiliation")
-    private Set<AffiliationComputerSet> affiliationComputerSetSet;
+  private String location;
 
-    public Affiliation() {
-    }
+  @OneToMany(mappedBy = "affiliation")
+  private Set<AffiliationHardware> affiliationHardwareSet;
 
-    public Long getId() {
-        return id;
-    }
+  @OneToMany(mappedBy = "affiliation")
+  private Set<AffiliationComputerSet> affiliationComputerSetSet;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  @NotNull
+  private boolean isDeleted;
 
-    public String getName() {
-        return name;
-    }
+  public Affiliation() {
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public Set<AffiliationHardware> getAffiliationHardwareSet() {
-        return affiliationHardwareSet;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public void setAffiliationHardwareSet(Set<AffiliationHardware> affiliationHardwareSet) {
-        this.affiliationHardwareSet = affiliationHardwareSet;
-    }
+  public String getFirstName() {
+    return firstName;
+  }
 
-    public Set<AffiliationComputerSet> getAffiliationComputerSetSet() {
-        return affiliationComputerSetSet;
-    }
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
 
-    public void setAffiliationComputerSetSet(Set<AffiliationComputerSet> affiliationComputerSetSet) {
-        this.affiliationComputerSetSet = affiliationComputerSetSet;
-    }
+  public String getLastName() {
+    return lastName;
+  }
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
+  public String getLocation() {
+    return location;
+  }
+
+  public void setLocation(String location) {
+    this.location = location;
+  }
+
+  public boolean getDeleted() {
+    return isDeleted;
+  }
+
+  public void setDeleted(boolean deleted) {
+    isDeleted = deleted;
+  }
+
+  public Set<AffiliationHardware> getAffiliationHardwareSet() {
+    return affiliationHardwareSet;
+  }
+
+  public void setAffiliationHardwareSet(Set<AffiliationHardware> affiliationHardwareSet) {
+    this.affiliationHardwareSet = affiliationHardwareSet;
+  }
+
+  public Set<AffiliationComputerSet> getAffiliationComputerSetSet() {
+    return affiliationComputerSetSet;
+  }
+
+  public void setAffiliationComputerSetSet(Set<AffiliationComputerSet> affiliationComputerSetSet) {
+    this.affiliationComputerSetSet = affiliationComputerSetSet;
+  }
 }

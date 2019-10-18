@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class HardwareService {
-    private HardwareRepository hardwareRepository;
+  private HardwareRepository hardwareRepository;
 
-    @Autowired
-    public HardwareService(HardwareRepository hardwareRepository) {
-        this.hardwareRepository = hardwareRepository;
-    }
+  @Autowired
+  public HardwareService(HardwareRepository hardwareRepository) {
+    this.hardwareRepository = hardwareRepository;
+  }
 }
