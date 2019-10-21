@@ -2,20 +2,15 @@
 
 **Menu w pasku po lewej**:
 - przynależności:
-  - aktualne
-  - historia
 - hardware / zestawy
-  - aktualne
-  - historia
 - software
-  - aktualne
-  - historia
 
 **Ekran główny** - statystyki:
 - ilość przynależności
 - ilość zestawów
 - ilość oprogramowania
-- ilość hadrware'u
+- ilość hardware'u
+- inne?
 
 **Ekran listy przeznaczeń**:
 - akcje:
@@ -37,6 +32,7 @@
   - wyszukiwanie po kodzie QR
   - dodawanie (przejście do pustego formularza dodawania)
   - wydruk danych w formie karty inwentarzowej
+  - pokaż historię
 - kolumny:
   - typ (laptop / zestaw / solo hardware)
   - nazwa
@@ -52,6 +48,7 @@
 - akcje grupowe:
   - dodawanie (przejście do pustego formularza dodawania)
   - wydruk danych w formie karty inwentarzowej
+  - pokaż historię
 - kolumny:
   - nazwa
   - numer inwentarzowy
