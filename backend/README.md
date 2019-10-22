@@ -4,7 +4,9 @@ Aplikacja służąca do obsługi zapytań REST API oraz do tworzenia i komunikac
 
 ## Przygotowanie środowiska deweloperskiego
 
-Aplikacja wymaga zainstalowanego JDK w wersji co najmniej 1.8.
+Aplikacja wymaga zainstalowanych:
+- JDK
+- Maven
 
 Po sklonowaniu repozytorium i przejściu do katalogu `backend`, należy skopiować plik `application-example.properties`, nadając mu nazwę `application.properties`. Ten plik zawiera lokalną konfigurację bazy danych, zatem nie powinien być dodawany do repozytorium. W tym pliku należy ustawić adres, nazwę użytkownika i hasło dotyczące wybranej przez siebie bazy danych. Przykładowe wartości dotyczą połączenia z deweloperską bazą danych PostgreSQL.
 
