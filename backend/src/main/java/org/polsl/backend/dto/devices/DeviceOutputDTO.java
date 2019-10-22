@@ -1,9 +1,10 @@
-package org.polsl.backend.dto.hardware;
+package org.polsl.backend.dto.devices;
 
-public class HardwareOutputDTO {
+public class DeviceOutputDTO {
     private Long id;
     private String name;
-    private String type;
+    private String type;//type from hardwaredictionary
+    private Boolean isComputerSet;
 
     public Long getId() {
         return id;
@@ -27,5 +28,13 @@ public class HardwareOutputDTO {
 
     public void setType(String type){
         this.type = type;
+    }
+
+    public Boolean getComputerSet() {
+        return isComputerSet;
+    }
+
+    public void setComputerSet(Boolean computerSet) {
+        isComputerSet = computerSet;
     }
 }
