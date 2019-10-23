@@ -1,7 +1,13 @@
 package org.polsl.backend.entity;
 
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import java.util.Set;
 
 /**
  * Klasa reprezentująca bazodanową encję słownika hardware'u.
@@ -17,9 +23,8 @@ public class HardwareDictionary {
 
   private String value;
 
-  @OneToOne(mappedBy = "hardwareDictionary")
-  private Hardware hardware;
-
+  @OneToMany(mappedBy = "hardwareDictionary")
+  private Set<Hardware> hardwareSet;
 
   public Long getId() {
     return id;
@@ -37,11 +42,11 @@ public class HardwareDictionary {
     this.value = value;
   }
 
-  public Hardware getHardware() {
-    return hardware;
+  public Set<Hardware> getHardware() {
+    return hardwareSet;
   }
 
-  public void setHardware(Hardware hardware) {
-    this.hardware = hardware;
+  public void setHardware(Set<Hardware> hardwareSet) {
+    this.hardwareSet = hardwareSet;
   }
 }
