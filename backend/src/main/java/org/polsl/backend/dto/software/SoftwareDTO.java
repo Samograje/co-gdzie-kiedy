@@ -2,8 +2,8 @@ package org.polsl.backend.dto.software;
 
 import com.sun.istack.NotNull;
 
-public class SoftwareInputDTO {
-
+public class SoftwareDTO {
+    //Ta klasa jest chyba niepotrzebna.
     @NotNull
     private String name;
 
