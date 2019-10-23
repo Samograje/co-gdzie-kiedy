@@ -3,5 +3,7 @@ backend/target/
 backend/**/*.iml
 backend/src/main/resources/application.properties
 
+docs/*.bak
+
 .idea/
 *.iml
