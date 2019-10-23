@@ -24,7 +24,7 @@ public class DeviceService {
   }
 
   public PaginatedResult<DeviceOutputDTO> getAllHardwareAndComputerSets() {
-    Iterable<Hardware> manyHardware = hardwareRepository.findAllByComputerSetHardwareSetIsNull();
+    Iterable<Hardware> manyHardware = hardwareRepository.findAllSoloHardware();
     List<DeviceOutputDTO> dtos = new ArrayList<>();
 
     Iterable<ComputerSet> computerSets = computerSetRepository.findAll();
