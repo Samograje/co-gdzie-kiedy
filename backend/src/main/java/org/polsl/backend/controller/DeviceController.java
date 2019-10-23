@@ -25,6 +25,6 @@ public class DeviceController {
    */
   @GetMapping
   public ResponseEntity<?> getAllDevices() {
-    return ResponseEntity.ok(deviceService.getAllHardwareAndComputerSets());
+    return ResponseEntity.ok(deviceService.getAllComputerSetsAndSoloHardware());
   }
 }
