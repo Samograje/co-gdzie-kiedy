@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Logika biznesowa hardware'u i zestawów komputerowych.
+ */
 @Service
 public class DeviceService {
   private HardwareRepository hardwareRepository;
