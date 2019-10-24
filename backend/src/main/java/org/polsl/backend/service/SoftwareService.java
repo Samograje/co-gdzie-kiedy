@@ -23,7 +23,7 @@ public class SoftwareService {
 
   public PaginatedResult<SoftwareDTO> getAllSoftware()
   {
-    Iterable<Software> softwares = softwareRepository.findAllBySoftwareIsNull();
+    Iterable<Software> softwares = softwareRepository.findAll();
     List<SoftwareDTO> softwareDTO = new ArrayList();
     for(Software software : softwares){
       SoftwareDTO dto = new SoftwareDTO();
