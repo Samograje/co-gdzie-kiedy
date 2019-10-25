@@ -1,9 +1,7 @@
 package org.polsl.backend.service;
 
 import org.polsl.backend.dto.PaginatedResult;
-import org.polsl.backend.dto.devices.DeviceOutputDTO;
-import org.polsl.backend.dto.software.SoftwareDTO;
-import org.polsl.backend.dto.software.SoftwareOutputDTO;
+import org.polsl.backend.dto.software.SoftwareInputDTO;
 import org.polsl.backend.entity.Software;
 import org.polsl.backend.repository.SoftwareRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,18 +19,18 @@ public class SoftwareService {
     this.softwareRepository = softwareRepository;
   }
 
-  public PaginatedResult<SoftwareDTO> getAllSoftware()
+  public PaginatedResult<SoftwareInputDTO> getAllSoftware()
   {
     Iterable<Software> softwares = softwareRepository.findAll();
-    List<SoftwareDTO> softwareDTO = new ArrayList();
+    List<SoftwareInputDTO> softwareInputDTO = new ArrayList();
     for(Software software : softwares){
-      SoftwareDTO dto = new SoftwareDTO();
+      SoftwareInputDTO dto = new SoftwareInputDTO();
       dto.setName(software.getName());
     }
 
-    PaginatedResult<SoftwareDTO> response = new PaginatedResult<>();
-    response.setItems(softwareDTO);
-    response.setTotalElements((long)softwareDTO.size());
+    PaginatedResult<SoftwareInputDTO> response = new PaginatedResult<>();
+    response.setItems(softwareInputDTO);
+    response.setTotalElements((long) softwareInputDTO.size());
     return response;
   }
 }
