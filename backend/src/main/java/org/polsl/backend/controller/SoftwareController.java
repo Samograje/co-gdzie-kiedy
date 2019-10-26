@@ -19,7 +19,7 @@ public class SoftwareController {
     /**
      * Endpoint obsługujący uzyskiwanie listy oprogramowania.
      *
-     * @return lista sprzętu
+     * @return lista oprogramowania
      */
     @GetMapping
     public ResponseEntity<?> getAllSoftware(){
