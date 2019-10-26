@@ -12,19 +12,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/software")
 public class SoftwareController {
-    private final SoftwareService softwareService;
+  private final SoftwareService softwareService;
 
-    public SoftwareController(SoftwareService softwareService) {this.softwareService = softwareService;}
+  public SoftwareController(SoftwareService softwareService) {
+    this.softwareService = softwareService;
+  }
 
-    /**
-     * Endpoint obsługujący uzyskiwanie listy oprogramowania.
-     *
-     * @return lista oprogramowania
-     */
-    @GetMapping
-    public ResponseEntity<?> getAllSoftware(){
-        return ResponseEntity.ok(softwareService.getAllSoftware());
-    }
+  /**
+   * Endpoint obsługujący uzyskiwanie listy oprogramowania.
+   *
+   * @return lista oprogramowania
+   */
+  @GetMapping
+  public ResponseEntity<?> getAllSoftware() {
+    return ResponseEntity.ok(softwareService.getAllSoftware());
+  }
 
 
 }
