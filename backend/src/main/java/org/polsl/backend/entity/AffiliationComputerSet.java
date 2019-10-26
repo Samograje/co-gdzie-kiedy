@@ -1,5 +1,7 @@
 package org.polsl.backend.entity;
 
+import org.polsl.backend.key.AffiliationComputerSetKey;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -7,25 +9,24 @@ import java.time.LocalDateTime;
 @Table(name = "affiliations_computer_sets")
 public class AffiliationComputerSet {
 
-  @Id
-  private Long id;
+  @EmbeddedId
+  private AffiliationComputerSetKey id;
 
   @ManyToOne
-  @JoinColumn(name = "affiliation_id")
+  @MapsId("affiliation_id")
+  @JoinColumn(name = "affiliation_id", insertable = false, updatable = false)
   private Affiliation affiliation;
 
   @ManyToOne
-  @JoinColumn(name = "computer_set_id")
+  @MapsId("computer_set_id")
+  @JoinColumn(name = "computer_set_id", insertable = false, updatable = false)
   private ComputerSet computerSet;
 
+  @Column(name = "valid_from", insertable = false, updatable = false)
   private LocalDateTime validFrom;
   private LocalDateTime validTo;
 
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
+  public void setId(AffiliationComputerSetKey id) {
     this.id = id;
   }
 
