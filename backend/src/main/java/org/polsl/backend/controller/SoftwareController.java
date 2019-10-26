@@ -1,6 +1,5 @@
 package org.polsl.backend.controller;
 
-import org.polsl.backend.service.DeviceService;
 import org.polsl.backend.service.SoftwareService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +17,7 @@ public class SoftwareController {
     public SoftwareController(SoftwareService softwareService) {this.softwareService = softwareService;}
 
     /**
-     * Endpoint obsługujący uzyskiwanie listy sprzętu.
+     * Endpoint obsługujący uzyskiwanie listy oprogramowania.
      *
      * @return lista sprzętu
      */
