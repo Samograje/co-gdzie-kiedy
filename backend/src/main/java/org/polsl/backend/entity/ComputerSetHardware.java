@@ -1,30 +1,31 @@
 package org.polsl.backend.entity;
 
+import org.polsl.backend.key.ComputerSetHardwareKey;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "computer_sets_hardware")
 public class ComputerSetHardware {
-  @Id
-  private Long id;
+  @EmbeddedId
+  private ComputerSetHardwareKey id;
 
   @ManyToOne
-  @JoinColumn(name = "computer_set_id")
+  @MapsId("computer_set_id")
+  @JoinColumn(name = "computer_set_id", insertable = false, updatable = false)
   private ComputerSet computerSet;
 
   @ManyToOne
-  @JoinColumn(name = "hardware_id")
+  @MapsId("hardware_id")
+  @JoinColumn(name = "hardware_id", insertable = false, updatable = false)
   private Hardware hardware;
 
+  @Column(name = "valid_from", insertable = false, updatable = false)
   private LocalDateTime validFrom;
   private LocalDateTime validTo;
 
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
+  public void setId(ComputerSetHardwareKey id) {
     this.id = id;
   }
 
