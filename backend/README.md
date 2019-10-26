@@ -44,4 +44,14 @@ Tryb działania na strukturze bazy danych znajduje się w niewersjonowanym pliku
 
 ## Testy
 
-TODO
+Aplikacja posiada zestaw testów integracyjnych, sprawdzających działanie każdego z endpointów. Aby je skonfigurować, należy utworzyć plik `src/test/resources/application-test.properties` na podstawie pliku `src/test/resources/application-test-example.properties`. Należy w nim ustawić namiary na testową bazę danych (najlepiej lokalną). W momencie uruchomienia testów wykonują się następujące czynności:
+1. usuwane są wszyskie tabele w testowej bazie danych
+2. tworzone są tabele w bazie danych na podstawie modelu z katalogu `src/main/java/org/polsl/backend/entity`
+3. wykonywane są wybrane skrypty z katalogu `src/test/resources/scripts` (te zadeklarowane w klasie testowej), wpisujące testowe dane do bazy danych
+4. endpointy są testowane, a zwrócone dane porównywane z oczekiwanymi
+
+Testy można uruchomić poleceniem:
+```
+mvn test
+```
+lub bezpośrednio ze środowiska deweloperskiego.
