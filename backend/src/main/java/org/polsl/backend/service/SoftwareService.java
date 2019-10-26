@@ -27,6 +27,7 @@ public class SoftwareService {
     for(Software software : softwares){
       SoftwareOutputDTO dto = new SoftwareOutputDTO();
       dto.setName(software.getName());
+      softwareOutputDTO.add(dto);
     }
 
     PaginatedResult<SoftwareOutputDTO> response = new PaginatedResult<>();
