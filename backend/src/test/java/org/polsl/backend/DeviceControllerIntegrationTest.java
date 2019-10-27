@@ -23,7 +23,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application-test.properties")
 @Transactional
 @SqlGroup({
-    @Sql(scripts = "/scripts/create-test-device.sql")
+    @Sql(scripts = "/scripts/create-test-hardware_dictionary.sql"),
+    @Sql(scripts = "/scripts/create-test-hardware.sql"),
+    @Sql(scripts = "/scripts/create-test-computer_sets.sql"),
+    @Sql(scripts = "/scripts/create-test-computer_sets_hardware.sql")
 })
 public class DeviceControllerIntegrationTest {
 
