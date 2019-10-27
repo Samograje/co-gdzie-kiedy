@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 /**
@@ -27,6 +28,7 @@ public class Hardware {
 
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "hardware_dictionary_id", referencedColumnName = "id")
+  @NotNull
   private HardwareDictionary hardwareDictionary;
 
   @OneToMany(mappedBy = "hardware")
