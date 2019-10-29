@@ -54,7 +54,5 @@ public class SoftwareService {
   public void deleteSoftware(Long id) {
     Software software = softwareRepository.findAllById(id).orElseThrow(() -> new NotFoundException("Oprogramowanie", "id", id));
     softwareRepository.deleteById(id);
-    softwareRepository.save(software);
-
   }
 }
