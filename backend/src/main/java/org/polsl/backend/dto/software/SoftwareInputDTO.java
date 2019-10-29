@@ -1,9 +1,10 @@
 package org.polsl.backend.dto.software;
 
-import com.sun.istack.NotNull;
+
+import javax.validation.constraints.NotEmpty;
 
 public class SoftwareInputDTO {
-  @NotNull
+  @NotEmpty
   private String name;
 
   public String getName() {
