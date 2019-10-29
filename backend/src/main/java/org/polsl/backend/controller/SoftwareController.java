@@ -48,6 +48,7 @@ public class SoftwareController {
    * @param request stuktura {@link SoftwareInputDTO} zawierająca nowe dane oprogramowania
    * @return informacja o poprawnym zaktualizowaniu parametrów oprogramowania
    */
+  @PutMapping("/{id}")
   public ResponseEntity<?> editSoftware(
           @PathVariable(value ="id") Long id,
           @Valid @RequestBody SoftwareInputDTO request
@@ -62,7 +63,7 @@ public class SoftwareController {
    * @param id ID wybranego oprogramowania
    * @return informacja o poprawnym usunięciu oprogramowania
    */
-
+  @DeleteMapping("/{id}")
   public ResponseEntity<?> deleteSoftware(@PathVariable(value = "id") Long id){
     softwareService.deleteSoftware(id);
     return ResponseEntity.ok(new ApiBasicResponse(true, "Usunięto oprogramowanie."));
