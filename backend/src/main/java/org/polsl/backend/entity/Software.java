@@ -38,10 +38,10 @@ public class Software {
   }
 
   public Set<ComputerSetSoftware> getComputerSetSoftware() {
-    return computerSetSoftware;
+    return computerSetSoftwareSet;
   }
 
   public void setComputerSetSoftware(Set<ComputerSetSoftware> computerSetSoftware) {
-    this.computerSetSoftware = computerSetSoftware;
+    this.computerSetSoftwareSet = computerSetSoftware;
   }
 }
