@@ -16,7 +16,7 @@ public class Software {
   private String name;
 
   @OneToMany(mappedBy = "software")
-  private Set<SoftwareHardware> softwareHardwareSet;
+  private Set<ComputerSetHardware> softwareHardwareSet;
 
   public Software() {
   }
@@ -37,11 +37,11 @@ public class Software {
     this.name = name;
   }
 
-  public Set<SoftwareHardware> getSoftwareHardwareSet() {
+  public Set<ComputerSetHardware> getSoftwareHardwareSet() {
     return softwareHardwareSet;
   }
 
-  public void setSoftwareHardwareSet(Set<SoftwareHardware> softwareHardwareSet) {
+  public void setSoftwareHardwareSet(Set<ComputerSetHardware> softwareHardwareSet) {
     this.softwareHardwareSet = softwareHardwareSet;
   }
 }
