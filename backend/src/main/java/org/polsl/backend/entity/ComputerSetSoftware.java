@@ -11,8 +11,8 @@ public class ComputerSetSoftware {
     private ComputerSetSoftwareKey id;
 
     @ManyToOne
-    @MapsId("computer_sets_id")
-    @JoinColumn(name = "computer_sets_id", insertable = false, updatable = false)
+    @MapsId("computer_set_id")
+    @JoinColumn(name = "computer_set_id", insertable = false, updatable = false)
     private ComputerSet computerSet;
 
     @ManyToOne
