@@ -32,10 +32,10 @@ public class Hardware {
   private HardwareDictionary hardwareDictionary;
 
   @OneToMany(mappedBy = "hardware")
-  private Set<ComputerSetHardware> softwareHardwareSet;
+  private Set<AffiliationHardware> affiliationHardwareSet;
 
   @OneToMany(mappedBy = "hardware")
-  private Set<AffiliationHardware> affiliationHardwareSet;
+  private Set<ComputerSetHardware> computerSetHardwareSet;
 
   public Hardware() {
   }
@@ -64,19 +64,19 @@ public class Hardware {
     this.hardwareDictionary = hardwareDictionary;
   }
 
-  public Set<ComputerSetHardware> getSoftwareHardwareSet() {
-    return softwareHardwareSet;
-  }
-
-  public void setSoftwareHardwareSet(Set<ComputerSetHardware> softwareHardwareSet) {
-    this.softwareHardwareSet = softwareHardwareSet;
-  }
-
   public Set<AffiliationHardware> getAffiliationHardwareSet() {
     return affiliationHardwareSet;
   }
 
   public void setAffiliationHardwareSet(Set<AffiliationHardware> affiliationHardwareSet) {
     this.affiliationHardwareSet = affiliationHardwareSet;
+  }
+
+  public Set<ComputerSetHardware> getComputerSetHardwareSet() {
+    return computerSetHardwareSet;
+  }
+
+  public void setComputerSetHardwareSet(Set<ComputerSetHardware> computerSetHardwareSet) {
+    this.computerSetHardwareSet = computerSetHardwareSet;
   }
 }
