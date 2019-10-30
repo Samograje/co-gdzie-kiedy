@@ -1,7 +1,6 @@
 package org.polsl.backend.entity;
 
 import org.polsl.backend.key.ComputerSetSoftwareKey;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -11,12 +10,12 @@ public class ComputerSetSoftware {
     @EmbeddedId
     private ComputerSetSoftwareKey id;
 
-    @ManyToMany
+    @ManyToOne
     @MapsId("computer_sets_id")
     @JoinColumn(name = "computer_sets_id", insertable = false, updatable = false)
-    private ComputerSet computerSets;
+    private ComputerSet computerSet;
 
-    @ManyToMany
+    @ManyToOne
     @MapsId("software_id")
     @JoinColumn(name = "software_id", insertable = false, updatable = false)
     private Software software;
@@ -33,9 +32,9 @@ public class ComputerSetSoftware {
 
     public void setSoftware(Software software) { this.software = software; }
 
-    public ComputerSet getComputerSets(){ return computerSets; }
+    public ComputerSet getComputerSet(){ return computerSet; }
 
-    public void setComputerSets(ComputerSet computerSet){ this.computerSets = computerSet; }
+    public void setComputerSet(ComputerSet computerSet){ this.computerSet = computerSet; }
 
     public LocalDateTime getValidFrom() { return validFrom; }
 
@@ -44,6 +43,4 @@ public class ComputerSetSoftware {
     public LocalDateTime getValidTo() { return validTo; }
 
     public void setValidTo(LocalDateTime validTo){ this.validTo = validTo; }
-
-
 }
