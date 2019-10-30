@@ -29,6 +29,9 @@ public class ComputerSet {
   @OneToMany(mappedBy = "computerSet")
   private Set<ComputerSetHardware> computerSetHardwareSet;
 
+  @OneToMany
+  private Set<ComputerSetSoftware> computerSetSoftwareSet;
+
   public ComputerSet() {
   }
 
