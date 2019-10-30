@@ -29,7 +29,7 @@ public class ComputerSet {
   @OneToMany(mappedBy = "computerSet")
   private Set<ComputerSetHardware> computerSetHardwareSet;
 
-  @OneToMany
+  @OneToMany(mappedBy ="computerSet")
   private Set<ComputerSetSoftware> computerSetSoftwareSet;
 
   public ComputerSet() {
