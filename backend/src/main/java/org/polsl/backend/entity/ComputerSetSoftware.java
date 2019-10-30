@@ -5,7 +5,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name= "computer_sets_software")
+@Table(name= "computer_set_software")
 public class ComputerSetSoftware {
     @EmbeddedId
     private ComputerSetSoftwareKey id;
