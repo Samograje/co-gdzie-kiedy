@@ -66,4 +66,13 @@ public class ComputerSet {
   public void setComputerSetHardwareSet(Set<ComputerSetHardware> computerSetHardwareSet) {
     this.computerSetHardwareSet = computerSetHardwareSet;
   }
+
+
+  public Set<ComputerSetSoftware> getComputerSetSoftwareSet() {
+    return computerSetSoftwareSet;
+  }
+
+  public void setComputerSetSoftwareSet(Set<ComputerSetSoftware> computerSetSoftwareSet) {
+    this.computerSetSoftwareSet = computerSetSoftwareSet;
+  }
 }
