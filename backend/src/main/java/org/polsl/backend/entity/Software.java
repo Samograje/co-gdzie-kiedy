@@ -37,11 +37,11 @@ public class Software {
     this.name = name;
   }
 
-  public Set<ComputerSetSoftware> getComputerSetSoftware() {
+  public Set<ComputerSetSoftware> getComputerSetSoftwareSet() {
     return computerSetSoftwareSet;
   }
 
-  public void setComputerSetSoftware(Set<ComputerSetSoftware> computerSetSoftware) {
-    this.computerSetSoftwareSet = computerSetSoftware;
+  public void setComputerSetSoftwareSet(Set<ComputerSetSoftware> computerSetSoftwareSet) {
+    this.computerSetSoftwareSet = computerSetSoftwareSet;
   }
 }
