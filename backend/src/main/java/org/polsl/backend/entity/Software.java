@@ -16,7 +16,7 @@ public class Software {
   private String name;
 
   @OneToMany(mappedBy = "software")
-  private Set<ComputerSetSoftware> computerSetSoftware;
+  private Set<ComputerSetSoftware> computerSetSoftwareSet;
 
   public Software() {
   }
