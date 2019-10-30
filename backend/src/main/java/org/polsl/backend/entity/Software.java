@@ -1,7 +1,5 @@
 package org.polsl.backend.entity;
 
-import org.polsl.backend.key.ComputerSetSoftwareKey;
-
 import javax.persistence.*;
 import java.util.Set;
 
@@ -18,7 +16,7 @@ public class Software {
   private String name;
 
   @OneToMany(mappedBy = "software")
-  private Set<ComputerSetSoftware> computerSetSoftwares;
+  private Set<ComputerSetSoftware> computerSetSoftware;
 
   public Software() {
   }
@@ -39,11 +37,11 @@ public class Software {
     this.name = name;
   }
 
-  public Set<ComputerSetSoftware> getSoftwareHardwareSet() {
-    return computerSetSoftwares;
+  public Set<ComputerSetSoftware> getComputerSetSoftware() {
+    return computerSetSoftware;
   }
 
-  public void setSoftwareHardwareSet(Set<ComputerSetSoftware> computerSetSoftware) {
-    this.computerSetSoftwares = computerSetSoftware;
+  public void setComputerSetSoftware(Set<ComputerSetSoftware> computerSetSoftware) {
+    this.computerSetSoftware = computerSetSoftware;
   }
 }
