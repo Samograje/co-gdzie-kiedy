@@ -37,9 +37,6 @@ public class Hardware {
   @OneToMany(mappedBy = "hardware")
   private Set<AffiliationHardware> affiliationHardwareSet;
 
-  @OneToMany(mappedBy = "hardware")
-  private Set<ComputerSetHardware> computerSetHardwareSet;
-
   public Hardware() {
   }
 
@@ -81,13 +78,5 @@ public class Hardware {
 
   public void setAffiliationHardwareSet(Set<AffiliationHardware> affiliationHardwareSet) {
     this.affiliationHardwareSet = affiliationHardwareSet;
-  }
-
-  public Set<ComputerSetHardware> getComputerSetHardwareSet() {
-    return computerSetHardwareSet;
-  }
-
-  public void setComputerSetHardwareSet(Set<ComputerSetHardware> computerSetHardwareSet) {
-    this.computerSetHardwareSet = computerSetHardwareSet;
   }
 }
