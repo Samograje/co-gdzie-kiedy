@@ -63,7 +63,7 @@ public class SoftwareService {
       computerSetSoftware.setComputerSet(computerSetRepository.findById(id)
           .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", id)));
       computerSetSoftware.setValidFrom(LocalDateTime.now());
-      computerSetSoftware.setValidTo(LocalDateTime.now());
+      computerSetSoftware.setValidTo(null);
       computerSetSoftwareRepository.save(computerSetSoftware);
     }
   }
