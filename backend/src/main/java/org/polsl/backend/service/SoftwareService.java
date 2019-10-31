@@ -6,6 +6,7 @@ import org.polsl.backend.dto.software.SoftwareOutputDTO;
 import org.polsl.backend.entity.ComputerSetSoftware;
 import org.polsl.backend.entity.Software;
 import org.polsl.backend.exception.NotFoundException;
+import org.polsl.backend.key.ComputerSetSoftwareKey;
 import org.polsl.backend.repository.ComputerSetRepository;
 import org.polsl.backend.repository.ComputerSetSoftwareRepository;
 import org.polsl.backend.repository.SoftwareRepository;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Logika biznesowa oprogramowania.
@@ -51,19 +51,19 @@ public class SoftwareService {
   }
 
   public void createSoftware(SoftwareInputDTO request) {
-    Software software = new Software();
-    software.setName(request.getName());
-    softwareRepository.save(software);
+    Software newSoftware = new Software();
+    newSoftware.setName(request.getName());
+    Software softwareWithNewId = softwareRepository.save(newSoftware);
 
-    Set<Long> computerSetIdsSet = request.getComputerSetIds();
-    for (Long id : computerSetIdsSet) {
-      System.out.println(computerSetRepository.findById(id).get().getId());
+    for (Long id : request.getComputerSetIds()) {
+      ComputerSetSoftwareKey key = new ComputerSetSoftwareKey();
+      key.setSoftwareId(softwareWithNewId.getId());
+      key.setComputerSetId(computerSetRepository.findById(id)
+          .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", id)).getId());
+      key.setValidFrom(LocalDateTime.now());
+
       ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware();
-      computerSetSoftware.setSoftware(software);
-      computerSetSoftware.setComputerSet(computerSetRepository.findById(id)
-          .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", id)));
-      computerSetSoftware.setValidFrom(LocalDateTime.now());
-      computerSetSoftware.setValidTo(null);
+      computerSetSoftware.setId(key);
       computerSetSoftwareRepository.save(computerSetSoftware);
     }
   }
