@@ -53,17 +53,17 @@ public class SoftwareService {
   public void createSoftware(SoftwareInputDTO request) {
     Software newSoftware = new Software();
     newSoftware.setName(request.getName());
-    Software softwareWithNewId = softwareRepository.save(newSoftware);
+    softwareRepository.save(newSoftware);
 
     for (Long id : request.getComputerSetIds()) {
       ComputerSetSoftwareKey key = new ComputerSetSoftwareKey();
-      key.setSoftwareId(softwareWithNewId.getId());
+      key.setSoftwareId(newSoftware.getId());
       key.setComputerSetId(computerSetRepository.findById(id)
-          .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", id)).getId());
+          .orElseThrow(() -> new NotFoundException("Zestaw komputerowy", "id", id)).getId());
       key.setValidFrom(LocalDateTime.now());
-
       ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware();
       computerSetSoftware.setId(key);
+      computerSetSoftware.setValidTo(null);
       computerSetSoftwareRepository.save(computerSetSoftware);
     }
   }
