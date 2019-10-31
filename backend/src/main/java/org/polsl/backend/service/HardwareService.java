@@ -22,7 +22,6 @@ public class HardwareService {
   private final HardwareRepository hardwareRepository;
   private final HardwareDictionaryRepository hardwareDictionaryRepository;
   private final ComputerSetRepository computerSetRepository;
-  private final ComputerSetHardwareRepository computerSetHardwareRepository;
   private final AffiliationRepository affiliationRepository;
 
   @Autowired
@@ -30,7 +29,6 @@ public class HardwareService {
     this.hardwareRepository = hardwareRepository;
     this.hardwareDictionaryRepository = hardwareDictionaryRepository;
     this.computerSetRepository = computerSetRepository;
-    this.computerSetHardwareRepository = computerSetHardwareRepository;
     this.affiliationRepository = affiliationRepository;
   }
 
@@ -74,7 +72,7 @@ public class HardwareService {
       hardware.setComputerSetHardwareSet(null);
     }
 
-    Affiliation affiliation = affiliationRepository.findById(request.getAffiliationId())
+    Affiliation affiliation = affiliationRepository.findByIdAndIsDeletedIsFalse(request.getAffiliationId())
         .orElseThrow(() -> new NotFoundException("przynależność", "id", request.getAffiliationId()));
     AffiliationHardware affiliationHardware = new AffiliationHardware();
     affiliationHardware.setAffiliation(affiliation);

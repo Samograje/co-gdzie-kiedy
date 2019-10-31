@@ -41,6 +41,6 @@ public class HardwareController {
   @PostMapping
   public ResponseEntity<?> createHardware(@Valid @RequestBody HardwareInputDTO request) {
     hardwareService.createHardware(request);
-    return ResponseEntity.ok(new ApiBasicResponse(true, "Utworzono przynależność"));
+    return ResponseEntity.ok(new ApiBasicResponse(true, "Utworzono sprzęt"));
   }
 }
