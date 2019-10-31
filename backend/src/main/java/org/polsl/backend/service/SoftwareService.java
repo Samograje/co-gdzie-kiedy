@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Logika biznesowa oprogramowania.
@@ -54,17 +55,20 @@ public class SoftwareService {
     Software newSoftware = new Software();
     newSoftware.setName(request.getName());
     softwareRepository.save(newSoftware);
-
-    for (Long id : request.getComputerSetIds()) {
-      ComputerSetSoftwareKey key = new ComputerSetSoftwareKey();
-      key.setSoftwareId(newSoftware.getId());
-      key.setComputerSetId(computerSetRepository.findById(id)
-          .orElseThrow(() -> new NotFoundException("Zestaw komputerowy", "id", id)).getId());
-      key.setValidFrom(LocalDateTime.now());
-      ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware();
-      computerSetSoftware.setId(key);
-      computerSetSoftware.setValidTo(null);
-      computerSetSoftwareRepository.save(computerSetSoftware);
+    Set<Long> computerSetIdsSet = request.getComputerSetIds();
+    if(computerSetIdsSet != null)
+    {
+      for (Long id : computerSetIdsSet) {
+        ComputerSetSoftwareKey key = new ComputerSetSoftwareKey();
+        key.setSoftwareId(newSoftware.getId());
+        key.setComputerSetId(computerSetRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException("Zestaw komputerowy", "id", id)).getId());
+        key.setValidFrom(LocalDateTime.now());
+        ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware();
+        computerSetSoftware.setId(key);
+        computerSetSoftware.setValidTo(null);
+        computerSetSoftwareRepository.save(computerSetSoftware);
+      }
     }
   }
 
