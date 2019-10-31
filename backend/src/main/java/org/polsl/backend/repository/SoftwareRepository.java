@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface SoftwareRepository extends CrudRepository<Software, Long> {
 
     Optional<Software> findAllById(Long id);
+    Optional<Software> findById(Long id);
 }

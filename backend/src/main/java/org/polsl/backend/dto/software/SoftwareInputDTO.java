@@ -1,6 +1,5 @@
 package org.polsl.backend.dto.software;
 
-import org.polsl.backend.entity.ComputerSetSoftware;
 import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
@@ -8,7 +7,7 @@ public class SoftwareInputDTO {
   @NotEmpty
   private String name;
 
-  private Set<ComputerSetSoftware> computerSetSoftwareSet;
+  private Set<Long> computerSetIds;
 
   public String getName() {
     return name;
@@ -16,5 +15,13 @@ public class SoftwareInputDTO {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public Set<Long> getComputerSetIds() {
+    return computerSetIds;
+  }
+
+  public void setComputerSetIds(Set<Long> computerSetIds) {
+    this.computerSetIds = computerSetIds;
   }
 }
