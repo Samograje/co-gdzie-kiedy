@@ -10,7 +10,7 @@ import java.util.Objects;
 public class ComputerSetSoftwareKey implements Serializable {
     @Column(name = "software_id")
     Long softwareId;
-    @Column(name = "computer_sets_id")
+    @Column(name = "computer_set_id")
     Long computerSetId;
     @Column(name = "valid_from")
     LocalDateTime validFrom;
