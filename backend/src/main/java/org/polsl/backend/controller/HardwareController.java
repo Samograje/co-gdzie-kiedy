@@ -1,11 +1,13 @@
 package org.polsl.backend.controller;
 
+import org.polsl.backend.dto.ApiBasicResponse;
+import org.polsl.backend.dto.hardware.HardwareInputDTO;
 import org.polsl.backend.service.HardwareService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * Kontroler odpowiedzialny za zarządzanie hardware'm.
@@ -28,5 +30,17 @@ public class HardwareController {
   @GetMapping
   public ResponseEntity<?> getAllSoloHardware() {
     return ResponseEntity.ok(hardwareService.getAllSoloHardware());
+  }
+
+  /**
+   * Endpoint obsługujący dodawanie nowego sprzętu.
+   *
+   * @param request stuktura {@link HardwareInputDTO} zawierająca dane nowego sprzętu
+   * @return informacja o poprawnym utworzeniu sprzętu
+   */
+  @PostMapping
+  public ResponseEntity<?> createHardware(@Valid @RequestBody HardwareInputDTO request) {
+    hardwareService.createHardware(request);
+    return ResponseEntity.ok(new ApiBasicResponse(true, "Utworzono przynależność"));
   }
 }

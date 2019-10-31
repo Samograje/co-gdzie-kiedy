@@ -3,15 +3,9 @@ package org.polsl.backend.service;
 import org.polsl.backend.dto.PaginatedResult;
 import org.polsl.backend.dto.hardware.HardwareInputDTO;
 import org.polsl.backend.dto.hardware.HardwareOutputDTO;
-import org.polsl.backend.entity.ComputerSet;
-import org.polsl.backend.entity.ComputerSetHardware;
-import org.polsl.backend.entity.Hardware;
-import org.polsl.backend.entity.HardwareDictionary;
+import org.polsl.backend.entity.*;
 import org.polsl.backend.exception.NotFoundException;
-import org.polsl.backend.repository.ComputerSetHardwareRepository;
-import org.polsl.backend.repository.ComputerSetRepository;
-import org.polsl.backend.repository.HardwareDictionaryRepository;
-import org.polsl.backend.repository.HardwareRepository;
+import org.polsl.backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,13 +23,15 @@ public class HardwareService {
   private final HardwareDictionaryRepository hardwareDictionaryRepository;
   private final ComputerSetRepository computerSetRepository;
   private final ComputerSetHardwareRepository computerSetHardwareRepository;
+  private final AffiliationRepository affiliationRepository;
 
   @Autowired
-  public HardwareService(HardwareRepository hardwareRepository, HardwareDictionaryRepository hardwareDictionaryRepository, ComputerSetRepository computerSetRepository, ComputerSetHardwareRepository computerSetHardwareRepository) {
+  public HardwareService(HardwareRepository hardwareRepository, HardwareDictionaryRepository hardwareDictionaryRepository, ComputerSetRepository computerSetRepository, ComputerSetHardwareRepository computerSetHardwareRepository, AffiliationRepository affiliationRepository) {
     this.hardwareRepository = hardwareRepository;
     this.hardwareDictionaryRepository = hardwareDictionaryRepository;
     this.computerSetRepository = computerSetRepository;
     this.computerSetHardwareRepository = computerSetHardwareRepository;
+    this.affiliationRepository = affiliationRepository;
   }
 
   public PaginatedResult<HardwareOutputDTO> getAllSoloHardware() {
@@ -54,35 +50,41 @@ public class HardwareService {
     return response;
   }
 
-  public void createAffiliation(HardwareInputDTO request) {
+  public void createHardware(HardwareInputDTO request) {
     Hardware hardware = new Hardware();
     hardware.setName(request.getName());
+
     HardwareDictionary hardwareDictionary = hardwareDictionaryRepository.findById(request.getDictionaryId())
-        .orElseThrow(() -> new NotFoundException("słownik urządzeń", "id", request.getDictionaryId() ));
+        .orElseThrow(() -> new NotFoundException("słownik urządzeń", "id", request.getDictionaryId()));
     hardware.setHardwareDictionary(hardwareDictionary);
 
-    if(request.getComputerSetId() != null){
+    if (request.getComputerSetId() != null) {
       ComputerSet computerSet = computerSetRepository.findById(request.getComputerSetId())
-          .orElseThrow(()-> new NotFoundException("zestawy komputerowe", "id", request.getComputerSetId()));
+          .orElseThrow(() -> new NotFoundException("zestawy komputerowe", "id", request.getComputerSetId()));
       ComputerSetHardware computerSetHardware = new ComputerSetHardware();
       computerSetHardware.setComputerSet(computerSet);
+      computerSetHardware.setHardware(hardware);
       computerSetHardware.setValidFrom(LocalDateTime.now());
       computerSetHardware.setValidTo(null);
 
       HashSet<ComputerSetHardware> computerSetHardwareSet = new HashSet<>();
-      //TODO: tworzyć repo
-      //TODO: master fetch i merge na mojej galezi
-
       computerSetHardwareSet.add(computerSetHardware);
       hardware.setComputerSetHardwareSet(computerSetHardwareSet);
-    }
-    else{
+    } else {
       hardware.setComputerSetHardwareSet(null);
     }
 
+    Affiliation affiliation = affiliationRepository.findById(request.getAffiliationId())
+        .orElseThrow(() -> new NotFoundException("przynależność", "id", request.getAffiliationId()));
+    AffiliationHardware affiliationHardware = new AffiliationHardware();
+    affiliationHardware.setAffiliation(affiliation);
+    affiliationHardware.setValidFrom(LocalDateTime.now());
+    affiliationHardware.setValidTo(null);
+    affiliationHardware.setHardware(hardware);
 
-
-    //hardware.setAffiliationHardwareSet();
+    HashSet<AffiliationHardware> affiliationHardwareSet = new HashSet<>();
+    affiliationHardwareSet.add(affiliationHardware);
+    hardware.setAffiliationHardwareSet(affiliationHardwareSet);
 
     hardwareRepository.save(hardware);
   }
