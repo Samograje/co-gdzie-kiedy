@@ -58,13 +58,13 @@ public class SoftwareService {
     Set<Long> computerSetIdsSet = request.getComputerSetIds();
     for(Long id : computerSetIdsSet)
     {
-      System.out.println(computerSetRepository.findById(id).get().getId());
-      ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware();
-      computerSetSoftware.setSoftware(software);
-      computerSetSoftware.setComputerSet(computerSetRepository.findById(id).get());
-      computerSetSoftware.setValidFrom(LocalDateTime.now());
-      computerSetSoftware.setValidTo(LocalDateTime.now());
-      //computerSetSoftwareRepository.save(computerSetSoftware);
+        System.out.println(computerSetRepository.findById(id).get().getId());
+        ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware();
+        computerSetSoftware.setSoftware(software);
+        computerSetSoftware.setComputerSet(computerSetRepository.findById(id).get());
+        computerSetSoftware.setValidFrom(LocalDateTime.now());
+        computerSetSoftware.setValidTo(LocalDateTime.now());
+//        computerSetSoftwareRepository.save(computerSetSoftware);
     }
     }
 
