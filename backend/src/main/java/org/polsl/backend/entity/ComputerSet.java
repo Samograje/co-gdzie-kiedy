@@ -29,6 +29,9 @@ public class ComputerSet {
   @OneToMany(mappedBy = "computerSet")
   private Set<ComputerSetHardware> computerSetHardwareSet;
 
+  @OneToMany(mappedBy ="computerSet")
+  private Set<ComputerSetSoftware> computerSetSoftwareSet;
+
   public ComputerSet() {
   }
 
@@ -62,5 +65,14 @@ public class ComputerSet {
 
   public void setComputerSetHardwareSet(Set<ComputerSetHardware> computerSetHardwareSet) {
     this.computerSetHardwareSet = computerSetHardwareSet;
+  }
+
+
+  public Set<ComputerSetSoftware> getComputerSetSoftwareSet() {
+    return computerSetSoftwareSet;
+  }
+
+  public void setComputerSetSoftwareSet(Set<ComputerSetSoftware> computerSetSoftwareSet) {
+    this.computerSetSoftwareSet = computerSetSoftwareSet;
   }
 }
