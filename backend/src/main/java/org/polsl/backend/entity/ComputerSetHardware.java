@@ -2,7 +2,13 @@ package org.polsl.backend.entity;
 
 import org.polsl.backend.key.ComputerSetHardwareKey;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,8 +28,17 @@ public class ComputerSetHardware {
   private Hardware hardware;
 
   @Column(name = "valid_from", insertable = false, updatable = false)
+  @MapsId("valid_from")
   private LocalDateTime validFrom;
+
   private LocalDateTime validTo;
+
+  public ComputerSetHardware() {
+  }
+
+  public ComputerSetHardwareKey getId() {
+    return id;
+  }
 
   public void setId(ComputerSetHardwareKey id) {
     this.id = id;

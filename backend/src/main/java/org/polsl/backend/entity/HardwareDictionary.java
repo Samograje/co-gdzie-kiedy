@@ -26,6 +26,9 @@ public class HardwareDictionary {
   @OneToMany(mappedBy = "hardwareDictionary")
   private Set<Hardware> hardwareSet;
 
+  public HardwareDictionary() {
+  }
+
   public Long getId() {
     return id;
   }

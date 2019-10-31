@@ -58,8 +58,8 @@ public class AffiliationComputerSetKey implements Serializable {
     }
     AffiliationComputerSetKey affiliationComputerSetKey = (AffiliationComputerSetKey) o;
     return Objects.equals(affiliationId, affiliationComputerSetKey.affiliationId)
-            && Objects.equals(computerSetId, affiliationComputerSetKey.computerSetId)
-            && Objects.equals(validFrom, affiliationComputerSetKey.validFrom);
+        && Objects.equals(computerSetId, affiliationComputerSetKey.computerSetId)
+        && Objects.equals(validFrom, affiliationComputerSetKey.validFrom);
   }
 
   @Override
