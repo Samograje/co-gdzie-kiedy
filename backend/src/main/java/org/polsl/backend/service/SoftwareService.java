@@ -23,17 +23,17 @@ import java.util.Set;
 @Service
 public class SoftwareService {
   private SoftwareRepository softwareRepository;
+  private ComputerSetRepository computerSetRepository;
+  private ComputerSetSoftwareRepository computerSetSoftwareRepository;
 
   @Autowired
-  public SoftwareService(SoftwareRepository softwareRepository) {
+  public SoftwareService(SoftwareRepository softwareRepository,
+                         ComputerSetRepository computerSetRepository,
+                         ComputerSetSoftwareRepository computerSetSoftwareRepository) {
     this.softwareRepository = softwareRepository;
+    this.computerSetRepository = computerSetRepository;
+    this.computerSetSoftwareRepository = computerSetSoftwareRepository;
   }
-
-  @Autowired
-  public ComputerSetRepository computerSetRepository;
-
-  @Autowired
-  public ComputerSetSoftwareRepository computerSetSoftwareRepository;
 
   public PaginatedResult<SoftwareOutputDTO> getAllSoftware() {
     Iterable<Software> softwares = softwareRepository.findAll();
@@ -56,29 +56,26 @@ public class SoftwareService {
     softwareRepository.save(software);
 
     Set<Long> computerSetIdsSet = request.getComputerSetIds();
-    for(Long id : computerSetIdsSet)
-    {
-        System.out.println(computerSetRepository.findById(id).get().getId());
-        ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware();
-        computerSetSoftware.setSoftware(software);
-        computerSetSoftware.setComputerSet(computerSetRepository.findById(id).get());
-        computerSetSoftware.setValidFrom(LocalDateTime.now());
-        computerSetSoftware.setValidTo(LocalDateTime.now());
-//        computerSetSoftwareRepository.save(computerSetSoftware);
+    for (Long id : computerSetIdsSet) {
+      System.out.println(computerSetRepository.findById(id).get().getId());
+      ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware();
+      computerSetSoftware.setSoftware(software);
+      computerSetSoftware.setComputerSet(computerSetRepository.findById(id)
+          .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", id)));
+      computerSetSoftware.setValidFrom(LocalDateTime.now());
+      computerSetSoftware.setValidTo(LocalDateTime.now());
+      computerSetSoftwareRepository.save(computerSetSoftware);
     }
-    }
-
-
-
+  }
 
   public void editSoftware(Long id, SoftwareInputDTO request) throws NotFoundException {
-    Software software = softwareRepository.findAllById(id).orElseThrow(() -> new NotFoundException("Oprogramowanie", "id", id));
+    Software software = softwareRepository.findById(id).orElseThrow(() -> new NotFoundException("Oprogramowanie", "id", id));
     software.setName(request.getName());
     softwareRepository.save(software);
   }
 
   public void deleteSoftware(Long id) {
-    Software software = softwareRepository.findAllById(id).orElseThrow(() -> new NotFoundException("Oprogramowanie", "id", id));
+    softwareRepository.findAllById(id).orElseThrow(() -> new NotFoundException("Oprogramowanie", "id", id));
     softwareRepository.deleteById(id);
   }
 }
