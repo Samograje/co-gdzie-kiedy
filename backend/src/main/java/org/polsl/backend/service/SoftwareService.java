@@ -66,27 +66,44 @@ public class SoftwareService {
         key.setComputerSetId(computerSetRepository.findById(id)
         .orElseThrow(() -> new NotFoundException("Zestaw komputerowy", "id", id)).getId());
         key.setValidFrom(LocalDateTime.now());
-        ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware();
-        computerSetSoftware.setId(key);
-        computerSetSoftware.setValidTo(null);
-        computerSetSoftwareRepository.save(computerSetSoftware);
+        ComputerSetSoftware newComputerSetSoftware = new ComputerSetSoftware();
+        newComputerSetSoftware.setId(key);
+        newComputerSetSoftware.setValidTo(null);
+        computerSetSoftwareRepository.save(newComputerSetSoftware);
       }
     }
   }
 
+  @Transactional
   public void editSoftware(Long id, SoftwareInputDTO request) throws NotFoundException {
+    //Edit name
     Software software = softwareRepository.findById(id).orElseThrow(() -> new NotFoundException("Oprogramowanie", "id", id));
     software.setName(request.getName());
     softwareRepository.save(software);
-    Set<ComputerSetSoftware> computerSetSoftwareSet = computerSetSoftwareRepository.findAllBySoftwareId(id);
-    System.out.println(computerSetSoftwareSet.size());
-    for(ComputerSetSoftware ID : computerSetSoftwareSet)
-    {
-      //Dodaj nowy rekord do historii z tym samym id oprogramowania i z nowym id komputera. Skąd id komputera??
-      System.out.println("SOFT ID:" + ID.getSoftware().getId());
-      System.out.println("COMPUTER SET ID ID:" + ID.getComputerSet().getId());
-    }
 
+    Set<Long> computerSetIdsSet = request.getComputerSetIds();
+    if(computerSetIdsSet != null)
+    {
+      Set<ComputerSetSoftware> computerSetSoftwareSet = computerSetSoftwareRepository.findAllBySoftwareId(id);
+      //Old record
+      for(ComputerSetSoftware computerSetSoftware : computerSetSoftwareSet)
+      {
+        computerSetSoftware.setValidTo(LocalDateTime.now());
+        computerSetSoftwareRepository.save(computerSetSoftware);
+      }
+
+      //New record
+      for (Long computerSetId : computerSetIdsSet) {
+        ComputerSetSoftwareKey key = new ComputerSetSoftwareKey();
+        key.setSoftwareId(id);
+        key.setComputerSetId(computerSetId);
+        key.setValidFrom(LocalDateTime.now());
+        ComputerSetSoftware newComputerSetSoftware = new ComputerSetSoftware();
+        newComputerSetSoftware.setId(key);
+        newComputerSetSoftware.setValidTo(null);
+        computerSetSoftwareRepository.save(newComputerSetSoftware);
+      }
+    }
   }
 
   public void deleteSoftware(Long id) {
