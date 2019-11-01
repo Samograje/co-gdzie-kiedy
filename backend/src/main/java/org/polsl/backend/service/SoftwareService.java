@@ -78,6 +78,15 @@ public class SoftwareService {
     Software software = softwareRepository.findById(id).orElseThrow(() -> new NotFoundException("Oprogramowanie", "id", id));
     software.setName(request.getName());
     softwareRepository.save(software);
+    Set<ComputerSetSoftware> computerSetSoftwareSet = computerSetSoftwareRepository.findAllBySoftwareId(id);
+    System.out.println(computerSetSoftwareSet.size());
+    for(ComputerSetSoftware ID : computerSetSoftwareSet)
+    {
+      //Dodaj nowy rekord do historii z tym samym id oprogramowania i z nowym id komputera. Skąd id komputera??
+      System.out.println("SOFT ID:" + ID.getSoftware().getId());
+      System.out.println("COMPUTER SET ID ID:" + ID.getComputerSet().getId());
+    }
+
   }
 
   public void deleteSoftware(Long id) {
