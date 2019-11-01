@@ -101,4 +101,11 @@ public class SoftwareControllerIntegrationTest {
                 .andExpect(jsonPath("$.message").value("Nie istnieje oprogramowanie o id: '0'"));
     }
 
+    @Test
+    public void givenNoId_whenEditingSoftware_thenReturnStatus405() throws Exception {
+        mvc.perform(put("/api/software")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(405));
+    }
+
 }
