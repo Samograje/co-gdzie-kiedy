@@ -5,6 +5,7 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.polsl.backend.dto.software.SoftwareInputDTO;
+import org.polsl.backend.entity.Software;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -87,4 +88,17 @@ public class SoftwareControllerIntegrationTest {
                 .andExpect(jsonPath("$.fieldErrors", hasSize(1)))
                 .andExpect(jsonPath("$.fieldErrors[?(@.field =~ /name/)].message").value("must not be empty"));
     }
+
+    @Test
+    public void givenInvalidId_whenEditingSoftware_thenReturnStatus404() throws Exception {
+        SoftwareInputDTO request = new SoftwareInputDTO();
+        request.setName("Photoshop");
+        mvc.perform(put("/api/software/0")
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(404))
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.message").value("Nie istnieje oprogramowanie o id: '0'"));
+    }
+
 }
