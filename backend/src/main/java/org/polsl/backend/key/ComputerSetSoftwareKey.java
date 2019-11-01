@@ -6,47 +6,67 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * Klasa reprezentująca klucz główny encji {@link org.polsl.backend.entity.ComputerSetSoftware}
+ */
 @Embeddable
 public class ComputerSetSoftwareKey implements Serializable {
-    @Column(name = "software_id")
-    Long softwareId;
-    @Column(name = "computer_sets_id")
-    Long computerSetId;
-    @Column(name = "valid_from")
-    LocalDateTime validFrom;
+  @Column(name = "software_id")
+  private Long softwareId;
 
-    public ComputerSetSoftwareKey() { }
+  @Column(name = "computer_set_id")
+  private Long computerSetId;
 
-    //region gettersAndSetters
-    public Long getSoftwareId(){ return softwareId; }
+  @Column(name = "valid_from")
+  private LocalDateTime validFrom;
 
-    public void setSoftwareId(Long softwareId) { this.softwareId = softwareId; }
+  public ComputerSetSoftwareKey() {
+  }
 
-    public Long getComputerSetId() { return computerSetId; }
+  //region gettersAndSetters
 
-    public void setComputerSetId(Long computerSetId) { this.computerSetId = computerSetId; }
+  public Long getSoftwareId() {
+    return softwareId;
+  }
 
-    public LocalDateTime getValidFrom() { return validFrom; }
+  public void setSoftwareId(Long softwareId) {
+    this.softwareId = softwareId;
+  }
 
-    public void setValidFrom(LocalDateTime validFrom) { this.validFrom = validFrom; }
+  public Long getComputerSetId() {
+    return computerSetId;
+  }
 
-    //endregion
+  public void setComputerSetId(Long computerSetId) {
+    this.computerSetId = computerSetId;
+  }
 
-    @Override
-    public boolean equals(Object o){
-        if(this == o){
-            return true;
-        }
-        if(o == null || getClass() != o.getClass()){
-            return false;
-        }
-        ComputerSetSoftwareKey computerSetSoftwareKey = (ComputerSetSoftwareKey)o;
-        return Objects.equals(softwareId, computerSetSoftwareKey.softwareId)
-                && Objects.equals(computerSetId, computerSetSoftwareKey.computerSetId)
-                && Objects.equals(validFrom, computerSetSoftwareKey.validFrom);
+  public LocalDateTime getValidFrom() {
+    return validFrom;
+  }
+
+  public void setValidFrom(LocalDateTime validFrom) {
+    this.validFrom = validFrom;
+  }
+
+  //endregion
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    ComputerSetSoftwareKey computerSetSoftwareKey = (ComputerSetSoftwareKey) o;
+    return Objects.equals(softwareId, computerSetSoftwareKey.softwareId)
+        && Objects.equals(computerSetId, computerSetSoftwareKey.computerSetId)
+        && Objects.equals(validFrom, computerSetSoftwareKey.validFrom);
+  }
 
-    @Override
-    public int hashCode(){ return Objects.hash(softwareId, computerSetId, validFrom); }
-
+  @Override
+  public int hashCode() {
+    return Objects.hash(softwareId, computerSetId, validFrom);
+  }
 }

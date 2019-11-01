@@ -69,7 +69,7 @@ public class AffiliationService {
 
   public void editAffiliation(Long id, AffiliationInputDTO request) throws NotFoundException {
     Affiliation affiliation = affiliationRepository.findByIdAndIsDeletedIsFalse(id)
-      .orElseThrow(() -> new NotFoundException("przynależność", "id", id));
+        .orElseThrow(() -> new NotFoundException("przynależność", "id", id));
     affiliation.setFirstName(request.getFirstName());
     affiliation.setLastName(request.getLastName());
     affiliation.setLocation(request.getLocation());
@@ -78,7 +78,7 @@ public class AffiliationService {
 
   public void deleteAffiliation(Long id) throws NotFoundException {
     Affiliation affiliation = affiliationRepository.findByIdAndIsDeletedIsFalse(id)
-      .orElseThrow(() -> new NotFoundException("przynależność", "id", id));
+        .orElseThrow(() -> new NotFoundException("przynależność", "id", id));
     affiliation.setDeleted(true);
     affiliationRepository.save(affiliation);
   }
