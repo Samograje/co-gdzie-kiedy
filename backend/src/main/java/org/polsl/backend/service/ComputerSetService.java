@@ -5,9 +5,10 @@ import org.polsl.backend.dto.computerset.ComputerSetInputDTO;
 import org.polsl.backend.dto.computerset.ComputerSetOutputDTO;
 import org.polsl.backend.entity.AffiliationComputerSet;
 import org.polsl.backend.entity.ComputerSet;
-import org.polsl.backend.key.AffiliationComputerSetKey;
 import org.polsl.backend.repository.AffiliationComputerSetRepository;
+import org.polsl.backend.repository.ComputerSetHardwareRepository;
 import org.polsl.backend.repository.ComputerSetRepository;
+import org.polsl.backend.repository.ComputerSetSoftwareRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +23,18 @@ import java.util.List;
 public class ComputerSetService {
   private final ComputerSetRepository computerSetRepository;
   private final AffiliationComputerSetRepository affiliationComputerSetRepository;
+  private final ComputerSetHardwareRepository computerSetHardwareRepository;
+  private final ComputerSetSoftwareRepository computerSetSoftwareRepository;
 
   @Autowired
   public ComputerSetService(ComputerSetRepository computerSetRepository,
-                            AffiliationComputerSetRepository affiliationComputerSetRepository) {
+                            AffiliationComputerSetRepository affiliationComputerSetRepository,
+                            ComputerSetHardwareRepository computerSetHardwareRepository,
+                            ComputerSetSoftwareRepository computerSetSoftwareRepository) {
     this.computerSetRepository = computerSetRepository;
     this.affiliationComputerSetRepository = affiliationComputerSetRepository;
+    this.computerSetHardwareRepository = computerSetHardwareRepository;
+    this.computerSetSoftwareRepository = computerSetSoftwareRepository;
   }
 
   public PaginatedResult<ComputerSetOutputDTO> getAllComputerSets() {
@@ -49,15 +56,23 @@ public class ComputerSetService {
     ComputerSet computerSet = new ComputerSet();
     computerSet.setName(request.getName());
     computerSetRepository.save(computerSet);
-    AffiliationComputerSet affiliationComputerSet = new AffiliationComputerSet();
-    AffiliationComputerSetKey affiliationComputerSetKey
-            = new AffiliationComputerSetKey(request.getAffiliation().getId(),
-            computerSet.getId(), LocalDateTime.now());
-    affiliationComputerSet.setId(affiliationComputerSetKey);
-    affiliationComputerSet.setAffiliation(request.getAffiliation());
-    affiliationComputerSet.setComputerSet(computerSet);
-    affiliationComputerSet.setValidFrom(LocalDateTime.now());
+
+    AffiliationComputerSet affiliationComputerSet
+            = new AffiliationComputerSet(request.getAffiliation(), computerSet, LocalDateTime.now());
     affiliationComputerSetRepository.save(affiliationComputerSet);
+
+    /*request.getHardwareSet().forEach(hardware -> {
+      ComputerSetHardware computerSetHardware =
+              new ComputerSetHardware(computerSet,hardware,LocalDateTime.now());
+      computerSetHardwareRepository.save(computerSetHardware);
+    });
+
+    request.getSoftwareSet().forEach(software -> {
+      ComputerSetSoftware computerSetSoftware =
+              new ComputerSetSoftware(computerSet,software,LocalDateTime.now());
+      computerSetSoftwareRepository.save(computerSetSoftware);
+    });*/
+
   }
 
 }

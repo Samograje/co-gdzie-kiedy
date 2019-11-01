@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class AffiliationComputerSet {
 
   @EmbeddedId
-  private AffiliationComputerSetKey id = new AffiliationComputerSetKey();
+  private AffiliationComputerSetKey id;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @MapsId("affiliation_id")
@@ -32,6 +32,13 @@ public class AffiliationComputerSet {
   private LocalDateTime validTo;
 
   public AffiliationComputerSet() {
+  }
+
+  public AffiliationComputerSet(Affiliation affiliation, ComputerSet computerSet, LocalDateTime validFrom) {
+    this.affiliation = affiliation;
+    this.computerSet = computerSet;
+    this.validFrom = validFrom;
+    this.id = new AffiliationComputerSetKey(affiliation.getId(), computerSet.getId(), validFrom);
   }
 
   public AffiliationComputerSetKey getId() {

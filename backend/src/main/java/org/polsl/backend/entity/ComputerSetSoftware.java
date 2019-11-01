@@ -2,13 +2,7 @@ package org.polsl.backend.entity;
 
 import org.polsl.backend.key.ComputerSetSoftwareKey;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
@@ -37,6 +31,13 @@ public class ComputerSetSoftware {
   private LocalDateTime validTo;
 
   public ComputerSetSoftware() {
+  }
+
+  public ComputerSetSoftware(ComputerSet computerSet, Software software, LocalDateTime validFrom) {
+    this.computerSet = computerSet;
+    this.software = software;
+    this.validFrom = validFrom;
+    this.id = new ComputerSetSoftwareKey(software.getId(), computerSet.getId(), validFrom);
   }
 
   public ComputerSetSoftwareKey getId() {

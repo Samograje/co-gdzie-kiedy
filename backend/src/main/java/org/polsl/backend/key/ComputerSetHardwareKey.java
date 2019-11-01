@@ -23,6 +23,12 @@ public class ComputerSetHardwareKey implements Serializable {
   public ComputerSetHardwareKey() {
   }
 
+  public ComputerSetHardwareKey(Long computerSetId, Long hardwareId, LocalDateTime validFrom) {
+    this.computerSetId = computerSetId;
+    this.hardwareId = hardwareId;
+    this.validFrom = validFrom;
+  }
+
   //region gettersAndSetters
 
   public Long getComputerSetId() {
