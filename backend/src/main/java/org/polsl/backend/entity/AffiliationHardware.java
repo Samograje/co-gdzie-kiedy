@@ -23,13 +23,8 @@ public class AffiliationHardware {
   private Hardware hardware;
 
   @Column(name = "valid_from", insertable = false, updatable = false)
-  @MapsId("valid_from")
   private LocalDateTime validFrom;
-
   private LocalDateTime validTo;
-
-  public AffiliationHardware() {
-  }
 
   public AffiliationHardwareKey getId() {
     return id;

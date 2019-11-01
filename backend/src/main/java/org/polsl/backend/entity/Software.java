@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 /**
- * Klasa reprezentująca bazodanową encję oprogramowania.
+ *
  */
 @Entity
 @Table(name = "software")

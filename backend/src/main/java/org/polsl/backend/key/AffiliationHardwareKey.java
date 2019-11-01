@@ -20,7 +20,7 @@ public class AffiliationHardwareKey implements Serializable {
   public AffiliationHardwareKey() {
   }
 
-  //region gettersAndSetters
+//region gettersAndSetters
 
   public LocalDateTime getValidFrom() {
     return validFrom;
@@ -57,8 +57,8 @@ public class AffiliationHardwareKey implements Serializable {
     }
     AffiliationHardwareKey affiliationHardwareKey = (AffiliationHardwareKey) o;
     return Objects.equals(affiliationId, affiliationHardwareKey.affiliationId)
-        && Objects.equals(hardwareId, affiliationHardwareKey.hardwareId)
-        && Objects.equals(validFrom, affiliationHardwareKey.validFrom);
+            && Objects.equals(hardwareId, affiliationHardwareKey.hardwareId)
+            && Objects.equals(validFrom, affiliationHardwareKey.validFrom);
   }
 
   @Override

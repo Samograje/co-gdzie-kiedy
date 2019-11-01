@@ -9,13 +9,11 @@ import java.util.Objects;
 @Embeddable
 public class ComputerSetHardwareKey implements Serializable {
   @Column(name = "computer_set_id")
-  private Long computerSetId;
-
+  Long computerSetId;
   @Column(name = "hardware_id")
-  private Long hardwareId;
-
+  Long hardwareId;
   @Column(name = "valid_from")
-  private LocalDateTime validFrom;
+  LocalDateTime validFrom;
 
   public ComputerSetHardwareKey() {
   }
@@ -58,8 +56,8 @@ public class ComputerSetHardwareKey implements Serializable {
     }
     ComputerSetHardwareKey computerSetHardwareKey = (ComputerSetHardwareKey) o;
     return Objects.equals(computerSetId, computerSetHardwareKey.computerSetId)
-        && Objects.equals(hardwareId, computerSetHardwareKey.hardwareId)
-        && Objects.equals(validFrom, computerSetHardwareKey.validFrom);
+            && Objects.equals(hardwareId, computerSetHardwareKey.hardwareId)
+            && Objects.equals(validFrom, computerSetHardwareKey.validFrom);
   }
 
   @Override

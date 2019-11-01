@@ -2,13 +2,7 @@ package org.polsl.backend.entity;
 
 import org.polsl.backend.key.AffiliationComputerSetKey;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -29,17 +23,8 @@ public class AffiliationComputerSet {
   private ComputerSet computerSet;
 
   @Column(name = "valid_from", insertable = false, updatable = false)
-  @MapsId("valid_from")
   private LocalDateTime validFrom;
-
   private LocalDateTime validTo;
-
-  public AffiliationComputerSet() {
-  }
-
-  public AffiliationComputerSetKey getId() {
-    return id;
-  }
 
   public void setId(AffiliationComputerSetKey id) {
     this.id = id;
