@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 /**
- *
+ * Klasa reprezentująca bazodanową encję hardware'u.
  */
 @Entity
 @Table(name = "hardware")

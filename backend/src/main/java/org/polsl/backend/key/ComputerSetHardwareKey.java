@@ -6,14 +6,19 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * Klasa reprezentująca klucz główny encji {@link org.polsl.backend.entity.ComputerSetHardware}
+ */
 @Embeddable
 public class ComputerSetHardwareKey implements Serializable {
   @Column(name = "computer_set_id")
-  Long computerSetId;
+  private Long computerSetId;
+
   @Column(name = "hardware_id")
-  Long hardwareId;
+  private Long hardwareId;
+
   @Column(name = "valid_from")
-  LocalDateTime validFrom;
+  private LocalDateTime validFrom;
 
   public ComputerSetHardwareKey() {
   }
@@ -56,8 +61,8 @@ public class ComputerSetHardwareKey implements Serializable {
     }
     ComputerSetHardwareKey computerSetHardwareKey = (ComputerSetHardwareKey) o;
     return Objects.equals(computerSetId, computerSetHardwareKey.computerSetId)
-            && Objects.equals(hardwareId, computerSetHardwareKey.hardwareId)
-            && Objects.equals(validFrom, computerSetHardwareKey.validFrom);
+        && Objects.equals(hardwareId, computerSetHardwareKey.hardwareId)
+        && Objects.equals(validFrom, computerSetHardwareKey.validFrom);
   }
 
   @Override

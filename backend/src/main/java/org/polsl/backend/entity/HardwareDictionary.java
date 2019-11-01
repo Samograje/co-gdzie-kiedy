@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import java.util.Set;
 
 /**
- * Klasa reprezentująca bazodanową encję słownika hardware'u.
+ * Klasa reprezentująca bazodanową encję słownika hardware'u (jego typu).
  */
 @Entity
 @Table(name = "hardware_dictionary")
@@ -25,6 +25,9 @@ public class HardwareDictionary {
 
   @OneToMany(mappedBy = "hardwareDictionary")
   private Set<Hardware> hardwareSet;
+
+  public HardwareDictionary() {
+  }
 
   public Long getId() {
     return id;

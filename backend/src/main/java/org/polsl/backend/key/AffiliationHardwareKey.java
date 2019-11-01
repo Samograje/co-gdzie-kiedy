@@ -6,6 +6,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * Klasa reprezentująca klucz główny encji {@link org.polsl.backend.entity.AffiliationHardware}
+ */
 @Embeddable
 public class AffiliationHardwareKey implements Serializable {
   @Column(name = "affiliation_id")
@@ -20,7 +23,7 @@ public class AffiliationHardwareKey implements Serializable {
   public AffiliationHardwareKey() {
   }
 
-//region gettersAndSetters
+  //region gettersAndSetters
 
   public LocalDateTime getValidFrom() {
     return validFrom;
@@ -57,8 +60,8 @@ public class AffiliationHardwareKey implements Serializable {
     }
     AffiliationHardwareKey affiliationHardwareKey = (AffiliationHardwareKey) o;
     return Objects.equals(affiliationId, affiliationHardwareKey.affiliationId)
-            && Objects.equals(hardwareId, affiliationHardwareKey.hardwareId)
-            && Objects.equals(validFrom, affiliationHardwareKey.validFrom);
+        && Objects.equals(hardwareId, affiliationHardwareKey.hardwareId)
+        && Objects.equals(validFrom, affiliationHardwareKey.validFrom);
   }
 
   @Override

@@ -1,10 +1,15 @@
 package org.polsl.backend.entity;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.Set;
 
 /**
- *
+ * Klasa reprezentująca bazodanową encję oprogramowania.
  */
 @Entity
 @Table(name = "software")
