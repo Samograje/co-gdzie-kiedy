@@ -19,8 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.awt.*;
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -76,5 +75,16 @@ public class SoftwareControllerIntegrationTest {
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.message").value("Utworzono oprogramowanie."));
+    }
+
+    @Test
+    public void givenEmptyRequest_whenEditingSoftware_thenReturnStatus400() throws Exception {
+        SoftwareInputDTO request = new SoftwareInputDTO();
+        mvc.perform(put("/api/software/1")
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(400))
+                .andExpect(jsonPath("$.fieldErrors", hasSize(1)))
+                .andExpect(jsonPath("$.fieldErrors[?(@.field =~ /name/)].message").value("must not be empty"));
     }
 }
