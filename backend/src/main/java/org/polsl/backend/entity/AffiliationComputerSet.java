@@ -2,13 +2,7 @@ package org.polsl.backend.entity;
 
 import org.polsl.backend.key.AffiliationComputerSetKey;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
@@ -19,19 +13,19 @@ import java.time.LocalDateTime;
 public class AffiliationComputerSet {
 
   @EmbeddedId
-  private AffiliationComputerSetKey id;
+  private AffiliationComputerSetKey id = new AffiliationComputerSetKey();
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @MapsId("affiliation_id")
-  @JoinColumn(name = "affiliation_id", insertable = false, updatable = false)
+  @JoinColumn(name = "affiliation_id", nullable = false, insertable = false, updatable = false)
   private Affiliation affiliation;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @MapsId("computer_set_id")
-  @JoinColumn(name = "computer_set_id", insertable = false, updatable = false)
+  @JoinColumn(name = "computer_set_id", nullable = false, insertable = false, updatable = false)
   private ComputerSet computerSet;
 
-  @Column(name = "valid_from", insertable = false, updatable = false)
+  @Column(name = "valid_from", nullable = false, insertable = false, updatable = false)
   @MapsId("valid_from")
   private LocalDateTime validFrom;
 
