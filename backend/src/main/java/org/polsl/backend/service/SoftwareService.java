@@ -12,6 +12,7 @@ import org.polsl.backend.repository.ComputerSetSoftwareRepository;
 import org.polsl.backend.repository.SoftwareRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ public class SoftwareService {
     return response;
   }
 
+  @Transactional
   public void createSoftware(SoftwareInputDTO request) {
     Software newSoftware = new Software();
     newSoftware.setName(request.getName());
