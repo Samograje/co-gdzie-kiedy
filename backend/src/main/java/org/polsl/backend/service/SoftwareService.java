@@ -42,6 +42,7 @@ public class SoftwareService {
     List<SoftwareOutputDTO> softwareOutputDTO = new ArrayList<>();
     for (Software software : softwares) {
       SoftwareOutputDTO dto = new SoftwareOutputDTO();
+      dto.setId(software.getId());
       dto.setName(software.getName());
       softwareOutputDTO.add(dto);
     }
