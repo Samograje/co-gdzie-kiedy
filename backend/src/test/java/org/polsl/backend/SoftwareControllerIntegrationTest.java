@@ -108,4 +108,16 @@ public class SoftwareControllerIntegrationTest {
                 .andExpect(status().is(405));
     }
 
+    @Test
+    public void givenCorrectRequest_whenEditingSoftware_thenReturnStatus200AndData() throws Exception {
+        SoftwareInputDTO request = new SoftwareInputDTO();
+        request.setName("Photoshop");
+        mvc.perform(put("/api/software/1")
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(200))
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.message").value("Zaktualizowano parametry oprogramowania."));
+    }
+
 }
