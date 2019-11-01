@@ -1,11 +1,14 @@
 package org.polsl.backend;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.polsl.backend.dto.software.SoftwareInputDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
@@ -13,8 +16,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.*;
+
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -47,5 +53,28 @@ public class SoftwareControllerIntegrationTest {
                 .andExpect(jsonPath("$.items[2].name").value("Postman"))
                 .andExpect(jsonPath("$.items[3].id").value(4))
                 .andExpect(jsonPath("$.items[3].name").value("Mathematica"));
+    }
+
+    @Test
+    public void givenEmptyRequest_whenAddingAffiliation_thenReturnStatus400() throws Exception {
+        SoftwareInputDTO request = new SoftwareInputDTO();
+        mvc.perform(post("/api/software")
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(400))
+                .andExpect(jsonPath("$.fieldErrors", hasSize(1)))
+                .andExpect(jsonPath("$.fieldErrors[?(@.field =~ /name/)].message").value("must not be empty"));
+    }
+
+    @Test
+    public void givenCorrectRequest_whenAddingSoftware_thenReturnStatus200AndData() throws Exception {
+        SoftwareInputDTO request = new SoftwareInputDTO();
+        request.setName("Notepad ++");
+        mvc.perform(post("/api/software")
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(200))
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.message").value("Utworzono oprogramowanie."));
     }
 }
