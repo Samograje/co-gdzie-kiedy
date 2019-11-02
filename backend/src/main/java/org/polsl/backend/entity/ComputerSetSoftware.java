@@ -39,11 +39,11 @@ public class ComputerSetSoftware {
   public ComputerSetSoftware() {
   }
 
-  public ComputerSetSoftware(ComputerSet computerSet, Software software, LocalDateTime validFrom) {
+  public ComputerSetSoftware(ComputerSet computerSet, Software software) {
     this.computerSet = computerSet;
     this.software = software;
-    this.validFrom = validFrom;
-    this.id = new ComputerSetSoftwareKey(software.getId(), computerSet.getId(), validFrom);
+    this.validFrom = LocalDateTime.now();
+    this.id = new ComputerSetSoftwareKey(software.getId(), computerSet.getId(), this.validFrom);
   }
 
   public ComputerSetSoftwareKey getId() {
