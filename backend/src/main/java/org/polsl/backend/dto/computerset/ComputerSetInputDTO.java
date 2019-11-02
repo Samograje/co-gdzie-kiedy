@@ -1,16 +1,13 @@
 package org.polsl.backend.dto.computerset;
 
-import org.polsl.backend.entity.Affiliation;
-import org.polsl.backend.entity.Hardware;
-import org.polsl.backend.entity.Software;
-
 import java.util.Set;
 
 public class ComputerSetInputDTO {
   private String name;
-  private Affiliation affiliation;
-  private Set<Hardware> hardwareSet;
-  private Set<Software> softwareSet;
+  private Long affiliationId;
+  private Set<Long> hardwareIds;
+  private Set<Long> softwareIds;
+
 
   public String getName() {
     return name;
@@ -20,27 +17,27 @@ public class ComputerSetInputDTO {
     this.name = name;
   }
 
-  public Affiliation getAffiliation() {
-    return affiliation;
+  public Long getAffiliationId() {
+    return affiliationId;
   }
 
-  public void setAffiliation(Affiliation affiliation) {
-    this.affiliation = affiliation;
+  public void setAffiliationId(Long affiliationId) {
+    this.affiliationId = affiliationId;
   }
 
-  public Set<Hardware> getHardwareSet() {
-    return hardwareSet;
+  public Set<Long> getHardwareIds() {
+    return hardwareIds;
   }
 
-  public void setHardwareSet(Set<Hardware> hardwareSet) {
-    this.hardwareSet = hardwareSet;
+  public void setHardwareIds(Set<Long> hardwareIds) {
+    this.hardwareIds = hardwareIds;
   }
 
-  public Set<Software> getSoftwareSet() {
-    return softwareSet;
+  public Set<Long> getSoftwareIds() {
+    return softwareIds;
   }
 
-  public void setSoftwareSet(Set<Software> softwareSet) {
-    this.softwareSet = softwareSet;
+  public void setSoftwareIds(Set<Long> softwareIds) {
+    this.softwareIds = softwareIds;
   }
 }

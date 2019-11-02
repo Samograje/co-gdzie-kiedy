@@ -63,27 +63,27 @@ public class ComputerSetService {
     computerSet.setName(request.getName());
     computerSetRepository.save(computerSet);
 
-    Optional<Affiliation> affiliationOptional = affiliationRepository.findById(request.getAffiliation().getId());
+    Optional<Affiliation> affiliationOptional = affiliationRepository.findById(request.getAffiliationId());
     if (affiliationOptional.isPresent()) {
       AffiliationComputerSet affiliationComputerSet
-              = new AffiliationComputerSet(request.getAffiliation(), computerSet, LocalDateTime.now());
+              = new AffiliationComputerSet(affiliationOptional.get(), computerSet, LocalDateTime.now());
       affiliationComputerSetRepository.save(affiliationComputerSet);
     }
 
-    request.getHardwareSet().forEach(hardware -> {
-      Optional<Hardware> hardwareOptional = hardwareRepository.findById(hardware.getId());
+    request.getHardwareIds().forEach(hardwareId -> {
+      Optional<Hardware> hardwareOptional = hardwareRepository.findById(hardwareId);
       if (hardwareOptional.isPresent()) {
         ComputerSetHardware computerSetHardware =
-                new ComputerSetHardware(computerSet, hardware, LocalDateTime.now());
+                new ComputerSetHardware(computerSet, hardwareOptional.get(), LocalDateTime.now());
         computerSetHardwareRepository.save(computerSetHardware);
       }
     });
 
-    request.getSoftwareSet().forEach(software -> {
-      Optional<Software> softwareOptional = softwareRepository.findById(software.getId());
+    request.getSoftwareIds().forEach(softwareId -> {
+      Optional<Software> softwareOptional = softwareRepository.findById(softwareId);
       if (softwareOptional.isPresent()) {
         ComputerSetSoftware computerSetSoftware =
-                new ComputerSetSoftware(computerSet, software, LocalDateTime.now());
+                new ComputerSetSoftware(computerSet, softwareOptional.get(), LocalDateTime.now());
         computerSetSoftwareRepository.save(computerSetSoftware);
       }
     });
