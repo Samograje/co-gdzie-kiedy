@@ -3,15 +3,28 @@ package org.polsl.backend.service;
 import org.polsl.backend.dto.PaginatedResult;
 import org.polsl.backend.dto.computerset.ComputerSetInputDTO;
 import org.polsl.backend.dto.computerset.ComputerSetOutputDTO;
-import org.polsl.backend.entity.*;
-import org.polsl.backend.repository.*;
+import org.polsl.backend.entity.Affiliation;
+import org.polsl.backend.entity.AffiliationComputerSet;
+import org.polsl.backend.entity.ComputerSet;
+import org.polsl.backend.entity.ComputerSetHardware;
+import org.polsl.backend.entity.ComputerSetSoftware;
+import org.polsl.backend.entity.Hardware;
+import org.polsl.backend.entity.Software;
+import org.polsl.backend.exception.NotFoundException;
+import org.polsl.backend.repository.AffiliationComputerSetRepository;
+import org.polsl.backend.repository.AffiliationRepository;
+import org.polsl.backend.repository.ComputerSetHardwareRepository;
+import org.polsl.backend.repository.ComputerSetRepository;
+import org.polsl.backend.repository.ComputerSetSoftwareRepository;
+import org.polsl.backend.repository.HardwareRepository;
+import org.polsl.backend.repository.SoftwareRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Logika biznesowa zestawów komputerowych.
@@ -58,36 +71,33 @@ public class ComputerSetService {
     return response;
   }
 
+  @Transactional
   public void createComputerSet(ComputerSetInputDTO request) {
     ComputerSet computerSet = new ComputerSet();
     computerSet.setName(request.getName());
     computerSetRepository.save(computerSet);
 
-    Optional<Affiliation> affiliationOptional = affiliationRepository.findById(request.getAffiliationId());
-    if (affiliationOptional.isPresent()) {
-      AffiliationComputerSet affiliationComputerSet
-              = new AffiliationComputerSet(affiliationOptional.get(), computerSet, LocalDateTime.now());
-      affiliationComputerSetRepository.save(affiliationComputerSet);
+    Affiliation affiliation = affiliationRepository.findById(request.getAffiliationId())
+        .orElseThrow(() -> new NotFoundException("przynależność", "id", request.getAffiliationId()));
+    AffiliationComputerSet affiliationComputerSet = new AffiliationComputerSet(affiliation, computerSet, LocalDateTime.now());
+    affiliationComputerSetRepository.save(affiliationComputerSet);
+
+    if (request.getHardwareIds() != null) {
+      request.getHardwareIds().forEach(hardwareId -> {
+        Hardware hardware = hardwareRepository.findById(hardwareId)
+            .orElseThrow(() -> new NotFoundException("hardware", "id", hardwareId));
+        ComputerSetHardware computerSetHardware = new ComputerSetHardware(computerSet, hardware, LocalDateTime.now());
+        computerSetHardwareRepository.save(computerSetHardware);
+      });
     }
 
-    request.getHardwareIds().forEach(hardwareId -> {
-      Optional<Hardware> hardwareOptional = hardwareRepository.findById(hardwareId);
-      if (hardwareOptional.isPresent()) {
-        ComputerSetHardware computerSetHardware =
-                new ComputerSetHardware(computerSet, hardwareOptional.get(), LocalDateTime.now());
-        computerSetHardwareRepository.save(computerSetHardware);
-      }
-    });
-
-    request.getSoftwareIds().forEach(softwareId -> {
-      Optional<Software> softwareOptional = softwareRepository.findById(softwareId);
-      if (softwareOptional.isPresent()) {
-        ComputerSetSoftware computerSetSoftware =
-                new ComputerSetSoftware(computerSet, softwareOptional.get(), LocalDateTime.now());
+    if (request.getSoftwareIds() != null) {
+      request.getSoftwareIds().forEach(softwareId -> {
+        Software software = softwareRepository.findById(softwareId)
+            .orElseThrow(() -> new NotFoundException("oprogramowanie", "id", softwareId));
+        ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware(computerSet, software, LocalDateTime.now());
         computerSetSoftwareRepository.save(computerSetSoftware);
-      }
-    });
-
+      });
+    }
   }
-
 }

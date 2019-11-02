@@ -1,13 +1,16 @@
 package org.polsl.backend.dto.computerset;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 public class ComputerSetInputDTO {
+  @NotEmpty
   private String name;
+  @NotNull
   private Long affiliationId;
   private Set<Long> hardwareIds;
   private Set<Long> softwareIds;
-
 
   public String getName() {
     return name;
