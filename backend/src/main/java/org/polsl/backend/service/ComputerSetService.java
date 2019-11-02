@@ -8,6 +8,7 @@ import org.polsl.backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,28 +64,40 @@ public class ComputerSetService {
     computerSet.setName(request.getName());
     computerSetRepository.save(computerSet);
 
-    Optional<Affiliation> affiliationOptional = affiliationRepository.findById(request.getAffiliation().getId());
+    Optional<Affiliation> affiliationOptional
+            = affiliationRepository.findByIdAndFirstNameAndLastNameAndIsDeletedAndLocation(request.getAffiliation().getId(),
+            request.getAffiliation().getFirstName(), request.getAffiliation().getLastName(), request.getAffiliation().getDeleted(),
+            request.getAffiliation().getLocation());
     if (affiliationOptional.isPresent()) {
       AffiliationComputerSet affiliationComputerSet
               = new AffiliationComputerSet(request.getAffiliation(), computerSet, LocalDateTime.now());
       affiliationComputerSetRepository.save(affiliationComputerSet);
+    } else {
+      throw new EntityNotFoundException("W bazie danych nie ma takiej przynależności!");
     }
 
     request.getHardwareSet().forEach(hardware -> {
-      Optional<Hardware> hardwareOptional = hardwareRepository.findById(hardware.getId());
+      Optional<Hardware> hardwareOptional
+              = hardwareRepository.findByIdAndNameAndHardwareDictionary(hardware.getId(), hardware.getName(),
+              hardware.getHardwareDictionary());
       if (hardwareOptional.isPresent()) {
-        ComputerSetHardware computerSetHardware =
-                new ComputerSetHardware(computerSet, hardware, LocalDateTime.now());
+        ComputerSetHardware computerSetHardware
+                = new ComputerSetHardware(computerSet, hardware, LocalDateTime.now());
         computerSetHardwareRepository.save(computerSetHardware);
+      } else {
+        throw new EntityNotFoundException("W bazie danych nie ma takiego sprzętu!");
       }
     });
 
     request.getSoftwareSet().forEach(software -> {
-      Optional<Software> softwareOptional = softwareRepository.findById(software.getId());
+      Optional<Software> softwareOptional
+              = softwareRepository.findByIdAndName(software.getId(), software.getName());
       if (softwareOptional.isPresent()) {
         ComputerSetSoftware computerSetSoftware =
                 new ComputerSetSoftware(computerSet, software, LocalDateTime.now());
         computerSetSoftwareRepository.save(computerSetSoftware);
+      } else {
+        throw new EntityNotFoundException("W bazie danych nie ma takiego oprogramowania!");
       }
     });
 
