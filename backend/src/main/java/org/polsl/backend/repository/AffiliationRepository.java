@@ -13,8 +13,4 @@ public interface AffiliationRepository extends CrudRepository<Affiliation, Long>
   List<Affiliation> findAllByIsDeletedIsFalse();
 
   Optional<Affiliation> findByIdAndIsDeletedIsFalse(Long id);
-
-  Optional<Affiliation> findByIdAndFirstNameAndLastNameAndIsDeletedAndLocation(Long id, String firstName,
-                                                                               String LastName, boolean isDeleted,
-                                                                               String location);
 }
