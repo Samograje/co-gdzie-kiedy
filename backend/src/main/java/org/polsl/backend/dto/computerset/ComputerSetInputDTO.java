@@ -1,12 +1,16 @@
 package org.polsl.backend.dto.computerset;
 
 import org.polsl.backend.entity.Affiliation;
+import org.polsl.backend.entity.Hardware;
+import org.polsl.backend.entity.Software;
+
+import java.util.Set;
 
 public class ComputerSetInputDTO {
   private String name;
   private Affiliation affiliation;
-  /*private Set<Hardware> hardwareSet;
-  private Set<Software> softwareSet;*/
+  private Set<Hardware> hardwareSet;
+  private Set<Software> softwareSet;
 
   public String getName() {
     return name;
@@ -24,7 +28,7 @@ public class ComputerSetInputDTO {
     this.affiliation = affiliation;
   }
 
-  /*public Set<Hardware> getHardwareSet() {
+  public Set<Hardware> getHardwareSet() {
     return hardwareSet;
   }
 
@@ -38,5 +42,5 @@ public class ComputerSetInputDTO {
 
   public void setSoftwareSet(Set<Software> softwareSet) {
     this.softwareSet = softwareSet;
-  }*/
+  }
 }
