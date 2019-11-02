@@ -9,7 +9,6 @@ import java.util.Objects;
 /**
  * Klasa reprezentująca klucz główny encji {@link org.polsl.backend.entity.AffiliationComputerSet}
  */
-@SuppressWarnings("serial")
 @Embeddable
 public class AffiliationComputerSetKey implements Serializable {
   @Column(name = "affiliation_id")
