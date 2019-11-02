@@ -6,6 +6,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * Klasa reprezentująca klucz główny encji {@link org.polsl.backend.entity.AffiliationComputerSet}
+ */
 @Embeddable
 public class AffiliationComputerSetKey implements Serializable {
   @Column(name = "affiliation_id")
@@ -18,6 +21,12 @@ public class AffiliationComputerSetKey implements Serializable {
   private LocalDateTime validFrom;
 
   public AffiliationComputerSetKey() {
+  }
+
+  public AffiliationComputerSetKey(Long affiliationId, Long computerSetId, LocalDateTime validFrom) {
+    this.affiliationId = affiliationId;
+    this.computerSetId = computerSetId;
+    this.validFrom = validFrom;
   }
 
   //region gettersAndSetters
@@ -58,8 +67,8 @@ public class AffiliationComputerSetKey implements Serializable {
     }
     AffiliationComputerSetKey affiliationComputerSetKey = (AffiliationComputerSetKey) o;
     return Objects.equals(affiliationId, affiliationComputerSetKey.affiliationId)
-            && Objects.equals(computerSetId, affiliationComputerSetKey.computerSetId)
-            && Objects.equals(validFrom, affiliationComputerSetKey.validFrom);
+        && Objects.equals(computerSetId, affiliationComputerSetKey.computerSetId)
+        && Objects.equals(validFrom, affiliationComputerSetKey.validFrom);
   }
 
   @Override
