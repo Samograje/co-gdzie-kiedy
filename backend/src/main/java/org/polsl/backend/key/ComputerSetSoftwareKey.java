@@ -23,6 +23,12 @@ public class ComputerSetSoftwareKey implements Serializable {
   public ComputerSetSoftwareKey() {
   }
 
+  public ComputerSetSoftwareKey(Long softwareId, Long computerSetId, LocalDateTime validFrom) {
+    this.softwareId = softwareId;
+    this.computerSetId = computerSetId;
+    this.validFrom = validFrom;
+  }
+
   //region gettersAndSetters
 
   public Long getSoftwareId() {

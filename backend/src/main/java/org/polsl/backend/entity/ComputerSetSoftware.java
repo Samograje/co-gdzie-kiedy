@@ -39,6 +39,13 @@ public class ComputerSetSoftware {
   public ComputerSetSoftware() {
   }
 
+  public ComputerSetSoftware(ComputerSet computerSet, Software software, LocalDateTime validFrom) {
+    this.computerSet = computerSet;
+    this.software = software;
+    this.validFrom = validFrom;
+    this.id = new ComputerSetSoftwareKey(software.getId(), computerSet.getId(), validFrom);
+  }
+
   public ComputerSetSoftwareKey getId() {
     return id;
   }

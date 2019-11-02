@@ -23,6 +23,12 @@ public class AffiliationComputerSetKey implements Serializable {
   public AffiliationComputerSetKey() {
   }
 
+  public AffiliationComputerSetKey(Long affiliationId, Long computerSetId, LocalDateTime validFrom) {
+    this.affiliationId = affiliationId;
+    this.computerSetId = computerSetId;
+    this.validFrom = validFrom;
+  }
+
   //region gettersAndSetters
 
   public LocalDateTime getValidFrom() {
