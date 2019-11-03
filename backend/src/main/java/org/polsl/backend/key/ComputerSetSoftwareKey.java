@@ -43,9 +43,7 @@ public class ComputerSetSoftwareKey implements Serializable {
     return computerSetId;
   }
 
-  public void setComputerSetId(Long computerSetId) {
-    this.computerSetId = computerSetId;
-  }
+  public void setComputerSetId(Long computerSetId) { this.computerSetId = computerSetId; }
 
   public LocalDateTime getValidFrom() {
     return validFrom;
