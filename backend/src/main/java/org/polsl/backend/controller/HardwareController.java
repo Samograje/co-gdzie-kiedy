@@ -43,4 +43,19 @@ public class HardwareController {
     hardwareService.createHardware(request);
     return ResponseEntity.ok(new ApiBasicResponse(true, "Utworzono sprzęt"));
   }
+
+  /**
+   * Endpoint obsługujący edycję parametrów przynależności.
+   *
+   * @param request stuktura {@link HardwareInputDTO} zawierająca nowe dane sprzętu
+   * @return informacja o poprawnym zaktualizowaniu parametrów sprzętu
+   */
+  @PutMapping("/{id}")
+  public ResponseEntity<?> editAffiliation(
+      @PathVariable(value = "id") Long id,
+      @Valid @RequestBody HardwareInputDTO request
+  ) {
+    hardwareService.editHardware(id, request);
+    return ResponseEntity.ok(new ApiBasicResponse(true, "Zaktualizowano parametry sprzętu."));
+  }
 }

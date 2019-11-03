@@ -20,8 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
 
 /**
  * Logika biznesowa hardware'u.
@@ -79,12 +79,58 @@ public class HardwareService {
       ComputerSet computerSet = computerSetRepository.findById(request.getComputerSetId())
           .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", request.getComputerSetId()));
       ComputerSetHardware computerSetHardware = new ComputerSetHardware(computerSet, hardware);
+      computerSetHardware.setValidFrom(LocalDateTime.now());
       computerSetHardwareRepository.save(computerSetHardware);
     }
 
     Affiliation affiliation = affiliationRepository.findByIdAndIsDeletedIsFalse(request.getAffiliationId())
         .orElseThrow(() -> new NotFoundException("przynależność", "id", request.getAffiliationId()));
     AffiliationHardware affiliationHardware = new AffiliationHardware(affiliation, hardware);
+    affiliationHardware.setValidFrom(LocalDateTime.now());
+    affiliationHardwareRepository.save(affiliationHardware);
+  }
+
+  @Transactional
+  public void editHardware(Long id, HardwareInputDTO request) throws NotFoundException {
+    Hardware hardware = hardwareRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException("sprzęt", "id", id));
+    hardware.setName(request.getName());
+    HardwareDictionary hardwareDictionary = hardwareDictionaryRepository.findById(request.getDictionaryId())
+        .orElseThrow(() -> new NotFoundException("słownik urządzeń", "id", request.getDictionaryId()));
+    hardware.setHardwareDictionary(hardwareDictionary);
+    hardwareRepository.save(hardware);
+
+    if (request.getComputerSetId() != null) {
+      Set<ComputerSetHardware> computerSetHardwareSet = computerSetHardwareRepository.findAllByHardwareId(id);
+      if (computerSetHardwareSet != null && computerSetHardwareSet.size() > 0) {
+        ComputerSetHardware lastEntry = null;
+        for (Iterator setIterator = computerSetHardwareSet.iterator(); setIterator.hasNext(); ) {
+          lastEntry = (ComputerSetHardware) setIterator.next();
+        }
+        lastEntry.setValidTo(LocalDateTime.now());
+        computerSetHardwareRepository.save(lastEntry);
+      }
+
+      ComputerSet computerSet = computerSetRepository.findById(request.getComputerSetId())
+          .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", request.getComputerSetId()));
+      ComputerSetHardware computerSetHardware = new ComputerSetHardware(computerSet, hardware);
+      computerSetHardware.setValidFrom(LocalDateTime.now());
+      computerSetHardware.setValidTo(null);
+      computerSetHardwareRepository.save(computerSetHardware);
+    }
+
+    Set<AffiliationHardware> affiliationHardwareSet = affiliationHardwareRepository.findAllByHardwareId(id);
+    AffiliationHardware lastEntryAffiliation = null;
+    for (Iterator setIterator = affiliationHardwareSet.iterator(); setIterator.hasNext(); ) {
+      lastEntryAffiliation = (AffiliationHardware) setIterator.next();
+    }
+    lastEntryAffiliation.setValidTo(LocalDateTime.now());
+    affiliationHardwareRepository.save(lastEntryAffiliation);
+
+    Affiliation affiliation = affiliationRepository.findByIdAndIsDeletedIsFalse(request.getAffiliationId())
+        .orElseThrow(() -> new NotFoundException("przynależność", "id", request.getAffiliationId()));
+    AffiliationHardware affiliationHardware = new AffiliationHardware(affiliation, hardware);
+    affiliationHardware.setValidFrom(LocalDateTime.now());
     affiliationHardwareRepository.save(affiliationHardware);
   }
 }
