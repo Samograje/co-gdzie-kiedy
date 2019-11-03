@@ -65,7 +65,7 @@ public class SoftwareService {
     {
       computerSetIdsSet.forEach(computerSetId -> {ComputerSet computerSet = computerSetRepository.findById(computerSetId)
               .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
-        ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware(computerSet, software, LocalDateTime.now());
+        ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware(computerSet, software);
         computerSetSoftwareRepository.save(computerSetSoftware);});
     }
   }

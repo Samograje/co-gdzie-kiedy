@@ -79,14 +79,14 @@ public class ComputerSetService {
 
     Affiliation affiliation = affiliationRepository.findById(request.getAffiliationId())
         .orElseThrow(() -> new NotFoundException("przynależność", "id", request.getAffiliationId()));
-    AffiliationComputerSet affiliationComputerSet = new AffiliationComputerSet(affiliation, computerSet, LocalDateTime.now());
+    AffiliationComputerSet affiliationComputerSet = new AffiliationComputerSet(affiliation, computerSet);
     affiliationComputerSetRepository.save(affiliationComputerSet);
 
     if (request.getHardwareIds() != null) {
       request.getHardwareIds().forEach(hardwareId -> {
         Hardware hardware = hardwareRepository.findById(hardwareId)
             .orElseThrow(() -> new NotFoundException("hardware", "id", hardwareId));
-        ComputerSetHardware computerSetHardware = new ComputerSetHardware(computerSet, hardware, LocalDateTime.now());
+        ComputerSetHardware computerSetHardware = new ComputerSetHardware(computerSet, hardware);
         computerSetHardwareRepository.save(computerSetHardware);
       });
     }
@@ -95,7 +95,7 @@ public class ComputerSetService {
       request.getSoftwareIds().forEach(softwareId -> {
         Software software = softwareRepository.findById(softwareId)
             .orElseThrow(() -> new NotFoundException("oprogramowanie", "id", softwareId));
-        ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware(computerSet, software, LocalDateTime.now());
+        ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware(computerSet, software);
         computerSetSoftwareRepository.save(computerSetSoftware);
       });
     }

@@ -39,11 +39,11 @@ public class ComputerSetHardware {
   public ComputerSetHardware() {
   }
 
-  public ComputerSetHardware(ComputerSet computerSet, Hardware hardware, LocalDateTime validFrom) {
+  public ComputerSetHardware(ComputerSet computerSet, Hardware hardware) {
     this.computerSet = computerSet;
     this.hardware = hardware;
-    this.validFrom = validFrom;
-    this.id = new ComputerSetHardwareKey(computerSet.getId(), hardware.getId(), validFrom);
+    this.validFrom = LocalDateTime.now();
+    this.id = new ComputerSetHardwareKey(computerSet.getId(), hardware.getId(), this.validFrom);
   }
 
   public ComputerSetHardwareKey getId() {
