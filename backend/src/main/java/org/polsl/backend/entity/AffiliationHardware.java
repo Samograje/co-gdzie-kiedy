@@ -2,9 +2,18 @@ package org.polsl.backend.entity;
 
 import org.polsl.backend.key.AffiliationHardwareKey;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 
+/**
+ * Klasa reprezentująca bazodanową encję wpisu historii dotyczącego połączenia hardware'u z przynależnością.
+ */
 @Entity
 @Table(name = "affiliations_hardware")
 public class AffiliationHardware {
@@ -23,8 +32,13 @@ public class AffiliationHardware {
   private Hardware hardware;
 
   @Column(name = "valid_from", insertable = false, updatable = false)
+  @MapsId("valid_from")
   private LocalDateTime validFrom;
+
   private LocalDateTime validTo;
+
+  public AffiliationHardware() {
+  }
 
   public AffiliationHardwareKey getId() {
     return id;

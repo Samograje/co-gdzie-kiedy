@@ -1,14 +1,10 @@
 package org.polsl.backend.repository;
 
 import org.polsl.backend.entity.ComputerSetSoftware;
-import org.springframework.stereotype.Repository;
+import org.polsl.backend.key.ComputerSetSoftwareKey;
 import org.springframework.data.repository.CrudRepository;
-
-
-import java.util.Set;
+import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ComputerSetSoftwareRepository extends CrudRepository <ComputerSetSoftware, Long> {
-
-    Set<ComputerSetSoftware> findAllBySoftwareId(Long id);
+public interface ComputerSetSoftwareRepository extends CrudRepository<ComputerSetSoftware, ComputerSetSoftwareKey> {
 }

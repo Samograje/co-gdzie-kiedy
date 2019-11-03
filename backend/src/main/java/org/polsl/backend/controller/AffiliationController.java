@@ -59,8 +59,8 @@ public class AffiliationController {
    */
   @PutMapping("/{id}")
   public ResponseEntity<?> editAffiliation(
-    @PathVariable(value = "id") Long id,
-    @Valid @RequestBody AffiliationInputDTO request
+      @PathVariable(value = "id") Long id,
+      @Valid @RequestBody AffiliationInputDTO request
   ) {
     affiliationService.editAffiliation(id, request);
     return ResponseEntity.ok(new ApiBasicResponse(true, "Zaktualizowano parametry przynależności"));
