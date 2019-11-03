@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
@@ -22,6 +23,8 @@ public class ComputerSet {
   private Long id;
 
   private String name;
+
+  private LocalDateTime valid_to;
 
   @OneToMany(mappedBy = "computerSet")
   private Set<AffiliationComputerSet> affiliationComputerSetSet;
@@ -74,5 +77,13 @@ public class ComputerSet {
 
   public void setComputerSetSoftwareSet(Set<ComputerSetSoftware> computerSetSoftwareSet) {
     this.computerSetSoftwareSet = computerSetSoftwareSet;
+  }
+
+  public LocalDateTime getValid_to() {
+    return valid_to;
+  }
+
+  public void setValid_to(LocalDateTime valid_to) {
+    this.valid_to = valid_to;
   }
 }
