@@ -9,5 +9,5 @@ import java.util.Set;
 
 @Repository
 public interface ComputerSetSoftwareRepository extends CrudRepository<ComputerSetSoftware, ComputerSetSoftwareKey> {
-    Set<ComputerSetSoftware> findAllBySoftwareId(Long id);
+  Set<ComputerSetSoftware> findAllBySoftwareId(Long id);
 }

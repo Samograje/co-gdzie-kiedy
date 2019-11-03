@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface ComputerSetRepository extends JpaRepository<ComputerSet, AffiliationComputerSetKey> {
-    Optional<ComputerSet> findById(Long id);
+  Optional<ComputerSet> findById(Long id);
 }

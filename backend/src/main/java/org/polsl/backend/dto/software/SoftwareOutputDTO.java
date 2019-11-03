@@ -3,6 +3,7 @@ package org.polsl.backend.dto.software;
 public class SoftwareOutputDTO {
   private Long id;
   private String name;
+
   public String getName() {
     return name;
   }
