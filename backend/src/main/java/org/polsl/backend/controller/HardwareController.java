@@ -56,6 +56,6 @@ public class HardwareController {
       @Valid @RequestBody HardwareInputDTO request
   ) {
     hardwareService.editHardware(id, request);
-    return ResponseEntity.ok(new ApiBasicResponse(true, "Zaktualizowano parametry sprzętu."));
+    return ResponseEntity.ok(new ApiBasicResponse(true, "Zaktualizowano parametry sprzętu"));
   }
 }
