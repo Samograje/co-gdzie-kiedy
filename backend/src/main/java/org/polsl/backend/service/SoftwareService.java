@@ -43,6 +43,7 @@ public class SoftwareService {
     for (Software software : softwares) {
       SoftwareOutputDTO dto = new SoftwareOutputDTO();
       dto.setName(software.getName());
+      dto.setId(software.getId());
       softwareOutputDTO.add(dto);
     }
 
