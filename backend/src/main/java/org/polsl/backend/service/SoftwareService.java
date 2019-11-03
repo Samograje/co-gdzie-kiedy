@@ -81,24 +81,19 @@ public class SoftwareService {
     if(computerSetIdsSet != null)
     {
       Set<ComputerSetSoftware> computerSetSoftwareSet = computerSetSoftwareRepository.findAllBySoftwareId(id);
-      //Old record
+
+      //Old record(s)
       for(ComputerSetSoftware computerSetSoftware : computerSetSoftwareSet)
       {
         computerSetSoftware.setValidTo(LocalDateTime.now());
         computerSetSoftwareRepository.save(computerSetSoftware);
       }
 
-      //New record
-      for (Long computerSetId : computerSetIdsSet) {
-        ComputerSetSoftwareKey key = new ComputerSetSoftwareKey();
-        key.setSoftwareId(id);
-        key.setComputerSetId(computerSetId);
-        key.setValidFrom(LocalDateTime.now());
-        ComputerSetSoftware newComputerSetSoftware = new ComputerSetSoftware();
-        newComputerSetSoftware.setId(key);
-        newComputerSetSoftware.setValidTo(null);
-        computerSetSoftwareRepository.save(newComputerSetSoftware);
-      }
+      //New record(s)
+      computerSetIdsSet.forEach(computerSetId -> {ComputerSet computerSet = computerSetRepository.findById(computerSetId)
+              .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
+        ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware(computerSet, software);
+        computerSetSoftwareRepository.save(computerSetSoftware);});
     }
   }
 
