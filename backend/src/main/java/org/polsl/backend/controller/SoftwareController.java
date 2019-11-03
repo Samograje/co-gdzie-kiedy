@@ -50,9 +50,9 @@ public class SoftwareController {
    */
   @PutMapping("/{id}")
   public ResponseEntity<?> editSoftware(
-          @PathVariable(value ="id") Long id,
-          @Valid @RequestBody SoftwareInputDTO request
-  ){
+      @PathVariable(value = "id") Long id,
+      @Valid @RequestBody SoftwareInputDTO request
+  ) {
     softwareService.editSoftware(id, request);
     return ResponseEntity.ok(new ApiBasicResponse(true, "Zaktualizowano parametry oprogramowania."));
   }
@@ -64,7 +64,7 @@ public class SoftwareController {
    * @return informacja o poprawnym usunięciu oprogramowania
    */
   @DeleteMapping("/{id}")
-  public ResponseEntity<?> deleteSoftware(@PathVariable(value = "id") Long id){
+  public ResponseEntity<?> deleteSoftware(@PathVariable(value = "id") Long id) {
     softwareService.deleteSoftware(id);
     return ResponseEntity.ok(new ApiBasicResponse(true, "Usunięto oprogramowanie."));
   }

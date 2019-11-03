@@ -7,7 +7,6 @@ import org.polsl.backend.entity.ComputerSet;
 import org.polsl.backend.entity.ComputerSetSoftware;
 import org.polsl.backend.entity.Software;
 import org.polsl.backend.exception.NotFoundException;
-import org.polsl.backend.key.ComputerSetSoftwareKey;
 import org.polsl.backend.repository.ComputerSetRepository;
 import org.polsl.backend.repository.ComputerSetSoftwareRepository;
 import org.polsl.backend.repository.SoftwareRepository;
@@ -61,12 +60,13 @@ public class SoftwareService {
     softwareRepository.save(software);
 
     Set<Long> computerSetIdsSet = request.getComputerSetIds();
-    if(computerSetIdsSet != null)
-    {
-      computerSetIdsSet.forEach(computerSetId -> {ComputerSet computerSet = computerSetRepository.findById(computerSetId)
-              .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
+    if (computerSetIdsSet != null) {
+      computerSetIdsSet.forEach(computerSetId -> {
+        ComputerSet computerSet = computerSetRepository.findById(computerSetId)
+            .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
         ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware(computerSet, software);
-        computerSetSoftwareRepository.save(computerSetSoftware);});
+        computerSetSoftwareRepository.save(computerSetSoftware);
+      });
     }
   }
 
@@ -78,22 +78,22 @@ public class SoftwareService {
     softwareRepository.save(software);
 
     Set<Long> computerSetIdsSet = request.getComputerSetIds();
-    if(computerSetIdsSet != null)
-    {
+    if (computerSetIdsSet != null) {
       Set<ComputerSetSoftware> computerSetSoftwareSet = computerSetSoftwareRepository.findAllBySoftwareId(id);
 
       //Old record(s)
-      for(ComputerSetSoftware computerSetSoftware : computerSetSoftwareSet)
-      {
+      for (ComputerSetSoftware computerSetSoftware : computerSetSoftwareSet) {
         computerSetSoftware.setValidTo(LocalDateTime.now());
         computerSetSoftwareRepository.save(computerSetSoftware);
       }
 
       //New record(s)
-      computerSetIdsSet.forEach(computerSetId -> {ComputerSet computerSet = computerSetRepository.findById(computerSetId)
-              .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
+      computerSetIdsSet.forEach(computerSetId -> {
+        ComputerSet computerSet = computerSetRepository.findById(computerSetId)
+            .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
         ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware(computerSet, software);
-        computerSetSoftwareRepository.save(computerSetSoftware);});
+        computerSetSoftwareRepository.save(computerSetSoftware);
+      });
     }
   }
 
