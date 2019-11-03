@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface HardwareRepository extends CrudRepository<Hardware, Long> {
 
-    List<Hardware> findAllByComputerSetHardwareSetIsNull();
+  List<Hardware> findAllByComputerSetHardwareSetIsNull();
 }
