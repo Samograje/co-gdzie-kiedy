@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
@@ -25,6 +26,8 @@ public class Hardware {
   private Long id;
 
   private String name;
+
+  private LocalDateTime valid_to;
 
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "hardware_dictionary_id", referencedColumnName = "id")
@@ -78,5 +81,13 @@ public class Hardware {
 
   public void setComputerSetHardwareSet(Set<ComputerSetHardware> computerSetHardwareSet) {
     this.computerSetHardwareSet = computerSetHardwareSet;
+  }
+
+  public LocalDateTime getValid_to() {
+    return valid_to;
+  }
+
+  public void setValid_to(LocalDateTime valid_to) {
+    this.valid_to = valid_to;
   }
 }
