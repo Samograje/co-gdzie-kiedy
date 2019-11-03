@@ -79,14 +79,12 @@ public class HardwareService {
       ComputerSet computerSet = computerSetRepository.findById(request.getComputerSetId())
           .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", request.getComputerSetId()));
       ComputerSetHardware computerSetHardware = new ComputerSetHardware(computerSet, hardware);
-      computerSetHardware.setValidFrom(LocalDateTime.now());
       computerSetHardwareRepository.save(computerSetHardware);
     }
 
     Affiliation affiliation = affiliationRepository.findByIdAndIsDeletedIsFalse(request.getAffiliationId())
         .orElseThrow(() -> new NotFoundException("przynależność", "id", request.getAffiliationId()));
     AffiliationHardware affiliationHardware = new AffiliationHardware(affiliation, hardware);
-    affiliationHardware.setValidFrom(LocalDateTime.now());
     affiliationHardwareRepository.save(affiliationHardware);
   }
 
@@ -114,8 +112,6 @@ public class HardwareService {
       ComputerSet computerSet = computerSetRepository.findById(request.getComputerSetId())
           .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", request.getComputerSetId()));
       ComputerSetHardware computerSetHardware = new ComputerSetHardware(computerSet, hardware);
-      computerSetHardware.setValidFrom(LocalDateTime.now());
-      computerSetHardware.setValidTo(null);
       computerSetHardwareRepository.save(computerSetHardware);
     }
 
@@ -130,7 +126,6 @@ public class HardwareService {
     Affiliation affiliation = affiliationRepository.findByIdAndIsDeletedIsFalse(request.getAffiliationId())
         .orElseThrow(() -> new NotFoundException("przynależność", "id", request.getAffiliationId()));
     AffiliationHardware affiliationHardware = new AffiliationHardware(affiliation, hardware);
-    affiliationHardware.setValidFrom(LocalDateTime.now());
     affiliationHardwareRepository.save(affiliationHardware);
   }
 }
