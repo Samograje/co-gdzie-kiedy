@@ -40,6 +40,13 @@ public class AffiliationHardware {
   public AffiliationHardware() {
   }
 
+  public AffiliationHardware(Affiliation affiliation, Hardware hardware) {
+    this.affiliation = affiliation;
+    this.hardware = hardware;
+    this.validFrom = LocalDateTime.now();
+    this.id = new AffiliationHardwareKey(affiliation.getId(), hardware.getId(), this.validFrom);
+  }
+
   public AffiliationHardwareKey getId() {
     return id;
   }

@@ -23,6 +23,12 @@ public class AffiliationHardwareKey implements Serializable {
   public AffiliationHardwareKey() {
   }
 
+  public AffiliationHardwareKey(Long affiliationId, Long hardwareId, LocalDateTime validFrom) {
+    this.affiliationId = affiliationId;
+    this.hardwareId = hardwareId;
+    this.validFrom = validFrom;
+  }
+
   //region gettersAndSetters
 
   public LocalDateTime getValidFrom() {

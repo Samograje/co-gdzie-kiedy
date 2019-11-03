@@ -41,11 +41,11 @@ public class AffiliationComputerSet {
   public AffiliationComputerSet() {
   }
 
-  public AffiliationComputerSet(Affiliation affiliation, ComputerSet computerSet, LocalDateTime validFrom) {
+  public AffiliationComputerSet(Affiliation affiliation, ComputerSet computerSet) {
     this.affiliation = affiliation;
     this.computerSet = computerSet;
-    this.validFrom = validFrom;
-    this.id = new AffiliationComputerSetKey(affiliation.getId(), computerSet.getId(), validFrom);
+    this.validFrom = LocalDateTime.now();
+    this.id = new AffiliationComputerSetKey(affiliation.getId(), computerSet.getId(), this.validFrom);
   }
 
   public AffiliationComputerSetKey getId() {
