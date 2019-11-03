@@ -98,6 +98,6 @@ public class SoftwareService {
   }
 
   public void deleteSoftware(Long id) {
-
+    // TODO: usuwanie oprogramowania
   }
 }
