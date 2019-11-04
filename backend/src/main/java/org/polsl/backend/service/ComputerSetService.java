@@ -85,7 +85,7 @@ public class ComputerSetService {
     if (request.getHardwareIds() != null) {
       request.getHardwareIds().forEach(hardwareId -> {
         Hardware hardware = hardwareRepository.findById(hardwareId)
-            .orElseThrow(() -> new NotFoundException("hardware", "id", hardwareId));
+                .orElseThrow(() -> new NotFoundException("sprzęt", "id", hardwareId));
         ComputerSetHardware computerSetHardware = new ComputerSetHardware(computerSet, hardware);
         computerSetHardwareRepository.save(computerSetHardware);
       });
@@ -94,10 +94,48 @@ public class ComputerSetService {
     if (request.getSoftwareIds() != null) {
       request.getSoftwareIds().forEach(softwareId -> {
         Software software = softwareRepository.findById(softwareId)
-            .orElseThrow(() -> new NotFoundException("oprogramowanie", "id", softwareId));
+                .orElseThrow(() -> new NotFoundException("oprogramowanie", "id", softwareId));
         ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware(computerSet, software);
         computerSetSoftwareRepository.save(computerSetSoftware);
       });
     }
   }
+
+  public void editComputerSet(Long id, ComputerSetInputDTO request) throws NotFoundException {
+    ComputerSet computerSet = computerSetRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", id));
+    computerSet.setName(request.getName());
+    computerSetRepository.save(computerSet);
+
+    Affiliation affiliation = affiliationRepository.findById(request.getAffiliationId())
+            .orElseThrow(() -> new NotFoundException("przynależność", "id", request.getAffiliationId()));
+    AffiliationComputerSet affiliationComputerSet = new AffiliationComputerSet(affiliation, computerSet);
+    affiliationComputerSetRepository.save(affiliationComputerSet);
+
+    if (request.getHardwareIds() != null) {
+      request.getHardwareIds().forEach(hardwareId -> {
+        Hardware hardware = hardwareRepository.findById(hardwareId)
+                .orElseThrow(() -> new NotFoundException("sprzęt", "id", hardwareId));
+        ComputerSetHardware computerSetHardware = new ComputerSetHardware(computerSet, hardware);
+        computerSetHardwareRepository.save(computerSetHardware);
+      });
+    }
+
+    if (request.getSoftwareIds() != null) {
+      request.getSoftwareIds().forEach(softwareId -> {
+        Software software = softwareRepository.findById(softwareId)
+                .orElseThrow(() -> new NotFoundException("oprogramowanie", "id", softwareId));
+        ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware(computerSet, software);
+        computerSetSoftwareRepository.save(computerSetSoftware);
+      });
+    }
+  }
+
+  public void deleteComputerSet(Long id) throws NotFoundException {
+    ComputerSet computerSet = computerSetRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", id));
+    computerSet.setValidTo(LocalDateTime.now());
+    computerSetRepository.save(computerSet);
+  }
+
 }
