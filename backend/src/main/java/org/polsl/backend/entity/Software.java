@@ -1,11 +1,6 @@
 package org.polsl.backend.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -21,7 +16,8 @@ public class Software {
 
   private String name;
 
-  private LocalDateTime valid_to;
+  @Column(name = "valid_to")
+  private LocalDateTime validTo;
 
   @OneToMany(mappedBy = "software")
   private Set<ComputerSetSoftware> computerSetSoftwareSet;
@@ -53,11 +49,11 @@ public class Software {
     this.computerSetSoftwareSet = computerSetSoftwareSet;
   }
 
-  public LocalDateTime getValid_to() {
-    return valid_to;
+  public LocalDateTime getValidTo() {
+    return validTo;
   }
 
-  public void setValid_to(LocalDateTime valid_to) {
-    this.valid_to = valid_to;
+  public void setValidTo(LocalDateTime validTo) {
+    this.validTo = validTo;
   }
 }

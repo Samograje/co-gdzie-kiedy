@@ -27,7 +27,8 @@ public class Hardware {
 
   private String name;
 
-  private LocalDateTime valid_to;
+  @Column(name = "valid_to")
+  private LocalDateTime validTo;
 
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "hardware_dictionary_id", referencedColumnName = "id")
@@ -83,11 +84,11 @@ public class Hardware {
     this.computerSetHardwareSet = computerSetHardwareSet;
   }
 
-  public LocalDateTime getValid_to() {
-    return valid_to;
+  public LocalDateTime getValidTo() {
+    return validTo;
   }
 
-  public void setValid_to(LocalDateTime valid_to) {
-    this.valid_to = valid_to;
+  public void setValidTo(LocalDateTime validTo) {
+    this.validTo = validTo;
   }
 }

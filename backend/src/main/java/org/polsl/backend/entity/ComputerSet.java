@@ -24,7 +24,8 @@ public class ComputerSet {
 
   private String name;
 
-  private LocalDateTime valid_to;
+  @Column(name = "valid_to")
+  private LocalDateTime validTo;
 
   @OneToMany(mappedBy = "computerSet")
   private Set<AffiliationComputerSet> affiliationComputerSetSet;
@@ -78,11 +79,11 @@ public class ComputerSet {
     this.computerSetSoftwareSet = computerSetSoftwareSet;
   }
 
-  public LocalDateTime getValid_to() {
-    return valid_to;
+  public LocalDateTime getValidTo() {
+    return validTo;
   }
 
-  public void setValid_to(LocalDateTime valid_to) {
-    this.valid_to = valid_to;
+  public void setValidTo(LocalDateTime validTo) {
+    this.validTo = validTo;
   }
 }
