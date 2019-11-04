@@ -105,8 +105,8 @@ public class HardwareService {
       Set<ComputerSetHardware> computerSetHardwareSet = computerSetHardwareRepository.findAllByHardwareId(id);
       if (computerSetHardwareSet != null && computerSetHardwareSet.size() > 0) {
         ComputerSetHardware lastEntry = null;
-        for (Iterator setIterator = computerSetHardwareSet.iterator(); setIterator.hasNext(); ) {
-          lastEntry = (ComputerSetHardware) setIterator.next();
+        for (ComputerSetHardware computerSetHardware : computerSetHardwareSet) {
+          lastEntry = computerSetHardware;
         }
         lastEntry.setValidTo(LocalDateTime.now());
         computerSetHardwareRepository.save(lastEntry);
@@ -125,11 +125,10 @@ public class HardwareService {
 
     Set<AffiliationHardware> affiliationHardwareSet = affiliationHardwareRepository.findAllByHardwareId(id);
     AffiliationHardware lastEntryAffiliation = null;
-    for (Iterator setIterator = affiliationHardwareSet.iterator(); setIterator.hasNext(); ) {
-      lastEntryAffiliation = (AffiliationHardware) setIterator.next();
+    for (AffiliationHardware value : affiliationHardwareSet) {
+      lastEntryAffiliation = value;
     }
-    if(!lastEntryAffiliation.getAffiliation().getId().equals(request.getAffiliationId()))
-    {
+    if (lastEntryAffiliation != null && !lastEntryAffiliation.getAffiliation().getId().equals(request.getAffiliationId())) {
       lastEntryAffiliation.setValidTo(LocalDateTime.now());
       affiliationHardwareRepository.save(lastEntryAffiliation);
 
