@@ -12,7 +12,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -23,21 +22,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application-test.properties")
 @Transactional
 @SqlGroup({
+    @Sql(scripts = "/scripts/create-test-affiliation.sql"),
+    @Sql(scripts = "/scripts/create-test-hardware_dictionary.sql"),
+    @Sql(scripts = "/scripts/create-test-hardware.sql"),
+    @Sql(scripts = "/scripts/create-test-software.sql"),
     @Sql(scripts = "/scripts/create-test-computer_sets.sql")
 })
-public class ComputerSetControllerIntegrationTest {
+
+public class StatisticsControllerIntegrationTest {
   @Autowired
   private MockMvc mvc;
 
   @Test
-  public void givenCorrectRequest_whenGettingComputerSetsList_thenReturnStatus200AndData() throws Exception {
-    mvc.perform(get("/api/computer-sets"))
+  public void givenCorrectRequest_whenGettingStatistics_thenReturnStatus200AndData() throws Exception {
+    mvc.perform(get("/api/statistics"))
         .andExpect(status().is(200))
-        .andExpect(jsonPath("$.totalElements").value(3))
-        .andExpect(jsonPath("$.items", hasSize(3)))
-        .andExpect(jsonPath("$.items[0].id").value(1))
-        .andExpect(jsonPath("$.items[0].name").value("HP ProBook"))
-        .andExpect(jsonPath("$.items[1].id").value(2))
-        .andExpect(jsonPath("$.items[1].name").value("ACER Laptop"));
+        .andExpect(jsonPath("$.affiliationsCount").value(3))
+        .andExpect(jsonPath("$.computerSetsCount").value(2))
+        .andExpect(jsonPath("$.hardwareCount").value(4))
+        .andExpect(jsonPath("$.softwareCount").value(3));
   }
+
+
 }

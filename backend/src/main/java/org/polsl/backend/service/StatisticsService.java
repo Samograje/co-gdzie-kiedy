@@ -29,10 +29,10 @@ public class StatisticsService {
 
   public StatisticsOutputDTO getAllStatistics() {
     StatisticsOutputDTO statisticsOutputDTO = new StatisticsOutputDTO();
-    statisticsOutputDTO.setAffiliationsCount(affiliationRepository.count());
-    statisticsOutputDTO.setComputerSetsCount(computerSetRepository.count());
-    statisticsOutputDTO.setHardwareCount(hardwareRepository.count());
-    statisticsOutputDTO.setSoftwareCount(softwareRepository.count());
+    statisticsOutputDTO.setAffiliationsCount(affiliationRepository.countByIsDeletedIsFalse());
+    statisticsOutputDTO.setComputerSetsCount(computerSetRepository.countByValidToIsNull());
+    statisticsOutputDTO.setHardwareCount(hardwareRepository.countByValidToIsNull());
+    statisticsOutputDTO.setSoftwareCount(softwareRepository.countByValidToIsNull());
 
     return statisticsOutputDTO;
   }
