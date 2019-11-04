@@ -21,7 +21,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Logika biznesowa hardware'u.
@@ -108,6 +111,10 @@ public class HardwareService {
         lastEntry.setValidTo(LocalDateTime.now());
         computerSetHardwareRepository.save(lastEntry);
       }
+      /*ComputerSetHardware lastEntry = computerSetHardwareRepository.findTopByHardwareIdByOrderByIdDesc(id)
+          .orElseThrow(() -> new NotFoundException("tabela pośrednia sprzęt(id) - zestaw komputerowy", "id", id));
+      lastEntry.setValidTo(LocalDateTime.now());
+      computerSetHardwareRepository.save(lastEntry);*/
 
       ComputerSet computerSet = computerSetRepository.findById(request.getComputerSetId())
           .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", request.getComputerSetId()));
@@ -115,17 +122,33 @@ public class HardwareService {
       computerSetHardwareRepository.save(computerSetHardware);
     }
 
+
     Set<AffiliationHardware> affiliationHardwareSet = affiliationHardwareRepository.findAllByHardwareId(id);
     AffiliationHardware lastEntryAffiliation = null;
     for (Iterator setIterator = affiliationHardwareSet.iterator(); setIterator.hasNext(); ) {
       lastEntryAffiliation = (AffiliationHardware) setIterator.next();
     }
-    lastEntryAffiliation.setValidTo(LocalDateTime.now());
-    affiliationHardwareRepository.save(lastEntryAffiliation);
+    if(!lastEntryAffiliation.getAffiliation().getId().equals(request.getAffiliationId()))
+    {
+      lastEntryAffiliation.setValidTo(LocalDateTime.now());
+      affiliationHardwareRepository.save(lastEntryAffiliation);
 
-    Affiliation affiliation = affiliationRepository.findByIdAndIsDeletedIsFalse(request.getAffiliationId())
-        .orElseThrow(() -> new NotFoundException("przynależność", "id", request.getAffiliationId()));
-    AffiliationHardware affiliationHardware = new AffiliationHardware(affiliation, hardware);
-    affiliationHardwareRepository.save(affiliationHardware);
+      Affiliation affiliation = affiliationRepository.findByIdAndIsDeletedIsFalse(request.getAffiliationId())
+          .orElseThrow(() -> new NotFoundException("przynależność", "id", request.getAffiliationId()));
+      AffiliationHardware affiliationHardware = new AffiliationHardware(affiliation, hardware);
+      affiliationHardwareRepository.save(affiliationHardware);
+    }
+
+
+    /*AffiliationHardware lastEntryAffiliation = affiliationHardwareRepository.findTopByHardwareIdByOrderByIdDesc(id)
+        .orElseThrow(() -> new NotFoundException("przynależność - sprzęt(id)", "id", id));
+    if(!lastEntryAffiliation.getAffiliation().getId().equals(request.getAffiliationId())){
+      lastEntryAffiliation.setValidTo(LocalDateTime.now());
+      affiliationHardwareRepository.save(lastEntryAffiliation);
+      Affiliation affiliation = affiliationRepository.findByIdAndIsDeletedIsFalse(request.getAffiliationId())
+          .orElseThrow(() -> new NotFoundException("przynależność", "id", request.getAffiliationId()));
+      AffiliationHardware affiliationHardware = new AffiliationHardware(affiliation, hardware);
+      affiliationHardwareRepository.save(affiliationHardware);
+    }*/
   }
 }
