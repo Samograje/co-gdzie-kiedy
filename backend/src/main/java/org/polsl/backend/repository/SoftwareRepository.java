@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SoftwareRepository extends CrudRepository<Software, Long> {
+  long countByValidToIsNull();
 }

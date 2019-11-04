@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ComputerSetRepository extends JpaRepository<ComputerSet, Long> {
+  long countByValidToIsNull();
 }

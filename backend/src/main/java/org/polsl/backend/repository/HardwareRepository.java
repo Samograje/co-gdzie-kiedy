@@ -10,4 +10,6 @@ import java.util.List;
 public interface HardwareRepository extends CrudRepository<Hardware, Long> {
 
   List<Hardware> findAllByComputerSetHardwareSetIsNull();
+
+  long countByValidToIsNull();
 }

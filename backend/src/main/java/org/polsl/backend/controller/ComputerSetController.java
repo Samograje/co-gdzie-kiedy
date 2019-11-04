@@ -34,18 +34,29 @@ public class ComputerSetController {
    *
    * @return lista zestawów komputerowych
    */
+  @GetMapping
+  public ResponseEntity<?> getAllComputerSets() {
+    return ResponseEntity.ok(computerSetService.getAllComputerSets());
+  }
 
+  /**
+   * Endpoint obsługujący dodawanie nowego zestawu komputerowego.
+   *
+   * @param request stuktura {@link ComputerSetInputDTO} zawierająca dane nowego zestawu komputerowego
+   * @return informacja o poprawnym utworzeniu zestawu komputerowego
+   */
   @PostMapping
   public ResponseEntity<?> createComputerSet(@Valid @RequestBody ComputerSetInputDTO request) {
     computerSetService.createComputerSet(request);
     return ResponseEntity.ok(new ApiBasicResponse(true, "Utworzono Zestaw komputerowy"));
   }
 
-  @GetMapping
-  public ResponseEntity<?> getAllComputerSets() {
-    return ResponseEntity.ok(computerSetService.getAllComputerSets());
-  }
-
+  /**
+   * Endpoint obsługujący edycję parametrów zestawu komputerowego.
+   *
+   * @param request stuktura {@link ComputerSetInputDTO} zawierająca nowe dane zestawu komputerowego
+   * @return informacja o poprawnym zaktualizowaniu parametrów zestawu komputerowego
+   */
   @PutMapping("/{id}")
   public ResponseEntity<?> editComputerSet(
           @PathVariable(value = "id") Long id,
@@ -55,6 +66,12 @@ public class ComputerSetController {
     return ResponseEntity.ok(new ApiBasicResponse(true, "Zaktualizowano parametry zestawu komputerowego"));
   }
 
+  /**
+   * Endpoint obsługujący usuwanie zestawu komputerowego.
+   *
+   * @param id ID wybranego zestawu komputerowego
+   * @return informacja o poprawnym usunięciu zestawu komputerowego
+   */
   @DeleteMapping("/{id}")
   public ResponseEntity<?> deleteComputerSet(@PathVariable(value = "id") Long id) {
     computerSetService.deleteComputerSet(id);
