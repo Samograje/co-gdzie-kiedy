@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<diagram version="1" name="inventory.erd">
+	<entities>
+		<data-source id="postgres-jdbc-16e36235f5b-e3ed427b0a28339">
+			<entity id="1" name="affiliations" fq-name="public.affiliations" order="0" x="226" y="20">
+				<path name="public"/>
+				<path name="tzhljnzg"/>
+			</entity>
+			<entity id="2" name="affiliations_computer_sets" fq-name="public.affiliations_computer_sets" order="1" x="20" y="171">
+				<path name="public"/>
+				<path name="tzhljnzg"/>
+			</entity>
+			<entity id="3" name="affiliations_hardware" fq-name="public.affiliations_hardware" order="2" x="20" y="29">
+				<path name="public"/>
+				<path name="tzhljnzg"/>
+			</entity>
+			<entity id="4" name="computer_sets" fq-name="public.computer_sets" order="3" x="226" y="323">
+				<path name="public"/>
+				<path name="tzhljnzg"/>
+			</entity>
+			<entity id="5" name="computer_sets_hardware" fq-name="public.computer_sets_hardware" order="4" x="20" y="313">
+				<path name="public"/>
+				<path name="tzhljnzg"/>
+			</entity>
+			<entity id="6" name="computer_sets_software" fq-name="public.computer_sets_software" order="5" x="20" y="455">
+				<path name="public"/>
+				<path name="tzhljnzg"/>
+			</entity>
+			<entity id="7" name="hardware" fq-name="public.hardware" order="6" x="226" y="181">
+				<path name="public"/>
+				<path name="tzhljnzg"/>
+			</entity>
+			<entity id="8" name="hardware_dictionary" fq-name="public.hardware_dictionary" order="7" x="422" y="200">
+				<path name="public"/>
+				<path name="tzhljnzg"/>
+			</entity>
+			<entity id="9" name="software" fq-name="public.software" order="8" x="226" y="465">
+				<path name="public"/>
+				<path name="tzhljnzg"/>
+			</entity>
+		</data-source>
+	</entities>
+	<relations>
+		<relation name="fkc05w6w7o46hj1j0rp2ovg0opa" fq-name="public.affiliations_computer_sets.fkc05w6w7o46hj1j0rp2ovg0opa" type="fk" pk-ref="1" fk-ref="2"/>
+		<relation name="fkmbeaq9ayvkyy58xqgfguqwip3" fq-name="public.affiliations_hardware.fkmbeaq9ayvkyy58xqgfguqwip3" type="fk" pk-ref="1" fk-ref="3"/>
+		<relation name="fkcop0nx3kbgso6qjj3yw6o777b" fq-name="public.affiliations_computer_sets.fkcop0nx3kbgso6qjj3yw6o777b" type="fk" pk-ref="4" fk-ref="2"/>
+		<relation name="fk2ps8xeoqchgq378cgajiylw9g" fq-name="public.computer_sets_hardware.fk2ps8xeoqchgq378cgajiylw9g" type="fk" pk-ref="4" fk-ref="5"/>
+		<relation name="fkjwbkil6qcsx7dw6xhm1t4vxgf" fq-name="public.computer_sets_software.fkjwbkil6qcsx7dw6xhm1t4vxgf" type="fk" pk-ref="4" fk-ref="6"/>
+		<relation name="fknpyl65nttqdoyxnwtuu55vwcf" fq-name="public.affiliations_hardware.fknpyl65nttqdoyxnwtuu55vwcf" type="fk" pk-ref="7" fk-ref="3"/>
+		<relation name="fkdxia4gdso46fnkonsi8bh1svs" fq-name="public.computer_sets_hardware.fkdxia4gdso46fnkonsi8bh1svs" type="fk" pk-ref="7" fk-ref="5"/>
+		<relation name="fkef66tc06vykiuvlxa1n6ingfk" fq-name="public.hardware.fkef66tc06vykiuvlxa1n6ingfk" type="fk" pk-ref="8" fk-ref="7"/>
+		<relation name="fkn4dr4kwlubk6lumpivabef64f" fq-name="public.computer_sets_software.fkn4dr4kwlubk6lumpivabef64f" type="fk" pk-ref="9" fk-ref="6"/>
+	</relations>
+</diagram>
