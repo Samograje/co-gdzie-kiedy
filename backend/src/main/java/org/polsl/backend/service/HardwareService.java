@@ -102,44 +102,21 @@ public class HardwareService {
     hardwareRepository.save(hardware);
 
     if (request.getComputerSetId() != null) {
-      Set<ComputerSetHardware> computerSetHardwareSet = computerSetHardwareRepository.findAllByHardwareId(id);
-      if (computerSetHardwareSet != null && computerSetHardwareSet.size() > 0) {
-        ComputerSetHardware lastEntry = null;
-        for (ComputerSetHardware computerSetHardware : computerSetHardwareSet) {
-          lastEntry = computerSetHardware;
-        }
+      ComputerSetHardware lastEntry = computerSetHardwareRepository.findNewestRowForHardware(id)
+          .orElseThrow(() -> new NotFoundException("tabela pośrednia sprzęt(id) - zestaw komputerowy", "id", id));
+      if(!lastEntry.getComputerSet().getId().equals(request.getComputerSetId()))
+      {
         lastEntry.setValidTo(LocalDateTime.now());
         computerSetHardwareRepository.save(lastEntry);
+
+        ComputerSet computerSet = computerSetRepository.findById(request.getComputerSetId())
+            .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", request.getComputerSetId()));
+        ComputerSetHardware computerSetHardware = new ComputerSetHardware(computerSet, hardware);
+        computerSetHardwareRepository.save(computerSetHardware);
       }
-      /*ComputerSetHardware lastEntry = computerSetHardwareRepository.findTopByHardwareIdByOrderByIdDesc(id)
-          .orElseThrow(() -> new NotFoundException("tabela pośrednia sprzęt(id) - zestaw komputerowy", "id", id));
-      lastEntry.setValidTo(LocalDateTime.now());
-      computerSetHardwareRepository.save(lastEntry);*/
-
-      ComputerSet computerSet = computerSetRepository.findById(request.getComputerSetId())
-          .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", request.getComputerSetId()));
-      ComputerSetHardware computerSetHardware = new ComputerSetHardware(computerSet, hardware);
-      computerSetHardwareRepository.save(computerSetHardware);
     }
 
-
-    Set<AffiliationHardware> affiliationHardwareSet = affiliationHardwareRepository.findAllByHardwareId(id);
-    AffiliationHardware lastEntryAffiliation = null;
-    for (AffiliationHardware value : affiliationHardwareSet) {
-      lastEntryAffiliation = value;
-    }
-    if (lastEntryAffiliation != null && !lastEntryAffiliation.getAffiliation().getId().equals(request.getAffiliationId())) {
-      lastEntryAffiliation.setValidTo(LocalDateTime.now());
-      affiliationHardwareRepository.save(lastEntryAffiliation);
-
-      Affiliation affiliation = affiliationRepository.findByIdAndIsDeletedIsFalse(request.getAffiliationId())
-          .orElseThrow(() -> new NotFoundException("przynależność", "id", request.getAffiliationId()));
-      AffiliationHardware affiliationHardware = new AffiliationHardware(affiliation, hardware);
-      affiliationHardwareRepository.save(affiliationHardware);
-    }
-
-
-    /*AffiliationHardware lastEntryAffiliation = affiliationHardwareRepository.findTopByHardwareIdByOrderByIdDesc(id)
+    AffiliationHardware lastEntryAffiliation = affiliationHardwareRepository.findNewestRowForHardware(id)
         .orElseThrow(() -> new NotFoundException("przynależność - sprzęt(id)", "id", id));
     if(!lastEntryAffiliation.getAffiliation().getId().equals(request.getAffiliationId())){
       lastEntryAffiliation.setValidTo(LocalDateTime.now());
@@ -148,6 +125,6 @@ public class HardwareService {
           .orElseThrow(() -> new NotFoundException("przynależność", "id", request.getAffiliationId()));
       AffiliationHardware affiliationHardware = new AffiliationHardware(affiliation, hardware);
       affiliationHardwareRepository.save(affiliationHardware);
-    }*/
+    }
   }
 }
