@@ -33,8 +33,8 @@ public class ComputerSetControllerIntegrationTest {
   public void givenCorrectRequest_whenGettingComputerSetsList_thenReturnStatus200AndData() throws Exception {
     mvc.perform(get("/api/computer-sets"))
         .andExpect(status().is(200))
-            .andExpect(jsonPath("$.totalElements").value(3))
-            .andExpect(jsonPath("$.items", hasSize(3)))
+        .andExpect(jsonPath("$.totalElements").value(3))
+        .andExpect(jsonPath("$.items", hasSize(3)))
         .andExpect(jsonPath("$.items[0].id").value(1))
         .andExpect(jsonPath("$.items[0].name").value("HP ProBook"))
         .andExpect(jsonPath("$.items[1].id").value(2))
