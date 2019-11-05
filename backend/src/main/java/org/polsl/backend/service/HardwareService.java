@@ -22,9 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Logika biznesowa hardware'u.
@@ -104,11 +102,12 @@ public class HardwareService {
     if (request.getComputerSetId() != null) {
       ComputerSetHardware lastEntry = computerSetHardwareRepository.findNewestRowForHardware(id)
           .orElseThrow(() -> new NotFoundException("tabela pośrednia sprzęt(id) - zestaw komputerowy", "id", id));
-      if(!lastEntry.getComputerSet().getId().equals(request.getComputerSetId()))
-      {
+      if (!lastEntry.getComputerSet().getId().equals(request.getComputerSetId())) {
         lastEntry.setValidTo(LocalDateTime.now());
         computerSetHardwareRepository.save(lastEntry);
 
+        // TODO: w momencie, gdy tabela zestawów komputerowych będzie miała kolumnę valid_to,
+        //  trzeba będzie tutaj sprawdzać, czy zestaw komputerowy nie jest aby usunięty.
         ComputerSet computerSet = computerSetRepository.findById(request.getComputerSetId())
             .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", request.getComputerSetId()));
         ComputerSetHardware computerSetHardware = new ComputerSetHardware(computerSet, hardware);
@@ -118,7 +117,7 @@ public class HardwareService {
 
     AffiliationHardware lastEntryAffiliation = affiliationHardwareRepository.findNewestRowForHardware(id)
         .orElseThrow(() -> new NotFoundException("przynależność - sprzęt(id)", "id", id));
-    if(!lastEntryAffiliation.getAffiliation().getId().equals(request.getAffiliationId())){
+    if (!lastEntryAffiliation.getAffiliation().getId().equals(request.getAffiliationId())) {
       lastEntryAffiliation.setValidTo(LocalDateTime.now());
       affiliationHardwareRepository.save(lastEntryAffiliation);
       Affiliation affiliation = affiliationRepository.findByIdAndIsDeletedIsFalse(request.getAffiliationId())

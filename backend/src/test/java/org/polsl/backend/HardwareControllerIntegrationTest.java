@@ -164,4 +164,6 @@ public class HardwareControllerIntegrationTest {
         .andExpect(jsonPath("$.success").value(true))
         .andExpect(jsonPath("$.message").value("Zaktualizowano parametry sprzętu"));
   }
+
+  // TODO: dopisać testy na dodawanie i edycję, w których request zawiera idki obiektów powiązanych, które nie istnieją
 }
