@@ -13,4 +13,6 @@ public interface AffiliationRepository extends CrudRepository<Affiliation, Long>
   List<Affiliation> findAllByIsDeletedIsFalse();
 
   Optional<Affiliation> findByIdAndIsDeletedIsFalse(Long id);
+
+  long countByIsDeletedIsFalse();
 }

@@ -2,14 +2,14 @@ package org.polsl.backend.repository;
 
 
 import org.polsl.backend.entity.Software;
-import org.polsl.backend.key.ComputerSetSoftwareKey;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface SoftwareRepository extends JpaRepository<Software, ComputerSetSoftwareKey> {
-
+public interface SoftwareRepository extends CrudRepository<Software, Long> {
   Optional<Software> findById(Long id);
+
+  long countByValidToIsNull();
 }
