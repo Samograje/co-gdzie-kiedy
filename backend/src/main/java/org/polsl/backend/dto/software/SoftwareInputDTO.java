@@ -1,10 +1,13 @@
 package org.polsl.backend.dto.software;
 
-import com.sun.istack.NotNull;
+import javax.validation.constraints.NotEmpty;
+import java.util.Set;
 
 public class SoftwareInputDTO {
-  @NotNull
+  @NotEmpty
   private String name;
+
+  private Set<Long> computerSetIds;
 
   public String getName() {
     return name;
@@ -12,5 +15,13 @@ public class SoftwareInputDTO {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public Set<Long> getComputerSetIds() {
+    return computerSetIds;
+  }
+
+  public void setComputerSetIds(Set<Long> computerSetIds) {
+    this.computerSetIds = computerSetIds;
   }
 }
