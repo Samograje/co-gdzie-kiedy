@@ -76,11 +76,10 @@ public class SoftwareService {
     Software software = softwareRepository.findById(id).orElseThrow(() -> new NotFoundException("oprogramowanie", "id", id));
     software.setName(request.getName());
     softwareRepository.save(software);
-
     Set<Long> computerSetIdsSet = request.getComputerSetIds();
-    if (computerSetIdsSet != null) {
-      Set<ComputerSetSoftware> computerSetSoftwareSet = computerSetSoftwareRepository.findAllBySoftwareId(id);
 
+    if (computerSetIdsSet != null) {
+      Set<ComputerSetSoftware> computerSetSoftwareSet = computerSetSoftwareRepository.findAllBySoftwareIdAndValidToIsNull(id);
       //Old record(s)
       for (ComputerSetSoftware computerSetSoftware : computerSetSoftwareSet) {
         computerSetSoftware.setValidTo(LocalDateTime.now());
