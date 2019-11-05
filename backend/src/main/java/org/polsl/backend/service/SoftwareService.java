@@ -80,11 +80,15 @@ public class SoftwareService {
 
     if (computerSetIdsSet != null) {
       Set<ComputerSetSoftware> computerSetSoftwareSet = computerSetSoftwareRepository.findAllBySoftwareIdAndValidToIsNull(id);
+
+      //
+
+
       //Old record(s)
-      for (ComputerSetSoftware computerSetSoftware : computerSetSoftwareSet) {
+      computerSetSoftwareSet.forEach(computerSetSoftware -> {
         computerSetSoftware.setValidTo(LocalDateTime.now());
         computerSetSoftwareRepository.save(computerSetSoftware);
-      }
+      });
 
       //New record(s)
       computerSetIdsSet.forEach(computerSetId -> {
