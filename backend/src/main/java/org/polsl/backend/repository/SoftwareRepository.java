@@ -10,7 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface SoftwareRepository extends JpaRepository<Software, ComputerSetSoftwareKey> {
-  Optional<Software> findAllById(Long id);
 
   Optional<Software> findById(Long id);
 }
