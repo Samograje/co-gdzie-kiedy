@@ -104,7 +104,7 @@ public class ComputerSetService {
   public void editComputerSet(Long id, ComputerSetInputDTO request) throws NotFoundException {
     ComputerSet computerSet = computerSetRepository.findById(id)
             .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", id));
-    computerSet.setName(request.getName());
+    /*computerSet.setName(request.getName());
     computerSetRepository.save(computerSet);
 
     Affiliation affiliation = affiliationRepository.findById(request.getAffiliationId())
@@ -128,7 +128,7 @@ public class ComputerSetService {
         ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware(computerSet, software);
         computerSetSoftwareRepository.save(computerSetSoftware);
       });
-    }
+    }*/
   }
 
   public void deleteComputerSet(Long id) throws NotFoundException {
@@ -136,6 +136,22 @@ public class ComputerSetService {
             .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", id));
     computerSet.setValidTo(LocalDateTime.now());
     computerSetRepository.save(computerSet);
+
+    affiliationComputerSetRepository.findAllByComputerSetIdAndValidToIsNull(computerSet.getId()).forEach(relation -> {
+      relation.setValidTo(LocalDateTime.now());
+      affiliationComputerSetRepository.save(relation);
+    });
+
+    computerSetHardwareRepository.findAllByComputerSetIdAndValidToIsNull(computerSet.getId()).forEach(relation -> {
+      relation.setValidTo(LocalDateTime.now());
+      computerSetHardwareRepository.save(relation);
+    });
+
+    computerSetSoftwareRepository.findAllBySoftwareIdAndValidToIsNull(computerSet.getId()).forEach(relation -> {
+      relation.setValidTo(LocalDateTime.now());
+      computerSetSoftwareRepository.save(relation);
+    });
+
   }
 
 }

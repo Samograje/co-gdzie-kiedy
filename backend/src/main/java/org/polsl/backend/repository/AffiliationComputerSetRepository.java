@@ -7,4 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AffiliationComputerSetRepository extends CrudRepository<AffiliationComputerSet, AffiliationComputerSetKey> {
+
+  Iterable<AffiliationComputerSet> findAllByComputerSetIdAndValidToIsNull(Long computerSetId);
+
 }

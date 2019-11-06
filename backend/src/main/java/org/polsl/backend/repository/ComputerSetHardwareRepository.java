@@ -14,4 +14,6 @@ public interface ComputerSetHardwareRepository extends CrudRepository<ComputerSe
   @Query(value = "SELECT * FROM public.computer_sets_hardware WHERE hardware_id = :id ORDER BY valid_from desc LIMIT 1;",
           nativeQuery = true)
   Optional<ComputerSetHardware> findNewestRowForHardware(Long id);
+
+  Iterable<ComputerSetHardware> findAllByComputerSetIdAndValidToIsNull(Long computerSetId);
 }
