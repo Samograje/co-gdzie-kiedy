@@ -1,5 +1,6 @@
 package org.polsl.backend.service;
 
+import org.apache.tomcat.jni.Local;
 import org.polsl.backend.dto.PaginatedResult;
 import org.polsl.backend.dto.hardware.HardwareInputDTO;
 import org.polsl.backend.dto.hardware.HardwareOutputDTO;
@@ -125,5 +126,28 @@ public class HardwareService {
       AffiliationHardware affiliationHardware = new AffiliationHardware(affiliation, hardware);
       affiliationHardwareRepository.save(affiliationHardware);
     }
+  }
+
+  @Transactional
+  public void deleteHardware(Long id) throws NotFoundException{
+    Hardware hardware = hardwareRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException("sprzęt", "id", id));
+    hardware.setValidTo(LocalDateTime.now());
+    hardwareRepository.save(hardware);
+
+    ComputerSetHardware lastEntryComputerSet = computerSetHardwareRepository.findNewestRowForHardware(id)
+        .orElse(null);
+    if(lastEntryComputerSet != null){
+      if(lastEntryComputerSet.getValidTo() != null)
+      {
+        lastEntryComputerSet.setValidTo(LocalDateTime.now());
+        computerSetHardwareRepository.save(lastEntryComputerSet);
+      }
+    }
+
+    AffiliationHardware lastEntryAffiliation = affiliationHardwareRepository.findNewestRowForHardware(id)
+        .orElseThrow(() -> new NotFoundException("przynależność - sprzęt(id)", "id", id));
+    lastEntryAffiliation.setValidTo(LocalDateTime.now());
+    affiliationHardwareRepository.save(lastEntryAffiliation);
   }
 }
