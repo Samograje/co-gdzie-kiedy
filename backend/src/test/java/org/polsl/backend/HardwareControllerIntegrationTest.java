@@ -16,8 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -31,7 +30,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     @Sql(scripts = "/scripts/create-test-hardware.sql"),
     @Sql(scripts = "/scripts/create-test-computer_sets.sql"),
     @Sql(scripts = "/scripts/create-test-computer_sets_hardware.sql"),
-    @Sql(scripts = "/scripts/create-test-affiliation.sql")
+        @Sql(scripts = "/scripts/create-test-affiliation.sql"),
+        @Sql(scripts = "/scripts/create-test-affiliation_hardware.sql")
 })
 public class HardwareControllerIntegrationTest {
   @Autowired
@@ -98,4 +98,70 @@ public class HardwareControllerIntegrationTest {
         .andExpect(jsonPath("$.success").value(true))
         .andExpect(jsonPath("$.message").value("Utworzono sprzęt"));
   }
+
+  @Test
+  public void givenEmptyRequest_whenEditingHardware_thenReturnStatus400() throws Exception {
+    HardwareInputDTO request = new HardwareInputDTO();
+    mvc.perform(put("/api/hardware/1")
+            .content(objectMapper.writeValueAsString(request))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().is(400))
+            .andExpect(jsonPath("$.fieldErrors", hasSize(3)))
+            .andExpect(jsonPath("$.fieldErrors[?(@.field =~ /name/)].message").value("must not be empty"))
+            .andExpect(jsonPath("$.fieldErrors[?(@.field =~ /dictionaryId/)].message").value("must not be null"))
+            .andExpect(jsonPath("$.fieldErrors[?(@.field =~ /affiliationId/)].message").value("must not be null"));
+  }
+
+  @Test
+  public void givenInvalidId_whenEditingHardware_thenReturnStatus404() throws Exception {
+    HardwareInputDTO request = new HardwareInputDTO();
+    request.setName("Gigabyte 1234");
+    request.setComputerSetId((long) 1);
+    request.setDictionaryId((long) 1);
+    request.setAffiliationId((long) 1);
+    mvc.perform(put("/api/hardware/0")
+            .content(objectMapper.writeValueAsString(request))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().is(404))
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.message").value("Nie istnieje sprzęt o id: '0'"));
+  }
+
+  @Test
+  public void givenNoId_whenEditingHardware_thenReturnStatus405() throws Exception {
+    mvc.perform(put("/api/hardware")
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().is(405));
+  }
+
+  @Test
+  public void givenCorrectRequestWithoutComputerSetId_whenEditingHardware_thenReturnStatus200AndData() throws Exception {
+    HardwareInputDTO request = new HardwareInputDTO();
+    request.setName("GTX 1070Ti");
+    request.setDictionaryId((long) 1);
+    request.setAffiliationId((long) 2);
+    mvc.perform(put("/api/hardware/2")
+            .content(objectMapper.writeValueAsString(request))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().is(200))
+            .andExpect(jsonPath("$.success").value(true))
+            .andExpect(jsonPath("$.message").value("Zaktualizowano parametry sprzętu"));
+  }
+
+  @Test
+  public void givenCorrectRequestWithComputerSetId_whenEditingHardware_thenReturnStatus200AndData() throws Exception {
+    HardwareInputDTO request = new HardwareInputDTO();
+    request.setName("WiFi Receiver");
+    request.setComputerSetId((long) 2);
+    request.setDictionaryId((long) 2);
+    request.setAffiliationId((long) 4);
+    mvc.perform(put("/api/hardware/3")
+            .content(objectMapper.writeValueAsString(request))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().is(200))
+            .andExpect(jsonPath("$.success").value(true))
+            .andExpect(jsonPath("$.message").value("Zaktualizowano parametry sprzętu"));
+  }
+
+  // TODO: dopisać testy na dodawanie i edycję, w których request zawiera idki obiektów powiązanych, które nie istnieją
 }

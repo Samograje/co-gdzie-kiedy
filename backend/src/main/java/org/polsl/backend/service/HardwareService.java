@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,5 +87,43 @@ public class HardwareService {
         .orElseThrow(() -> new NotFoundException("przynależność", "id", request.getAffiliationId()));
     AffiliationHardware affiliationHardware = new AffiliationHardware(affiliation, hardware);
     affiliationHardwareRepository.save(affiliationHardware);
+  }
+
+  @Transactional
+  public void editHardware(Long id, HardwareInputDTO request) throws NotFoundException {
+    Hardware hardware = hardwareRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException("sprzęt", "id", id));
+    hardware.setName(request.getName());
+    HardwareDictionary hardwareDictionary = hardwareDictionaryRepository.findById(request.getDictionaryId())
+            .orElseThrow(() -> new NotFoundException("słownik urządzeń", "id", request.getDictionaryId()));
+    hardware.setHardwareDictionary(hardwareDictionary);
+    hardwareRepository.save(hardware);
+
+    if (request.getComputerSetId() != null) {
+      ComputerSetHardware lastEntry = computerSetHardwareRepository.findNewestRowForHardware(id)
+              .orElseThrow(() -> new NotFoundException("tabela pośrednia sprzęt(id) - zestaw komputerowy", "id", id));
+      if (!lastEntry.getComputerSet().getId().equals(request.getComputerSetId())) {
+        lastEntry.setValidTo(LocalDateTime.now());
+        computerSetHardwareRepository.save(lastEntry);
+
+        // TODO: w momencie, gdy tabela zestawów komputerowych będzie miała kolumnę valid_to,
+        //  trzeba będzie tutaj sprawdzać, czy zestaw komputerowy nie jest aby usunięty.
+        ComputerSet computerSet = computerSetRepository.findById(request.getComputerSetId())
+                .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", request.getComputerSetId()));
+        ComputerSetHardware computerSetHardware = new ComputerSetHardware(computerSet, hardware);
+        computerSetHardwareRepository.save(computerSetHardware);
+      }
+    }
+
+    AffiliationHardware lastEntryAffiliation = affiliationHardwareRepository.findNewestRowForHardware(id)
+            .orElseThrow(() -> new NotFoundException("przynależność - sprzęt(id)", "id", id));
+    if (!lastEntryAffiliation.getAffiliation().getId().equals(request.getAffiliationId())) {
+      lastEntryAffiliation.setValidTo(LocalDateTime.now());
+      affiliationHardwareRepository.save(lastEntryAffiliation);
+      Affiliation affiliation = affiliationRepository.findByIdAndIsDeletedIsFalse(request.getAffiliationId())
+              .orElseThrow(() -> new NotFoundException("przynależność", "id", request.getAffiliationId()));
+      AffiliationHardware affiliationHardware = new AffiliationHardware(affiliation, hardware);
+      affiliationHardwareRepository.save(affiliationHardware);
+    }
   }
 }
