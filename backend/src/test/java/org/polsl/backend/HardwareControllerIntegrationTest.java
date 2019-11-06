@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -163,6 +164,28 @@ public class HardwareControllerIntegrationTest {
         .andExpect(status().is(200))
         .andExpect(jsonPath("$.success").value(true))
         .andExpect(jsonPath("$.message").value("Zaktualizowano parametry sprzętu"));
+  }
+
+  @Test
+  public void givenInvalidId_whenDeletingHardware_thenReturnStatus404() throws Exception {
+    mvc.perform(delete("/api/hardware/0"))
+        .andExpect(status().is(404))
+        .andExpect(jsonPath("$.success").value(false))
+        .andExpect(jsonPath("$.message").value("Nie istnieje sprzęt o id: '0'"));
+  }
+
+  @Test
+  public void givenNoId_whenDeletingHardware_thenReturnStatus405() throws Exception {
+    mvc.perform(delete("/api/hardware"))
+        .andExpect(status().is(405));
+  }
+
+  @Test
+  public void givenCorrectRequest_whenDeletingHardware_thenReturnStatus200AndData() throws Exception {
+    mvc.perform(delete("/api/hardware/2"))
+        .andExpect(status().is(200))
+        .andExpect(jsonPath("$.success").value(true))
+        .andExpect(jsonPath("$.message").value("Usunięto sprzęt"));
   }
 
   // TODO: dopisać testy na dodawanie i edycję, w których request zawiera idki obiektów powiązanych, które nie istnieją

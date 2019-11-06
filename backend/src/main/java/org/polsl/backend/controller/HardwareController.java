@@ -5,6 +5,7 @@ import org.polsl.backend.dto.hardware.HardwareInputDTO;
 import org.polsl.backend.service.HardwareService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -63,5 +64,17 @@ public class HardwareController {
   ) {
     hardwareService.editHardware(id, request);
     return ResponseEntity.ok(new ApiBasicResponse(true, "Zaktualizowano parametry sprzętu"));
+  }
+
+  /**
+   * Endpoint obsługujący usuwanie sprzętu.
+   *
+   * @param id ID wybranego sprzętu
+   * @return informacja o poprawnym usunięciu sprzętu
+   */
+  @DeleteMapping("/{id}")
+  public ResponseEntity<?> deleteHardware(@PathVariable(value = "id") Long id) {
+    hardwareService.deleteHardware(id);
+    return ResponseEntity.ok(new ApiBasicResponse(true, "Usunięto sprzęt"));
   }
 }
