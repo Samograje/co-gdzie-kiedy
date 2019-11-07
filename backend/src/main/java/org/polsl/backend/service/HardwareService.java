@@ -103,8 +103,11 @@ public class HardwareService {
       ComputerSetHardware lastEntry = computerSetHardwareRepository.findNewestRowForHardware(id)
           .orElseThrow(() -> new NotFoundException("tabela pośrednia sprzęt(id) - zestaw komputerowy", "id", id));
       if (!lastEntry.getComputerSet().getId().equals(request.getComputerSetId())) {
-        lastEntry.setValidTo(LocalDateTime.now());
-        computerSetHardwareRepository.save(lastEntry);
+        if(lastEntry.getComputerSet().getValidTo() == null)
+        {
+          lastEntry.setValidTo(LocalDateTime.now());
+          computerSetHardwareRepository.save(lastEntry);
+        }
 
         // TODO: w momencie, gdy tabela zestawów komputerowych będzie miała kolumnę valid_to,
         //  trzeba będzie tutaj sprawdzać, czy zestaw komputerowy nie jest aby usunięty.
