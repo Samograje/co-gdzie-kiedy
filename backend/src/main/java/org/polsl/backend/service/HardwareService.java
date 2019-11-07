@@ -126,4 +126,26 @@ public class HardwareService {
       affiliationHardwareRepository.save(affiliationHardware);
     }
   }
+
+  @Transactional
+  public void deleteHardware(Long id) throws NotFoundException {
+    Hardware hardware = hardwareRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException("sprzęt", "id", id));
+    hardware.setValidTo(LocalDateTime.now());
+    hardwareRepository.save(hardware);
+
+    ComputerSetHardware lastEntryComputerSet = computerSetHardwareRepository.findNewestRowForHardware(id)
+        .orElse(null);
+    if (lastEntryComputerSet != null) {
+      if (lastEntryComputerSet.getValidTo() == null) {
+        lastEntryComputerSet.setValidTo(LocalDateTime.now());
+        computerSetHardwareRepository.save(lastEntryComputerSet);
+      }
+    }
+
+    AffiliationHardware lastEntryAffiliation = affiliationHardwareRepository.findNewestRowForHardware(id)
+        .orElseThrow(() -> new NotFoundException("przynależność - sprzęt(id)", "id", id));
+    lastEntryAffiliation.setValidTo(LocalDateTime.now());
+    affiliationHardwareRepository.save(lastEntryAffiliation);
+  }
 }
