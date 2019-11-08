@@ -12,5 +12,5 @@ public interface AffiliationHardwareRepository extends CrudRepository<Affiliatio
 
   @Query(value = "SELECT * FROM public.affiliations_hardware WHERE hardware_id = :id ORDER BY valid_from desc LIMIT 1;",
       nativeQuery = true)
-  Optional<AffiliationHardware> findNewestRowForHardware(Long id);
+  Optional<AffiliationHardware> findTheLatestRowForHardware(Long id);
 }
