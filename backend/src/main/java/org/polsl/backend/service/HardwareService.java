@@ -123,7 +123,7 @@ public class HardwareService {
     }
 
     AffiliationHardware lastEntryAffiliation = affiliationHardwareRepository.findNewestRowForHardware(id)
-        .orElseThrow(() -> new NotFoundException("przynależność - sprzęt(id)", "id", id));
+        .orElseThrow(() -> new RuntimeException("Brak połączenia przynależności ze sprzętem o id: " + id));
     if (!lastEntryAffiliation.getAffiliation().getId().equals(request.getAffiliationId())) {
       lastEntryAffiliation.setValidTo(LocalDateTime.now());
       affiliationHardwareRepository.save(lastEntryAffiliation);
@@ -151,7 +151,7 @@ public class HardwareService {
     }
 
     AffiliationHardware lastEntryAffiliation = affiliationHardwareRepository.findNewestRowForHardware(id)
-        .orElseThrow(() -> new NotFoundException("przynależność - sprzęt(id)", "id", id));
+        .orElseThrow(() -> new RuntimeException("Brak połączenia przynależności ze sprzętem o id: " + id));
     lastEntryAffiliation.setValidTo(LocalDateTime.now());
     affiliationHardwareRepository.save(lastEntryAffiliation);
   }
