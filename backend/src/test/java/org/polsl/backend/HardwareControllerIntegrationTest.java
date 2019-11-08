@@ -74,6 +74,35 @@ public class HardwareControllerIntegrationTest {
   }
 
   @Test
+  public void givenInvalidAffiliationId_whenAddingHardware_thenReturnStatus404() throws Exception {
+    HardwareInputDTO request = new HardwareInputDTO();
+    request.setName("RTX 2000");
+    request.setAffiliationId((long) 0);
+    request.setDictionaryId((long) 1);
+    mvc.perform(post("/api/hardware")
+        .content(objectMapper.writeValueAsString(request))
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().is(404))
+        .andExpect(jsonPath("$.success").value(false))
+        .andExpect(jsonPath("$.message").value("Nie istnieje przynależność o id: '0'"));
+  }
+
+  @Test
+  public void givenInvalidComputerSetId_whenAddingHardware_thenReturnStatus404() throws Exception {
+    HardwareInputDTO request = new HardwareInputDTO();
+    request.setName("RTX 2000");
+    request.setAffiliationId((long) 1);
+    request.setComputerSetId((long) 0);
+    request.setDictionaryId((long) 1);
+    mvc.perform(post("/api/hardware")
+        .content(objectMapper.writeValueAsString(request))
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().is(404))
+        .andExpect(jsonPath("$.success").value(false))
+        .andExpect(jsonPath("$.message").value("Nie istnieje zestaw komputerowy o id: '0'"));
+  }
+
+  @Test
   public void givenCorrectRequestWithComputerSetId_whenAddingHardware_thenReturnStatus200AndData() throws Exception {
     HardwareInputDTO request = new HardwareInputDTO();
     request.setName("GTX 7070");
@@ -100,35 +129,6 @@ public class HardwareControllerIntegrationTest {
         .andExpect(status().is(200))
         .andExpect(jsonPath("$.success").value(true))
         .andExpect(jsonPath("$.message").value("Utworzono sprzęt"));
-  }
-
-  @Test
-  public void givenInvalidAffiliationId_whenAddingHardware_thenReturnStatus404() throws Exception{
-    HardwareInputDTO request = new HardwareInputDTO();
-    request.setName("RTX 2000");
-    request.setAffiliationId((long) 0);
-    request.setDictionaryId((long) 1);
-    mvc.perform(post("/api/hardware")
-        .content(objectMapper.writeValueAsString(request))
-        .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().is(404))
-        .andExpect(jsonPath("$.success").value(false))
-        .andExpect(jsonPath("$.message").value("Nie istnieje przynależność o id: '0'"));
-  }
-
-  @Test
-  public void givenInvalidComputerSetId_whenAddingHardware_thenReturnStatus404() throws Exception{
-    HardwareInputDTO request = new HardwareInputDTO();
-    request.setName("RTX 2000");
-    request.setAffiliationId((long) 1);
-    request.setComputerSetId((long) 0);
-    request.setDictionaryId((long) 1);
-    mvc.perform(post("/api/hardware")
-        .content(objectMapper.writeValueAsString(request))
-        .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().is(404))
-        .andExpect(jsonPath("$.success").value(false))
-        .andExpect(jsonPath("$.message").value("Nie istnieje zestaw komputerowy o id: '0'"));
   }
 
   @Test
@@ -167,35 +167,6 @@ public class HardwareControllerIntegrationTest {
   }
 
   @Test
-  public void givenCorrectRequestWithoutComputerSetId_whenEditingHardware_thenReturnStatus200AndData() throws Exception {
-    HardwareInputDTO request = new HardwareInputDTO();
-    request.setName("GTX 1070Ti");
-    request.setDictionaryId((long) 1);
-    request.setAffiliationId((long) 2);
-    mvc.perform(put("/api/hardware/2")
-        .content(objectMapper.writeValueAsString(request))
-        .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().is(200))
-        .andExpect(jsonPath("$.success").value(true))
-        .andExpect(jsonPath("$.message").value("Zaktualizowano parametry sprzętu"));
-  }
-
-  @Test
-  public void givenCorrectRequestWithComputerSetId_whenEditingHardware_thenReturnStatus200AndData() throws Exception {
-    HardwareInputDTO request = new HardwareInputDTO();
-    request.setName("WiFi Receiver");
-    request.setComputerSetId((long) 2);
-    request.setDictionaryId((long) 2);
-    request.setAffiliationId((long) 4);
-    mvc.perform(put("/api/hardware/3")
-        .content(objectMapper.writeValueAsString(request))
-        .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().is(200))
-        .andExpect(jsonPath("$.success").value(true))
-        .andExpect(jsonPath("$.message").value("Zaktualizowano parametry sprzętu"));
-  }
-
-  @Test
   public void givenInvalidAffiliationId_whenEditingHardware_thenReturnStatus404() throws Exception {
     HardwareInputDTO request = new HardwareInputDTO();
     request.setName("Gigabyte 4321");
@@ -222,6 +193,35 @@ public class HardwareControllerIntegrationTest {
         .andExpect(status().is(404))
         .andExpect(jsonPath("$.success").value(false))
         .andExpect(jsonPath("$.message").value("Nie istnieje zestaw komputerowy o id: '0'"));
+  }
+
+  @Test
+  public void givenCorrectRequestWithoutComputerSetId_whenEditingHardware_thenReturnStatus200AndData() throws Exception {
+    HardwareInputDTO request = new HardwareInputDTO();
+    request.setName("GTX 1070Ti");
+    request.setDictionaryId((long) 1);
+    request.setAffiliationId((long) 2);
+    mvc.perform(put("/api/hardware/2")
+        .content(objectMapper.writeValueAsString(request))
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().is(200))
+        .andExpect(jsonPath("$.success").value(true))
+        .andExpect(jsonPath("$.message").value("Zaktualizowano parametry sprzętu"));
+  }
+
+  @Test
+  public void givenCorrectRequestWithComputerSetId_whenEditingHardware_thenReturnStatus200AndData() throws Exception {
+    HardwareInputDTO request = new HardwareInputDTO();
+    request.setName("WiFi Receiver");
+    request.setComputerSetId((long) 2);
+    request.setDictionaryId((long) 2);
+    request.setAffiliationId((long) 4);
+    mvc.perform(put("/api/hardware/3")
+        .content(objectMapper.writeValueAsString(request))
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().is(200))
+        .andExpect(jsonPath("$.success").value(true))
+        .andExpect(jsonPath("$.message").value("Zaktualizowano parametry sprzętu"));
   }
 
   @Test
