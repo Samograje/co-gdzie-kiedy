@@ -100,7 +100,7 @@ public class HardwareService {
     hardware.setHardwareDictionary(hardwareDictionary);
     hardwareRepository.save(hardware);
 
-    Optional<ComputerSetHardware> lastEntry = computerSetHardwareRepository.findNewestRowForHardware(id);
+    Optional<ComputerSetHardware> lastEntry = computerSetHardwareRepository.findTheLatestRowForHardware(id);
     if (lastEntry.isPresent() && !lastEntry.get().getComputerSet().getId().equals(request.getComputerSetId())) {
       ComputerSetHardware computerSetHardware = lastEntry.get();
       computerSetHardware.setValidTo(LocalDateTime.now());
@@ -134,7 +134,7 @@ public class HardwareService {
     hardware.setValidTo(LocalDateTime.now());
     hardwareRepository.save(hardware);
 
-    Optional<ComputerSetHardware> lastEntryComputerSet = computerSetHardwareRepository.findNewestRowForHardware(id);
+    Optional<ComputerSetHardware> lastEntryComputerSet = computerSetHardwareRepository.findTheLatestRowForHardware(id);
     if (lastEntryComputerSet.isPresent() && lastEntryComputerSet.get().getValidTo() == null) {
       ComputerSetHardware computerSetHardware = lastEntryComputerSet.get();
       computerSetHardware.setValidTo(LocalDateTime.now());
