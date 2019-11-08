@@ -79,8 +79,6 @@ public class HardwareService {
     if (request.getComputerSetId() != null) {
       ComputerSet computerSet = computerSetRepository.findByIdAndValidToIsNull(request.getComputerSetId())
           .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", request.getComputerSetId()));
-      // TODO: w momencie, gdy tabela zestawów komputerowych będzie miała kolumnę valid_to,
-      //  trzeba będzie tutaj sprawdzać, czy zestaw komputerowy nie jest aby usunięty.
       ComputerSetHardware computerSetHardware = new ComputerSetHardware(computerSet, hardware);
       computerSetHardwareRepository.save(computerSetHardware);
     }
@@ -110,13 +108,10 @@ public class HardwareService {
           computerSetHardwareRepository.save(lastEntry);
         }
 
-        // TODO: w momencie, gdy tabela zestawów komputerowych będzie miała kolumnę valid_to,
-        //  trzeba będzie tutaj sprawdzać, czy zestaw komputerowy nie jest aby usunięty.
         ComputerSet computerSet = computerSetRepository.findByIdAndValidToIsNull(request.getComputerSetId())
             .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", request.getComputerSetId()));
         ComputerSetHardware computerSetHardware = new ComputerSetHardware(computerSet, hardware);
         computerSetHardwareRepository.save(computerSetHardware);
-
       }
     }
 
