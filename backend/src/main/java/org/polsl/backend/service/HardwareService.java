@@ -134,13 +134,11 @@ public class HardwareService {
     hardware.setValidTo(LocalDateTime.now());
     hardwareRepository.save(hardware);
 
-    ComputerSetHardware lastEntryComputerSet = computerSetHardwareRepository.findNewestRowForHardware(id)
-        .orElse(null);
-    if (lastEntryComputerSet != null) {
-      if (lastEntryComputerSet.getValidTo() == null) {
-        lastEntryComputerSet.setValidTo(LocalDateTime.now());
-        computerSetHardwareRepository.save(lastEntryComputerSet);
-      }
+    Optional<ComputerSetHardware> lastEntryComputerSet = computerSetHardwareRepository.findNewestRowForHardware(id);
+    if (lastEntryComputerSet.isPresent() && lastEntryComputerSet.get().getValidTo() == null) {
+      ComputerSetHardware computerSetHardware = lastEntryComputerSet.get();
+      computerSetHardware.setValidTo(LocalDateTime.now());
+      computerSetHardwareRepository.save(computerSetHardware);
     }
 
     AffiliationHardware lastEntryAffiliation = affiliationHardwareRepository.findNewestRowForHardware(id)
