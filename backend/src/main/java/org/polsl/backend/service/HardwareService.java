@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Logika biznesowa hardware'u.
@@ -99,20 +100,19 @@ public class HardwareService {
     hardware.setHardwareDictionary(hardwareDictionary);
     hardwareRepository.save(hardware);
 
-    if (request.getComputerSetId() != null) {
-      ComputerSetHardware lastEntry = computerSetHardwareRepository.findNewestRowForHardware(id)
-          .orElseThrow(() -> new NotFoundException("tabela pośrednia sprzęt(id) - zestaw komputerowy", "id", id));
-      if (!lastEntry.getComputerSet().getId().equals(request.getComputerSetId())) {
-        if (lastEntry.getComputerSet().getValidTo() == null) {
-          lastEntry.setValidTo(LocalDateTime.now());
-          computerSetHardwareRepository.save(lastEntry);
-        }
-
-        ComputerSet computerSet = computerSetRepository.findByIdAndValidToIsNull(request.getComputerSetId())
-            .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", request.getComputerSetId()));
-        ComputerSetHardware computerSetHardware = new ComputerSetHardware(computerSet, hardware);
-        computerSetHardwareRepository.save(computerSetHardware);
-      }
+    Optional<ComputerSetHardware> lastEntry = computerSetHardwareRepository.findNewestRowForHardware(id);
+    if (lastEntry.isPresent() && !lastEntry.get().getComputerSet().getId().equals(request.getComputerSetId())) {
+      ComputerSetHardware computerSetHardware = lastEntry.get();
+      computerSetHardware.setValidTo(LocalDateTime.now());
+      computerSetHardwareRepository.save(computerSetHardware);
+    }
+    if (request.getComputerSetId() != null && !(
+        lastEntry.isPresent() && lastEntry.get().getComputerSet().getId().equals(request.getComputerSetId())
+    )) {
+      ComputerSet computerSet = computerSetRepository.findByIdAndValidToIsNull(request.getComputerSetId())
+          .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", request.getComputerSetId()));
+      ComputerSetHardware computerSetHardware = new ComputerSetHardware(computerSet, hardware);
+      computerSetHardwareRepository.save(computerSetHardware);
     }
 
     AffiliationHardware lastEntryAffiliation = affiliationHardwareRepository.findNewestRowForHardware(id)
