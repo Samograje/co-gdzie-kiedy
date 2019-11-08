@@ -77,7 +77,7 @@ public class HardwareService {
     hardwareRepository.save(hardware);
 
     if (request.getComputerSetId() != null) {
-      ComputerSet computerSet = computerSetRepository.findById(request.getComputerSetId())
+      ComputerSet computerSet = computerSetRepository.findByIdAndValidToIsNull(request.getComputerSetId())
           .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", request.getComputerSetId()));
       // TODO: w momencie, gdy tabela zestawów komputerowych będzie miała kolumnę valid_to,
       //  trzeba będzie tutaj sprawdzać, czy zestaw komputerowy nie jest aby usunięty.
@@ -105,20 +105,18 @@ public class HardwareService {
       ComputerSetHardware lastEntry = computerSetHardwareRepository.findNewestRowForHardware(id)
           .orElseThrow(() -> new NotFoundException("tabela pośrednia sprzęt(id) - zestaw komputerowy", "id", id));
       if (!lastEntry.getComputerSet().getId().equals(request.getComputerSetId())) {
-        if(lastEntry.getComputerSet().getValidTo() == null)
-        {
+        if (lastEntry.getComputerSet().getValidTo() == null) {
           lastEntry.setValidTo(LocalDateTime.now());
           computerSetHardwareRepository.save(lastEntry);
         }
 
         // TODO: w momencie, gdy tabela zestawów komputerowych będzie miała kolumnę valid_to,
         //  trzeba będzie tutaj sprawdzać, czy zestaw komputerowy nie jest aby usunięty.
-        ComputerSet computerSet = computerSetRepository.findById(request.getComputerSetId())
+        ComputerSet computerSet = computerSetRepository.findByIdAndValidToIsNull(request.getComputerSetId())
             .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", request.getComputerSetId()));
-        if(computerSet.getValidTo() == null){
-          ComputerSetHardware computerSetHardware = new ComputerSetHardware(computerSet, hardware);
-          computerSetHardwareRepository.save(computerSetHardware);
-        }
+        ComputerSetHardware computerSetHardware = new ComputerSetHardware(computerSet, hardware);
+        computerSetHardwareRepository.save(computerSetHardware);
+
       }
     }
 
