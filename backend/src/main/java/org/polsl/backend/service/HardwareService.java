@@ -135,7 +135,7 @@ public class HardwareService {
     hardwareRepository.save(hardware);
 
     Optional<ComputerSetHardware> lastEntryComputerSet = computerSetHardwareRepository.findTheLatestRowForHardware(id);
-    if (lastEntryComputerSet.isPresent() && lastEntryComputerSet.get().getValidTo() == null) {
+    if (lastEntryComputerSet.isPresent()) {
       ComputerSetHardware computerSetHardware = lastEntryComputerSet.get();
       computerSetHardware.setValidTo(LocalDateTime.now());
       computerSetHardwareRepository.save(computerSetHardware);
