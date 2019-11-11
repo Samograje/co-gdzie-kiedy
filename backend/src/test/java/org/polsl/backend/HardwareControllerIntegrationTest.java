@@ -74,6 +74,35 @@ public class HardwareControllerIntegrationTest {
   }
 
   @Test
+  public void givenInvalidAffiliationId_whenAddingHardware_thenReturnStatus404() throws Exception {
+    HardwareInputDTO request = new HardwareInputDTO();
+    request.setName("RTX 2000");
+    request.setAffiliationId((long) 0);
+    request.setDictionaryId((long) 1);
+    mvc.perform(post("/api/hardware")
+        .content(objectMapper.writeValueAsString(request))
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().is(404))
+        .andExpect(jsonPath("$.success").value(false))
+        .andExpect(jsonPath("$.message").value("Nie istnieje przynależność o id: '0'"));
+  }
+
+  @Test
+  public void givenInvalidComputerSetId_whenAddingHardware_thenReturnStatus404() throws Exception {
+    HardwareInputDTO request = new HardwareInputDTO();
+    request.setName("RTX 2000");
+    request.setAffiliationId((long) 1);
+    request.setComputerSetId((long) 0);
+    request.setDictionaryId((long) 1);
+    mvc.perform(post("/api/hardware")
+        .content(objectMapper.writeValueAsString(request))
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().is(404))
+        .andExpect(jsonPath("$.success").value(false))
+        .andExpect(jsonPath("$.message").value("Nie istnieje zestaw komputerowy o id: '0'"));
+  }
+
+  @Test
   public void givenCorrectRequestWithComputerSetId_whenAddingHardware_thenReturnStatus200AndData() throws Exception {
     HardwareInputDTO request = new HardwareInputDTO();
     request.setName("GTX 7070");
@@ -138,6 +167,35 @@ public class HardwareControllerIntegrationTest {
   }
 
   @Test
+  public void givenInvalidAffiliationId_whenEditingHardware_thenReturnStatus404() throws Exception {
+    HardwareInputDTO request = new HardwareInputDTO();
+    request.setName("Gigabyte 4321");
+    request.setDictionaryId((long) 1);
+    request.setAffiliationId((long) 0);
+    mvc.perform(put("/api/hardware/1")
+        .content(objectMapper.writeValueAsString(request))
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().is(404))
+        .andExpect(jsonPath("$.success").value(false))
+        .andExpect(jsonPath("$.message").value("Nie istnieje przynależność o id: '0'"));
+  }
+
+  @Test
+  public void givenInvalidComputerSetId_whenEditingHardware_thenReturnStatus404() throws Exception {
+    HardwareInputDTO request = new HardwareInputDTO();
+    request.setName("Gigabyte 4334");
+    request.setComputerSetId((long) 0);
+    request.setDictionaryId((long) 1);
+    request.setAffiliationId((long) 1);
+    mvc.perform(put("/api/hardware/1")
+        .content(objectMapper.writeValueAsString(request))
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().is(404))
+        .andExpect(jsonPath("$.success").value(false))
+        .andExpect(jsonPath("$.message").value("Nie istnieje zestaw komputerowy o id: '0'"));
+  }
+
+  @Test
   public void givenCorrectRequestWithoutComputerSetId_whenEditingHardware_thenReturnStatus200AndData() throws Exception {
     HardwareInputDTO request = new HardwareInputDTO();
     request.setName("GTX 1070Ti");
@@ -187,6 +245,4 @@ public class HardwareControllerIntegrationTest {
         .andExpect(jsonPath("$.success").value(true))
         .andExpect(jsonPath("$.message").value("Usunięto sprzęt"));
   }
-
-  // TODO: dopisać testy na dodawanie i edycję, w których request zawiera idki obiektów powiązanych, które nie istnieją
 }

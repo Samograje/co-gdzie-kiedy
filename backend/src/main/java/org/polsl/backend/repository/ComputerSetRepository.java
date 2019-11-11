@@ -10,5 +10,7 @@ import java.util.Optional;
 public interface ComputerSetRepository extends JpaRepository<ComputerSet, Long> {
   Optional<ComputerSet> findById(Long id);
 
+  Optional<ComputerSet> findByIdAndValidToIsNull(Long id);
+
   long countByValidToIsNull();
 }
