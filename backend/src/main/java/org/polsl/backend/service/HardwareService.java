@@ -68,6 +68,17 @@ public class HardwareService {
     return response;
   }
 
+  public HardwareOutputDTO getHardware(Long id){
+    Hardware hardware = hardwareRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException("sprzęt", "id", id));
+    HardwareOutputDTO dto = new HardwareOutputDTO();
+    dto.setName(hardware.getName());
+    dto.setId(hardware.getId());
+    dto.setType(hardware.getHardwareDictionary().getValue());
+    //TODO: AffiliationHardware, ComputerSetHardware
+    return dto;
+  }
+
   @Transactional
   public void createHardware(HardwareInputDTO request) {
     Hardware hardware = new Hardware();

@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface AffiliationHardwareRepository extends CrudRepository<AffiliationHardware, Long> {
 
-  @Query(value = "SELECT * FROM public.affiliations_hardware WHERE hardware_id = :id ORDER BY valid_from desc LIMIT 1;",
+  @Query(value = "SELECT * FROM affiliations_hardware WHERE hardware_id = :id AND valid_to IS NULL;",
       nativeQuery = true)
   Optional<AffiliationHardware> findTheLatestRowForHardware(Long id);
 }
