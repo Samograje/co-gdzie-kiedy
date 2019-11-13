@@ -69,7 +69,24 @@ public class HardwareService {
   }
 
   public HardwareDTO getOneHardware(long id){
+    Hardware hardware = hardwareRepository.findById(id)
+        .orElseThrow(()->new NotFoundException("sprzęt","id",id));
+    HardwareDTO dto = new HardwareDTO();
+    dto.setName(hardware.getName());
+    dto.setDictionaryId(hardware.getHardwareDictionary().getId());
 
+    AffiliationHardware lastEntryAffiliation = affiliationHardwareRepository.findTheLatestRowForHardware(id)
+        .orElseThrow(() -> new RuntimeException("Brak połączenia przynależności ze sprzętem o id: " + id));
+    dto.setAffiliationId(lastEntryAffiliation.getAffiliation().getId());
+
+    Optional<ComputerSetHardware> lastEntry = computerSetHardwareRepository.findTheLatestRowForHardware(id);
+    if (lastEntry.isPresent()) {
+      dto.setComputerSetId(lastEntry.get().getComputerSet().getId());
+    } else {
+      dto.setComputerSetId(null);
+    }
+
+    return dto;
   }
 
   @Transactional

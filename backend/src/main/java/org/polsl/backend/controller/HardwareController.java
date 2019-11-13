@@ -77,4 +77,15 @@ public class HardwareController {
     hardwareService.deleteHardware(id);
     return ResponseEntity.ok(new ApiBasicResponse(true, "Usunięto sprzęt"));
   }
+
+  /**
+   * Endpoint obsługujący uzyskiwanie hardware'u o danym id.
+   *
+   * @param id ID wybranego sprzętu
+   * @return hardware o danym id
+   */
+  @GetMapping("/{id}")
+  public ResponseEntity<?> getHardware(@PathVariable(value = "id") Long id) {
+    return ResponseEntity.ok(hardwareService.getOneHardware(id));
+  }
 }
