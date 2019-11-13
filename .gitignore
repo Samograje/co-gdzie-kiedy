@@ -1,3 +1,6 @@
+.idea/
+*.iml
+
 backend/bin/
 backend/target/
 backend/**/*.iml
@@ -6,7 +9,10 @@ backend/src/main/resources/*.properties
 backend/src/test/resources/*.properties
 !backend/src/test/resources/application-test-example.properties
 
-docs/*.bak
-
-.idea/
-*.iml
+frontend/node_modules/
+frontend/npm-debug.log
+frontend/yarn-error.log
+frontend/build/
+frontend/.gradle
+frontend/local.properties
+frontend/**/*.iml
