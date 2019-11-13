@@ -3,7 +3,7 @@ package org.polsl.backend;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.polsl.backend.dto.hardware.HardwareInputDTO;
+import org.polsl.backend.dto.hardware.HardwareDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -62,7 +62,7 @@ public class HardwareControllerIntegrationTest {
 
   @Test
   public void givenEmptyRequest_whenAddingHardware_thenReturnStatus400() throws Exception {
-    HardwareInputDTO request = new HardwareInputDTO();
+    HardwareDTO request = new HardwareDTO();
     mvc.perform(post("/api/hardware")
         .content(objectMapper.writeValueAsString(request))
         .contentType(MediaType.APPLICATION_JSON))
@@ -75,7 +75,7 @@ public class HardwareControllerIntegrationTest {
 
   @Test
   public void givenInvalidAffiliationId_whenAddingHardware_thenReturnStatus404() throws Exception {
-    HardwareInputDTO request = new HardwareInputDTO();
+    HardwareDTO request = new HardwareDTO();
     request.setName("RTX 2000");
     request.setAffiliationId((long) 0);
     request.setDictionaryId((long) 1);
@@ -89,7 +89,7 @@ public class HardwareControllerIntegrationTest {
 
   @Test
   public void givenInvalidComputerSetId_whenAddingHardware_thenReturnStatus404() throws Exception {
-    HardwareInputDTO request = new HardwareInputDTO();
+    HardwareDTO request = new HardwareDTO();
     request.setName("RTX 2000");
     request.setAffiliationId((long) 1);
     request.setComputerSetId((long) 0);
@@ -104,7 +104,7 @@ public class HardwareControllerIntegrationTest {
 
   @Test
   public void givenCorrectRequestWithComputerSetId_whenAddingHardware_thenReturnStatus200AndData() throws Exception {
-    HardwareInputDTO request = new HardwareInputDTO();
+    HardwareDTO request = new HardwareDTO();
     request.setName("GTX 7070");
     request.setAffiliationId((long) 1);
     request.setComputerSetId((long) 1);
@@ -119,7 +119,7 @@ public class HardwareControllerIntegrationTest {
 
   @Test
   public void givenCorrectRequestWithoutComputerSetId_whenAddingHardware_thenReturnStatus200AndData() throws Exception {
-    HardwareInputDTO request = new HardwareInputDTO();
+    HardwareDTO request = new HardwareDTO();
     request.setName("GTX 7050");
     request.setAffiliationId((long) 2);
     request.setDictionaryId((long) 1);
@@ -133,7 +133,7 @@ public class HardwareControllerIntegrationTest {
 
   @Test
   public void givenEmptyRequest_whenEditingHardware_thenReturnStatus400() throws Exception {
-    HardwareInputDTO request = new HardwareInputDTO();
+    HardwareDTO request = new HardwareDTO();
     mvc.perform(put("/api/hardware/1")
         .content(objectMapper.writeValueAsString(request))
         .contentType(MediaType.APPLICATION_JSON))
@@ -146,7 +146,7 @@ public class HardwareControllerIntegrationTest {
 
   @Test
   public void givenInvalidId_whenEditingHardware_thenReturnStatus404() throws Exception {
-    HardwareInputDTO request = new HardwareInputDTO();
+    HardwareDTO request = new HardwareDTO();
     request.setName("Gigabyte 1234");
     request.setComputerSetId((long) 1);
     request.setDictionaryId((long) 1);
@@ -168,7 +168,7 @@ public class HardwareControllerIntegrationTest {
 
   @Test
   public void givenInvalidAffiliationId_whenEditingHardware_thenReturnStatus404() throws Exception {
-    HardwareInputDTO request = new HardwareInputDTO();
+    HardwareDTO request = new HardwareDTO();
     request.setName("Gigabyte 4321");
     request.setDictionaryId((long) 1);
     request.setAffiliationId((long) 0);
@@ -182,7 +182,7 @@ public class HardwareControllerIntegrationTest {
 
   @Test
   public void givenInvalidComputerSetId_whenEditingHardware_thenReturnStatus404() throws Exception {
-    HardwareInputDTO request = new HardwareInputDTO();
+    HardwareDTO request = new HardwareDTO();
     request.setName("Gigabyte 4334");
     request.setComputerSetId((long) 0);
     request.setDictionaryId((long) 1);
@@ -197,7 +197,7 @@ public class HardwareControllerIntegrationTest {
 
   @Test
   public void givenCorrectRequestWithoutComputerSetId_whenEditingHardware_thenReturnStatus200AndData() throws Exception {
-    HardwareInputDTO request = new HardwareInputDTO();
+    HardwareDTO request = new HardwareDTO();
     request.setName("GTX 1070Ti");
     request.setDictionaryId((long) 1);
     request.setAffiliationId((long) 2);
@@ -211,7 +211,7 @@ public class HardwareControllerIntegrationTest {
 
   @Test
   public void givenCorrectRequestWithComputerSetId_whenEditingHardware_thenReturnStatus200AndData() throws Exception {
-    HardwareInputDTO request = new HardwareInputDTO();
+    HardwareDTO request = new HardwareDTO();
     request.setName("WiFi Receiver");
     request.setComputerSetId((long) 2);
     request.setDictionaryId((long) 2);

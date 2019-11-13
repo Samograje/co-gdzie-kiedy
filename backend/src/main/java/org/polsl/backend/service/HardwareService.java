@@ -1,7 +1,7 @@
 package org.polsl.backend.service;
 
 import org.polsl.backend.dto.PaginatedResult;
-import org.polsl.backend.dto.hardware.HardwareInputDTO;
+import org.polsl.backend.dto.hardware.HardwareDTO;
 import org.polsl.backend.dto.hardware.HardwareOutputDTO;
 import org.polsl.backend.entity.Affiliation;
 import org.polsl.backend.entity.AffiliationHardware;
@@ -68,8 +68,12 @@ public class HardwareService {
     return response;
   }
 
+  public HardwareDTO getOneHardware(long id){
+
+  }
+
   @Transactional
-  public void createHardware(HardwareInputDTO request) {
+  public void createHardware(HardwareDTO request) {
     Hardware hardware = new Hardware();
     hardware.setName(request.getName());
     HardwareDictionary hardwareDictionary = hardwareDictionaryRepository.findById(request.getDictionaryId())
@@ -91,7 +95,7 @@ public class HardwareService {
   }
 
   @Transactional
-  public void editHardware(Long id, HardwareInputDTO request) throws NotFoundException {
+  public void editHardware(Long id, HardwareDTO request) throws NotFoundException {
     Hardware hardware = hardwareRepository.findById(id)
         .orElseThrow(() -> new NotFoundException("sprzęt", "id", id));
     hardware.setName(request.getName());
