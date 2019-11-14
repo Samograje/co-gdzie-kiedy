@@ -78,10 +78,16 @@ public class ComputerSetService {
     computerSet.setName(request.getName());
     computerSetRepository.save(computerSet);
 
+    // TODO: błąd: wykonało akcję zamiast rzucić wyjątek
+    //  sytuacja: podanie nieprawidłowego affiliationId (usuniętego)
+
     Affiliation affiliation = affiliationRepository.findById(request.getAffiliationId())
         .orElseThrow(() -> new NotFoundException("przynależność", "id", request.getAffiliationId()));
     AffiliationComputerSet affiliationComputerSet = new AffiliationComputerSet(affiliation, computerSet);
     affiliationComputerSetRepository.save(affiliationComputerSet);
+
+    // TODO: błąd: wykonało akcję zamiast rzucić wyjątek
+    //  sytuacja: podanie hardwareIds: [8], gdzie hardware o ID = 8 jest usunięty
 
     if (request.getHardwareIds() != null) {
       request.getHardwareIds().forEach(hardwareId -> {
@@ -117,6 +123,15 @@ public class ComputerSetService {
     Set<ComputerSetHardware> currentComputerSetHardwareSet = computerSet.getComputerSetHardwareSet();
     Set<ComputerSetSoftware> currentComputerSetSoftwareSet = computerSet.getComputerSetSoftwareSet();
 
+    // TODO: wyświetliło komunikat o sukcesie zamiast komunikatu o błędzie, do tego ustawiło valid_to
+    //  sytuacja: podanie nieprawidłowego affiliationId (nieistniejącego)
+
+    // TODO: wyświetliło komunikat o sukcesie zamiast komunikatu o błędzie, do tego ustawiło valid_to
+    //  sytuacja: podanie nieprawidłowego affiliationId (usuniętego)
+
+    // TODO: nie utworzyło nowego rekordu w bazie
+    //  sytuacja: zmiana affiliationId z prawidłowego na prawidłowe
+
     //-----------AFFILIATION---------------
     currentAffiliationComputerSetSet.forEach(currentAffiliationComputerSet -> {
       // jeżeli połączenie jest aktualne
@@ -135,6 +150,33 @@ public class ComputerSetService {
         }
       }
     });
+
+    // TODO: internal server error
+    //  sytuacja: hardwareIds będący nullem
+
+    // TODO: internal server error
+    //  sytuacja: zmiana hardwareIds z [] na [0], gdzie nie istnieje hardware o ID = 0
+
+    // TODO: internal server error
+    //  sytuacja: zmiana hardwareIds z [] na [8], gdzie hardware o ID = 8 jest usunięty
+
+    // TODO: internal server error
+    //  sytuacja: zmiana hardwareIds z [] na [10], gdzie hardware o ID = 10 istnieje i nie jest usunięty
+
+    // TODO: internal server error
+    //  sytuacja: zmiana hardwareIds z [10] na [14], gdzie oba hardware'y istnieją i nie są usunięte
+
+    // TODO: internal server error
+    //  sytuacja: zmiana hardwareIds z [10] na [8], gdzie hardware o ID = 8 jest usunięty
+
+    // TODO: internal server error
+    //  sytuacja: zmiana hardwareIds z [10] na [0], gdzie hardware o ID = 0 nie istnieje
+
+    // TODO: internal server error
+    //  sytuacja: zmiana hardwareIds z [10] na [10, 14], gdzie oba hardware'y istnieją i nie są usunięte
+
+    // TODO: internal server error
+    //  sytuacja: zmiana hardwareIds z [10] na [], gdzie hardware o ID = 10 istnieje i nie jest usunięty
 
     //--------------HARDWARE-------------
     //jeżeli połączenie staje się nieaktualne
