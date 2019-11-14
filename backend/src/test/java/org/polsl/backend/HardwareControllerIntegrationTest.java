@@ -61,15 +61,6 @@ public class HardwareControllerIntegrationTest {
   }
 
   @Test
-  public void givenCorrectRequestWithoutComputerSetId_whenGettingOneHardware_thenReturnStatus200AndData() throws Exception{
-    mvc.perform(get("/api/hardware/2"))
-        .andExpect(status().is(200))
-        .andExpect(jsonPath("$.name").value("TP-Link"))
-        .andExpect(jsonPath("$.dictionaryId").value(2))
-        .andExpect(jsonPath("$.affiliationId").value(2));
-  }
-
-  @Test
   public void givenInvalidId_whenGettingOneHardware_thenReturnStatus404() throws Exception {
     mvc.perform(delete("/api/hardware/0"))
         .andExpect(status().is(404))
@@ -84,13 +75,22 @@ public class HardwareControllerIntegrationTest {
   }
 
   @Test
-  public void givenCorrectRequestWithComputerSetId_whenGettingOneHardware_thenReturnStatus200AndData() throws Exception{
+  public void givenCorrectRequestWithComputerSetId_whenGettingOneHardware_thenReturnStatus200AndData() throws Exception {
     mvc.perform(get("/api/hardware/1"))
         .andExpect(status().is(200))
         .andExpect(jsonPath("$.name").value("GTX 1040"))
         .andExpect(jsonPath("$.dictionaryId").value(1))
         .andExpect(jsonPath("$.computerSetId").value(1))
         .andExpect(jsonPath("$.affiliationId").value(1));
+  }
+
+  @Test
+  public void givenCorrectRequestWithoutComputerSetId_whenGettingOneHardware_thenReturnStatus200AndData() throws Exception {
+    mvc.perform(get("/api/hardware/2"))
+        .andExpect(status().is(200))
+        .andExpect(jsonPath("$.name").value("TP-Link"))
+        .andExpect(jsonPath("$.dictionaryId").value(2))
+        .andExpect(jsonPath("$.affiliationId").value(2));
   }
 
   @Test

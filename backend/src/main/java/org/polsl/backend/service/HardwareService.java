@@ -68,9 +68,9 @@ public class HardwareService {
     return response;
   }
 
-  public HardwareDTO getOneHardware(long id){
+  public HardwareDTO getOneHardware(long id) {
     Hardware hardware = hardwareRepository.findByIdAndValidToIsNull(id)
-        .orElseThrow(()->new NotFoundException("sprzęt","id",id));
+        .orElseThrow(() -> new NotFoundException("sprzęt", "id", id));
     HardwareDTO dto = new HardwareDTO();
     dto.setName(hardware.getName());
     dto.setDictionaryId(hardware.getHardwareDictionary().getId());
