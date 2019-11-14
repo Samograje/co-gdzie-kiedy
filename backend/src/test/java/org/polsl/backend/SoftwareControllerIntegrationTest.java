@@ -124,4 +124,24 @@ public class SoftwareControllerIntegrationTest {
 
     // TODO: test na edycję, w którym podajemy poprawne IDki powiązanych zestawów komputerowych
 
+  public void givenInvalidId_whenDeletingSoftware_thenReturnStatus404() throws Exception {
+    mvc.perform(delete("/api/software/0"))
+            .andExpect(status().is(404))
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.message").value("Nie istnieje oprogramowanie o id: '0'"));
+  }
+
+  @Test
+  public void givenNoId_whenDeletingSoftware_thenReturnStatus405() throws Exception {
+    mvc.perform(delete("/api/software"))
+            .andExpect(status().is(405));
+  }
+
+  @Test
+  public void givenCorrectRequest_whenDeletingSoftware_thenReturnStatus200AndData() throws Exception {
+    mvc.perform(delete("/api/software/1"))
+            .andExpect(status().is(200))
+            .andExpect(jsonPath("$.success").value(true))
+            .andExpect(jsonPath("$.message").value("Usunięto oprogramowanie."));
+  }
 }
