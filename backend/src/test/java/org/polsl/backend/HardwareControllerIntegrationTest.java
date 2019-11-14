@@ -61,7 +61,30 @@ public class HardwareControllerIntegrationTest {
   }
 
   @Test
-  public void givenCorrectRequest_whenGettinOneHardware_thenReturnStatus200AndData() throws Exception{
+  public void givenCorrectRequestWithoutComputerSetId_whenGettingOneHardware_thenReturnStatus200AndData() throws Exception{
+    mvc.perform(get("/api/hardware/2"))
+        .andExpect(status().is(200))
+        .andExpect(jsonPath("$.name").value("TP-Link"))
+        .andExpect(jsonPath("$.dictionaryId").value(2))
+        .andExpect(jsonPath("$.affiliationId").value(2));
+  }
+
+  @Test
+  public void givenInvalidId_whenGettingOneHardware_thenReturnStatus404() throws Exception {
+    mvc.perform(delete("/api/hardware/0"))
+        .andExpect(status().is(404))
+        .andExpect(jsonPath("$.success").value(false))
+        .andExpect(jsonPath("$.message").value("Nie istnieje sprzęt o id: '0'"));
+  }
+
+  @Test
+  public void givenInvalidParameter_whenGettingOneHardware_thenReturnStatus400() throws Exception {
+    mvc.perform(get("/api/hardware/mvvm"))
+        .andExpect(status().is(400));
+  }
+
+  @Test
+  public void givenCorrectRequestWithComputerSetId_whenGettinOneHardware_thenReturnStatus200AndData() throws Exception{
     mvc.perform(get("/api/hardware/1"))
         .andExpect(status().is(200))
         .andExpect(jsonPath("$.name").value("GTX 1040"))
