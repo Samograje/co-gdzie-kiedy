@@ -84,7 +84,7 @@ public class HardwareControllerIntegrationTest {
   }
 
   @Test
-  public void givenCorrectRequestWithComputerSetId_whenGettinOneHardware_thenReturnStatus200AndData() throws Exception{
+  public void givenCorrectRequestWithComputerSetId_whenGettingOneHardware_thenReturnStatus200AndData() throws Exception{
     mvc.perform(get("/api/hardware/1"))
         .andExpect(status().is(200))
         .andExpect(jsonPath("$.name").value("GTX 1040"))
