@@ -61,6 +61,16 @@ public class HardwareControllerIntegrationTest {
   }
 
   @Test
+  public void givenCorrectRequest_whenGettinOneHardware_thenReturnStatus200AndData() throws Exception{
+    mvc.perform(get("/api/hardware/1"))
+        .andExpect(status().is(200))
+        .andExpect(jsonPath("$.name").value("GTX 1040"))
+        .andExpect(jsonPath("$.dictionaryId").value(1))
+        .andExpect(jsonPath("$.computerSetId").value(1))
+        .andExpect(jsonPath("$.affiliationId").value(1));
+  }
+
+  @Test
   public void givenEmptyRequest_whenAddingHardware_thenReturnStatus400() throws Exception {
     HardwareDTO request = new HardwareDTO();
     mvc.perform(post("/api/hardware")
