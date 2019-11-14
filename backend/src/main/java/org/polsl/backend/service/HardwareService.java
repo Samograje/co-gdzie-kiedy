@@ -69,7 +69,7 @@ public class HardwareService {
   }
 
   public HardwareDTO getOneHardware(long id){
-    Hardware hardware = hardwareRepository.findById(id)
+    Hardware hardware = hardwareRepository.findByIdAndValidToIsNull(id)
         .orElseThrow(()->new NotFoundException("sprzęt","id",id));
     HardwareDTO dto = new HardwareDTO();
     dto.setName(hardware.getName());
@@ -80,11 +80,7 @@ public class HardwareService {
     dto.setAffiliationId(lastEntryAffiliation.getAffiliation().getId());
 
     Optional<ComputerSetHardware> lastEntry = computerSetHardwareRepository.findTheLatestRowForHardware(id);
-    if (lastEntry.isPresent()) {
-      dto.setComputerSetId(lastEntry.get().getComputerSet().getId());
-    } else {
-      dto.setComputerSetId(null);
-    }
+    lastEntry.ifPresent(computerSetHardware -> dto.setComputerSetId(computerSetHardware.getComputerSet().getId()));
 
     return dto;
   }

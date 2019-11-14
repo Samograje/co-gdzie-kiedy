@@ -40,6 +40,17 @@ public class HardwareController {
   }
 
   /**
+   * Endpoint obsługujący uzyskiwanie hardware'u o danym id.
+   *
+   * @param id ID wybranego sprzętu
+   * @return hardware o danym id
+   */
+  @GetMapping("/{id}")
+  public ResponseEntity<?> getHardware(@PathVariable(value = "id") Long id) {
+    return ResponseEntity.ok(hardwareService.getOneHardware(id));
+  }
+
+  /**
    * Endpoint obsługujący dodawanie nowego sprzętu.
    *
    * @param request stuktura {@link HardwareDTO} zawierająca dane nowego sprzętu
@@ -76,16 +87,5 @@ public class HardwareController {
   public ResponseEntity<?> deleteHardware(@PathVariable(value = "id") Long id) {
     hardwareService.deleteHardware(id);
     return ResponseEntity.ok(new ApiBasicResponse(true, "Usunięto sprzęt"));
-  }
-
-  /**
-   * Endpoint obsługujący uzyskiwanie hardware'u o danym id.
-   *
-   * @param id ID wybranego sprzętu
-   * @return hardware o danym id
-   */
-  @GetMapping("/{id}")
-  public ResponseEntity<?> getHardware(@PathVariable(value = "id") Long id) {
-    return ResponseEntity.ok(hardwareService.getOneHardware(id));
   }
 }
