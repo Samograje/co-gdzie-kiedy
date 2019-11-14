@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Logika biznesowa zestawów komputerowych.
@@ -101,34 +102,86 @@ public class ComputerSetService {
     }
   }
 
+  @Transactional
   public void editComputerSet(Long id, ComputerSetInputDTO request) throws NotFoundException {
     ComputerSet computerSet = computerSetRepository.findById(id)
             .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", id));
-    /*computerSet.setName(request.getName());
+    computerSet.setName(request.getName());
     computerSetRepository.save(computerSet);
 
-    Affiliation affiliation = affiliationRepository.findById(request.getAffiliationId())
-            .orElseThrow(() -> new NotFoundException("przynależność", "id", request.getAffiliationId()));
-    AffiliationComputerSet affiliationComputerSet = new AffiliationComputerSet(affiliation, computerSet);
-    affiliationComputerSetRepository.save(affiliationComputerSet);
+    Long requestAffiliationId = request.getAffiliationId();
+    Set<Long> requestHardwareIds = request.getHardwareIds();
+    Set<Long> requestSoftwareIds = request.getSoftwareIds();
 
-    if (request.getHardwareIds() != null) {
-      request.getHardwareIds().forEach(hardwareId -> {
-        Hardware hardware = hardwareRepository.findById(hardwareId)
-                .orElseThrow(() -> new NotFoundException("sprzęt", "id", hardwareId));
-        ComputerSetHardware computerSetHardware = new ComputerSetHardware(computerSet, hardware);
-        computerSetHardwareRepository.save(computerSetHardware);
-      });
-    }
+    Set<AffiliationComputerSet> currentAffiliationComputerSetSet = computerSet.getAffiliationComputerSetSet();
+    Set<ComputerSetHardware> currentComputerSetHardwareSet = computerSet.getComputerSetHardwareSet();
+    Set<ComputerSetSoftware> currentComputerSetSoftwareSet = computerSet.getComputerSetSoftwareSet();
 
-    if (request.getSoftwareIds() != null) {
-      request.getSoftwareIds().forEach(softwareId -> {
-        Software software = softwareRepository.findById(softwareId)
-                .orElseThrow(() -> new NotFoundException("oprogramowanie", "id", softwareId));
-        ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware(computerSet, software);
-        computerSetSoftwareRepository.save(computerSetSoftware);
-      });
-    }*/
+    //-----------AFFILIATION---------------
+    currentAffiliationComputerSetSet.forEach(currentAffiliationComputerSet -> {
+      // jeżeli połączenie jest aktualne
+      if (currentAffiliationComputerSet.getValidTo() == null) {
+
+        Long currentAffiliationId = currentAffiliationComputerSet.getAffiliation().getId();
+        if (currentAffiliationId != requestAffiliationId) {
+
+          Affiliation newAffiliation = affiliationRepository.findById(requestAffiliationId)
+                  .orElseThrow(() -> new NotFoundException("afiliacja", "id", requestAffiliationId));
+
+          AffiliationComputerSet newAffiliationComputerSet = new AffiliationComputerSet(newAffiliation, computerSet);
+          computerSet.getAffiliationComputerSetSet().add(newAffiliationComputerSet);
+
+          currentAffiliationComputerSet.setValidTo(LocalDateTime.now());
+        }
+      }
+    });
+
+    //--------------HARDWARE-------------
+    //jeżeli połączenie staje się nieaktualne
+    Set<Long> currentHardwareIds = null;
+    currentComputerSetHardwareSet.forEach(currentComputerSetHardware -> {
+      if (currentComputerSetHardware.getValidTo() == null) {
+        //aktualne id sprzętów należących do zestawów komputerowych
+        currentHardwareIds.add(currentComputerSetHardware.getHardware().getId());
+
+        if (!requestHardwareIds.contains(currentComputerSetHardware.getHardware())) {
+          currentComputerSetHardware.setValidTo(LocalDateTime.now());
+        }
+      }
+    });
+
+    requestHardwareIds.forEach(requestHardwareId -> {
+      // jeżeli nie było do tej pory takiego sprzętu lub lista sprzętów jest pusta
+      if (!currentHardwareIds.contains(requestHardwareId) || currentHardwareIds == null) {
+        //dodaje nowe połącznie
+        Hardware newHardware = hardwareRepository.findById(requestHardwareId)
+                .orElseThrow(() -> new NotFoundException("sprzęt", "id", requestHardwareId));
+        ComputerSetHardware newComputerSetHardware = new ComputerSetHardware(computerSet, newHardware);
+        computerSet.getComputerSetHardwareSet().add(newComputerSetHardware);
+      }
+    });
+
+    //--------------SOFTWARE-------------
+    Set<Long> currentSoftwareIds = null;
+    currentComputerSetSoftwareSet.forEach(computerSetSoftware -> {
+      if (computerSetSoftware.getValidTo() == null) {
+        currentSoftwareIds.add(computerSetSoftware.getSoftware().getId());
+        if (!requestSoftwareIds.contains(computerSetSoftware.getSoftware())) {
+          computerSetSoftware.setValidTo(LocalDateTime.now());
+        }
+      }
+    });
+
+    requestHardwareIds.forEach(requestSoftwareId -> {
+      // jeżeli nie było do tej pory takiego sprzętu lub lista sprzętów jest pusta
+      if (!currentSoftwareIds.contains(requestSoftwareId) || currentSoftwareIds == null) {
+        //dodaje nowe połącznie
+        Software newSoftware = softwareRepository.findById(requestSoftwareId)
+                .orElseThrow(() -> new NotFoundException("sprzęt", "id", requestSoftwareId));
+        ComputerSetSoftware newComputerSetSoftware = new ComputerSetSoftware(computerSet, newSoftware);
+        computerSet.getComputerSetSoftwareSet().add(newComputerSetSoftware);
+      }
+    });
   }
 
   public void deleteComputerSet(Long id) throws NotFoundException {
@@ -151,7 +204,6 @@ public class ComputerSetService {
       relation.setValidTo(LocalDateTime.now());
       computerSetSoftwareRepository.save(relation);
     });
-
   }
 
 }

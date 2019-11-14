@@ -62,6 +62,8 @@ public class SoftwareControllerIntegrationTest {
             .andExpect(jsonPath("$.fieldErrors[?(@.field =~ /name/)].message").value("must not be empty"));
   }
 
+  // TODO: test na dodawanie, w którym podajemy nieprawidłowe IDki powiązanych zestawów komputerowych
+
   @Test
   public void givenCorrectRequest_whenAddingSoftware_thenReturnStatus200AndData() throws Exception {
     SoftwareInputDTO request = new SoftwareInputDTO();
@@ -73,6 +75,8 @@ public class SoftwareControllerIntegrationTest {
             .andExpect(jsonPath("$.success").value(true))
             .andExpect(jsonPath("$.message").value("Utworzono oprogramowanie."));
   }
+
+  // TODO: test na dodawanie, w którym podajemy poprawne IDki powiązanych zestawów komputerowych
 
   @Test
   public void givenEmptyRequest_whenEditingSoftware_thenReturnStatus400() throws Exception {
@@ -104,6 +108,8 @@ public class SoftwareControllerIntegrationTest {
             .andExpect(status().is(405));
   }
 
+  // TODO: test na edycję, w którym podajemy nieprawidłowe IDki powiązanych zestawów komputerowych
+
   @Test
   public void givenCorrectRequest_whenEditingSoftware_thenReturnStatus200AndData() throws Exception {
     SoftwareInputDTO request = new SoftwareInputDTO();
@@ -115,5 +121,7 @@ public class SoftwareControllerIntegrationTest {
             .andExpect(jsonPath("$.success").value(true))
             .andExpect(jsonPath("$.message").value("Zaktualizowano parametry oprogramowania."));
   }
+
+  // TODO: test na edycję, w którym podajemy poprawne IDki powiązanych zestawów komputerowych
 
 }

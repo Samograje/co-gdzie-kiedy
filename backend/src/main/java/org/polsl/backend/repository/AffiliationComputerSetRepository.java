@@ -9,5 +9,4 @@ import org.springframework.stereotype.Repository;
 public interface AffiliationComputerSetRepository extends CrudRepository<AffiliationComputerSet, AffiliationComputerSetKey> {
 
   Iterable<AffiliationComputerSet> findAllByComputerSetIdAndValidToIsNull(Long computerSetId);
-
 }
