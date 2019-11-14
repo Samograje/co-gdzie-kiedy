@@ -3,7 +3,7 @@ package org.polsl.backend;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.polsl.backend.dto.software.SoftwareInputDTO;
+import org.polsl.backend.dto.software.SoftwareDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -53,7 +53,7 @@ public class SoftwareControllerIntegrationTest {
 
   @Test
   public void givenEmptyRequest_whenAddingAffiliation_thenReturnStatus400() throws Exception {
-    SoftwareInputDTO request = new SoftwareInputDTO();
+    SoftwareDTO request = new SoftwareDTO();
     mvc.perform(post("/api/software")
         .content(objectMapper.writeValueAsString(request))
         .contentType(MediaType.APPLICATION_JSON))
@@ -66,7 +66,7 @@ public class SoftwareControllerIntegrationTest {
 
   @Test
   public void givenCorrectRequest_whenAddingSoftware_thenReturnStatus200AndData() throws Exception {
-    SoftwareInputDTO request = new SoftwareInputDTO();
+    SoftwareDTO request = new SoftwareDTO();
     request.setName("Notepad ++");
     mvc.perform(post("/api/software")
         .content(objectMapper.writeValueAsString(request))
@@ -80,7 +80,7 @@ public class SoftwareControllerIntegrationTest {
 
   @Test
   public void givenEmptyRequest_whenEditingSoftware_thenReturnStatus400() throws Exception {
-    SoftwareInputDTO request = new SoftwareInputDTO();
+    SoftwareDTO request = new SoftwareDTO();
     mvc.perform(put("/api/software/1")
         .content(objectMapper.writeValueAsString(request))
         .contentType(MediaType.APPLICATION_JSON))
@@ -91,7 +91,7 @@ public class SoftwareControllerIntegrationTest {
 
   @Test
   public void givenInvalidId_whenEditingSoftware_thenReturnStatus404() throws Exception {
-    SoftwareInputDTO request = new SoftwareInputDTO();
+    SoftwareDTO request = new SoftwareDTO();
     request.setName("Photoshop");
     mvc.perform(put("/api/software/0")
         .content(objectMapper.writeValueAsString(request))
@@ -112,7 +112,7 @@ public class SoftwareControllerIntegrationTest {
 
     @Test
   public void givenCorrectRequest_whenEditingSoftware_thenReturnStatus200AndData() throws Exception {
-    SoftwareInputDTO request = new SoftwareInputDTO();
+    SoftwareDTO request = new SoftwareDTO();
     request.setName("Photoshop");
     mvc.perform(put("/api/software/1")
         .content(objectMapper.writeValueAsString(request))
