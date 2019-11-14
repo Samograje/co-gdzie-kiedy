@@ -151,31 +151,33 @@ public class ComputerSetService {
       }
     });
 
-    // TODO: internal server error
+    // w testach podawałem zawsze softwareIds: [], może to było problemem, nie wiem
+
+    // TODO: null pointer exception
     //  sytuacja: hardwareIds będący nullem
 
-    // TODO: internal server error
+    // TODO: null pointer exception
     //  sytuacja: zmiana hardwareIds z [] na [0], gdzie nie istnieje hardware o ID = 0
 
-    // TODO: internal server error
+    // TODO: null pointer exception
     //  sytuacja: zmiana hardwareIds z [] na [8], gdzie hardware o ID = 8 jest usunięty
 
-    // TODO: internal server error
+    // TODO: null pointer exception
     //  sytuacja: zmiana hardwareIds z [] na [10], gdzie hardware o ID = 10 istnieje i nie jest usunięty
 
-    // TODO: internal server error
+    // TODO: null pointer exception
     //  sytuacja: zmiana hardwareIds z [10] na [14], gdzie oba hardware'y istnieją i nie są usunięte
 
-    // TODO: internal server error
+    // TODO: null pointer exception
     //  sytuacja: zmiana hardwareIds z [10] na [8], gdzie hardware o ID = 8 jest usunięty
 
-    // TODO: internal server error
+    // TODO: null pointer exception
     //  sytuacja: zmiana hardwareIds z [10] na [0], gdzie hardware o ID = 0 nie istnieje
 
-    // TODO: internal server error
+    // TODO: null pointer exception
     //  sytuacja: zmiana hardwareIds z [10] na [10, 14], gdzie oba hardware'y istnieją i nie są usunięte
 
-    // TODO: internal server error
+    // TODO: null pointer exception
     //  sytuacja: zmiana hardwareIds z [10] na [], gdzie hardware o ID = 10 istnieje i nie jest usunięty
 
     //--------------HARDWARE-------------
