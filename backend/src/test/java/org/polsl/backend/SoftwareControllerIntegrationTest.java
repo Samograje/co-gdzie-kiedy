@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.core.IsCollectionContaining.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,7 +27,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application-test.properties")
 @Transactional
 @SqlGroup({
-    @Sql(scripts = "/scripts/create-test-software.sql")
+    @Sql(scripts = "/scripts/create-test-software.sql"),
+    @Sql(scripts = "/scripts/create-test-computer_sets.sql"),
+    @Sql(scripts = "/scripts/create-test-computer_sets_software.sql")
 })
 public class SoftwareControllerIntegrationTest {
   @Autowired
@@ -49,6 +52,39 @@ public class SoftwareControllerIntegrationTest {
         .andExpect(jsonPath("$.items[2].name").value("Postman"))
         .andExpect(jsonPath("$.items[3].id").value(4))
         .andExpect(jsonPath("$.items[3].name").value("Mathematica"));
+  }
+
+  @Test
+  public void givenInvalidId_whenGettingOneSoftware_thenReturnStatus404() throws Exception {
+    mvc.perform(get("/api/software/0"))
+            .andExpect(status().is(404))
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.message").value("Nie istnieje oprogramowanie o id: '0'"));
+  }
+
+  @Test
+  public void givenInvalidParameter_whenGettingOneSoftware_thenReturnStatus400() throws Exception {
+    mvc.perform(get("/api/software/test"))
+            .andExpect(status().is(400));
+  }
+
+  @Test
+  public void givenCorrectRequestWithComputerSetId_whenGettingOneSoftware_thenReturnStatus200AndData() throws Exception {
+    mvc.perform(get("/api/software/1"))
+            .andExpect(status().is(200))
+            .andExpect(jsonPath("$.name").value("Photoshop"))
+            .andExpect(jsonPath("$.computerSetIds").isArray())
+            .andExpect(jsonPath("$.computerSetIds", hasSize(3)))
+            .andExpect(jsonPath("$.computerSetIds", hasItem(1)))
+            .andExpect(jsonPath("$.computerSetIds", hasItem(2)))
+            .andExpect(jsonPath("$.computerSetIds", hasItem(3)));
+  }
+
+  @Test
+  public void givenCorrectRequestWithoutComputerSetId_whenGettingOneSoftware_thenReturnStatus200AndData() throws Exception {
+    mvc.perform(get("/api/software/2"))
+            .andExpect(status().is(200))
+            .andExpect(jsonPath("$.name").value("Visual Studio"));
   }
 
   @Test
