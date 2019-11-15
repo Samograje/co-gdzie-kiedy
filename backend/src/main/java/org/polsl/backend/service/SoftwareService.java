@@ -76,7 +76,7 @@ public class SoftwareService {
   @Transactional
   public void editSoftware(Long id, SoftwareInputDTO request) throws NotFoundException {
     //Edit name
-    Software software = softwareRepository.findById(id).orElseThrow(() -> new NotFoundException("oprogramowanie", "id", id));
+    Software software = softwareRepository.findByIdAndValidToIsNull(id).orElseThrow(() -> new NotFoundException("oprogramowanie", "id", id));
     software.setName(request.getName());
     softwareRepository.save(software);
 
