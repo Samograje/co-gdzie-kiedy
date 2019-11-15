@@ -64,13 +64,11 @@ public class SoftwareService {
     if (computerSetIdsSet != null) {
       computerSetIdsSet.forEach(computerSetId -> {
 
-        ComputerSet computerSet = computerSetRepository.findById(computerSetId)
+        ComputerSet computerSet = computerSetRepository.findByIdAndValidToIsNull(computerSetId)
             .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
         //Check if computer set is not deleted before creating a new record in history
-        if(computerSet.getValidTo() == null) {
-          ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware(computerSet, software);
-          computerSetSoftwareRepository.save(computerSetSoftware);
-        }
+        ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware(computerSet, software);
+        computerSetSoftwareRepository.save(computerSetSoftware);
       });
     }
   }
@@ -96,13 +94,12 @@ public class SoftwareService {
       });
       //New record(s) in history
       computerSetIdsSet.forEach(computerSetId -> {
-        ComputerSet computerSet = computerSetRepository.findById(computerSetId)
+        ComputerSet computerSet = computerSetRepository.findByIdAndValidToIsNull(computerSetId)
             .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
         //Check if computer set is not deleted before creating a new record in history
-        if(computerSet.getValidTo() == null) {
-          ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware(computerSet, software);
-          computerSetSoftwareRepository.save(computerSetSoftware);
-        }
+        ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware(computerSet, software);
+        computerSetSoftwareRepository.save(computerSetSoftware);
+
       });
     }
   }
