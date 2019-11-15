@@ -139,6 +139,7 @@ public class SoftwareControllerIntegrationTest {
         .andExpect(status().is(405));
   }
 
+  @Test
   public void givenInvalidComputerSetId_whenEditingSoftware_thenReturnStatus404() throws Exception {
     SoftwareInputDTO request = new SoftwareInputDTO();
     Set<Long> ids = new HashSet<>();
@@ -153,7 +154,7 @@ public class SoftwareControllerIntegrationTest {
             .andExpect(jsonPath("$.message").value("Nie istnieje zestaw komputerowy o id: '0'"));
   }
 
-    @Test
+  @Test
   public void givenCorrectRequest_whenEditingSoftware_thenReturnStatus200AndData() throws Exception {
     SoftwareInputDTO request = new SoftwareInputDTO();
     request.setName("Photoshop");
@@ -165,7 +166,9 @@ public class SoftwareControllerIntegrationTest {
         .andExpect(jsonPath("$.message").value("Zaktualizowano parametry oprogramowania."));
   }
 
-    public void givenCorrectComputerSetId_whenEditingSoftware_thenReturnStatus404() throws Exception {
+
+  @Test
+   public void givenCorrectComputerSetId_whenEditingSoftware_thenReturnStatus404() throws Exception {
       SoftwareInputDTO request = new SoftwareInputDTO();
       Set<Long> ids = new HashSet<>();
       ids.add((long) 1);
@@ -182,6 +185,7 @@ public class SoftwareControllerIntegrationTest {
     }
 
 
+  @Test
   public void givenNotExistingSoftwareId_whenDeletingSoftware_thenReturnStatus404() throws Exception {
     mvc.perform(delete("/api/software/0"))
             .andExpect(status().is(404))
