@@ -54,6 +54,19 @@ public class SoftwareService {
     return response;
   }
 
+  public SoftwareDTO getOneSoftware(Long id) {
+    Software software = softwareRepository.findByIdAndValidToIsNull(id)
+        .orElseThrow(() -> new NotFoundException("oprogramowanie", "id", id));
+    SoftwareDTO dto = new SoftwareDTO();
+    Set<ComputerSetSoftware> computerSetSoftwareSet = computerSetSoftwareRepository.findAllBySoftwareIdAndValidToIsNull(id);
+    //Set of current computer sets for selected software
+    Set<Long> ids = new HashSet<>();
+    computerSetSoftwareSet.forEach(computerSetSoftware -> ids.add(computerSetSoftware.getComputerSet().getId()));
+    dto.setName(software.getName());
+    dto.setComputerSetIds(ids);
+    return dto;
+  }
+
   @Transactional
   public void createSoftware(SoftwareDTO request) {
     Software software = new Software();
@@ -114,20 +127,5 @@ public class SoftwareService {
       computerSetSoftware.setValidTo(LocalDateTime.now());
       computerSetSoftwareRepository.save(computerSetSoftware);
     });
-  }
-
-  public SoftwareDTO getOneSoftware(Long id) {
-    Software software = softwareRepository.findByIdAndValidToIsNull(id).orElseThrow(() -> new NotFoundException("oprogramowanie", "id", id));
-    ;
-    SoftwareDTO dto = new SoftwareDTO();
-    Set<ComputerSetSoftware> computerSetSoftwareSet = computerSetSoftwareRepository.findAllBySoftwareIdAndValidToIsNull(id);
-    //Set of current computer sets for selected software
-    Set<Long> ids = new HashSet<>();
-    computerSetSoftwareSet.forEach(computerSetSoftware -> {
-      ids.add(computerSetSoftware.getComputerSet().getId());
-    });
-    dto.setName(software.getName());
-    dto.setComputerSetIds(ids);
-    return dto;
   }
 }
