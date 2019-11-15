@@ -214,6 +214,18 @@ public class SoftwareControllerIntegrationTest {
   }
 
   @Test
+  public void givenCorrectRequestWithDeletedSoftwareId_whenEditingSoftware_thenReturnStatus404() throws Exception{
+    SoftwareInputDTO request = new SoftwareInputDTO();
+    request.setName("Mathematica");
+    mvc.perform(put("/api/software/4")
+            .content(objectMapper.writeValueAsString(request))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().is(404))
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.message").value("Nie istnieje oprogramowanie o id: '4'"));
+  }
+
+  @Test
   public void givenNotExistingSoftwareId_whenDeletingSoftware_thenReturnStatus404() throws Exception {
     mvc.perform(delete("/api/software/0"))
             .andExpect(status().is(404))
