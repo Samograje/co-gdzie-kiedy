@@ -110,6 +110,21 @@ public class SoftwareControllerIntegrationTest {
   }
 
   @Test
+  public void givenCorrectRequestWithComputerSetIdWhereComputerSetIdIsDeleted_whenAddingSoftware_thenReturnStatus404() throws  Exception{
+    SoftwareInputDTO request = new SoftwareInputDTO();
+    Set<Long> ids = new HashSet<>();
+    ids.add((long) 3);
+    request.setName("Mathematica");
+    request.setComputerSetIds(ids);
+    mvc.perform(post("/api/software/")
+            .content(objectMapper.writeValueAsString(request))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().is(404))
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.message").value("Nie istnieje zestaw komputerowy o id: '3'"));
+  }
+
+  @Test
   public void givenEmptyRequest_whenEditingSoftware_thenReturnStatus400() throws Exception {
     SoftwareInputDTO request = new SoftwareInputDTO();
     mvc.perform(put("/api/software/1")
@@ -167,13 +182,12 @@ public class SoftwareControllerIntegrationTest {
   }
 
 
-  @Test
-   public void givenCorrectComputerSetId_whenEditingSoftware_thenReturnStatus404() throws Exception {
+   @Test
+   public void givenCorrectComputerSetId_whenEditingSoftware_thenReturnStatus200() throws Exception {
       SoftwareInputDTO request = new SoftwareInputDTO();
       Set<Long> ids = new HashSet<>();
       ids.add((long) 1);
       ids.add((long) 2);
-      ids.add((long) 3);
       request.setName("Mathematica");
       request.setComputerSetIds(ids);
       mvc.perform(put("/api/software/1")
@@ -184,6 +198,20 @@ public class SoftwareControllerIntegrationTest {
               .andExpect(jsonPath("$.message").value("Zaktualizowano parametry oprogramowania."));
     }
 
+    @Test
+    public void givenCorrectRequestWithComputerSetIdWhereComputerSetIdIsDeleted_whenEditingSoftware_thenReturnStatus400() throws  Exception{
+    SoftwareInputDTO request = new SoftwareInputDTO();
+    Set<Long> ids = new HashSet<>();
+    ids.add((long) 3);
+    request.setName("Mathematica");
+    request.setComputerSetIds(ids);
+    mvc.perform(put("/api/software/1")
+            .content(objectMapper.writeValueAsString(request))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().is(404))
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.message").value("Nie istnieje zestaw komputerowy o id: '3'"));
+  }
 
   @Test
   public void givenNotExistingSoftwareId_whenDeletingSoftware_thenReturnStatus404() throws Exception {
