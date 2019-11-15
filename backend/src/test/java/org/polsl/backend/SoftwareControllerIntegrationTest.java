@@ -199,7 +199,7 @@ public class SoftwareControllerIntegrationTest {
     }
 
     @Test
-    public void givenCorrectRequestWithComputerSetIdWhereComputerSetIdIsDeleted_whenEditingSoftware_thenReturnStatus400() throws  Exception{
+    public void givenCorrectRequestWithComputerSetIdWhereComputerSetIdIsDeleted_whenEditingSoftware_thenReturnStatus404() throws  Exception{
     SoftwareInputDTO request = new SoftwareInputDTO();
     Set<Long> ids = new HashSet<>();
     ids.add((long) 3);
