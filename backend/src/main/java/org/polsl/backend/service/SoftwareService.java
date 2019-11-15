@@ -80,10 +80,8 @@ public class SoftwareService {
     software.setName(request.getName());
     softwareRepository.save(software);
     Set<Long> computerSetIdsSet = request.getComputerSetIds();
-
     if (computerSetIdsSet != null) {
       Set<ComputerSetSoftware> computerSetSoftwareSet = computerSetSoftwareRepository.findAllBySoftwareIdAndValidToIsNull(id);
-
       //Delete id(s) of computerSets which schould not be changed or make history record(s)
       computerSetSoftwareSet.forEach(computerSetSoftware -> {
         if (computerSetIdsSet.contains(computerSetSoftware.getComputerSet().getId())) {
@@ -105,12 +103,22 @@ public class SoftwareService {
     }
   }
 
+  @Transactional
   public void deleteSoftware(Long id) {
-    // TODO: usuwanie oprogramowania
+    Software software = softwareRepository.findByIdAndValidToIsNull(id)
+        .orElseThrow(() -> new NotFoundException("oprogramowanie", "id", id));
+    software.setValidTo(LocalDateTime.now());
+    softwareRepository.save(software);
+    Set<ComputerSetSoftware> computerSetSoftwareSet = computerSetSoftwareRepository.findAllBySoftwareIdAndValidToIsNull(id);
+    computerSetSoftwareSet.forEach(computerSetSoftware -> {
+      computerSetSoftware.setValidTo(LocalDateTime.now());
+      computerSetSoftwareRepository.save(computerSetSoftware);
+    });
   }
 
   public SoftwareDTO getOneSoftware(Long id) {
-    Software software = softwareRepository.findByIdAndValidToIsNull(id) .orElseThrow(()->new NotFoundException("oprogramowanie","id",id));;
+    Software software = softwareRepository.findByIdAndValidToIsNull(id).orElseThrow(() -> new NotFoundException("oprogramowanie", "id", id));
+    ;
     SoftwareDTO dto = new SoftwareDTO();
     Set<ComputerSetSoftware> computerSetSoftwareSet = computerSetSoftwareRepository.findAllBySoftwareIdAndValidToIsNull(id);
     //Set of current computer sets for selected software
