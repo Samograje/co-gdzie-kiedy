@@ -182,11 +182,19 @@ public class SoftwareControllerIntegrationTest {
     }
 
 
-  public void givenInvalidId_whenDeletingSoftware_thenReturnStatus404() throws Exception {
+  public void givenNotExistingSoftwareId_whenDeletingSoftware_thenReturnStatus404() throws Exception {
     mvc.perform(delete("/api/software/0"))
             .andExpect(status().is(404))
             .andExpect(jsonPath("$.success").value(false))
             .andExpect(jsonPath("$.message").value("Nie istnieje oprogramowanie o id: '0'"));
+  }
+
+  @Test
+  public void givenDeletedSoftwareId_whenDeletingSoftware_thenReturnStatus404() throws Exception {
+    mvc.perform(delete("/api/software/4"))
+        .andExpect(status().is(404))
+        .andExpect(jsonPath("$.success").value(false))
+        .andExpect(jsonPath("$.message").value("Nie istnieje oprogramowanie o id: '4'"));
   }
 
   @Test

@@ -102,12 +102,14 @@ public class SoftwareService {
     }
   }
 
+  @Transactional
   public void deleteSoftware(Long id) {
-    Software software = softwareRepository.findById(id).orElseThrow(() -> new NotFoundException("oprogramowanie", "id", id));
+    Software software = softwareRepository.findByIdAndValidToIsNull(id)
+        .orElseThrow(() -> new NotFoundException("oprogramowanie", "id", id));
     software.setValidTo(LocalDateTime.now());
     softwareRepository.save(software);
     Set<ComputerSetSoftware> computerSetSoftwareSet = computerSetSoftwareRepository.findAllBySoftwareIdAndValidToIsNull(id);
-    computerSetSoftwareSet.forEach( computerSetSoftware -> {
+    computerSetSoftwareSet.forEach(computerSetSoftware -> {
       computerSetSoftware.setValidTo(LocalDateTime.now());
       computerSetSoftwareRepository.save(computerSetSoftware);
     });
