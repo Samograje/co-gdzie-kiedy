@@ -71,7 +71,6 @@ public class SoftwareControllerIntegrationTest {
   @Test
   public void givenInvalidParameter_whenGettingOneSoftware_thenReturnStatus400() throws Exception {
     mvc.perform(get("/api/software/test"))
-
         .andExpect(status().is(400));
   }
 
