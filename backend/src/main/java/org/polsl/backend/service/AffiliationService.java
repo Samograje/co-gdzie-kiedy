@@ -25,7 +25,7 @@ public class AffiliationService {
     this.affiliationRepository = affiliationRepository;
   }
 
-  public String generateName(Affiliation affiliation) {
+  public static String generateName(Affiliation affiliation) {
     StringBuilder stringBuilder = new StringBuilder();
     boolean isSeparatorNeeded = false;
     if (!Objects.equals(affiliation.getFirstName(), "")) {
