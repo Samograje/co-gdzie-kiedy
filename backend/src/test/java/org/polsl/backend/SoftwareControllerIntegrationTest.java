@@ -80,10 +80,9 @@ public class SoftwareControllerIntegrationTest {
         .andExpect(status().is(200))
         .andExpect(jsonPath("$.name").value("Photoshop"))
         .andExpect(jsonPath("$.computerSetIds").isArray())
-        .andExpect(jsonPath("$.computerSetIds", hasSize(3)))
+        .andExpect(jsonPath("$.computerSetIds", hasSize(2)))
         .andExpect(jsonPath("$.computerSetIds", hasItem(1)))
-        .andExpect(jsonPath("$.computerSetIds", hasItem(2)))
-        .andExpect(jsonPath("$.computerSetIds", hasItem(3)));
+        .andExpect(jsonPath("$.computerSetIds", hasItem(2)));
   }
 
   @Test
@@ -105,7 +104,7 @@ public class SoftwareControllerIntegrationTest {
   }
 
   @Test
-  public void givenInvalidComputerSetId_whenAddingSoftware_thenReturnStatus404() throws Exception {
+  public void givenNotExistingComputerSetId_whenAddingSoftware_thenReturnStatus404() throws Exception {
     SoftwareDTO request = new SoftwareDTO();
     Set<Long> ids = new HashSet<>();
     ids.add((long) 0);
@@ -120,7 +119,22 @@ public class SoftwareControllerIntegrationTest {
   }
 
   @Test
-  public void givenCorrectRequest_whenAddingSoftware_thenReturnStatus200AndData() throws Exception {
+  public void givenDeletedComputerSetId_whenAddingSoftware_thenReturnStatus404() throws Exception {
+    SoftwareDTO request = new SoftwareDTO();
+    Set<Long> ids = new HashSet<>();
+    ids.add((long) 3);
+    request.setName("Mathematica");
+    request.setComputerSetIds(ids);
+    mvc.perform(post("/api/software/")
+        .content(objectMapper.writeValueAsString(request))
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().is(404))
+        .andExpect(jsonPath("$.success").value(false))
+        .andExpect(jsonPath("$.message").value("Nie istnieje zestaw komputerowy o id: '3'"));
+  }
+
+  @Test
+  public void givenCorrectRequestWithoutComputerSetIds_whenAddingSoftware_thenReturnStatus200AndData() throws Exception {
     SoftwareDTO request = new SoftwareDTO();
     request.setName("Notepad ++");
     mvc.perform(post("/api/software")
@@ -132,7 +146,7 @@ public class SoftwareControllerIntegrationTest {
   }
 
   @Test
-  public void givenCorrectRequestWithComputerSetId_whenAddingSoftware_thenReturnStatus200AndData() throws Exception {
+  public void givenCorrectRequestWithComputerSetIds_whenAddingSoftware_thenReturnStatus200AndData() throws Exception {
     SoftwareDTO request = new SoftwareDTO();
     Set<Long> ids = new HashSet<>();
     ids.add((long) 1);
@@ -177,7 +191,8 @@ public class SoftwareControllerIntegrationTest {
         .andExpect(status().is(405));
   }
 
-  public void givenInvalidComputerSetId_whenEditingSoftware_thenReturnStatus404() throws Exception {
+  @Test
+  public void givenNotExistingComputerSetId_whenEditingSoftware_thenReturnStatus404() throws Exception {
     SoftwareDTO request = new SoftwareDTO();
     Set<Long> ids = new HashSet<>();
     ids.add((long) 0);
@@ -192,7 +207,34 @@ public class SoftwareControllerIntegrationTest {
   }
 
   @Test
-  public void givenCorrectRequest_whenEditingSoftware_thenReturnStatus200AndData() throws Exception {
+  public void givenDeletedComputerSetId_whenEditingSoftware_thenReturnStatus404() throws Exception {
+    SoftwareDTO request = new SoftwareDTO();
+    Set<Long> ids = new HashSet<>();
+    ids.add((long) 3);
+    request.setName("Mathematica");
+    request.setComputerSetIds(ids);
+    mvc.perform(put("/api/software/1")
+        .content(objectMapper.writeValueAsString(request))
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().is(404))
+        .andExpect(jsonPath("$.success").value(false))
+        .andExpect(jsonPath("$.message").value("Nie istnieje zestaw komputerowy o id: '3'"));
+  }
+
+  @Test
+  public void givenDeletedSoftwareId_whenEditingSoftware_thenReturnStatus404() throws Exception {
+    SoftwareDTO request = new SoftwareDTO();
+    request.setName("Mathematica");
+    mvc.perform(put("/api/software/4")
+        .content(objectMapper.writeValueAsString(request))
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().is(404))
+        .andExpect(jsonPath("$.success").value(false))
+        .andExpect(jsonPath("$.message").value("Nie istnieje oprogramowanie o id: '4'"));
+  }
+
+  @Test
+  public void givenCorrectRequestWithoutComputerSetIds_whenEditingSoftware_thenReturnStatus200AndData() throws Exception {
     SoftwareDTO request = new SoftwareDTO();
     request.setName("Photoshop");
     mvc.perform(put("/api/software/1")
@@ -203,12 +245,12 @@ public class SoftwareControllerIntegrationTest {
         .andExpect(jsonPath("$.message").value("Zaktualizowano parametry oprogramowania."));
   }
 
-  public void givenCorrectComputerSetId_whenEditingSoftware_thenReturnStatus404() throws Exception {
+  @Test
+  public void givenCorrectRequestWithComputerSetIds_whenEditingSoftware_thenReturnStatus200AndData() throws Exception {
     SoftwareDTO request = new SoftwareDTO();
     Set<Long> ids = new HashSet<>();
     ids.add((long) 1);
     ids.add((long) 2);
-    ids.add((long) 3);
     request.setName("Mathematica");
     request.setComputerSetIds(ids);
     mvc.perform(put("/api/software/1")
@@ -219,7 +261,7 @@ public class SoftwareControllerIntegrationTest {
         .andExpect(jsonPath("$.message").value("Zaktualizowano parametry oprogramowania."));
   }
 
-
+  @Test
   public void givenNotExistingSoftwareId_whenDeletingSoftware_thenReturnStatus404() throws Exception {
     mvc.perform(delete("/api/software/0"))
         .andExpect(status().is(404))

@@ -73,13 +73,14 @@ public class SoftwareService {
     software.setName(request.getName());
     softwareRepository.save(software);
 
+    //New record(s) in history
     Set<Long> computerSetIdsSet = request.getComputerSetIds();
     if (computerSetIdsSet != null) {
       computerSetIdsSet.forEach(computerSetId -> {
-        // TODO: w momencie, gdy tabela zestawów komputerowych będzie miała kolumnę valid_to,
-        //  trzeba będzie tutaj sprawdzać, czy zestaw komputerowy nie jest aby usunięty.
-        ComputerSet computerSet = computerSetRepository.findById(computerSetId)
+
+        ComputerSet computerSet = computerSetRepository.findByIdAndValidToIsNull(computerSetId)
             .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
+        //Check if computer set is not deleted before creating a new record in history
         ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware(computerSet, software);
         computerSetSoftwareRepository.save(computerSetSoftware);
       });
@@ -89,9 +90,10 @@ public class SoftwareService {
   @Transactional
   public void editSoftware(Long id, SoftwareDTO request) throws NotFoundException {
     //Edit name
-    Software software = softwareRepository.findById(id).orElseThrow(() -> new NotFoundException("oprogramowanie", "id", id));
+    Software software = softwareRepository.findByIdAndValidToIsNull(id).orElseThrow(() -> new NotFoundException("oprogramowanie", "id", id));
     software.setName(request.getName());
     softwareRepository.save(software);
+
     Set<Long> computerSetIdsSet = request.getComputerSetIds();
     if (computerSetIdsSet != null) {
       Set<ComputerSetSoftware> computerSetSoftwareSet = computerSetSoftwareRepository.findAllBySoftwareIdAndValidToIsNull(id);
@@ -104,14 +106,14 @@ public class SoftwareService {
           computerSetSoftwareRepository.save(computerSetSoftware);
         }
       });
-      //New record(s)
+      //New record(s) in history
       computerSetIdsSet.forEach(computerSetId -> {
-        // TODO: w momencie, gdy tabela zestawów komputerowych będzie miała kolumnę valid_to,
-        //  trzeba będzie tutaj sprawdzać, czy zestaw komputerowy nie jest aby usunięty.
-        ComputerSet computerSet = computerSetRepository.findById(computerSetId)
+        ComputerSet computerSet = computerSetRepository.findByIdAndValidToIsNull(computerSetId)
             .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
+        //Check if computer set is not deleted before creating a new record in history
         ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware(computerSet, software);
         computerSetSoftwareRepository.save(computerSetSoftware);
+
       });
     }
   }
