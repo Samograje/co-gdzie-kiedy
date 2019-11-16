@@ -1,7 +1,7 @@
 package org.polsl.backend.service;
 
 import org.polsl.backend.dto.PaginatedResult;
-import org.polsl.backend.dto.software.SoftwareInputDTO;
+import org.polsl.backend.dto.software.SoftwareDTO;
 import org.polsl.backend.dto.software.SoftwareOutputDTO;
 import org.polsl.backend.entity.ComputerSet;
 import org.polsl.backend.entity.ComputerSetSoftware;
@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -53,8 +54,21 @@ public class SoftwareService {
     return response;
   }
 
+  public SoftwareDTO getOneSoftware(Long id) {
+    Software software = softwareRepository.findByIdAndValidToIsNull(id)
+        .orElseThrow(() -> new NotFoundException("oprogramowanie", "id", id));
+    SoftwareDTO dto = new SoftwareDTO();
+    Set<ComputerSetSoftware> computerSetSoftwareSet = computerSetSoftwareRepository.findAllBySoftwareIdAndValidToIsNull(id);
+    //Set of current computer sets for selected software
+    Set<Long> ids = new HashSet<>();
+    computerSetSoftwareSet.forEach(computerSetSoftware -> ids.add(computerSetSoftware.getComputerSet().getId()));
+    dto.setName(software.getName());
+    dto.setComputerSetIds(ids);
+    return dto;
+  }
+
   @Transactional
-  public void createSoftware(SoftwareInputDTO request) {
+  public void createSoftware(SoftwareDTO request) {
     Software software = new Software();
     software.setName(request.getName());
     softwareRepository.save(software);
@@ -74,7 +88,7 @@ public class SoftwareService {
   }
 
   @Transactional
-  public void editSoftware(Long id, SoftwareInputDTO request) throws NotFoundException {
+  public void editSoftware(Long id, SoftwareDTO request) throws NotFoundException {
     //Edit name
     Software software = softwareRepository.findByIdAndValidToIsNull(id).orElseThrow(() -> new NotFoundException("oprogramowanie", "id", id));
     software.setName(request.getName());
