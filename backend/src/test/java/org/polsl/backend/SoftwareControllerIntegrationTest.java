@@ -80,10 +80,9 @@ public class SoftwareControllerIntegrationTest {
         .andExpect(status().is(200))
         .andExpect(jsonPath("$.name").value("Photoshop"))
         .andExpect(jsonPath("$.computerSetIds").isArray())
-        .andExpect(jsonPath("$.computerSetIds", hasSize(3)))
+        .andExpect(jsonPath("$.computerSetIds", hasSize(2)))
         .andExpect(jsonPath("$.computerSetIds", hasItem(1)))
-        .andExpect(jsonPath("$.computerSetIds", hasItem(2)))
-        .andExpect(jsonPath("$.computerSetIds", hasItem(3)));
+        .andExpect(jsonPath("$.computerSetIds", hasItem(2)));
   }
 
   @Test
