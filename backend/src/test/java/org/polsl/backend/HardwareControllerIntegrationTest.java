@@ -43,6 +43,11 @@ public class HardwareControllerIntegrationTest {
   @Autowired
   private ObjectMapper objectMapper;
 
+  //TODO: zedytować testy odnosnie inventoryNumber
+  //TODO: dopisać nowe testy na listę
+  //TODO: nowy test na edycji - zakaz edytować inventoryNumber
+  //TODO: skrypt poprawić!
+  //TODO: DBeaver schemat
   @Test
   public void givenCorrectRequest_whenGettingSoloHardwareList_thenReturnStatus200AndData() throws Exception {
     mvc.perform(get("/api/hardware"))

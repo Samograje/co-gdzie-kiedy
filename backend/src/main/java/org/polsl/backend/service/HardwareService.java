@@ -53,13 +53,31 @@ public class HardwareService {
   }
 
   public PaginatedResult<HardwareListOutputDTO> getHardwareList(boolean soloOnly) {
-    Iterable<Hardware> soloHardware = hardwareRepository.findAllByComputerSetHardwareSetIsNull();
+
+    Iterable<Hardware> hardwareList;
+    if(soloOnly){
+      hardwareList = hardwareRepository.findAllByComputerSetHardwareSetIsNull();
+    }else {
+      hardwareList = hardwareRepository.findAll();
+    }
+
     List<HardwareListOutputDTO> dtos = new ArrayList<>();
-    for (Hardware hardware : soloHardware) {
+    for (Hardware hardware : hardwareList) {
       HardwareListOutputDTO dto = new HardwareListOutputDTO();
       dto.setId(hardware.getId());
       dto.setName(hardware.getName());
       dto.setType(hardware.getHardwareDictionary().getValue());
+      dto.setInventoryNumber(hardware.getInventoryNumber());
+
+      AffiliationHardware hardwareAffiliation = affiliationHardwareRepository.findTheLatestRowForHardware(hardware.getId())
+          .orElseThrow(() -> new RuntimeException("Brak połączenia przynależności ze sprzętem o id: " + hardware.getId()));
+      dto.setAffiliationName(AffiliationService.generateName(hardwareAffiliation.getAffiliation()));
+
+      if(!soloOnly){
+        Optional<ComputerSetHardware> lastEntry = computerSetHardwareRepository.findTheLatestRowForHardware(hardware.getId());
+        lastEntry.ifPresent(computerSetHardware -> dto.setComputerSetInventoryNumber(computerSetHardware.getComputerSet().getComputerSetInventoryNumber()));
+      }
+
       dtos.add(dto);
     }
     PaginatedResult<HardwareListOutputDTO> response = new PaginatedResult<>();
