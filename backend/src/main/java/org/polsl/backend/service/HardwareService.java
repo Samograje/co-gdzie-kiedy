@@ -53,12 +53,12 @@ public class HardwareService {
   }
 
   public PaginatedResult<HardwareListOutputDTO> getHardwareList(boolean soloOnly) {
-
     Iterable<Hardware> hardwareList;
+
     if(soloOnly){
-      hardwareList = hardwareRepository.findAllByComputerSetHardwareSetIsNull();
+      hardwareList = hardwareRepository.findAllByComputerSetHardwareSetIsNullAndValidToIsNull();
     }else {
-      hardwareList = hardwareRepository.findAll();
+      hardwareList = hardwareRepository.findAllByValidToIsNull();
     }
 
     List<HardwareListOutputDTO> dtos = new ArrayList<>();
@@ -73,13 +73,12 @@ public class HardwareService {
           .orElseThrow(() -> new RuntimeException("Brak połączenia przynależności ze sprzętem o id: " + hardware.getId()));
       dto.setAffiliationName(AffiliationService.generateName(hardwareAffiliation.getAffiliation()));
 
-      if(!soloOnly){
-        Optional<ComputerSetHardware> lastEntry = computerSetHardwareRepository.findTheLatestRowForHardware(hardware.getId());
-        lastEntry.ifPresent(computerSetHardware -> dto.setComputerSetInventoryNumber(computerSetHardware.getComputerSet().getComputerSetInventoryNumber()));
-      }
+      Optional<ComputerSetHardware> lastEntry = computerSetHardwareRepository.findTheLatestRowForHardware(hardware.getId());
+      lastEntry.ifPresent(computerSetHardware ->dto.setComputerSetInventoryNumber(computerSetHardware.getComputerSet().getComputerSetInventoryNumber()));
 
       dtos.add(dto);
     }
+
     PaginatedResult<HardwareListOutputDTO> response = new PaginatedResult<>();
     response.setItems(dtos);
     response.setTotalElements((long) dtos.size());
@@ -105,8 +104,9 @@ public class HardwareService {
 
   @Transactional
   public void createHardware(HardwareDTO request) {
-    //TODO: zainicjować parametr inventoryNumber
     Hardware hardware = new Hardware();
+    //TODO: zainicjować parametr inventoryNumber
+    hardware.setInventoryNumber("Test");
     hardware.setName(request.getName());
     HardwareDictionary hardwareDictionary = hardwareDictionaryRepository.findById(request.getDictionaryId())
         .orElseThrow(() -> new NotFoundException("słownik urządzeń", "id", request.getDictionaryId()));
@@ -128,7 +128,6 @@ public class HardwareService {
 
   @Transactional
   public void editHardware(Long id, HardwareDTO request) throws NotFoundException {
-    //TODO: rzucić BadRequestException jeśli ktoś chce edytować inventoryNumber
     Hardware hardware = hardwareRepository.findById(id)
         .orElseThrow(() -> new NotFoundException("sprzęt", "id", id));
     hardware.setName(request.getName());
