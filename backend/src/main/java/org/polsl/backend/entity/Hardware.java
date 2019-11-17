@@ -27,6 +27,9 @@ public class Hardware {
 
   private String name;
 
+  @Column(name = "inventory_number")
+  private String inventoryNumber;
+
   @Column(name = "valid_to")
   private LocalDateTime validTo;
 
@@ -58,6 +61,14 @@ public class Hardware {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public String getInventoryNumber() {
+    return inventoryNumber;
+  }
+
+  public void setInventoryNumber(String inventoryNumber) {
+    this.inventoryNumber = inventoryNumber;
   }
 
   public HardwareDictionary getHardwareDictionary() {

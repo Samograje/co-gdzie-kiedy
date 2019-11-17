@@ -2,7 +2,7 @@ package org.polsl.backend.service;
 
 import org.polsl.backend.dto.PaginatedResult;
 import org.polsl.backend.dto.hardware.HardwareDTO;
-import org.polsl.backend.dto.hardware.HardwareOutputDTO;
+import org.polsl.backend.dto.hardware.HardwareListOutputDTO;
 import org.polsl.backend.entity.Affiliation;
 import org.polsl.backend.entity.AffiliationHardware;
 import org.polsl.backend.entity.ComputerSet;
@@ -52,17 +52,17 @@ public class HardwareService {
     this.affiliationHardwareRepository = affiliationHardwareRepository;
   }
 
-  public PaginatedResult<HardwareOutputDTO> getHardwareList(boolean soloOnly) {
+  public PaginatedResult<HardwareListOutputDTO> getHardwareList(boolean soloOnly) {
     Iterable<Hardware> soloHardware = hardwareRepository.findAllByComputerSetHardwareSetIsNull();
-    List<HardwareOutputDTO> dtos = new ArrayList<>();
+    List<HardwareListOutputDTO> dtos = new ArrayList<>();
     for (Hardware hardware : soloHardware) {
-      HardwareOutputDTO dto = new HardwareOutputDTO();
+      HardwareListOutputDTO dto = new HardwareListOutputDTO();
       dto.setId(hardware.getId());
       dto.setName(hardware.getName());
       dto.setType(hardware.getHardwareDictionary().getValue());
       dtos.add(dto);
     }
-    PaginatedResult<HardwareOutputDTO> response = new PaginatedResult<>();
+    PaginatedResult<HardwareListOutputDTO> response = new PaginatedResult<>();
     response.setItems(dtos);
     response.setTotalElements((long) dtos.size());
     return response;
@@ -87,6 +87,7 @@ public class HardwareService {
 
   @Transactional
   public void createHardware(HardwareDTO request) {
+    //TODO: zainicjować parametr inventoryNumber
     Hardware hardware = new Hardware();
     hardware.setName(request.getName());
     HardwareDictionary hardwareDictionary = hardwareDictionaryRepository.findById(request.getDictionaryId())
@@ -109,6 +110,7 @@ public class HardwareService {
 
   @Transactional
   public void editHardware(Long id, HardwareDTO request) throws NotFoundException {
+    //TODO: rzucić BadRequestException jeśli ktoś chce edytować inventoryNumber
     Hardware hardware = hardwareRepository.findById(id)
         .orElseThrow(() -> new NotFoundException("sprzęt", "id", id));
     hardware.setName(request.getName());
