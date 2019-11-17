@@ -1,6 +1,7 @@
 package org.polsl.backend.config;
 
 import org.polsl.backend.dto.ApiBasicResponse;
+import org.polsl.backend.exception.BadRequestException;
 import org.polsl.backend.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -33,4 +34,17 @@ public class ControllerExceptionHandler {
     return new ApiBasicResponse(false, e.getMessage());
   }
 
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(BadRequestException.class)
+  @ResponseBody
+  ApiBasicResponse handleBadRequestException(BadRequestException e) {
+    return new ApiBasicResponse(false, e.getMessage());
+  }
+
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(NumberFormatException.class)
+  @ResponseBody
+  ApiBasicResponse handleNumberFormatException(NumberFormatException e) {
+    return new ApiBasicResponse(false, "Podana wartość nie jest liczbą");
+  }
 }

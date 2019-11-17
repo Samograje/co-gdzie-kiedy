@@ -71,7 +71,9 @@ public class HardwareControllerIntegrationTest {
   @Test
   public void givenInvalidParameter_whenGettingOneHardware_thenReturnStatus400() throws Exception {
     mvc.perform(get("/api/hardware/mvvm"))
-        .andExpect(status().is(400));
+        .andExpect(status().is(400))
+        .andExpect(jsonPath("$.success").value(false))
+        .andExpect(jsonPath("$.message").value("Podana wartość nie jest liczbą"));
   }
 
   @Test
