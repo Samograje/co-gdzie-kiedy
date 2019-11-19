@@ -25,7 +25,7 @@ public class ComputerSet {
   private String name;
 
   @Column(name = "inventory_number")
-  private String computerSetInventoryNumber;
+  private String inventoryNumber;
 
   @Column(name = "valid_to")
   private LocalDateTime validTo;
@@ -58,12 +58,12 @@ public class ComputerSet {
     this.name = name;
   }
 
-  public String getComputerSetInventoryNumber() {
-    return computerSetInventoryNumber;
+  public String getInventoryNumber() {
+    return inventoryNumber;
   }
 
-  public void setComputerSetInventoryNumber(String computerSetInventoryNumber) {
-    this.computerSetInventoryNumber = computerSetInventoryNumber;
+  public void setInventoryNumber(String inventoryNumber) {
+    this.inventoryNumber = inventoryNumber;
   }
 
   public Set<AffiliationComputerSet> getAffiliationComputerSetSet() {
