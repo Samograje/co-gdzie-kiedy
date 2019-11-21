@@ -80,18 +80,20 @@ public class ComputerSetService {
 
     // TODO: błąd: wykonało akcję zamiast rzucić wyjątek
     //  sytuacja: podanie nieprawidłowego affiliationId (usuniętego)
+    //ok
 
-    Affiliation affiliation = affiliationRepository.findById(request.getAffiliationId())
+    Affiliation affiliation = affiliationRepository.findByIdAndIsDeletedIsFalse(request.getAffiliationId())
         .orElseThrow(() -> new NotFoundException("przynależność", "id", request.getAffiliationId()));
     AffiliationComputerSet affiliationComputerSet = new AffiliationComputerSet(affiliation, computerSet);
     affiliationComputerSetRepository.save(affiliationComputerSet);
 
     // TODO: błąd: wykonało akcję zamiast rzucić wyjątek
     //  sytuacja: podanie hardwareIds: [8], gdzie hardware o ID = 8 jest usunięty
+    // ok
 
     if (request.getHardwareIds() != null) {
       request.getHardwareIds().forEach(hardwareId -> {
-        Hardware hardware = hardwareRepository.findById(hardwareId)
+        Hardware hardware = hardwareRepository.findByIdAndValidToIsNull(hardwareId)
                 .orElseThrow(() -> new NotFoundException("sprzęt", "id", hardwareId));
         ComputerSetHardware computerSetHardware = new ComputerSetHardware(computerSet, hardware);
         computerSetHardwareRepository.save(computerSetHardware);
