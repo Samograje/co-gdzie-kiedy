@@ -10,9 +10,7 @@ import java.util.Optional;
 @Repository
 public interface HardwareRepository extends CrudRepository<Hardware, Long> {
 
-  List<Hardware> findAllByComputerSetHardwareSetIsNullAndValidToIsNull();
-
-  List<Hardware> findAllByValidToIsNull();
+  List<Hardware> findAllByComputerSetHardwareSetIsNull();
 
   Optional<Hardware> findByIdAndValidToIsNull(Long id);
 
