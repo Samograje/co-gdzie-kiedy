@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface SoftwareRepository extends CrudRepository<Software, Long> {
+public interface SoftwareRepository extends CrudRepository<Software, Long>, WithInventoryNumber<Software> {
   Optional<Software> findById(Long id);
   Optional<Software> findByIdAndValidToIsNull(Long id);
 

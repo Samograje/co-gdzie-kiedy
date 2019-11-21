@@ -17,7 +17,6 @@ import org.polsl.backend.repository.ComputerSetHardwareRepository;
 import org.polsl.backend.repository.ComputerSetRepository;
 import org.polsl.backend.repository.HardwareDictionaryRepository;
 import org.polsl.backend.repository.HardwareRepository;
-import org.polsl.backend.repository.InventoryNumberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,9 +59,9 @@ public class HardwareService {
   public PaginatedResult<HardwareListOutputDTO> getHardwareList(boolean soloOnly) {
     Iterable<Hardware> hardwareList;
 
-    if(soloOnly){
+    if (soloOnly) {
       hardwareList = hardwareRepository.findAllByComputerSetHardwareSetIsNullAndValidToIsNull();
-    }else {
+    } else {
       hardwareList = hardwareRepository.findAllByValidToIsNull();
     }
 
@@ -79,7 +78,7 @@ public class HardwareService {
       dto.setAffiliationName(AffiliationService.generateName(hardwareAffiliation.getAffiliation()));
 
       Optional<ComputerSetHardware> lastEntry = computerSetHardwareRepository.findTheLatestRowForHardware(hardware.getId());
-      lastEntry.ifPresent(computerSetHardware ->dto.setComputerSetInventoryNumber(computerSetHardware.getComputerSet().getInventoryNumber()));
+      lastEntry.ifPresent(computerSetHardware -> dto.setComputerSetInventoryNumber(computerSetHardware.getComputerSet().getInventoryNumber()));
 
       dtos.add(dto);
     }
@@ -110,11 +109,14 @@ public class HardwareService {
 
   @Transactional
   public void createHardware(HardwareDTO request) {
-    if(request.getInventoryNumber() != null) throw new BadRequestException("Zakaz ręcznego wprowadzania numeru inwentarzowego.");
+    if (request.getInventoryNumber() != null)
+      throw new BadRequestException("Zakaz ręcznego wprowadzania numeru inwentarzowego.");
 
     Hardware hardware = new Hardware();
 
-    hardware.setInventoryNumber(inventoryNumberService.generateInventoryNumber());
+    String newInvNumb = inventoryNumberService.generateInventoryNumber(hardwareRepository);
+    hardware.setInventoryNumber(newInvNumb);
+
     hardware.setName(request.getName());
     HardwareDictionary hardwareDictionary = hardwareDictionaryRepository.findById(request.getDictionaryId())
         .orElseThrow(() -> new NotFoundException("słownik urządzeń", "id", request.getDictionaryId()));
@@ -136,7 +138,7 @@ public class HardwareService {
 
   @Transactional
   public void editHardware(Long id, HardwareDTO request) throws NotFoundException {
-    if(request.getInventoryNumber() != null) throw new BadRequestException("Zakaz edycji numeru inwentarzowego.");
+    if (request.getInventoryNumber() != null) throw new BadRequestException("Zakaz edycji numeru inwentarzowego.");
 
     Hardware hardware = hardwareRepository.findById(id)
         .orElseThrow(() -> new NotFoundException("sprzęt", "id", id));
