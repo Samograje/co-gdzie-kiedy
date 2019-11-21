@@ -17,6 +17,7 @@ import org.polsl.backend.repository.ComputerSetHardwareRepository;
 import org.polsl.backend.repository.ComputerSetRepository;
 import org.polsl.backend.repository.HardwareDictionaryRepository;
 import org.polsl.backend.repository.HardwareRepository;
+import org.polsl.backend.type.InventoryNumberEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -114,7 +115,8 @@ public class HardwareService {
 
     Hardware hardware = new Hardware();
 
-    String newInvNumb = inventoryNumberService.generateInventoryNumber(hardwareRepository);
+    String newInvNumb = inventoryNumberService
+        .generateInventoryNumber(InventoryNumberEnum.HARDWARE, hardwareRepository.countAll());
     hardware.setInventoryNumber(newInvNumb);
 
     hardware.setName(request.getName());

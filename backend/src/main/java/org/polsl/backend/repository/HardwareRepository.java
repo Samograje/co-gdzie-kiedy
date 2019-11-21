@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface HardwareRepository extends CrudRepository<Hardware, Long>, WithInventoryNumber<Hardware> {
+public interface HardwareRepository extends CrudRepository<Hardware, Long> {
 
   List<Hardware> findAllByComputerSetHardwareSetIsNullAndValidToIsNull();
 
@@ -17,4 +17,6 @@ public interface HardwareRepository extends CrudRepository<Hardware, Long>, With
   Optional<Hardware> findByIdAndValidToIsNull(Long id);
 
   long countByValidToIsNull();
+  
+  long countAll();
 }
