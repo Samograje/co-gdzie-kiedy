@@ -3,7 +3,7 @@ package org.polsl.backend.dto.hardware;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-public class HardwareInputDTO {
+public class HardwareDTO {
   @NotEmpty
   private String name;
 

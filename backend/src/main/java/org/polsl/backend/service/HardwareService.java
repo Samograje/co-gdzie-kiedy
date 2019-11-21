@@ -1,7 +1,7 @@
 package org.polsl.backend.service;
 
 import org.polsl.backend.dto.PaginatedResult;
-import org.polsl.backend.dto.hardware.HardwareInputDTO;
+import org.polsl.backend.dto.hardware.HardwareDTO;
 import org.polsl.backend.dto.hardware.HardwareOutputDTO;
 import org.polsl.backend.entity.Affiliation;
 import org.polsl.backend.entity.AffiliationHardware;
@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Logika biznesowa hardware'u.
@@ -67,8 +68,25 @@ public class HardwareService {
     return response;
   }
 
+  public HardwareDTO getOneHardware(long id) {
+    Hardware hardware = hardwareRepository.findByIdAndValidToIsNull(id)
+        .orElseThrow(() -> new NotFoundException("sprzęt", "id", id));
+    HardwareDTO dto = new HardwareDTO();
+    dto.setName(hardware.getName());
+    dto.setDictionaryId(hardware.getHardwareDictionary().getId());
+
+    AffiliationHardware lastEntryAffiliation = affiliationHardwareRepository.findTheLatestRowForHardware(id)
+        .orElseThrow(() -> new RuntimeException("Brak połączenia przynależności ze sprzętem o id: " + id));
+    dto.setAffiliationId(lastEntryAffiliation.getAffiliation().getId());
+
+    Optional<ComputerSetHardware> lastEntry = computerSetHardwareRepository.findTheLatestRowForHardware(id);
+    lastEntry.ifPresent(computerSetHardware -> dto.setComputerSetId(computerSetHardware.getComputerSet().getId()));
+
+    return dto;
+  }
+
   @Transactional
-  public void createHardware(HardwareInputDTO request) {
+  public void createHardware(HardwareDTO request) {
     Hardware hardware = new Hardware();
     hardware.setName(request.getName());
     HardwareDictionary hardwareDictionary = hardwareDictionaryRepository.findById(request.getDictionaryId())
@@ -77,7 +95,7 @@ public class HardwareService {
     hardwareRepository.save(hardware);
 
     if (request.getComputerSetId() != null) {
-      ComputerSet computerSet = computerSetRepository.findById(request.getComputerSetId())
+      ComputerSet computerSet = computerSetRepository.findByIdAndValidToIsNull(request.getComputerSetId())
           .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", request.getComputerSetId()));
       ComputerSetHardware computerSetHardware = new ComputerSetHardware(computerSet, hardware);
       computerSetHardwareRepository.save(computerSetHardware);
@@ -90,40 +108,59 @@ public class HardwareService {
   }
 
   @Transactional
-  public void editHardware(Long id, HardwareInputDTO request) throws NotFoundException {
+  public void editHardware(Long id, HardwareDTO request) throws NotFoundException {
     Hardware hardware = hardwareRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("sprzęt", "id", id));
+        .orElseThrow(() -> new NotFoundException("sprzęt", "id", id));
     hardware.setName(request.getName());
     HardwareDictionary hardwareDictionary = hardwareDictionaryRepository.findById(request.getDictionaryId())
-            .orElseThrow(() -> new NotFoundException("słownik urządzeń", "id", request.getDictionaryId()));
+        .orElseThrow(() -> new NotFoundException("słownik urządzeń", "id", request.getDictionaryId()));
     hardware.setHardwareDictionary(hardwareDictionary);
     hardwareRepository.save(hardware);
 
-    if (request.getComputerSetId() != null) {
-      ComputerSetHardware lastEntry = computerSetHardwareRepository.findNewestRowForHardware(id)
-              .orElseThrow(() -> new NotFoundException("tabela pośrednia sprzęt(id) - zestaw komputerowy", "id", id));
-      if (!lastEntry.getComputerSet().getId().equals(request.getComputerSetId())) {
-        lastEntry.setValidTo(LocalDateTime.now());
-        computerSetHardwareRepository.save(lastEntry);
-
-        // TODO: w momencie, gdy tabela zestawów komputerowych będzie miała kolumnę valid_to,
-        //  trzeba będzie tutaj sprawdzać, czy zestaw komputerowy nie jest aby usunięty.
-        ComputerSet computerSet = computerSetRepository.findById(request.getComputerSetId())
-                .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", request.getComputerSetId()));
-        ComputerSetHardware computerSetHardware = new ComputerSetHardware(computerSet, hardware);
-        computerSetHardwareRepository.save(computerSetHardware);
-      }
+    Optional<ComputerSetHardware> lastEntry = computerSetHardwareRepository.findTheLatestRowForHardware(id);
+    if (lastEntry.isPresent() && !lastEntry.get().getComputerSet().getId().equals(request.getComputerSetId())) {
+      ComputerSetHardware computerSetHardware = lastEntry.get();
+      computerSetHardware.setValidTo(LocalDateTime.now());
+      computerSetHardwareRepository.save(computerSetHardware);
+    }
+    if (request.getComputerSetId() != null && !(
+        lastEntry.isPresent() && lastEntry.get().getComputerSet().getId().equals(request.getComputerSetId())
+    )) {
+      ComputerSet computerSet = computerSetRepository.findByIdAndValidToIsNull(request.getComputerSetId())
+          .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", request.getComputerSetId()));
+      ComputerSetHardware computerSetHardware = new ComputerSetHardware(computerSet, hardware);
+      computerSetHardwareRepository.save(computerSetHardware);
     }
 
-    AffiliationHardware lastEntryAffiliation = affiliationHardwareRepository.findNewestRowForHardware(id)
-            .orElseThrow(() -> new NotFoundException("przynależność - sprzęt(id)", "id", id));
+    AffiliationHardware lastEntryAffiliation = affiliationHardwareRepository.findTheLatestRowForHardware(id)
+        .orElseThrow(() -> new RuntimeException("Brak połączenia przynależności ze sprzętem o id: " + id));
     if (!lastEntryAffiliation.getAffiliation().getId().equals(request.getAffiliationId())) {
       lastEntryAffiliation.setValidTo(LocalDateTime.now());
       affiliationHardwareRepository.save(lastEntryAffiliation);
       Affiliation affiliation = affiliationRepository.findByIdAndIsDeletedIsFalse(request.getAffiliationId())
-              .orElseThrow(() -> new NotFoundException("przynależność", "id", request.getAffiliationId()));
+          .orElseThrow(() -> new NotFoundException("przynależność", "id", request.getAffiliationId()));
       AffiliationHardware affiliationHardware = new AffiliationHardware(affiliation, hardware);
       affiliationHardwareRepository.save(affiliationHardware);
     }
+  }
+
+  @Transactional
+  public void deleteHardware(Long id) throws NotFoundException {
+    Hardware hardware = hardwareRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException("sprzęt", "id", id));
+    hardware.setValidTo(LocalDateTime.now());
+    hardwareRepository.save(hardware);
+
+    Optional<ComputerSetHardware> lastEntryComputerSet = computerSetHardwareRepository.findTheLatestRowForHardware(id);
+    if (lastEntryComputerSet.isPresent()) {
+      ComputerSetHardware computerSetHardware = lastEntryComputerSet.get();
+      computerSetHardware.setValidTo(LocalDateTime.now());
+      computerSetHardwareRepository.save(computerSetHardware);
+    }
+
+    AffiliationHardware lastEntryAffiliation = affiliationHardwareRepository.findTheLatestRowForHardware(id)
+        .orElseThrow(() -> new RuntimeException("Brak połączenia przynależności ze sprzętem o id: " + id));
+    lastEntryAffiliation.setValidTo(LocalDateTime.now());
+    affiliationHardwareRepository.save(lastEntryAffiliation);
   }
 }
