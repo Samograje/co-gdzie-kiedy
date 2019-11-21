@@ -17,6 +17,6 @@ public interface HardwareRepository extends CrudRepository<Hardware, Long> {
   Optional<Hardware> findByIdAndValidToIsNull(Long id);
 
   long countByValidToIsNull();
-  
-  long countAll();
+
+  long count();
 }

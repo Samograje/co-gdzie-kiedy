@@ -116,7 +116,7 @@ public class HardwareService {
     Hardware hardware = new Hardware();
 
     String newInvNumb = inventoryNumberService
-        .generateInventoryNumber(InventoryNumberEnum.HARDWARE, hardwareRepository.countAll());
+        .generateInventoryNumber(InventoryNumberEnum.HARDWARE, hardwareRepository.count());
     hardware.setInventoryNumber(newInvNumb);
 
     hardware.setName(request.getName());

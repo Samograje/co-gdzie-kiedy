@@ -14,5 +14,5 @@ public interface SoftwareRepository extends CrudRepository<Software, Long> {
 
   long countByValidToIsNull();
 
-  long countAll();
+  long count();
 }
