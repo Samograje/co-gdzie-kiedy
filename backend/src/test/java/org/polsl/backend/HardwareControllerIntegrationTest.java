@@ -74,24 +74,24 @@ public class HardwareControllerIntegrationTest {
         .andExpect(jsonPath("$.items[0].id").value(1))
         .andExpect(jsonPath("$.items[0].name").value("GTX 1040"))
         .andExpect(jsonPath("$.items[0].type").value("Karta graficzna"))
-        .andExpect(jsonPath("$.items[0].inventoryNumber").value("000001/2019"))
+        .andExpect(jsonPath("$.items[0].inventoryNumber").value("Test"))
         .andExpect(jsonPath("$.items[0].computerSetInventoryNumber").value("Test"))
         .andExpect(jsonPath("$.items[0].affiliationName").value("Szymon Jęczyzel - Solaris"))
         .andExpect(jsonPath("$.items[1].id").value(2))
         .andExpect(jsonPath("$.items[1].name").value("TP-Link"))
         .andExpect(jsonPath("$.items[1].type").value("Karta sieciowa"))
-        .andExpect(jsonPath("$.items[1].inventoryNumber").value("000002/2019"))
+        .andExpect(jsonPath("$.items[1].inventoryNumber").value("Test"))
         .andExpect(jsonPath("$.items[1].affiliationName").value("Bartłomiej Szlachta - 130"))
         .andExpect(jsonPath("$.items[2].id").value(3))
         .andExpect(jsonPath("$.items[2].name").value("i5-7070"))
         .andExpect(jsonPath("$.items[2].type").value("Procesor"))
-        .andExpect(jsonPath("$.items[2].inventoryNumber").value("000003/2019"))
+        .andExpect(jsonPath("$.items[2].inventoryNumber").value("Test"))
         .andExpect(jsonPath("$.items[2].computerSetInventoryNumber").value("Test"))
         .andExpect(jsonPath("$.items[2].affiliationName").value("Bartłomiej Szlachta - 130"))
         .andExpect(jsonPath("$.items[3].id").value(4))
         .andExpect(jsonPath("$.items[3].name").value("i3-5400"))
         .andExpect(jsonPath("$.items[3].type").value("Procesor"))
-        .andExpect(jsonPath("$.items[3].inventoryNumber").value("000004/2019"))
+        .andExpect(jsonPath("$.items[3].inventoryNumber").value("Test"))
         .andExpect(jsonPath("$.items[3].affiliationName").value("Jan Kowalski"));
   }
 
@@ -126,7 +126,6 @@ public class HardwareControllerIntegrationTest {
         .andExpect(jsonPath("$.name").value("GTX 1040"))
         .andExpect(jsonPath("$.dictionaryId").value(1))
         .andExpect(jsonPath("$.computerSetId").value(1))
-        .andExpect(jsonPath("$.inventoryNumber").value("000001/2019"))
         .andExpect(jsonPath("$.affiliationId").value(1));
   }
 
@@ -136,7 +135,6 @@ public class HardwareControllerIntegrationTest {
         .andExpect(status().is(200))
         .andExpect(jsonPath("$.name").value("TP-Link"))
         .andExpect(jsonPath("$.dictionaryId").value(2))
-        .andExpect(jsonPath("$.inventoryNumber").value("000002/2019"))
         .andExpect(jsonPath("$.affiliationId").value(2));
   }
 
