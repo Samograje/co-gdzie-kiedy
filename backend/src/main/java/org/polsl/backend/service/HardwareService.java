@@ -52,7 +52,7 @@ public class HardwareService {
     this.affiliationHardwareRepository = affiliationHardwareRepository;
   }
 
-  public PaginatedResult<HardwareOutputDTO> getHardwareList(boolean soloOnly) {
+  public PaginatedResult<HardwareOutputDTO> getAllSoloHardware() {
     Iterable<Hardware> soloHardware = hardwareRepository.findAllByComputerSetHardwareSetIsNull();
     List<HardwareOutputDTO> dtos = new ArrayList<>();
     for (Hardware hardware : soloHardware) {
