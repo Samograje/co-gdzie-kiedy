@@ -74,7 +74,7 @@ public class HardwareService {
       dto.setAffiliationName(AffiliationService.generateName(hardwareAffiliation.getAffiliation()));
 
       Optional<ComputerSetHardware> lastEntry = computerSetHardwareRepository.findTheLatestRowForHardware(hardware.getId());
-      lastEntry.ifPresent(computerSetHardware ->dto.setComputerSetInventoryNumber(computerSetHardware.getComputerSet().getInventoryNumber()));
+      lastEntry.ifPresent(computerSetHardware ->dto.setComputerSetInventoryNumber(computerSetHardware.getComputerSet().getComputerSetInventoryNumber()));
 
       dtos.add(dto);
     }
