@@ -39,6 +39,39 @@ public class ComputerSet {
   public ComputerSet() {
   }
 
+  public Set<AffiliationComputerSet> getValidAffiliationComputerSetSet() {
+    if (affiliationComputerSetSet != null) {
+      Set<AffiliationComputerSet> validAffiliationComputerSetSet = affiliationComputerSetSet;
+      validAffiliationComputerSetSet.removeIf(validAffiliationComputerSet ->
+              validAffiliationComputerSet.getValidTo() == null);
+      return validAffiliationComputerSetSet;
+    } else {
+      return null;
+    }
+  }
+
+  public Set<ComputerSetHardware> getValidComputerSetHardware() {
+    if (computerSetHardwareSet != null) {
+      Set<ComputerSetHardware> validComputerSetHardwareSet = computerSetHardwareSet;
+      validComputerSetHardwareSet.removeIf(validComputerSetHardware ->
+              validComputerSetHardware.getValidTo() == null);
+      return validComputerSetHardwareSet;
+    } else {
+      return null;
+    }
+  }
+
+  public Set<ComputerSetSoftware> getValidComputerSetSoftwareSet() {
+    if (computerSetSoftwareSet != null) {
+      Set<ComputerSetSoftware> validComputerSetSoftwareSet = computerSetSoftwareSet;
+      validComputerSetSoftwareSet.removeIf(validComputerSetSoftware ->
+              validComputerSetSoftware.getValidTo() == null);
+      return validComputerSetSoftwareSet;
+    } else {
+      return null;
+    }
+  }
+
   public Long getId() {
     return id;
   }

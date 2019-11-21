@@ -78,18 +78,10 @@ public class ComputerSetService {
     computerSet.setName(request.getName());
     computerSetRepository.save(computerSet);
 
-    // TODO: błąd: wykonało akcję zamiast rzucić wyjątek
-    //  sytuacja: podanie nieprawidłowego affiliationId (usuniętego)
-    //ok
-
     Affiliation affiliation = affiliationRepository.findByIdAndIsDeletedIsFalse(request.getAffiliationId())
         .orElseThrow(() -> new NotFoundException("przynależność", "id", request.getAffiliationId()));
     AffiliationComputerSet affiliationComputerSet = new AffiliationComputerSet(affiliation, computerSet);
     affiliationComputerSetRepository.save(affiliationComputerSet);
-
-    // TODO: błąd: wykonało akcję zamiast rzucić wyjątek
-    //  sytuacja: podanie hardwareIds: [8], gdzie hardware o ID = 8 jest usunięty
-    // ok
 
     if (request.getHardwareIds() != null) {
       request.getHardwareIds().forEach(hardwareId -> {
@@ -102,7 +94,7 @@ public class ComputerSetService {
 
     if (request.getSoftwareIds() != null) {
       request.getSoftwareIds().forEach(softwareId -> {
-        Software software = softwareRepository.findById(softwareId)
+        Software software = softwareRepository.findByIdAndValidToIsNull(softwareId)
                 .orElseThrow(() -> new NotFoundException("oprogramowanie", "id", softwareId));
         ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware(computerSet, software);
         computerSetSoftwareRepository.save(computerSetSoftware);
@@ -112,7 +104,7 @@ public class ComputerSetService {
 
   @Transactional
   public void editComputerSet(Long id, ComputerSetInputDTO request) throws NotFoundException {
-    ComputerSet computerSet = computerSetRepository.findById(id)
+    ComputerSet computerSet = computerSetRepository.findByIdAndValidToIsNull(id)
             .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", id));
     computerSet.setName(request.getName());
     computerSetRepository.save(computerSet);
@@ -121,42 +113,33 @@ public class ComputerSetService {
     Set<Long> requestHardwareIds = request.getHardwareIds();
     Set<Long> requestSoftwareIds = request.getSoftwareIds();
 
-    Set<AffiliationComputerSet> currentAffiliationComputerSetSet = computerSet.getAffiliationComputerSetSet();
+    //TYLKO AKTUALNE POŁĄCZENIA
+    Set<AffiliationComputerSet> currentAffiliationComputerSetSet = computerSet.getValidAffiliationComputerSetSet();
     Set<ComputerSetHardware> currentComputerSetHardwareSet = computerSet.getComputerSetHardwareSet();
     Set<ComputerSetSoftware> currentComputerSetSoftwareSet = computerSet.getComputerSetSoftwareSet();
 
-    // TODO: wyświetliło komunikat o sukcesie zamiast komunikatu o błędzie, do tego ustawiło valid_to
-    //  sytuacja: podanie nieprawidłowego affiliationId (nieistniejącego)
-
-    // TODO: wyświetliło komunikat o sukcesie zamiast komunikatu o błędzie, do tego ustawiło valid_to
-    //  sytuacja: podanie nieprawidłowego affiliationId (usuniętego)
-
-    // TODO: nie utworzyło nowego rekordu w bazie
-    //  sytuacja: zmiana affiliationId z prawidłowego na prawidłowe
-
     //-----------AFFILIATION---------------
-    currentAffiliationComputerSetSet.forEach(currentAffiliationComputerSet -> {
-      // jeżeli połączenie jest aktualne
-      if (currentAffiliationComputerSet.getValidTo() == null) {
+    if (currentAffiliationComputerSetSet != null) {
+      currentAffiliationComputerSetSet.forEach(currentAffiliationComputerSet -> {
+        // jeżeli połączenie jest aktualne
+        if (currentAffiliationComputerSet.getValidTo() == null) {
 
-        Long currentAffiliationId = currentAffiliationComputerSet.getAffiliation().getId();
-        if (currentAffiliationId != requestAffiliationId) {
+          Long currentAffiliationId = currentAffiliationComputerSet.getAffiliation().getId();
+          if (currentAffiliationId != requestAffiliationId) {
+            if (requestAffiliationId != null) {
+              //ustawianie nowego połączenia
+              Affiliation newAffiliation = affiliationRepository.findByIdAndIsDeletedIsFalse(requestAffiliationId)
+                      .orElseThrow(() -> new NotFoundException("afiliacja", "id", requestAffiliationId));
 
-          Affiliation newAffiliation = affiliationRepository.findById(requestAffiliationId)
-                  .orElseThrow(() -> new NotFoundException("afiliacja", "id", requestAffiliationId));
-
-          AffiliationComputerSet newAffiliationComputerSet = new AffiliationComputerSet(newAffiliation, computerSet);
-          computerSet.getAffiliationComputerSetSet().add(newAffiliationComputerSet);
-
-          currentAffiliationComputerSet.setValidTo(LocalDateTime.now());
+              AffiliationComputerSet newAffiliationComputerSet = new AffiliationComputerSet(newAffiliation, computerSet);
+              computerSet.getAffiliationComputerSetSet().add(newAffiliationComputerSet);
+              currentAffiliationComputerSet.setValidTo(LocalDateTime.now()); //już nieaktualne
+            }
+          }
         }
-      }
-    });
+      });
+    }
 
-    // w testach podawałem zawsze softwareIds: [], może to było problemem, nie wiem
-
-    // TODO: null pointer exception
-    //  sytuacja: hardwareIds będący nullem
 
     // TODO: null pointer exception
     //  sytuacja: zmiana hardwareIds z [] na [0], gdzie nie istnieje hardware o ID = 0
@@ -185,53 +168,76 @@ public class ComputerSetService {
     //--------------HARDWARE-------------
     //jeżeli połączenie staje się nieaktualne
     Set<Long> currentHardwareIds = null;
-    currentComputerSetHardwareSet.forEach(currentComputerSetHardware -> {
-      if (currentComputerSetHardware.getValidTo() == null) {
-        //aktualne id sprzętów należących do zestawów komputerowych
-        currentHardwareIds.add(currentComputerSetHardware.getHardware().getId());
+    if (currentComputerSetHardwareSet != null) {
+      currentComputerSetHardwareSet.forEach(currentComputerSetHardware -> {
+        if (currentComputerSetHardware.getValidTo() == null) {
+          //aktualne id sprzętów należących do zestawów komputerowych
+          currentHardwareIds.add(currentComputerSetHardware.getHardware().getId());
 
-        if (!requestHardwareIds.contains(currentComputerSetHardware.getHardware())) {
-          currentComputerSetHardware.setValidTo(LocalDateTime.now());
+          if (requestHardwareIds != null) {
+            if (!requestHardwareIds.contains(currentComputerSetHardware.getHardware())) { //już nieaktualne
+              currentComputerSetHardware.setValidTo(LocalDateTime.now());
+            }
+          } else { //usuwanie
+            computerSet.setComputerSetHardwareSet(null);
+          }
+
         }
-      }
-    });
+      });
+    }
 
-    requestHardwareIds.forEach(requestHardwareId -> {
-      // jeżeli nie było do tej pory takiego sprzętu lub lista sprzętów jest pusta
-      if (!currentHardwareIds.contains(requestHardwareId) || currentHardwareIds == null) {
-        //dodaje nowe połącznie
-        Hardware newHardware = hardwareRepository.findById(requestHardwareId)
-                .orElseThrow(() -> new NotFoundException("sprzęt", "id", requestHardwareId));
-        ComputerSetHardware newComputerSetHardware = new ComputerSetHardware(computerSet, newHardware);
-        computerSet.getComputerSetHardwareSet().add(newComputerSetHardware);
-      }
-    });
+    if (requestHardwareIds != null) {
+      requestHardwareIds.forEach(requestHardwareId -> {
+        // jeżeli nie było do tej pory takiego sprzętu lub lista sprzętów jest pusta
+        if (!currentHardwareIds.contains(requestHardwareId) || currentHardwareIds == null) {
+          //dodaje nowe połącznie
+          Hardware newHardware = hardwareRepository.findById(requestHardwareId)
+                  .orElseThrow(() -> new NotFoundException("sprzęt", "id", requestHardwareId));
+          ComputerSetHardware newComputerSetHardware = new ComputerSetHardware(computerSet, newHardware);
+          computerSet.getComputerSetHardwareSet().add(newComputerSetHardware);
+        }
+      });
+    }
+
 
     //--------------SOFTWARE-------------
+    //jeżeli połączenie staje się nieaktualne
     Set<Long> currentSoftwareIds = null;
-    currentComputerSetSoftwareSet.forEach(computerSetSoftware -> {
-      if (computerSetSoftware.getValidTo() == null) {
-        currentSoftwareIds.add(computerSetSoftware.getSoftware().getId());
-        if (!requestSoftwareIds.contains(computerSetSoftware.getSoftware())) {
-          computerSetSoftware.setValidTo(LocalDateTime.now());
-        }
-      }
-    });
+    if (currentComputerSetSoftwareSet != null) {
+      currentComputerSetSoftwareSet.forEach(currentComputerSetSoftware -> {
+        if (currentComputerSetSoftware.getValidTo() == null) {
+          //aktualne id sprzętów należących do zestawów komputerowych
+          currentSoftwareIds.add(currentComputerSetSoftware.getSoftware().getId());
 
-    requestHardwareIds.forEach(requestSoftwareId -> {
-      // jeżeli nie było do tej pory takiego sprzętu lub lista sprzętów jest pusta
-      if (!currentSoftwareIds.contains(requestSoftwareId) || currentSoftwareIds == null) {
-        //dodaje nowe połącznie
-        Software newSoftware = softwareRepository.findById(requestSoftwareId)
-                .orElseThrow(() -> new NotFoundException("sprzęt", "id", requestSoftwareId));
-        ComputerSetSoftware newComputerSetSoftware = new ComputerSetSoftware(computerSet, newSoftware);
-        computerSet.getComputerSetSoftwareSet().add(newComputerSetSoftware);
-      }
-    });
+          if (requestSoftwareIds != null) {
+            if (!requestSoftwareIds.contains(currentComputerSetSoftware.getSoftware())) { //już nieaktualne
+              currentComputerSetSoftware.setValidTo(LocalDateTime.now());
+            }
+          } else { //usuwanie
+            computerSet.setComputerSetSoftwareSet(null);
+          }
+
+        }
+      });
+    }
+
+    if (requestSoftwareIds != null) {
+      requestSoftwareIds.forEach(requestSoftwareId -> {
+        // jeżeli nie było do tej pory takiego sprzętu lub lista sprzętów jest pusta
+        if (!currentSoftwareIds.contains(requestSoftwareId) || currentSoftwareIds == null) {
+          //dodaje nowe połącznie
+          Software newSoftware = softwareRepository.findById(requestSoftwareId)
+                  .orElseThrow(() -> new NotFoundException("oprogramowanie", "id", requestSoftwareId));
+          ComputerSetSoftware newComputerSetSoftware = new ComputerSetSoftware(computerSet, newSoftware);
+          computerSet.getComputerSetSoftwareSet().add(newComputerSetSoftware);
+        }
+      });
+    }
+
   }
 
   public void deleteComputerSet(Long id) throws NotFoundException {
-    ComputerSet computerSet = computerSetRepository.findById(id)
+    ComputerSet computerSet = computerSetRepository.findByIdAndValidToIsNull(id)
             .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", id));
     computerSet.setValidTo(LocalDateTime.now());
     computerSetRepository.save(computerSet);
@@ -251,5 +257,6 @@ public class ComputerSetService {
       computerSetSoftwareRepository.save(relation);
     });
   }
+
 
 }
