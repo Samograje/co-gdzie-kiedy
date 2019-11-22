@@ -119,6 +119,8 @@ public class ComputerSetService {
     Set<Long> requestHardwareIds = request.getHardwareIds();
     Set<Long> requestSoftwareIds = request.getSoftwareIds();
 
+    // TODO: poniższe pola zmieńmy na analogiczne do powyższych - żeby były listy samych idków obecnego stanu
+
     Set<AffiliationComputerSet> currentAffiliationComputerSetSet = computerSet.getAffiliationComputerSetSet();
     Set<ComputerSetHardware> currentComputerSetHardwareSet = computerSet.getComputerSetHardwareSet();
     Set<ComputerSetSoftware> currentComputerSetSoftwareSet = computerSet.getComputerSetSoftwareSet();
