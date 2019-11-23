@@ -4,13 +4,9 @@ import AffiliationDetailsComponent from './AffiliationDetailsComponent';
 
 class AffiliationDetailsContainer extends Component {
 
-  exampleGetAffiliationId = () => {
-    return this.props.navigation.getParam('id', null);
-  };
+  onSubmit = () => this.props.history.goBack();
 
-  onSubmit = () => this.props.navigation.push('AffiliationsList');
-
-  onReject = () => this.props.navigation.goBack();
+  onReject = () => this.props.history.goBack();
 
   render() {
     return (

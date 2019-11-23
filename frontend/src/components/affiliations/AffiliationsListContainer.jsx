@@ -4,14 +4,9 @@ import AffiliationsListComponent from './AffiliationsListComponent';
 
 class AffiliationsListContainer extends Component {
 
-  onCreate = () => this.props.navigation.navigate('AffiliationDetails', {
-    mode: 'create'
-  });
+  onCreate = () => this.props.history.push('/affiliations/create');
 
-  onEdit = () => this.props.navigation.navigate('AffiliationDetails', {
-    id: 1,
-    mode: 'edit'
-  });
+  onEdit = () => this.props.history.push('/affiliations/edit/5');
 
   render() {
     return (
