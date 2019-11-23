@@ -15,8 +15,8 @@ public class HardwareDTO {
   @NotNull
   private Long affiliationId;
 
-  @NotNull
   private String inventoryNumber;
+
 
   public String getName() {
     return name;

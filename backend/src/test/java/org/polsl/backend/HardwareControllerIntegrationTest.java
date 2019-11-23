@@ -43,7 +43,6 @@ public class HardwareControllerIntegrationTest {
   @Autowired
   private ObjectMapper objectMapper;
 
-  //TODO: DBeaver schemat
   @Test
   public void givenCorrectRequest_whenGettingSoloHardwareList_thenReturnStatus200AndData() throws Exception {
     mvc.perform(get("/api/hardware?solo-only=true"))
@@ -123,7 +122,7 @@ public class HardwareControllerIntegrationTest {
         .andExpect(jsonPath("$.name").value("GTX 1040"))
         .andExpect(jsonPath("$.dictionaryId").value(1))
         .andExpect(jsonPath("$.computerSetId").value(1))
-        .andExpect(jsonPath("$.inventoryNumber").value("000001/2019"))
+        .andExpect(jsonPath("$.inventoryNumber").value("H1/2019"))
         .andExpect(jsonPath("$.affiliationId").value(1));
   }
 
@@ -133,7 +132,7 @@ public class HardwareControllerIntegrationTest {
         .andExpect(status().is(200))
         .andExpect(jsonPath("$.name").value("TP-Link"))
         .andExpect(jsonPath("$.dictionaryId").value(2))
-        .andExpect(jsonPath("$.inventoryNumber").value("000002/2019"))
+        .andExpect(jsonPath("$.inventoryNumber").value("H2/2019"))
         .andExpect(jsonPath("$.affiliationId").value(2));
   }
 
@@ -165,8 +164,7 @@ public class HardwareControllerIntegrationTest {
   }
 
   @Test
-  public void givenInvalidRequestWithInventoryNumber_whenAddingHardware_thenReturnStatus() throws Exception {
-    //TODO: zmiana nazwy funkcji, dodać status
+  public void givenInvalidRequestWithInventoryNumber_whenAddingHardware_thenReturnStatus400() throws Exception {
     HardwareDTO request = new HardwareDTO();
     request.setName("RTX 2000");
     request.setAffiliationId((long) 0);
@@ -175,7 +173,7 @@ public class HardwareControllerIntegrationTest {
     mvc.perform(post("/api/hardware")
         .content(objectMapper.writeValueAsString(request))
         .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().is(404))//TODO: jaki status?
+        .andExpect(status().is(400))
         .andExpect(jsonPath("$.success").value(false))
         .andExpect(jsonPath("$.message").value("Zakaz ręcznego wprowadzania numeru inwentarzowego."));
   }
@@ -253,8 +251,7 @@ public class HardwareControllerIntegrationTest {
   }
 
   @Test
-  public void givenInvalidRequestWithInventoryNumber_whenEditingHardware_thenReturnStatus() throws Exception {
-    //TODO: dodać status w nazwie funkcji
+  public void givenInvalidRequestWithInventoryNumber_whenEditingHardware_thenReturnStatus400() throws Exception {
     HardwareDTO request = new HardwareDTO();
     request.setName("Gigabyte 1234");
     request.setComputerSetId((long) 1);
@@ -264,7 +261,7 @@ public class HardwareControllerIntegrationTest {
     mvc.perform(put("/api/hardware/1")
         .content(objectMapper.writeValueAsString(request))
         .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().is(404))//TODO: status który
+        .andExpect(status().is(400))
         .andExpect(jsonPath("$.success").value(false))
         .andExpect(jsonPath("$.message").value("Zakaz edycji numeru inwentarzowego."));
   }

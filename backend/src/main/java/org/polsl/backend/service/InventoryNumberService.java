@@ -21,12 +21,11 @@ public class InventoryNumberService {
         stringBuilder.append('C');
         break;
     }
-    String latestInventoryNumber = size.toString();
-    int tempValue = Integer.getInteger(latestInventoryNumber) + 1;
+
+    long tempValue = size + 1;
     stringBuilder.append(tempValue);
     stringBuilder.append("/");
     stringBuilder.append(LocalDateTime.now().getYear());
-
     return stringBuilder.toString();
   }
 }
