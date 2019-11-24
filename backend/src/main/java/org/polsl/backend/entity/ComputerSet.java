@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -50,26 +51,38 @@ public class ComputerSet {
     }
   }
 
-  public Set<ComputerSetHardware> getValidComputerSetHardware() {
-    if (computerSetHardwareSet != null) {
-      Set<ComputerSetHardware> validComputerSetHardwareSet = computerSetHardwareSet;
-      validComputerSetHardwareSet.removeIf(validComputerSetHardware ->
-              validComputerSetHardware.getValidTo() == null);
-      return validComputerSetHardwareSet;
-    } else {
-      return null;
+  public Long getCurrentAffiliationId() {
+
+    for (AffiliationComputerSet affiliationComputerSet : affiliationComputerSetSet) {
+      if (affiliationComputerSet.getValidTo() == null) {
+        return (affiliationComputerSet.getAffiliation()).getId();
+      }
     }
+      return null;
   }
 
-  public Set<ComputerSetSoftware> getValidComputerSetSoftwareSet() {
-    if (computerSetSoftwareSet != null) {
-      Set<ComputerSetSoftware> validComputerSetSoftwareSet = computerSetSoftwareSet;
-      validComputerSetSoftwareSet.removeIf(validComputerSetSoftware ->
-              validComputerSetSoftware.getValidTo() == null);
-      return validComputerSetSoftwareSet;
-    } else {
-      return null;
-    }
+  public Set<Long> getCurrentHardwareIds() {
+    Set<Long> ids = new HashSet<>();
+
+    computerSetHardwareSet.forEach(computerSetHardware -> {
+      if (computerSetHardware.getValidTo() == null) {
+        ids.add(computerSetHardware.getHardware().getId());
+      }
+    });
+
+    return ids;
+  }
+
+  public Set<Long> getCurrentSoftwareIds() {
+    Set<Long> ids = new HashSet<>();
+
+    computerSetSoftwareSet.forEach(computerSetSoftware -> {
+      if (computerSetSoftware.getValidTo() == null) {
+        ids.add(computerSetSoftware.getSoftware().getId());
+      }
+    });
+
+    return ids;
   }
 
   public Long getId() {
