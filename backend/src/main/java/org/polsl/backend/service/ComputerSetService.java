@@ -165,7 +165,7 @@ public class ComputerSetService {
     });
     //STARE POŁĄCZENIE
     currentSoftwareIds.forEach(currentSoftwareId -> {
-      if (!requestHardwareIds.contains(currentSoftwareId)) {
+      if (!requestSoftwareIds.contains(currentSoftwareId)) {
         ComputerSetSoftware oldComputerSetSoftware = computerSetSoftwareRepository.findByComputerSetIdAndSoftwareId(
                 computerSet.getId(), currentSoftwareId);
         oldComputerSetSoftware.setValidTo(LocalDateTime.now());
