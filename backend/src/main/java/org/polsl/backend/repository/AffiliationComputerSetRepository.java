@@ -10,5 +10,5 @@ public interface AffiliationComputerSetRepository extends CrudRepository<Affilia
 
   Iterable<AffiliationComputerSet> findAllByComputerSetIdAndValidToIsNull(Long computerSetId);
 
-  AffiliationComputerSet findAffiliationComputerSetByAffiliationIdAndComputerSetId(Long affiliationId, Long computerSetId);
+  AffiliationComputerSet findByAffiliationIdAndComputerSetIdAndValidToIsNull(Long affiliationId, Long computerSetId);
 }

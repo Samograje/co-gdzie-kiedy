@@ -126,9 +126,8 @@ public class ComputerSetService {
       AffiliationComputerSet newAffiliationComputerSet = new AffiliationComputerSet(newAffiliation, computerSet);
       affiliationComputerSetRepository.save(newAffiliationComputerSet);
       //STARE POŁĄCZENIE
-      AffiliationComputerSet oldAffiliationComputerSet =
-              affiliationComputerSetRepository.findAffiliationComputerSetByAffiliationIdAndComputerSetId(currentAffiliationId,
-                      computerSet.getId());
+      AffiliationComputerSet oldAffiliationComputerSet = affiliationComputerSetRepository
+          .findByAffiliationIdAndComputerSetIdAndValidToIsNull(currentAffiliationId, computerSet.getId());
       oldAffiliationComputerSet.setValidTo(LocalDateTime.now());
     }
 
@@ -146,8 +145,8 @@ public class ComputerSetService {
     //STARE POŁĄCZENIE
     currentHardwareIds.forEach(currentHardwareId -> {
       if (!requestHardwareIds.contains(currentHardwareId)) {
-        ComputerSetHardware oldComputerSetHardware = computerSetHardwareRepository.findByComputerSetIdAndHardwareId(
-                computerSet.getId(), currentHardwareId);
+        ComputerSetHardware oldComputerSetHardware = computerSetHardwareRepository
+            .findByComputerSetIdAndHardwareIdAndValidToIsNull(computerSet.getId(), currentHardwareId);
         oldComputerSetHardware.setValidTo(LocalDateTime.now());
       }
     });
@@ -166,8 +165,8 @@ public class ComputerSetService {
     //STARE POŁĄCZENIE
     currentSoftwareIds.forEach(currentSoftwareId -> {
       if (!requestSoftwareIds.contains(currentSoftwareId)) {
-        ComputerSetSoftware oldComputerSetSoftware = computerSetSoftwareRepository.findByComputerSetIdAndSoftwareId(
-                computerSet.getId(), currentSoftwareId);
+        ComputerSetSoftware oldComputerSetSoftware = computerSetSoftwareRepository
+            .findByComputerSetIdAndSoftwareIdAndValidToIsNull(computerSet.getId(), currentSoftwareId);
         oldComputerSetSoftware.setValidTo(LocalDateTime.now());
       }
     });

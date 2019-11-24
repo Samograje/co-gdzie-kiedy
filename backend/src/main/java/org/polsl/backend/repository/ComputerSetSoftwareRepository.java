@@ -13,5 +13,5 @@ public interface ComputerSetSoftwareRepository extends CrudRepository<ComputerSe
 
   Iterable<ComputerSetSoftware> findAllByComputerSetIdAndValidToIsNull(Long computerSetId);
 
-  ComputerSetSoftware findByComputerSetIdAndSoftwareId(Long computerSetId, Long softwareId);
+  ComputerSetSoftware findByComputerSetIdAndSoftwareIdAndValidToIsNull(Long computerSetId, Long softwareId);
 }
