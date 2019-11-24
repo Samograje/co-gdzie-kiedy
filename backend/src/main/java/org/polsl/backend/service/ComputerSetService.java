@@ -124,7 +124,7 @@ public class ComputerSetService {
               .orElseThrow(() -> new NotFoundException("afiliacja", "id", requestAffiliationId));
 
       AffiliationComputerSet newAffiliationComputerSet = new AffiliationComputerSet(newAffiliation, computerSet);
-      computerSet.getAffiliationComputerSetSet().add(newAffiliationComputerSet);
+      affiliationComputerSetRepository.save(newAffiliationComputerSet);
       //STARE POŁĄCZENIE
       AffiliationComputerSet oldAffiliationComputerSet =
               affiliationComputerSetRepository.findAffiliationComputerSetByAffiliationIdAndComputerSetId(currentAffiliationId,
@@ -140,7 +140,7 @@ public class ComputerSetService {
                 .orElseThrow(() -> new NotFoundException("sprzęt", "id", requestHardwareId));
 
         ComputerSetHardware newComputerSetHardware = new ComputerSetHardware(computerSet, newHardware);
-        computerSet.getComputerSetHardwareSet().add(newComputerSetHardware);
+        computerSetHardwareRepository.save(newComputerSetHardware);
       }
     });
     //STARE POŁĄCZENIE
@@ -151,14 +151,16 @@ public class ComputerSetService {
         oldComputerSetHardware.setValidTo(LocalDateTime.now());
       }
     });
+
     //----------------------------------------SOFTWARE----------------------------------------
+    //NOWE POŁĄCZENIE
     requestSoftwareIds.forEach(requestSoftwareId -> {
       if (!currentSoftwareIds.contains(requestSoftwareId)) {
         Software newSoftware = softwareRepository.findByIdAndValidToIsNull(requestSoftwareId)
                 .orElseThrow(() -> new NotFoundException("oprogramowanie", "id", requestSoftwareId));
 
         ComputerSetSoftware newComputerSetSoftware = new ComputerSetSoftware(computerSet, newSoftware);
-        computerSet.getComputerSetSoftwareSet().add(newComputerSetSoftware);
+        computerSetSoftwareRepository.save(newComputerSetSoftware);
       }
     });
     //STARE POŁĄCZENIE
