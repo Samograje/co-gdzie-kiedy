@@ -188,7 +188,7 @@ public class ComputerSetService {
       computerSetHardwareRepository.save(relation);
     });
 
-    computerSetSoftwareRepository.findAllBySoftwareIdAndValidToIsNull(computerSet.getId()).forEach(relation -> {
+    computerSetSoftwareRepository.findAllByComputerSetIdAndValidToIsNull(computerSet.getId()).forEach(relation -> {
       relation.setValidTo(LocalDateTime.now());
       computerSetSoftwareRepository.save(relation);
     });
