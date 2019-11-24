@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {StyleSheet} from 'react-native';
 import ComputerSetsListComponent from './ComputerSetsListComponent';
 
 class ComputerSetsListContainer extends Component {
@@ -9,9 +8,5 @@ class ComputerSetsListContainer extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-
-});
 
 export default ComputerSetsListContainer;

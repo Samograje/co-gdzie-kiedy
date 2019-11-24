@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {StyleSheet} from 'react-native';
 import AffiliationDetailsComponent from './AffiliationDetailsComponent';
 
 class AffiliationDetailsContainer extends Component {
@@ -17,9 +16,5 @@ class AffiliationDetailsContainer extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-
-});
 
 export default AffiliationDetailsContainer;

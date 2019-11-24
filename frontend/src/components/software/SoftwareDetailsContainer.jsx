@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {StyleSheet} from 'react-native';
 import SoftwareDetailsComponent from './SoftwareDetailsComponent';
 
 class SoftwareDetailsContainer extends Component {
@@ -9,9 +8,5 @@ class SoftwareDetailsContainer extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-
-});
 
 export default SoftwareDetailsContainer;

@@ -6,7 +6,7 @@ const AffiliationDetailsComponent = (props) => {
     <>
       <Text>Tutaj znajdzie się formularz przynależności</Text>
       <Button
-        title="Idź do listy"
+        title="Zapisz"
         onPress={props.onSubmit}
       />
       <Button

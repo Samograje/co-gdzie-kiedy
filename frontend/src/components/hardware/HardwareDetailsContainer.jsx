@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {StyleSheet} from 'react-native';
 import HardwareDetailsComponent from './HardwareDetailsComponent';
 
 class HardwareDetailsContainer extends Component {
@@ -9,9 +8,5 @@ class HardwareDetailsContainer extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-
-});
 
 export default HardwareDetailsContainer;
