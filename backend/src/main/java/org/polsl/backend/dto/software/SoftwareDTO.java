@@ -3,7 +3,7 @@ package org.polsl.backend.dto.software;
 import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
-public class SoftwareInputDTO {
+public class SoftwareDTO {
   @NotEmpty
   private String name;
 

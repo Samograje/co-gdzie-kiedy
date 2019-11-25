@@ -1,7 +1,7 @@
 package org.polsl.backend.controller;
 
 import org.polsl.backend.dto.ApiBasicResponse;
-import org.polsl.backend.dto.software.SoftwareInputDTO;
+import org.polsl.backend.dto.software.SoftwareDTO;
 import org.polsl.backend.service.SoftwareService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,13 +38,25 @@ public class SoftwareController {
   }
 
   /**
+   * Endpoint obsługujący uzyskiwanie oprogramowania o danym id.
+   *
+   * @param id ID wybranego oprogramowania
+   * @return oprogramowanie o danym id
+   */
+
+  @GetMapping("/{id}")
+  public ResponseEntity<?> getSoftware(@PathVariable(value = "id") Long id) {
+    return ResponseEntity.ok(softwareService.getOneSoftware(id));
+  }
+
+  /**
    * Endpoint obsługujący dodawanie nowego oprogramowania.
    *
-   * @param request struktura {@link SoftwareInputDTO} zawierająca dane nowego oprogramwoania
+   * @param request struktura {@link SoftwareDTO} zawierająca dane nowego oprogramwoania
    * @return informacja o poprawnym utworzeniu oprogramowaniu
    */
   @PostMapping
-  public ResponseEntity<?> createSoftware(@Valid @RequestBody SoftwareInputDTO request) {
+  public ResponseEntity<?> createSoftware(@Valid @RequestBody SoftwareDTO request) {
     softwareService.createSoftware(request);
     return ResponseEntity.ok(new ApiBasicResponse(true, "Utworzono oprogramowanie."));
   }
@@ -52,13 +64,13 @@ public class SoftwareController {
   /**
    * Endpoint obsługujący edycję parametrów oprogramowania.
    *
-   * @param request stuktura {@link SoftwareInputDTO} zawierająca nowe dane oprogramowania
+   * @param request stuktura {@link SoftwareDTO} zawierająca nowe dane oprogramowania
    * @return informacja o poprawnym zaktualizowaniu parametrów oprogramowania
    */
   @PutMapping("/{id}")
   public ResponseEntity<?> editSoftware(
-          @PathVariable(value = "id") Long id,
-          @Valid @RequestBody SoftwareInputDTO request
+      @PathVariable(value = "id") Long id,
+      @Valid @RequestBody SoftwareDTO request
   ) {
     softwareService.editSoftware(id, request);
     return ResponseEntity.ok(new ApiBasicResponse(true, "Zaktualizowano parametry oprogramowania."));

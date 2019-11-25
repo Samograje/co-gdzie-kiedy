@@ -25,32 +25,36 @@ public class AffiliationService {
     this.affiliationRepository = affiliationRepository;
   }
 
+  public static String generateName(Affiliation affiliation) {
+    StringBuilder stringBuilder = new StringBuilder();
+    boolean isSeparatorNeeded = false;
+    if (!Objects.equals(affiliation.getFirstName(), "")) {
+      stringBuilder.append(affiliation.getFirstName());
+      isSeparatorNeeded = true;
+    }
+    if (!Objects.equals(affiliation.getLastName(), "")) {
+      if (isSeparatorNeeded) {
+        stringBuilder.append(" ");
+      }
+      stringBuilder.append(affiliation.getLastName());
+      isSeparatorNeeded = true;
+    }
+    if (!Objects.equals(affiliation.getLocation(), "")) {
+      if (isSeparatorNeeded) {
+        stringBuilder.append(" - ");
+      }
+      stringBuilder.append(affiliation.getLocation());
+    }
+    return stringBuilder.toString();
+  }
+
   public PaginatedResult<AffiliationOutputDTO> getAllAffiliations() {
     Iterable<Affiliation> affiliations = affiliationRepository.findAllByIsDeletedIsFalse();
     List<AffiliationOutputDTO> dtos = new ArrayList<>();
     for (Affiliation affiliation : affiliations) {
       AffiliationOutputDTO dto = new AffiliationOutputDTO();
       dto.setId(affiliation.getId());
-      StringBuilder stringBuilder = new StringBuilder();
-      boolean isSeparatorNeeded = false;
-      if (!Objects.equals(affiliation.getFirstName(), "")) {
-        stringBuilder.append(affiliation.getFirstName());
-        isSeparatorNeeded = true;
-      }
-      if (!Objects.equals(affiliation.getLastName(), "")) {
-        if (isSeparatorNeeded) {
-          stringBuilder.append(" ");
-        }
-        stringBuilder.append(affiliation.getLastName());
-        isSeparatorNeeded = true;
-      }
-      if (!Objects.equals(affiliation.getLocation(), "")) {
-        if (isSeparatorNeeded) {
-          stringBuilder.append(" - ");
-        }
-        stringBuilder.append(affiliation.getLocation());
-      }
-      dto.setName(stringBuilder.toString());
+      dto.setName(generateName(affiliation));
       dtos.add(dto);
     }
     PaginatedResult<AffiliationOutputDTO> response = new PaginatedResult<>();
