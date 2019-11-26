@@ -13,4 +13,6 @@ public interface SoftwareRepository extends CrudRepository<Software, Long> {
   Optional<Software> findByIdAndValidToIsNull(Long id);
 
   long countByValidToIsNull();
+
+  long count();
 }

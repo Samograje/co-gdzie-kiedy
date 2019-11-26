@@ -45,19 +45,58 @@ public class HardwareControllerIntegrationTest {
 
   @Test
   public void givenCorrectRequest_whenGettingSoloHardwareList_thenReturnStatus200AndData() throws Exception {
-    mvc.perform(get("/api/hardware"))
+    mvc.perform(get("/api/hardware?solo-only=true"))
         .andExpect(status().is(200))
-        .andExpect(jsonPath("$.totalElements").value(3))
-        .andExpect(jsonPath("$.items", hasSize(3)))
+        .andExpect(jsonPath("$.totalElements").value(2))
+        .andExpect(jsonPath("$.items", hasSize(2)))
         .andExpect(jsonPath("$.items[0].id").value(2))
         .andExpect(jsonPath("$.items[0].name").value("TP-Link"))
         .andExpect(jsonPath("$.items[0].type").value("Karta sieciowa"))
+        .andExpect(jsonPath("$.items[0].inventoryNumber").value("H2/2019"))
+        .andExpect(jsonPath("$.items[0].affiliationName").value("Bartłomiej Szlachta - 130"))
         .andExpect(jsonPath("$.items[1].id").value(4))
         .andExpect(jsonPath("$.items[1].name").value("i3-5400"))
         .andExpect(jsonPath("$.items[1].type").value("Procesor"))
-        .andExpect(jsonPath("$.items[2].id").value(5))
-        .andExpect(jsonPath("$.items[2].name").value("HD 7770"))
-        .andExpect(jsonPath("$.items[2].type").value("Karta graficzna"));
+        .andExpect(jsonPath("$.items[1].inventoryNumber").value("H4/2019"))
+        .andExpect(jsonPath("$.items[1].affiliationName").value("Jan Kowalski"));
+  }
+
+  @Test
+  public void givenCorrectRequest_whenGettingHardwareList_thenReturnStatus200AndData() throws Exception {
+    mvc.perform(get("/api/hardware"))
+        .andExpect(status().is(200))
+        .andExpect(jsonPath("$.totalElements").value(4))
+        .andExpect(jsonPath("$.items", hasSize(4)))
+        .andExpect(jsonPath("$.items[0].id").value(1))
+        .andExpect(jsonPath("$.items[0].name").value("GTX 1040"))
+        .andExpect(jsonPath("$.items[0].type").value("Karta graficzna"))
+        .andExpect(jsonPath("$.items[0].inventoryNumber").value("H1/2019"))
+        .andExpect(jsonPath("$.items[0].computerSetInventoryNumber").value("C1/2019"))
+        .andExpect(jsonPath("$.items[0].affiliationName").value("Szymon Jęczyzel - Solaris"))
+        .andExpect(jsonPath("$.items[1].id").value(2))
+        .andExpect(jsonPath("$.items[1].name").value("TP-Link"))
+        .andExpect(jsonPath("$.items[1].type").value("Karta sieciowa"))
+        .andExpect(jsonPath("$.items[1].inventoryNumber").value("H2/2019"))
+        .andExpect(jsonPath("$.items[1].affiliationName").value("Bartłomiej Szlachta - 130"))
+        .andExpect(jsonPath("$.items[2].id").value(3))
+        .andExpect(jsonPath("$.items[2].name").value("i5-7070"))
+        .andExpect(jsonPath("$.items[2].type").value("Procesor"))
+        .andExpect(jsonPath("$.items[2].inventoryNumber").value("H3/2019"))
+        .andExpect(jsonPath("$.items[2].computerSetInventoryNumber").value("C1/2019"))
+        .andExpect(jsonPath("$.items[2].affiliationName").value("Bartłomiej Szlachta - 130"))
+        .andExpect(jsonPath("$.items[3].id").value(4))
+        .andExpect(jsonPath("$.items[3].name").value("i3-5400"))
+        .andExpect(jsonPath("$.items[3].type").value("Procesor"))
+        .andExpect(jsonPath("$.items[3].inventoryNumber").value("H4/2019"))
+        .andExpect(jsonPath("$.items[3].affiliationName").value("Jan Kowalski"));
+  }
+
+  @Test
+  public void givenIncorrectRequest_whenGettingHardwareList_thenReturnStatus400() throws Exception {
+    mvc.perform(get("/api/hardware/dsfsdfsd"))
+        .andExpect(status().is(400))
+        .andExpect(jsonPath("$.success").value(false))
+        .andExpect(jsonPath("$.message").value("Podana wartość nie jest liczbą"));
   }
 
   @Test
@@ -83,6 +122,7 @@ public class HardwareControllerIntegrationTest {
         .andExpect(jsonPath("$.name").value("GTX 1040"))
         .andExpect(jsonPath("$.dictionaryId").value(1))
         .andExpect(jsonPath("$.computerSetId").value(1))
+        .andExpect(jsonPath("$.inventoryNumber").value("H1/2019"))
         .andExpect(jsonPath("$.affiliationId").value(1));
   }
 
@@ -92,6 +132,7 @@ public class HardwareControllerIntegrationTest {
         .andExpect(status().is(200))
         .andExpect(jsonPath("$.name").value("TP-Link"))
         .andExpect(jsonPath("$.dictionaryId").value(2))
+        .andExpect(jsonPath("$.inventoryNumber").value("H2/2019"))
         .andExpect(jsonPath("$.affiliationId").value(2));
   }
 
@@ -120,6 +161,21 @@ public class HardwareControllerIntegrationTest {
         .andExpect(status().is(404))
         .andExpect(jsonPath("$.success").value(false))
         .andExpect(jsonPath("$.message").value("Nie istnieje przynależność o id: '0'"));
+  }
+
+  @Test
+  public void givenInvalidRequestWithInventoryNumber_whenAddingHardware_thenReturnStatus400() throws Exception {
+    HardwareDTO request = new HardwareDTO();
+    request.setName("RTX 2000");
+    request.setAffiliationId((long) 0);
+    request.setInventoryNumber("000001/2019");
+    request.setDictionaryId((long) 1);
+    mvc.perform(post("/api/hardware")
+        .content(objectMapper.writeValueAsString(request))
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().is(400))
+        .andExpect(jsonPath("$.success").value(false))
+        .andExpect(jsonPath("$.message").value("Zakaz ręcznego wprowadzania numeru inwentarzowego."));
   }
 
   @Test
@@ -192,6 +248,22 @@ public class HardwareControllerIntegrationTest {
         .andExpect(status().is(404))
         .andExpect(jsonPath("$.success").value(false))
         .andExpect(jsonPath("$.message").value("Nie istnieje sprzęt o id: '0'"));
+  }
+
+  @Test
+  public void givenInvalidRequestWithInventoryNumber_whenEditingHardware_thenReturnStatus400() throws Exception {
+    HardwareDTO request = new HardwareDTO();
+    request.setName("Gigabyte 1234");
+    request.setComputerSetId((long) 1);
+    request.setDictionaryId((long) 1);
+    request.setInventoryNumber("000001/2019");
+    request.setAffiliationId((long) 1);
+    mvc.perform(put("/api/hardware/1")
+        .content(objectMapper.writeValueAsString(request))
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().is(400))
+        .andExpect(jsonPath("$.success").value(false))
+        .andExpect(jsonPath("$.message").value("Zakaz edycji numeru inwentarzowego."));
   }
 
   @Test

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -30,13 +31,14 @@ public class HardwareController {
   }
 
   /**
-   * Endpoint obsługujący uzyskiwanie listy hardware'u niebędącego składowym żadnego zestawu komputerowego.
+   * Endpoint obsługujący uzyskiwanie listy wszystkich hardware'ów bądź niebędących składowymi żadnego zestawu komputerowego.
    *
-   * @return lista hardware'u niebędącego składowym żadnego zestawu komputerowego
+   * @param soloOnly boolean informujący o tym, czy wyświetlać hardware niebędący składowm żadnego zestawu komputerowego
+   * @return lista hardware'u według parametru
    */
   @GetMapping
-  public ResponseEntity<?> getAllSoloHardware() {
-    return ResponseEntity.ok(hardwareService.getAllSoloHardware());
+  public ResponseEntity<?> getHardwareList(@RequestParam(name = "solo-only", required = false, defaultValue = "false") boolean soloOnly) {
+    return ResponseEntity.ok(hardwareService.getHardwareList(soloOnly));
   }
 
   /**
