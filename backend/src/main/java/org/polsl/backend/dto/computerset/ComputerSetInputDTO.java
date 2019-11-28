@@ -9,7 +9,9 @@ public class ComputerSetInputDTO {
   private String name;
   @NotNull
   private Long affiliationId;
+  @NotNull
   private Set<Long> hardwareIds;
+  @NotNull
   private Set<Long> softwareIds;
 
   public String getName() {

@@ -22,11 +22,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application-test.properties")
 @Transactional
 @SqlGroup({
-    @Sql(scripts = "/scripts/create-test-affiliation.sql"),
-    @Sql(scripts = "/scripts/create-test-hardware_dictionary.sql"),
-    @Sql(scripts = "/scripts/create-test-hardware.sql"),
-    @Sql(scripts = "/scripts/create-test-software.sql"),
-    @Sql(scripts = "/scripts/create-test-computer_sets.sql")
+        @Sql(scripts = "/scripts/create-test-affiliation.sql"),
+        @Sql(scripts = "/scripts/create-test-hardware_dictionary.sql"),
+        @Sql(scripts = "/scripts/create-test-hardware.sql"),
+        @Sql(scripts = "/scripts/create-test-software.sql"),
+        @Sql(scripts = "/scripts/create-test-computer_sets.sql")
 })
 
 public class StatisticsControllerIntegrationTest {
@@ -36,11 +36,11 @@ public class StatisticsControllerIntegrationTest {
   @Test
   public void givenCorrectRequest_whenGettingStatistics_thenReturnStatus200AndData() throws Exception {
     mvc.perform(get("/api/statistics"))
-        .andExpect(status().is(200))
-        .andExpect(jsonPath("$.affiliationsCount").value(3))
-        .andExpect(jsonPath("$.computerSetsCount").value(2))
-        .andExpect(jsonPath("$.hardwareCount").value(4))
-        .andExpect(jsonPath("$.softwareCount").value(3));
+            .andExpect(status().is(200))
+            .andExpect(jsonPath("$.affiliationsCount").value(3))
+            .andExpect(jsonPath("$.computerSetsCount").value(2))
+            .andExpect(jsonPath("$.hardwareCount").value(4))
+            .andExpect(jsonPath("$.softwareCount").value(3));
   }
 
 
