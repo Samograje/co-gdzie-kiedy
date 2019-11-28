@@ -1,7 +1,8 @@
 package org.polsl.backend.service;
 
 import org.polsl.backend.dto.PaginatedResult;
-import org.polsl.backend.dto.affiliationhardware.HardwareAffiliationDTO;
+import org.polsl.backend.dto.affiliationhardware.AffiliationHardwareHistoryDTO;
+import org.polsl.backend.dto.computersethardware.ComputerSetHardwareHistoryDTO;
 import org.polsl.backend.dto.hardware.HardwareDTO;
 import org.polsl.backend.dto.hardware.HardwareListOutputDTO;
 import org.polsl.backend.entity.Affiliation;
@@ -108,23 +109,46 @@ public class HardwareService {
     return dto;
   }
 
-  public PaginatedResult<HardwareAffiliationDTO> getHardwareAffiliationsHistory(long id) {
-    Iterable<AffiliationHardware> hardwareAffiliationList;
+  public PaginatedResult<AffiliationHardwareHistoryDTO> getHardwareAffiliationsHistory(long id) {
+    Iterable<AffiliationHardware> affiliationHardwareList;
 
-    hardwareAffiliationList = affiliationHardwareRepository.findAllByHardwareId(id);
+    affiliationHardwareList = affiliationHardwareRepository.findAllByHardwareId(id);
 
-    List<HardwareAffiliationDTO> dtos = new ArrayList<>();
-    for (AffiliationHardware affiliationHardware : hardwareAffiliationList) {
-      HardwareAffiliationDTO dto = new HardwareAffiliationDTO();
+    List<AffiliationHardwareHistoryDTO> dtos = new ArrayList<>();
+    for (AffiliationHardware affiliationHardware : affiliationHardwareList) {
+      AffiliationHardwareHistoryDTO dto = new AffiliationHardwareHistoryDTO();
       dto.setAffiliationName(AffiliationService.generateName(affiliationHardware.getAffiliation()));
       dto.setValidFrom(affiliationHardware.getValidFrom().toString());
-      if(affiliationHardware.getValidTo() != null){
+      if (affiliationHardware.getValidTo() != null) {
         dto.setValidTo(affiliationHardware.getValidTo().toString());
       }
       dtos.add(dto);
     }
 
-    PaginatedResult<HardwareAffiliationDTO> response = new PaginatedResult<>();
+    PaginatedResult<AffiliationHardwareHistoryDTO> response = new PaginatedResult<>();
+    response.setItems(dtos);
+    response.setTotalElements((long) dtos.size());
+    return response;
+  }
+
+  public PaginatedResult<ComputerSetHardwareHistoryDTO> getHardwareComputerSetsHistory(long id) {
+    Iterable<ComputerSetHardware> computerSetHardwareList;
+
+    computerSetHardwareList = computerSetHardwareRepository.findAllByHardwareId(id);
+
+    List<ComputerSetHardwareHistoryDTO> dtos = new ArrayList<>();
+    for (ComputerSetHardware computerSetHardware : computerSetHardwareList) {
+      ComputerSetHardwareHistoryDTO dto = new ComputerSetHardwareHistoryDTO();
+      dto.setComputerSetInventoryNumber(computerSetHardware.getComputerSet().getInventoryNumber());
+      dto.setComputerSetName(computerSetHardware.getComputerSet().getName());
+      dto.setValidFrom(computerSetHardware.getValidFrom().toString());
+      if (computerSetHardware.getValidTo() != null) {
+        dto.setValidTo(computerSetHardware.getValidTo().toString());
+      }
+      dtos.add(dto);
+    }
+
+    PaginatedResult<ComputerSetHardwareHistoryDTO> response = new PaginatedResult<>();
     response.setItems(dtos);
     response.setTotalElements((long) dtos.size());
     return response;

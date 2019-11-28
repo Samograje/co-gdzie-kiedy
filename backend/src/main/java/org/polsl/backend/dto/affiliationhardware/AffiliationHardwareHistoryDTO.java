@@ -1,11 +1,11 @@
 package org.polsl.backend.dto.affiliationhardware;
 
-public class HardwareAffiliationDTO {
+public class AffiliationHardwareHistoryDTO {
   private String affiliationName;
   private String validFrom;
   private String validTo;
 
-  public HardwareAffiliationDTO(){
+  public AffiliationHardwareHistoryDTO() {
 
   }
 

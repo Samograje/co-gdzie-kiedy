@@ -58,9 +58,20 @@ public class HardwareController {
    * @param id ID wybranego sprzętu
    * @return historia przynależności hardware'u o danym id
    */
-  @GetMapping("/{id}/history/affiliations")
-  public ResponseEntity<?> getHardwareListWithHistory(@PathVariable(value = "id") Long id) {
+  @GetMapping("/{id}/affiliations-history")
+  public ResponseEntity<?> getHardwareAffiliationsHistoryList(@PathVariable(value = "id") Long id) {
     return ResponseEntity.ok(hardwareService.getHardwareAffiliationsHistory(id));
+  }
+
+  /**
+   * Endpoint obsługujący uzyskiwanie historii przynależności do zestawu komputerowego hardware'u o danym id .
+   *
+   * @param id ID wybranego sprzętu
+   * @return historia przynależności do zestawu komputerowego hardware'u o danym id
+   */
+  @GetMapping("/{id}/computer-sets-history")
+  public ResponseEntity<?> getHardwareComputerSetsHistoryList(@PathVariable(value = "id") Long id) {
+    return ResponseEntity.ok(hardwareService.getHardwareComputerSetsHistory(id));
   }
 
   /**
