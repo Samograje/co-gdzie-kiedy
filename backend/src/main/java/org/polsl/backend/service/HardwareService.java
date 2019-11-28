@@ -1,6 +1,7 @@
 package org.polsl.backend.service;
 
 import org.polsl.backend.dto.PaginatedResult;
+import org.polsl.backend.dto.affiliationhardware.HardwareAffiliationDTO;
 import org.polsl.backend.dto.hardware.HardwareDTO;
 import org.polsl.backend.dto.hardware.HardwareListOutputDTO;
 import org.polsl.backend.entity.Affiliation;
@@ -73,7 +74,6 @@ public class HardwareService {
       dto.setName(hardware.getName());
       dto.setType(hardware.getHardwareDictionary().getValue());
       dto.setInventoryNumber(hardware.getInventoryNumber());
-
       AffiliationHardware hardwareAffiliation = affiliationHardwareRepository.findTheLatestRowForHardware(hardware.getId())
           .orElseThrow(() -> new RuntimeException("Brak połączenia przynależności ze sprzętem o id: " + hardware.getId()));
       dto.setAffiliationName(AffiliationService.generateName(hardwareAffiliation.getAffiliation()));
@@ -106,6 +106,28 @@ public class HardwareService {
     lastEntry.ifPresent(computerSetHardware -> dto.setComputerSetId(computerSetHardware.getComputerSet().getId()));
 
     return dto;
+  }
+
+  public PaginatedResult<HardwareAffiliationDTO> getHardwareAffiliationsHistory(long id) {
+    Iterable<AffiliationHardware> hardwareAffiliationList;
+
+    hardwareAffiliationList = affiliationHardwareRepository.findAllByHardwareId(id);
+
+    List<HardwareAffiliationDTO> dtos = new ArrayList<>();
+    for (AffiliationHardware affiliationHardware : hardwareAffiliationList) {
+      HardwareAffiliationDTO dto = new HardwareAffiliationDTO();
+      dto.setAffiliationName(AffiliationService.generateName(affiliationHardware.getAffiliation()));
+      dto.setValidFrom(affiliationHardware.getValidFrom().toString());
+      if(affiliationHardware.getValidTo() != null){
+        dto.setValidTo(affiliationHardware.getValidTo().toString());
+      }
+      dtos.add(dto);
+    }
+
+    PaginatedResult<HardwareAffiliationDTO> response = new PaginatedResult<>();
+    response.setItems(dtos);
+    response.setTotalElements((long) dtos.size());
+    return response;
   }
 
   @Transactional
