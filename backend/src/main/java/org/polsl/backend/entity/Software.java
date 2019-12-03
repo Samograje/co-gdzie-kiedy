@@ -1,7 +1,5 @@
 package org.polsl.backend.entity;
 
-import sun.util.resources.LocaleData;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
