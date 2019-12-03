@@ -2,7 +2,7 @@ package org.polsl.backend.service;
 
 import org.polsl.backend.dto.PaginatedResult;
 import org.polsl.backend.dto.software.SoftwareDTO;
-import org.polsl.backend.dto.software.SoftwareOutputDTO;
+import org.polsl.backend.dto.software.SoftwareListOutputDTO;
 import org.polsl.backend.entity.ComputerSet;
 import org.polsl.backend.entity.ComputerSetSoftware;
 import org.polsl.backend.entity.Software;
@@ -38,19 +38,19 @@ public class SoftwareService {
     this.computerSetSoftwareRepository = computerSetSoftwareRepository;
   }
 
-  public PaginatedResult<SoftwareOutputDTO> getAllSoftware() {
+  public PaginatedResult<SoftwareListOutputDTO> getAllSoftware() {
     Iterable<Software> softwares = softwareRepository.findAll();
-    List<SoftwareOutputDTO> softwareOutputDTO = new ArrayList<>();
+    List<SoftwareListOutputDTO> softwareListOutputDTO = new ArrayList<>();
     for (Software software : softwares) {
-      SoftwareOutputDTO dto = new SoftwareOutputDTO();
+      SoftwareListOutputDTO dto = new SoftwareListOutputDTO();
       dto.setId(software.getId());
       dto.setName(software.getName());
-      softwareOutputDTO.add(dto);
+      softwareListOutputDTO.add(dto);
     }
 
-    PaginatedResult<SoftwareOutputDTO> response = new PaginatedResult<>();
-    response.setItems(softwareOutputDTO);
-    response.setTotalElements((long) softwareOutputDTO.size());
+    PaginatedResult<SoftwareListOutputDTO> response = new PaginatedResult<>();
+    response.setItems(softwareListOutputDTO);
+    response.setTotalElements((long) softwareListOutputDTO.size());
     return response;
   }
 
