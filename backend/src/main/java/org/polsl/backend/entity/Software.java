@@ -1,5 +1,7 @@
 package org.polsl.backend.entity;
 
+import sun.util.resources.LocaleData;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -13,10 +15,12 @@ public class Software {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long id;
-
   private String name;
-
-  @Column(name = "valid_to")
+  private String inventoryNumber;
+  private String key;
+  private Long availableKeys;
+  private LocalDateTime activeFrom;
+  private LocalDateTime  validUntil;
   private LocalDateTime validTo;
 
   @OneToMany(mappedBy = "software")
