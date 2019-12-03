@@ -5,10 +5,6 @@ public class AffiliationHardwareHistoryDTO {
   private String validFrom;
   private String validTo;
 
-  public AffiliationHardwareHistoryDTO() {
-
-  }
-
   public String getAffiliationName() {
     return affiliationName;
   }

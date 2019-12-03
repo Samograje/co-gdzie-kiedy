@@ -6,10 +6,6 @@ public class ComputerSetHardwareHistoryDTO {
   private String validFrom;
   private String validTo;
 
-  public ComputerSetHardwareHistoryDTO() {
-
-  }
-
   public String getComputerSetInventoryNumber() {
     return computerSetInventoryNumber;
   }

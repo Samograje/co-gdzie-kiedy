@@ -53,7 +53,7 @@ public class HardwareController {
   }
 
   /**
-   * Endpoint obsługujący uzyskiwanie historii przynależności hardware'u o danym id .
+   * Endpoint obsługujący uzyskiwanie historii przynależności hardware'u o danym id.
    *
    * @param id ID wybranego sprzętu
    * @return historia przynależności hardware'u o danym id
@@ -64,10 +64,10 @@ public class HardwareController {
   }
 
   /**
-   * Endpoint obsługujący uzyskiwanie historii przynależności do zestawu komputerowego hardware'u o danym id .
+   * Endpoint obsługujący uzyskiwanie historii powiązań hardware'u o danym id z zestawami komputerowymi.
    *
    * @param id ID wybranego sprzętu
-   * @return historia przynależności do zestawu komputerowego hardware'u o danym id
+   * @return historia powiązań hardware'u o danym id z zestawami komputerowymi
    */
   @GetMapping("/{id}/computer-sets-history")
   public ResponseEntity<?> getHardwareComputerSetsHistoryList(@PathVariable(value = "id") Long id) {
