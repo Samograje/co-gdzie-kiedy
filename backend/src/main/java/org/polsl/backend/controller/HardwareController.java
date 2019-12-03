@@ -53,6 +53,28 @@ public class HardwareController {
   }
 
   /**
+   * Endpoint obsługujący uzyskiwanie historii przynależności hardware'u o danym id.
+   *
+   * @param id ID wybranego sprzętu
+   * @return historia przynależności hardware'u o danym id
+   */
+  @GetMapping("/{id}/affiliations-history")
+  public ResponseEntity<?> getHardwareAffiliationsHistoryList(@PathVariable(value = "id") Long id) {
+    return ResponseEntity.ok(hardwareService.getHardwareAffiliationsHistory(id));
+  }
+
+  /**
+   * Endpoint obsługujący uzyskiwanie historii powiązań hardware'u o danym id z zestawami komputerowymi.
+   *
+   * @param id ID wybranego sprzętu
+   * @return historia powiązań hardware'u o danym id z zestawami komputerowymi
+   */
+  @GetMapping("/{id}/computer-sets-history")
+  public ResponseEntity<?> getHardwareComputerSetsHistoryList(@PathVariable(value = "id") Long id) {
+    return ResponseEntity.ok(hardwareService.getHardwareComputerSetsHistory(id));
+  }
+
+  /**
    * Endpoint obsługujący dodawanie nowego sprzętu.
    *
    * @param request stuktura {@link HardwareDTO} zawierająca dane nowego sprzętu

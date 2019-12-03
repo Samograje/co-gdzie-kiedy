@@ -137,6 +137,43 @@ public class HardwareControllerIntegrationTest {
   }
 
   @Test
+  public void givenCorrectRequest_whenGettingAffiliationHistoryForOneHardware_thenReturnStatus200AndData() throws Exception {
+    mvc.perform(get("/api/hardware/1/affiliations-history"))
+        .andExpect(status().is(200))
+        .andExpect(jsonPath("$.totalElements").value(3))
+        .andExpect(jsonPath("$.items", hasSize(3)))
+        .andExpect(jsonPath("$.items[0].affiliationName").value("Szymon Jęczyzel - Solaris"))
+        .andExpect(jsonPath("$.items[0].validFrom").value("2019-07-12T00:00"))
+        .andExpect(jsonPath("$.items[0].validTo").value("2019-07-14T00:00"))
+        .andExpect(jsonPath("$.items[1].affiliationName").value("Bartłomiej Szlachta - 130"))
+        .andExpect(jsonPath("$.items[1].validFrom").value("2019-07-14T00:00"))
+        .andExpect(jsonPath("$.items[1].validTo").value("2019-09-10T00:00"))
+        .andExpect(jsonPath("$.items[2].affiliationName").value("Szymon Jęczyzel - Solaris"))
+        .andExpect(jsonPath("$.items[2].validFrom").value("2019-09-10T00:00"))
+        .andExpect(jsonPath("$.items[2].validTo").doesNotExist());
+  }
+
+  @Test
+  public void givenCorrectRequest_whenGettingComputerSetsHistoryForOneHardware_thenReturnStatus200AndData() throws Exception {
+    mvc.perform(get("/api/hardware/3/computer-sets-history"))
+        .andExpect(status().is(200))
+        .andExpect(jsonPath("$.totalElements").value(3))
+        .andExpect(jsonPath("$.items", hasSize(3)))
+        .andExpect(jsonPath("$.items[0].computerSetInventoryNumber").value("C1/2019"))
+        .andExpect(jsonPath("$.items[0].computerSetName").value("HP ProBook"))
+        .andExpect(jsonPath("$.items[0].validFrom").value("2017-07-23T00:00"))
+        .andExpect(jsonPath("$.items[0].validTo").value("2017-08-01T00:00"))
+        .andExpect(jsonPath("$.items[1].computerSetInventoryNumber").value("C2/2019"))
+        .andExpect(jsonPath("$.items[1].computerSetName").value("ACER Laptop"))
+        .andExpect(jsonPath("$.items[1].validFrom").value("2017-08-01T00:00"))
+        .andExpect(jsonPath("$.items[1].validTo").value("2018-01-01T00:00"))
+        .andExpect(jsonPath("$.items[2].computerSetInventoryNumber").value("C1/2019"))
+        .andExpect(jsonPath("$.items[2].computerSetName").value("HP ProBook"))
+        .andExpect(jsonPath("$.items[2].validFrom").value("2018-01-01T00:00"))
+        .andExpect(jsonPath("$.items[2].validTo").doesNotExist());
+  }
+
+  @Test
   public void givenEmptyRequest_whenAddingHardware_thenReturnStatus400() throws Exception {
     HardwareDTO request = new HardwareDTO();
     mvc.perform(post("/api/hardware")
