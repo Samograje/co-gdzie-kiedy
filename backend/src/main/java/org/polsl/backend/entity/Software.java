@@ -1,5 +1,7 @@
 package org.polsl.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -18,7 +20,9 @@ public class Software {
   private String inventoryNumber;
   private String key;
   private Long availableKeys;
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Timestamp duration;
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalDateTime validTo;
 
   @OneToMany(mappedBy = "software")
@@ -64,6 +68,5 @@ public class Software {
   public void setAvailableKeys(Long availableKeys) { this.availableKeys = availableKeys; }
 
   public Timestamp getDuration() { return duration; }
-
   public void setDuration(Timestamp duration) { this.duration = duration; }
 }

@@ -51,13 +51,33 @@ public class SoftwareControllerIntegrationTest {
         .andExpect(jsonPath("$.totalElements").value(4))
         .andExpect(jsonPath("$.items", hasSize(4)))
         .andExpect(jsonPath("$.items[0].id").value(1))
+        .andExpect(jsonPath("$.items[0].availableKeys").value(5))
+        .andExpect(jsonPath("$.items[0].duration").value("2020-12-04 18:34:24"))
+        .andExpect(jsonPath("$.items[0].inventoryNumber").value("S1/2019"))
+        .andExpect(jsonPath("$.items[0].key").value("T847-54GF-7845-FSF5"))
         .andExpect(jsonPath("$.items[0].name").value("Photoshop"))
+        .andExpect(jsonPath("$.items[0].validTo").doesNotExist())
         .andExpect(jsonPath("$.items[1].id").value(2))
+        .andExpect(jsonPath("$.items[1].availableKeys").value(3))
+        .andExpect(jsonPath("$.items[1].duration").value("2019-12-04 17:34:24"))
+        .andExpect(jsonPath("$.items[1].inventoryNumber").value("S2/2019"))
+        .andExpect(jsonPath("$.items[1].key").value("874G-54D7-JHKI-LLKI"))
         .andExpect(jsonPath("$.items[1].name").value("Visual Studio"))
+        .andExpect(jsonPath("$.items[1].validTo").doesNotExist())
         .andExpect(jsonPath("$.items[2].id").value(3))
+        .andExpect(jsonPath("$.items[2].availableKeys").value(1))
+        .andExpect(jsonPath("$.items[2].duration").value("2025-12-30 17:34:24"))
+        .andExpect(jsonPath("$.items[2].inventoryNumber").value("S3/2019"))
+        .andExpect(jsonPath("$.items[2].key").value("47FD-YIJD-MKN7-PDU5"))
         .andExpect(jsonPath("$.items[2].name").value("Postman"))
+        .andExpect(jsonPath("$.items[2].validTo").doesNotExist())
         .andExpect(jsonPath("$.items[3].id").value(4))
-        .andExpect(jsonPath("$.items[3].name").value("Mathematica"));
+        .andExpect(jsonPath("$.items[3].availableKeys").value(4))
+        .andExpect(jsonPath("$.items[3].duration").value("2019-01-11 13:27:33"))
+        .andExpect(jsonPath("$.items[3].inventoryNumber").value("S4/2019"))
+        .andExpect(jsonPath("$.items[3].key").value("54FG-KSIT-5HUD-IKT9"))
+        .andExpect(jsonPath("$.items[3].name").value("Mathematica"))
+        .andExpect(jsonPath("$.items[3].validTo").value("2019-11-01 14:27:33"));
   }
 
   @Test
@@ -82,7 +102,12 @@ public class SoftwareControllerIntegrationTest {
         .andExpect(jsonPath("$.computerSetIds").isArray())
         .andExpect(jsonPath("$.computerSetIds", hasSize(2)))
         .andExpect(jsonPath("$.computerSetIds", hasItem(1)))
-        .andExpect(jsonPath("$.computerSetIds", hasItem(2)));
+        .andExpect(jsonPath("$.computerSetIds", hasItem(2)))
+        .andExpect(jsonPath("$.availableKeys").value(5))
+        .andExpect(jsonPath("$.duration").value("2020-12-04 18:34:24"))
+        .andExpect(jsonPath("$.inventoryNumber").value("S1/2019"))
+        .andExpect(jsonPath("$.key").value("T847-54GF-7845-FSF5"))
+        .andExpect(jsonPath("$.validTo").doesNotExist());
   }
 
   @Test

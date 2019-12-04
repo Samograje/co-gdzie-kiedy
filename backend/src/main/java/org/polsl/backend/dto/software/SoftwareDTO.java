@@ -1,5 +1,7 @@
 package org.polsl.backend.dto.software;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
@@ -14,9 +16,14 @@ public class SoftwareDTO {
   @NotEmpty
   private String key;
   @NotNull
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Timestamp duration;
 
+  private Long id;
+  private String inventoryNumber;
   private Set<Long> computerSetIds;
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  private LocalDateTime validTo;
 
   public String getName() { return name; }
 
@@ -34,7 +41,24 @@ public class SoftwareDTO {
 
   public void setKey(String key) { this.key = key; }
 
+
   public Timestamp getDuration() { return duration; }
 
   public void setDuration(Timestamp duration) { this.duration = duration; }
+
+  public String getInventoryNumber() {
+    return inventoryNumber;
+  }
+
+  public void setInventoryNumber(String inventoryNumber) {
+    this.inventoryNumber = inventoryNumber;
+  }
+
+  public Long getId() { return id; }
+
+  public void setId(Long id) { this.id = id; }
+
+  public LocalDateTime getValidTo() { return validTo; }
+
+  public void setValidTo(LocalDateTime validTo) { this.validTo = validTo; }
 }

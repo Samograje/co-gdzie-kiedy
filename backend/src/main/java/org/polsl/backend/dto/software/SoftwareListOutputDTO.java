@@ -1,5 +1,8 @@
 package org.polsl.backend.dto.software;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class SoftwareListOutputDTO {
@@ -8,6 +11,9 @@ public class SoftwareListOutputDTO {
   private String inventoryNumber;
   private String key;
   private Long availableKeys;
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  private Timestamp duration;
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalDateTime validTo;
 
   public String getName() { return name; }
@@ -34,4 +40,7 @@ public class SoftwareListOutputDTO {
   public LocalDateTime getValidTo() { return validTo; }
 
   public void setValidTo(LocalDateTime validTo) { this.validTo = validTo; }
+
+  public Timestamp getDuration() { return duration; }
+  public void setDuration(Timestamp duration) { this.duration = duration; }
 }

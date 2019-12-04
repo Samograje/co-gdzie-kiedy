@@ -50,6 +50,11 @@ public class SoftwareService {
       SoftwareListOutputDTO dto = new SoftwareListOutputDTO();
       dto.setId(software.getId());
       dto.setName(software.getName());
+      dto.setInventoryNumber(software.getInventoryNumber());
+      dto.setAvailableKeys(software.getAvailableKeys());
+      dto.setKey(software.getKey());
+      dto.setValidTo(software.getValidTo());
+      dto.setDuration(software.getDuration());
       softwareListOutputDTO.add(dto);
     }
 
@@ -69,11 +74,19 @@ public class SoftwareService {
     computerSetSoftwareSet.forEach(computerSetSoftware -> ids.add(computerSetSoftware.getComputerSet().getId()));
     dto.setName(software.getName());
     dto.setComputerSetIds(ids);
+    dto.setName(software.getName());
+    dto.setInventoryNumber(software.getInventoryNumber());
+    dto.setAvailableKeys(software.getAvailableKeys());
+    dto.setKey(software.getKey());
+    dto.setValidTo(software.getValidTo());
+    dto.setDuration(software.getDuration());
     return dto;
   }
 
   @Transactional
   public void createSoftware(SoftwareDTO request) {
+    if (request.getInventoryNumber() != null)
+      throw new BadRequestException("Zakaz ręcznego wprowadzania numeru inwentarzowego.");
     Software software = new Software();
     software.setName(request.getName());
     String newInventoryNumber = inventoryNumberService.generateInventoryNumber(InventoryNumberEnum.SOFTWARE, softwareRepository.count());
@@ -83,33 +96,21 @@ public class SoftwareService {
     software.setDuration(request.getDuration());
     softwareRepository.save(software);
 
-    //New record(s) in history
     Set<Long> computerSetIdsSet = request.getComputerSetIds();
     if (computerSetIdsSet != null) {
-      if(request.getComputerSetIds().size() > request.getAvailableKeys())
-        throw new BadRequestException("Wybrano więcej urządzeń niż wprowadzono licencji. Operacja nieudana.");
-
-      //Check if computer set is not deleted before creating a new record in history; add dates to software (not history) record
-      computerSetIdsSet.forEach(computerSetId -> {
-
-        //Software
-        software.setAvailableKeys(software.getAvailableKeys() - 1);
-        softwareRepository.save(software);
-
-        //Computer_sets_software
-        ComputerSet computerSet = computerSetRepository.findByIdAndValidToIsNull(computerSetId)
-            .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
-        ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware(computerSet, software);
-        computerSetSoftwareRepository.save(computerSetSoftware);
-      });
+      newHistoryRecord(request, software, computerSetIdsSet);
     }
   }
 
   @Transactional
   public void editSoftware(Long id, SoftwareDTO request) throws NotFoundException {
     //Edit name
+    if(request.getInventoryNumber() != null) throw new BadRequestException("Nie można edytować przypisanego wcześniej numeru inwentarzowego. Operacja nieudana.");
     Software software = softwareRepository.findByIdAndValidToIsNull(id).orElseThrow(() -> new NotFoundException("oprogramowanie", "id", id));
     software.setName(request.getName());
+    software.setDuration(request.getDuration());
+    software.setAvailableKeys(request.getAvailableKeys());
+    software.setKey(request.getKey());
     softwareRepository.save(software);
 
     Set<Long> computerSetIdsSet = request.getComputerSetIds();
@@ -124,15 +125,7 @@ public class SoftwareService {
           computerSetSoftwareRepository.save(computerSetSoftware);
         }
       });
-      //New record(s) in history
-      computerSetIdsSet.forEach(computerSetId -> {
-        ComputerSet computerSet = computerSetRepository.findByIdAndValidToIsNull(computerSetId)
-            .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
-        //Check if computer set is not deleted before creating a new record in history
-        ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware(computerSet, software);
-        computerSetSoftwareRepository.save(computerSetSoftware);
-
-      });
+      newHistoryRecord(request, software, computerSetIdsSet);
     }
   }
 
@@ -145,6 +138,21 @@ public class SoftwareService {
     Set<ComputerSetSoftware> computerSetSoftwareSet = computerSetSoftwareRepository.findAllBySoftwareIdAndValidToIsNull(id);
     computerSetSoftwareSet.forEach(computerSetSoftware -> {
       computerSetSoftware.setValidTo(LocalDateTime.now());
+      computerSetSoftwareRepository.save(computerSetSoftware);
+    });
+  }
+
+  private void newHistoryRecord(SoftwareDTO request, Software software, Set<Long> computerSetIdsSet) {
+    if(request.getComputerSetIds().size() > request.getAvailableKeys())
+      throw new BadRequestException("Wybrano więcej urządzeń niż wprowadzono licencji. Operacja nieudana.");
+    //New record(s) in history
+    computerSetIdsSet.forEach(computerSetId -> {
+      software.setAvailableKeys(software.getAvailableKeys() - 1);
+      softwareRepository.save(software);
+      ComputerSet computerSet = computerSetRepository.findByIdAndValidToIsNull(computerSetId)
+              .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
+      //Check if computer set is not deleted before creating a new record in history
+      ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware(computerSet, software);
       computerSetSoftwareRepository.save(computerSetSoftware);
     });
   }
