@@ -6,6 +6,7 @@ import org.polsl.backend.dto.software.SoftwareListOutputDTO;
 import org.polsl.backend.entity.ComputerSet;
 import org.polsl.backend.entity.ComputerSetSoftware;
 import org.polsl.backend.entity.Software;
+import org.polsl.backend.exception.BadRequestException;
 import org.polsl.backend.exception.NotFoundException;
 import org.polsl.backend.repository.ComputerSetRepository;
 import org.polsl.backend.repository.ComputerSetSoftwareRepository;
@@ -77,17 +78,23 @@ public class SoftwareService {
     software.setName(request.getName());
     String newInventoryNumber = inventoryNumberService.generateInventoryNumber(InventoryNumberEnum.SOFTWARE, softwareRepository.count());
     software.setInventoryNumber(newInventoryNumber);
+    software.setKey(request.getKey());
+    software.setAvailableKeys(request.getAvailableKeys());
+    //activeFrom & activeTo -> added when software is attach to computerSet
     softwareRepository.save(software);
 
     //New record(s) in history
     Set<Long> computerSetIdsSet = request.getComputerSetIds();
     if (computerSetIdsSet != null) {
-      //Check if computer set is not deleted before creating a new record in history
+      //Check if computer set is not deleted before creating a new record in history; add dates to software (not history) record
       computerSetIdsSet.forEach(computerSetId -> {
         ComputerSet computerSet = computerSetRepository.findByIdAndValidToIsNull(computerSetId)
             .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
         ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware(computerSet, software);
         computerSetSoftwareRepository.save(computerSetSoftware);
+        software.setActiveFrom(LocalDateTime.now());
+        software.setActiveTo(request.getActiveTo()); //null -> pernament licence
+        softwareRepository.save(software);
       });
     }
   }

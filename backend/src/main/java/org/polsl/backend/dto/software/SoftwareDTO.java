@@ -1,20 +1,22 @@
 package org.polsl.backend.dto.software;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Set;
 
 public class SoftwareDTO {
   @NotEmpty
   private String name;
+  @NotNull
+  private Long availableKeys;
+  @NotEmpty
+  private String key;
 
   private Set<Long> computerSetIds;
-
+  private LocalDateTime activeFrom;
   private LocalDateTime activeTo;
 
-  private Long availableKeys;
-
-  private String key;
 
   public String getName() { return name; }
 
@@ -35,4 +37,8 @@ public class SoftwareDTO {
   public String getKey() { return key; }
 
   public void setKey(String key) { this.key = key; }
+
+  public LocalDateTime getActiveFrom() { return activeFrom; }
+
+  public void setActiveFrom(LocalDateTime activeFrom) { this.activeFrom = activeFrom; }
 }
