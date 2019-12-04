@@ -2,6 +2,7 @@ package org.polsl.backend.dto.software;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -12,11 +13,10 @@ public class SoftwareDTO {
   private Long availableKeys;
   @NotEmpty
   private String key;
+  @NotNull
+  private Timestamp duration;
 
   private Set<Long> computerSetIds;
-  private LocalDateTime activeFrom;
-  private LocalDateTime activeTo;
-
 
   public String getName() { return name; }
 
@@ -26,10 +26,6 @@ public class SoftwareDTO {
 
   public void setComputerSetIds(Set<Long> computerSetIds) { this.computerSetIds = computerSetIds; }
 
-  public LocalDateTime getActiveTo() { return activeTo; }
-
-  public void setActiveTo(LocalDateTime activeTo) { this.activeTo = activeTo; }
-
   public Long getAvailableKeys() { return availableKeys; }
 
   public void setAvailableKeys(Long availableKeys) { this.availableKeys = availableKeys; }
@@ -38,7 +34,7 @@ public class SoftwareDTO {
 
   public void setKey(String key) { this.key = key; }
 
-  public LocalDateTime getActiveFrom() { return activeFrom; }
+  public Timestamp getDuration() { return duration; }
 
-  public void setActiveFrom(LocalDateTime activeFrom) { this.activeFrom = activeFrom; }
+  public void setDuration(Timestamp duration) { this.duration = duration; }
 }

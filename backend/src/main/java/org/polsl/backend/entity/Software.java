@@ -1,6 +1,7 @@
 package org.polsl.backend.entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -17,8 +18,7 @@ public class Software {
   private String inventoryNumber;
   private String key;
   private Long availableKeys;
-  private LocalDateTime activeFrom;
-  private LocalDateTime  activeTo;
+  private Timestamp duration;
   private LocalDateTime validTo;
 
   @OneToMany(mappedBy = "software")
@@ -51,10 +51,6 @@ public class Software {
 
   public void setValidTo(LocalDateTime validTo) { this.validTo = validTo; }
 
-  public LocalDateTime getActiveTo() { return activeTo; }
-
-  public void setActiveTo(LocalDateTime activeTo) { this.activeTo = activeTo; }
-
   public String getInventoryNumber() { return inventoryNumber; }
 
   public void setInventoryNumber(String inventoryNumber) { this.inventoryNumber = inventoryNumber; }
@@ -67,7 +63,7 @@ public class Software {
 
   public void setAvailableKeys(Long availableKeys) { this.availableKeys = availableKeys; }
 
-  public LocalDateTime getActiveFrom() { return activeFrom; }
+  public Timestamp getDuration() { return duration; }
 
-  public void setActiveFrom(LocalDateTime activeFrom) { this.activeFrom = activeFrom; }
+  public void setDuration(Timestamp duration) { this.duration = duration; }
 }

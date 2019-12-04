@@ -80,21 +80,27 @@ public class SoftwareService {
     software.setInventoryNumber(newInventoryNumber);
     software.setKey(request.getKey());
     software.setAvailableKeys(request.getAvailableKeys());
-    //activeFrom & activeTo -> added when software is attach to computerSet
+    software.setDuration(request.getDuration());
     softwareRepository.save(software);
 
     //New record(s) in history
     Set<Long> computerSetIdsSet = request.getComputerSetIds();
     if (computerSetIdsSet != null) {
+      if(request.getComputerSetIds().size() > request.getAvailableKeys())
+        throw new BadRequestException("Wybrano więcej urządzeń niż wprowadzono licencji. Operacja nieudana.");
+
       //Check if computer set is not deleted before creating a new record in history; add dates to software (not history) record
       computerSetIdsSet.forEach(computerSetId -> {
+
+        //Software
+        software.setAvailableKeys(software.getAvailableKeys() - 1);
+        softwareRepository.save(software);
+
+        //Computer_sets_software
         ComputerSet computerSet = computerSetRepository.findByIdAndValidToIsNull(computerSetId)
             .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
         ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware(computerSet, software);
         computerSetSoftwareRepository.save(computerSetSoftware);
-        software.setActiveFrom(LocalDateTime.now());
-        software.setActiveTo(request.getActiveTo()); //null -> pernament licence
-        softwareRepository.save(software);
       });
     }
   }

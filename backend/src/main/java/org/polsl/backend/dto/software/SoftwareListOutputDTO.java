@@ -8,13 +8,9 @@ public class SoftwareListOutputDTO {
   private String inventoryNumber;
   private String key;
   private Long availableKeys;
-  private LocalDateTime activeFrom;
-  private LocalDateTime  validUntil;
   private LocalDateTime validTo;
 
-  public String getName() {
-    return name;
-  }
+  public String getName() { return name; }
 
   public void setName(String name) { this.name = name; }
 
@@ -34,9 +30,6 @@ public class SoftwareListOutputDTO {
 
   public void setAvailableKeys(Long availableKeys) { this.availableKeys = availableKeys; }
 
-  public LocalDateTime getActiveFrom() { return activeFrom; }
-
-  public void setActiveFrom(LocalDateTime activeFrom) { this.activeFrom = activeFrom; }
 
   public LocalDateTime getValidTo() { return validTo; }
 
