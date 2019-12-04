@@ -16,17 +16,11 @@ public class SoftwareListOutputDTO {
     return name;
   }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+  public void setName(String name) { this.name = name; }
 
-  public Long getId() {
-    return id;
-  }
+  public Long getId() { return id; }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+  public void setId(Long id) { this.id = id; }
 
   public String getInventoryNumber() { return inventoryNumber; }
 
@@ -43,10 +37,6 @@ public class SoftwareListOutputDTO {
   public LocalDateTime getActiveFrom() { return activeFrom; }
 
   public void setActiveFrom(LocalDateTime activeFrom) { this.activeFrom = activeFrom; }
-
-  public LocalDateTime getValidUntil() { return validUntil; }
-
-  public void setValidUntil(LocalDateTime validUntil) { this.validUntil = validUntil; }
 
   public LocalDateTime getValidTo() { return validTo; }
 

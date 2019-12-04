@@ -10,6 +10,7 @@ import org.polsl.backend.exception.NotFoundException;
 import org.polsl.backend.repository.ComputerSetRepository;
 import org.polsl.backend.repository.ComputerSetSoftwareRepository;
 import org.polsl.backend.repository.SoftwareRepository;
+import org.polsl.backend.type.InventoryNumberEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,14 +29,17 @@ public class SoftwareService {
   private final SoftwareRepository softwareRepository;
   private final ComputerSetRepository computerSetRepository;
   private final ComputerSetSoftwareRepository computerSetSoftwareRepository;
+  private final InventoryNumberService inventoryNumberService;
 
   @Autowired
   public SoftwareService(SoftwareRepository softwareRepository,
                          ComputerSetRepository computerSetRepository,
-                         ComputerSetSoftwareRepository computerSetSoftwareRepository) {
+                         ComputerSetSoftwareRepository computerSetSoftwareRepository,
+                         InventoryNumberService inventoryNumberService) {
     this.softwareRepository = softwareRepository;
     this.computerSetRepository = computerSetRepository;
     this.computerSetSoftwareRepository = computerSetSoftwareRepository;
+    this.inventoryNumberService = inventoryNumberService;
   }
 
   public PaginatedResult<SoftwareListOutputDTO> getAllSoftware() {
@@ -71,16 +75,17 @@ public class SoftwareService {
   public void createSoftware(SoftwareDTO request) {
     Software software = new Software();
     software.setName(request.getName());
+    String newInventoryNumber = inventoryNumberService.generateInventoryNumber(InventoryNumberEnum.SOFTWARE, softwareRepository.count());
+    software.setInventoryNumber(newInventoryNumber);
     softwareRepository.save(software);
 
     //New record(s) in history
     Set<Long> computerSetIdsSet = request.getComputerSetIds();
     if (computerSetIdsSet != null) {
+      //Check if computer set is not deleted before creating a new record in history
       computerSetIdsSet.forEach(computerSetId -> {
-
         ComputerSet computerSet = computerSetRepository.findByIdAndValidToIsNull(computerSetId)
             .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
-        //Check if computer set is not deleted before creating a new record in history
         ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware(computerSet, software);
         computerSetSoftwareRepository.save(computerSetSoftware);
       });

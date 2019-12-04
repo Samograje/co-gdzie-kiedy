@@ -18,7 +18,7 @@ public class Software {
   private String key;
   private Long availableKeys;
   private LocalDateTime activeFrom;
-  private LocalDateTime  validUntil;
+  private LocalDateTime  activeTo;
   private LocalDateTime validTo;
 
   @OneToMany(mappedBy = "software")
@@ -43,19 +43,31 @@ public class Software {
     this.name = name;
   }
 
-  public Set<ComputerSetSoftware> getComputerSetSoftwareSet() {
-    return computerSetSoftwareSet;
-  }
+  public Set<ComputerSetSoftware> getComputerSetSoftwareSet() { return computerSetSoftwareSet; }
 
-  public void setComputerSetSoftwareSet(Set<ComputerSetSoftware> computerSetSoftwareSet) {
-    this.computerSetSoftwareSet = computerSetSoftwareSet;
-  }
+  public void setComputerSetSoftwareSet(Set<ComputerSetSoftware> computerSetSoftwareSet) { this.computerSetSoftwareSet = computerSetSoftwareSet; }
 
-  public LocalDateTime getValidTo() {
-    return validTo;
-  }
+  public LocalDateTime getValidTo() { return validTo; }
 
-  public void setValidTo(LocalDateTime validTo) {
-    this.validTo = validTo;
-  }
+  public void setValidTo(LocalDateTime validTo) { this.validTo = validTo; }
+
+  public LocalDateTime getActiveTo() { return activeTo; }
+
+  public void setActiveTo(LocalDateTime activeTo) { this.activeTo = activeTo; }
+
+  public String getInventoryNumber() { return inventoryNumber; }
+
+  public void setInventoryNumber(String inventoryNumber) { this.inventoryNumber = inventoryNumber; }
+
+  public String getKey() { return key; }
+
+  public void setKey(String key) { this.key = key; }
+
+  public Long getAvailableKeys() { return availableKeys; }
+
+  public void setAvailableKeys(Long availableKeys) { this.availableKeys = availableKeys; }
+
+  public LocalDateTime getActiveFrom() { return activeFrom; }
+
+  public void setActiveFrom(LocalDateTime activeFrom) { this.activeFrom = activeFrom; }
 }
