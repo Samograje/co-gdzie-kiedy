@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -114,18 +115,28 @@ public class SoftwareControllerIntegrationTest {
   public void givenCorrectRequestWithoutComputerSetId_whenGettingOneSoftware_thenReturnStatus200AndData() throws Exception {
     mvc.perform(get("/api/software/2"))
         .andExpect(status().is(200))
-        .andExpect(jsonPath("$.name").value("Visual Studio"));
+        .andExpect(jsonPath("$.name").value("Visual Studio"))
+        .andExpect(jsonPath("$.duration").value("2019-12-04 17:34:24"))
+        .andExpect(jsonPath("$.inventoryNumber").value("S2/2019"))
+        .andExpect(jsonPath("$.key").value("874G-54D7-JHKI-LLKI"))
+        .andExpect(jsonPath("$.validTo").doesNotExist())
+        .andExpect(jsonPath("$.availableKeys").value(3));
+
   }
 
   @Test
-  public void givenEmptyRequest_whenAddingAffiliation_thenReturnStatus400() throws Exception {
+  public void givenEmptyRequest_whenAddingSoftware_thenReturnStatus400() throws Exception {
     SoftwareDTO request = new SoftwareDTO();
     mvc.perform(post("/api/software")
         .content(objectMapper.writeValueAsString(request))
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().is(400))
-        .andExpect(jsonPath("$.fieldErrors", hasSize(1)))
-        .andExpect(jsonPath("$.fieldErrors[?(@.field =~ /name/)].message").value("must not be empty"));
+        .andExpect(jsonPath("$.fieldErrors", hasSize(4)))
+        .andExpect(jsonPath("$.fieldErrors[?(@.field =~ /name/)].message").value("must not be empty"))
+        .andExpect(jsonPath("$.fieldErrors[?(@.field =~ /key/)].message").value("must not be empty"))
+        .andExpect(jsonPath("$.fieldErrors[?(@.field =~ /availableKeys/)].message").value("must not be null"))
+        .andExpect(jsonPath("$.fieldErrors[?(@.field =~ /duration/)].message").value("must not be null"));
+
   }
 
   @Test
@@ -134,6 +145,9 @@ public class SoftwareControllerIntegrationTest {
     Set<Long> ids = new HashSet<>();
     ids.add((long) 0);
     request.setName("Mathematica");
+    request.setKey("KDHI-KDIG-OI48-PDIT");
+    request.setDuration(new Timestamp(1575480864));
+    request.setAvailableKeys((long) 5);
     request.setComputerSetIds(ids);
     mvc.perform(post("/api/software")
         .content(objectMapper.writeValueAsString(request))
@@ -149,6 +163,9 @@ public class SoftwareControllerIntegrationTest {
     Set<Long> ids = new HashSet<>();
     ids.add((long) 3);
     request.setName("Mathematica");
+    request.setKey("KDHI-KDIG-OI48-PDIT");
+    request.setDuration(new Timestamp(1575480864));
+    request.setAvailableKeys((long) 5);
     request.setComputerSetIds(ids);
     mvc.perform(post("/api/software/")
         .content(objectMapper.writeValueAsString(request))
@@ -162,6 +179,9 @@ public class SoftwareControllerIntegrationTest {
   public void givenCorrectRequestWithoutComputerSetIds_whenAddingSoftware_thenReturnStatus200AndData() throws Exception {
     SoftwareDTO request = new SoftwareDTO();
     request.setName("Notepad ++");
+    request.setKey("KDHI-KDIG-OI48-PDIT");
+    request.setDuration(new Timestamp(1767116064));
+    request.setAvailableKeys((long) 5);
     mvc.perform(post("/api/software")
         .content(objectMapper.writeValueAsString(request))
         .contentType(MediaType.APPLICATION_JSON))
@@ -177,6 +197,9 @@ public class SoftwareControllerIntegrationTest {
     ids.add((long) 1);
     ids.add((long) 2);
     request.setName("Mathematica");
+    request.setKey("KDHI-KDIG-OI48-PDIT");
+    request.setDuration(new Timestamp(1767116064));
+    request.setAvailableKeys((long) 5);
     request.setComputerSetIds(ids);
     mvc.perform(post("/api/software/")
         .content(objectMapper.writeValueAsString(request))
@@ -193,14 +216,20 @@ public class SoftwareControllerIntegrationTest {
         .content(objectMapper.writeValueAsString(request))
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().is(400))
-        .andExpect(jsonPath("$.fieldErrors", hasSize(1)))
-        .andExpect(jsonPath("$.fieldErrors[?(@.field =~ /name/)].message").value("must not be empty"));
+        .andExpect(jsonPath("$.fieldErrors", hasSize(4)))
+        .andExpect(jsonPath("$.fieldErrors[?(@.field =~ /name/)].message").value("must not be empty"))
+        .andExpect(jsonPath("$.fieldErrors[?(@.field =~ /key/)].message").value("must not be empty"))
+        .andExpect(jsonPath("$.fieldErrors[?(@.field =~ /availableKeys/)].message").value("must not be null"))
+        .andExpect(jsonPath("$.fieldErrors[?(@.field =~ /duration/)].message").value("must not be null"));
   }
 
   @Test
   public void givenInvalidId_whenEditingSoftware_thenReturnStatus404() throws Exception {
     SoftwareDTO request = new SoftwareDTO();
     request.setName("Photoshop");
+    request.setKey("KDHI-KDIG-OI48-PDIT");
+    request.setDuration(new Timestamp(1767116064));
+    request.setAvailableKeys((long) 5);
     mvc.perform(put("/api/software/0")
         .content(objectMapper.writeValueAsString(request))
         .contentType(MediaType.APPLICATION_JSON))
@@ -222,6 +251,9 @@ public class SoftwareControllerIntegrationTest {
     Set<Long> ids = new HashSet<>();
     ids.add((long) 0);
     request.setName("Mathematica");
+    request.setKey("KDHI-KDIG-OI48-PDIT");
+    request.setDuration(new Timestamp(1767116064));
+    request.setAvailableKeys((long) 5);
     request.setComputerSetIds(ids);
     mvc.perform(put("/api/software/1")
         .content(objectMapper.writeValueAsString(request))
@@ -237,6 +269,9 @@ public class SoftwareControllerIntegrationTest {
     Set<Long> ids = new HashSet<>();
     ids.add((long) 3);
     request.setName("Mathematica");
+    request.setKey("KDHI-KDIG-OI48-PDIT");
+    request.setDuration(new Timestamp(1767116064));
+    request.setAvailableKeys((long) 5);
     request.setComputerSetIds(ids);
     mvc.perform(put("/api/software/1")
         .content(objectMapper.writeValueAsString(request))
@@ -250,6 +285,9 @@ public class SoftwareControllerIntegrationTest {
   public void givenDeletedSoftwareId_whenEditingSoftware_thenReturnStatus404() throws Exception {
     SoftwareDTO request = new SoftwareDTO();
     request.setName("Mathematica");
+    request.setKey("KDHI-KDIG-OI48-PDIT");
+    request.setDuration(new Timestamp(1767116064));
+    request.setAvailableKeys((long) 5);
     mvc.perform(put("/api/software/4")
         .content(objectMapper.writeValueAsString(request))
         .contentType(MediaType.APPLICATION_JSON))
@@ -262,6 +300,9 @@ public class SoftwareControllerIntegrationTest {
   public void givenCorrectRequestWithoutComputerSetIds_whenEditingSoftware_thenReturnStatus200AndData() throws Exception {
     SoftwareDTO request = new SoftwareDTO();
     request.setName("Photoshop");
+    request.setKey("KDHI-KDIG-OI48-PDIT");
+    request.setDuration(new Timestamp(1767116064));
+    request.setAvailableKeys((long) 5);
     mvc.perform(put("/api/software/1")
         .content(objectMapper.writeValueAsString(request))
         .contentType(MediaType.APPLICATION_JSON))
@@ -276,8 +317,11 @@ public class SoftwareControllerIntegrationTest {
     Set<Long> ids = new HashSet<>();
     ids.add((long) 1);
     ids.add((long) 2);
-    request.setName("Mathematica");
     request.setComputerSetIds(ids);
+    request.setName("Mathematica");
+    request.setKey("KDHI-KDIG-OI48-PDIT");
+    request.setDuration(new Timestamp(1767116064));
+    request.setAvailableKeys((long) 5);
     mvc.perform(put("/api/software/1")
         .content(objectMapper.writeValueAsString(request))
         .contentType(MediaType.APPLICATION_JSON))
