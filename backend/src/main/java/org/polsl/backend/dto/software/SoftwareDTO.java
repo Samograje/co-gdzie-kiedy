@@ -16,8 +16,7 @@ public class SoftwareDTO {
   @NotEmpty
   private String key;
   @NotNull
-  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-  private Timestamp duration;
+  private Long duration;
 
   private Long id;
   private String inventoryNumber;
@@ -41,10 +40,9 @@ public class SoftwareDTO {
 
   public void setKey(String key) { this.key = key; }
 
+  public Long getDuration() { return duration; }
 
-  public Timestamp getDuration() { return duration; }
-
-  public void setDuration(Timestamp duration) { this.duration = duration; }
+  public void setDuration(Long duration) { this.duration = duration; }
 
   public String getInventoryNumber() {
     return inventoryNumber;

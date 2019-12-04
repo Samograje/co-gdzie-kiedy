@@ -20,8 +20,7 @@ public class Software {
   private String inventoryNumber;
   private String key;
   private Long availableKeys;
-  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-  private Timestamp duration;
+  private Long duration;
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalDateTime validTo;
 
@@ -67,6 +66,6 @@ public class Software {
 
   public void setAvailableKeys(Long availableKeys) { this.availableKeys = availableKeys; }
 
-  public Timestamp getDuration() { return duration; }
-  public void setDuration(Timestamp duration) { this.duration = duration; }
+  public Long getDuration() { return duration; }
+  public void setDuration(Long duration) { this.duration = duration; }
 }

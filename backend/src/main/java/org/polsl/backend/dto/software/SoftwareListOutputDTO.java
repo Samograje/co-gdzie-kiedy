@@ -11,8 +11,7 @@ public class SoftwareListOutputDTO {
   private String inventoryNumber;
   private String key;
   private Long availableKeys;
-  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-  private Timestamp duration;
+  private Long duration;
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalDateTime validTo;
 
@@ -41,6 +40,6 @@ public class SoftwareListOutputDTO {
 
   public void setValidTo(LocalDateTime validTo) { this.validTo = validTo; }
 
-  public Timestamp getDuration() { return duration; }
-  public void setDuration(Timestamp duration) { this.duration = duration; }
+  public Long getDuration() { return duration; }
+  public void setDuration(Long duration) { this.duration = duration; }
 }
