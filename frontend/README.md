@@ -13,14 +13,13 @@ Wykorzystywane technologie:
 
 ## Przygotowanie środowiska deweloperskiego
 
-Aplikacja wymaga zainstalowanych:
-- [node.js](https://nodejs.org/en/)
-- Wszystkich zależności wypisanych [na tej stronie](https://facebook.github.io/react-native/docs/getting-started) w zakładce 'React Native CLI Quickstart'
+Wymagane do uruchomienia strony internetowej oraz aplikacji mobilnej:
+1. Instalacja npm (składnika [node.js](https://nodejs.org/en/))
+2. Popranie plików bibliotek, wykonując polecenie `npm i` w katalogu `frontend`
 
-Przed uruchomieniem aplikacji należy pobrać pliki bibliotek, wykonując poniższe polecenie:
-```
-npm i
-```
+Dodatkowe czynności wymagane do uruchomienia aplikacji mobilnej:
+1. Wykonanie wszystkich czynności opisanych [na tej stronie](https://facebook.github.io/react-native/docs/getting-started) w zakładce 'React Native CLI Quickstart'
+2. Ponowne uruchomienie komputera
 
 ## Uruchamianie
 
