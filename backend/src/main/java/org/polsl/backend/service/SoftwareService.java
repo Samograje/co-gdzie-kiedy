@@ -45,7 +45,7 @@ public class SoftwareService {
   }
 
   public PaginatedResult<SoftwareListOutputDTO> getAllSoftware() {
-    Iterable<Software> softwares = softwareRepository.findAll();
+    Iterable<Software> softwares = softwareRepository.findAllByValidToIsNull();
     List<SoftwareListOutputDTO> softwareListOutputDTO = new ArrayList<>();
     for (Software software : softwares) {
       SoftwareListOutputDTO dto = new SoftwareListOutputDTO();

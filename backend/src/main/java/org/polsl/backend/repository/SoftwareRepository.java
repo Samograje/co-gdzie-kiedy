@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface SoftwareRepository extends CrudRepository<Software, Long> {
   Optional<Software> findById(Long id);
   Optional<Software> findByIdAndValidToIsNull(Long id);
+  Iterable<Software> findAllByValidToIsNull();
   long countByValidToIsNull();
   long count();
 }
