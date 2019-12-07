@@ -12,21 +12,45 @@ const HomepageComponent = (
     hardwareCount,
     softwareCount,
     computerSetsCount,
+    isWide,
     goToAffiliations,
     goToComputerSets,
     goToHardware,
     goToSoftware,
+    handleLayout,
   }
 ) => {
+
+  const layoutStyle = isWide ? styles.wide : styles.small;
+
   return (
     <View style={styles.container}>
-      {/* TODO: responsywność elementów */}
-      <View style={styles.links}>
-        <LinkElement label="Osoby i miejsca" onClick={goToAffiliations}/>
-        <LinkElement label="Zestawy komputerowe" onClick={goToComputerSets}/>
-        <LinkElement label="Hardware'y" onClick={goToHardware}/>
-        <LinkElement label="Oprogramowanie" onClick={goToSoftware}/>
+      <View
+        style={[styles.links, layoutStyle]}
+        onLayout={handleLayout}
+      >
+        <LinkElement
+          label="Osoby i miejsca"
+          onClick={goToAffiliations}
+          isWide={isWide}
+        />
+        <LinkElement
+          label="Zestawy komputerowe"
+          onClick={goToComputerSets}
+          isWide={isWide}
+        />
+        <LinkElement
+          label="Hardware'y"
+          onClick={goToHardware}
+          isWide={isWide}
+        />
+        <LinkElement
+          label="Oprogramowanie"
+          onClick={goToSoftware}
+          isWide={isWide}
+        />
       </View>
+
       {loading && (
         <ActivityIndicator size="large"/>
       )}
@@ -53,10 +77,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  links: {
-    flex: 1,
+  links: {},
+  small: {
+    flexDirection: 'column',
+  },
+  wide: {
     flexDirection: 'row',
-  }
+  },
 });
 
 export default HomepageComponent;

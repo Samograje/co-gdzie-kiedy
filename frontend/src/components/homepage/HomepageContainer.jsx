@@ -11,6 +11,7 @@ class HomepageContainer extends Component {
       computerSetsCount: null,
       hardwareCount: null,
       softwareCount: null,
+      isWide: false,
     };
   }
 
@@ -32,6 +33,13 @@ class HomepageContainer extends Component {
       })
   }
 
+  handleLayout = ({nativeEvent}) => {
+    const {width} = nativeEvent.layout;
+    this.setState({
+      isWide: width > 650,
+    });
+  };
+
   render() {
     return (
       <HomepageComponent
@@ -39,6 +47,7 @@ class HomepageContainer extends Component {
         goToComputerSets={() => this.props.history.push('/computer-sets')}
         goToHardware={() => this.props.history.push('/hardware')}
         goToSoftware={() => this.props.history.push('/software')}
+        handleLayout={this.handleLayout}
         {...this.state}
       />
     );
