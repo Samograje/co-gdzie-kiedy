@@ -11,7 +11,7 @@ class HomepageContainer extends Component {
       computerSetsCount: null,
       hardwareCount: null,
       softwareCount: null,
-      isWide: false,
+      isWide: null,
     };
   }
 
