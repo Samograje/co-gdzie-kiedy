@@ -60,14 +60,13 @@ const HomepageComponent = (
           type="error"
         />
       )}
-      {/* TODO: kafelki statystyk */}
       {!loading && !error && (
-        <>
+        <View style={[styles.stats, layoutStyle]}>
           <StatisticsElement label="Osób i miejsc" value={affiliationsCount}/>
           <StatisticsElement label="Zestawów komputerowych" value={computerSetsCount}/>
           <StatisticsElement label="Hardware'u" value={hardwareCount}/>
           <StatisticsElement label="Oprogramowania" value={softwareCount}/>
-        </>
+        </View>
       )}
     </View>
   );
@@ -78,6 +77,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   links: {},
+  stats: {},
   small: {
     flexDirection: 'column',
   },
