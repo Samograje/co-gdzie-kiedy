@@ -3,7 +3,7 @@ package org.polsl.backend.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+
 import java.time.LocalDateTime;
 import java.util.Set;
 

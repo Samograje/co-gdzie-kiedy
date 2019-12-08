@@ -16,12 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 
 /**
  * Logika biznesowa oprogramowania.
@@ -86,11 +86,11 @@ public class SoftwareService {
 
   @Transactional
   public void createSoftware(SoftwareDTO request) {
-    if (request.getInventoryNumber() != null)
-      throw new BadRequestException("Zakaz ręcznego wprowadzania numeru inwentarzowego.");
+    inputDataValidation(request);
+
     Software software = new Software();
-    software.setName(request.getName());
     String newInventoryNumber = inventoryNumberService.generateInventoryNumber(InventoryNumberEnum.SOFTWARE, softwareRepository.count());
+    software.setName(request.getName());
     software.setInventoryNumber(newInventoryNumber);
     software.setKey(request.getKey());
     software.setAvailableKeys(request.getAvailableKeys());
@@ -101,12 +101,14 @@ public class SoftwareService {
     if (computerSetIdsSet != null) {
       newHistoryRecord(request, software, computerSetIdsSet);
     }
+
   }
 
   @Transactional
   public void editSoftware(Long id, SoftwareDTO request) throws NotFoundException {
     //Edit name
-    if(request.getInventoryNumber() != null) throw new BadRequestException("Nie można edytować przypisanego wcześniej numeru inwentarzowego. Operacja nieudana.");
+    inputDataValidation(request);
+
     Software software = softwareRepository.findByIdAndValidToIsNull(id).orElseThrow(() -> new NotFoundException("oprogramowanie", "id", id));
     software.setName(request.getName());
     software.setDuration(request.getDuration());
@@ -156,5 +158,16 @@ public class SoftwareService {
       ComputerSetSoftware computerSetSoftware = new ComputerSetSoftware(computerSet, software);
       computerSetSoftwareRepository.save(computerSetSoftware);
     });
+  }
+
+  private void inputDataValidation(SoftwareDTO request){
+    if(request.getInventoryNumber() != null)
+      throw new BadRequestException("Zakaz ręcznego wprowadzania numeru inwentarzowego.");
+
+    if(request.getAvailableKeys() <= 0)
+      throw new BadRequestException("Należy wprowadzić co najmniej jeden dostępny do użycia klucz produktu.");
+
+    if(request.getDuration() <= 0)
+      throw new BadRequestException("Wprowadzono nieaktywną licencję.");
   }
 }
