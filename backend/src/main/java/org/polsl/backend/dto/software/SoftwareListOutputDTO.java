@@ -2,7 +2,6 @@ package org.polsl.backend.dto.software;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class SoftwareListOutputDTO {
