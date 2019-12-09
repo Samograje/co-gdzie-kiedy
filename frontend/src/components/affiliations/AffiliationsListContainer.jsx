@@ -3,15 +3,68 @@ import AffiliationsListComponent from './AffiliationsListComponent';
 
 class AffiliationsListContainer extends Component {
 
-  onCreate = () => this.props.history.push('/affiliations/create');
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true,
+      error: false,
+      items: [],
+      totalElements: null,
+    };
+  }
 
-  onEdit = () => this.props.history.push('/affiliations/edit/5');
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  fetchData = () => {
+    fetch('/api/affiliations')
+      .then((response) => response.json())
+      .then((response) => {
+        this.setState({
+          loading: false,
+          ...response,
+        });
+      })
+      .catch(() => {
+        this.setState({
+          loading: false,
+          error: true,
+        });
+      })
+  };
 
   render() {
+
+    const columns = [
+      {
+        name: 'name',
+        label: 'Nazwa',
+      }
+    ];
+
+    const itemActions = [
+      {
+        label: 'Edytuj',
+        onClick: (itemData) => this.props.history.push(`/affiliations/edit/${itemData.id}`),
+      },
+      // TODO: akcja usuwania afiliacji
+    ];
+
+    const footerActions = [
+      {
+        label: 'Dodaj osobę / miejsce',
+        onClick: () => this.props.history.push('/affiliations/create'),
+      },
+    ];
+
     return (
       <AffiliationsListComponent
-        onCreate={this.onCreate}
-        onEdit={this.onEdit}
+        onFetchData={this.fetchData}
+        columns={columns}
+        itemActions={itemActions}
+        footerActions={footerActions}
+        {...this.state}
       />
     );
   }
