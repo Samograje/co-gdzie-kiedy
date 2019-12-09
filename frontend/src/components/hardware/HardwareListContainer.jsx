@@ -2,9 +2,42 @@ import React, {Component} from 'react';
 import HardwareListComponent from './HardwareListComponent';
 
 class HardwareListContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true,
+      error: false,
+      items: [],
+      totalElements: null,
+    };
+  }
+
+  componentDidMount() {
+    fetch('/api/hardware?solo-only=true')
+      .then((response) => response.json())
+      .then((response) => {
+        this.setState({
+          loading: false,
+          error: false,
+          ...response
+        })
+      })
+      .catch((response) => {
+        this.setState({
+          loading: false,
+          error: true
+        });
+      })
+  }
+
   render() {
     return (
-      <HardwareListComponent/>
+      <HardwareListComponent
+        error={this.state.error}
+        loading={this.state.loading}
+        items={this.state.items}
+        totalElements={this.state.totalElements}
+      />
     );
   }
 }
