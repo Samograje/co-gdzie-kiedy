@@ -6,33 +6,37 @@ class HardwareListContainer extends Component {
     super(props);
     this.state = {
       loading: true,
-      error: false
+      error: false,
+      items: [],
+      totalElements: null,
     };
   }
 
   componentDidMount() {
-    fetch('/api/hardware')
-        .then((response) => response.json())
-        .then((response) => {
-          this.setState({
-            loading: false,
-            error: false,
-            ...response
-          })
+    fetch('/api/hardware?solo-only=true')
+      .then((response) => response.json())
+      .then((response) => {
+        this.setState({
+          loading: false,
+          error: false,
+          ...response
         })
-        .catch((response) => {
-          this.setState({
-            loading: false,
-            error: true
-          });
-        })
+      })
+      .catch((response) => {
+        this.setState({
+          loading: false,
+          error: true
+        });
+      })
   }
-
 
   render() {
     return (
       <HardwareListComponent
-          {...this.state}
+        error={this.state.error}
+        loading={this.state.loading}
+        items={this.state.items}
+        totalElements={this.state.totalElements}
       />
     );
   }
