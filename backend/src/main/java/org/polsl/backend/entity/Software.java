@@ -1,6 +1,9 @@
 package org.polsl.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -13,10 +16,12 @@ public class Software {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long id;
-
   private String name;
-
-  @Column(name = "valid_to")
+  private String inventoryNumber;
+  private String key;
+  private Long availableKeys;
+  private Long duration;
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalDateTime validTo;
 
   @OneToMany(mappedBy = "software")
@@ -41,19 +46,26 @@ public class Software {
     this.name = name;
   }
 
-  public Set<ComputerSetSoftware> getComputerSetSoftwareSet() {
-    return computerSetSoftwareSet;
-  }
+  public Set<ComputerSetSoftware> getComputerSetSoftwareSet() { return computerSetSoftwareSet; }
 
-  public void setComputerSetSoftwareSet(Set<ComputerSetSoftware> computerSetSoftwareSet) {
-    this.computerSetSoftwareSet = computerSetSoftwareSet;
-  }
+  public void setComputerSetSoftwareSet(Set<ComputerSetSoftware> computerSetSoftwareSet) { this.computerSetSoftwareSet = computerSetSoftwareSet; }
 
-  public LocalDateTime getValidTo() {
-    return validTo;
-  }
+  public LocalDateTime getValidTo() { return validTo; }
 
-  public void setValidTo(LocalDateTime validTo) {
-    this.validTo = validTo;
-  }
+  public void setValidTo(LocalDateTime validTo) { this.validTo = validTo; }
+
+  public String getInventoryNumber() { return inventoryNumber; }
+
+  public void setInventoryNumber(String inventoryNumber) { this.inventoryNumber = inventoryNumber; }
+
+  public String getKey() { return key; }
+
+  public void setKey(String key) { this.key = key; }
+
+  public Long getAvailableKeys() { return availableKeys; }
+
+  public void setAvailableKeys(Long availableKeys) { this.availableKeys = availableKeys; }
+
+  public Long getDuration() { return duration; }
+  public void setDuration(Long duration) { this.duration = duration; }
 }
