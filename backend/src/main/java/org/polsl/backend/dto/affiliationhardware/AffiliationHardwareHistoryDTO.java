@@ -6,9 +6,9 @@ import java.time.LocalDateTime;
 
 public class AffiliationHardwareHistoryDTO {
   private String affiliationName;
-  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
   private LocalDateTime validFrom;
-  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
   private LocalDateTime validTo;
 
   public String getAffiliationName() {

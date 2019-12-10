@@ -7,9 +7,9 @@ import java.time.LocalDateTime;
 public class ComputerSetHardwareHistoryDTO {
   private String computerSetInventoryNumber;
   private String computerSetName;
-  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
   private LocalDateTime validFrom;
-  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
   private LocalDateTime validTo;
 
   public String getComputerSetInventoryNumber() {
