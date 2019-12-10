@@ -1,7 +1,7 @@
 package org.polsl.backend.service;
 
 import org.polsl.backend.dto.PaginatedResult;
-import org.polsl.backend.dto.computerset.ComputerSetInputDTO;
+import org.polsl.backend.dto.computerset.ComputerSetDTO;
 import org.polsl.backend.dto.computerset.ComputerSetOutputDTO;
 import org.polsl.backend.entity.Affiliation;
 import org.polsl.backend.entity.AffiliationComputerSet;
@@ -10,6 +10,7 @@ import org.polsl.backend.entity.ComputerSetHardware;
 import org.polsl.backend.entity.ComputerSetSoftware;
 import org.polsl.backend.entity.Hardware;
 import org.polsl.backend.entity.Software;
+import org.polsl.backend.exception.BadRequestException;
 import org.polsl.backend.exception.NotFoundException;
 import org.polsl.backend.repository.AffiliationComputerSetRepository;
 import org.polsl.backend.repository.AffiliationRepository;
@@ -18,6 +19,7 @@ import org.polsl.backend.repository.ComputerSetRepository;
 import org.polsl.backend.repository.ComputerSetSoftwareRepository;
 import org.polsl.backend.repository.HardwareRepository;
 import org.polsl.backend.repository.SoftwareRepository;
+import org.polsl.backend.type.InventoryNumberEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +41,7 @@ public class ComputerSetService {
   private final AffiliationRepository affiliationRepository;
   private final HardwareRepository hardwareRepository;
   private final SoftwareRepository softwareRepository;
+  private final InventoryNumberService inventoryNumberService;
 
   @Autowired
   public ComputerSetService(ComputerSetRepository computerSetRepository,
@@ -47,7 +50,7 @@ public class ComputerSetService {
                             ComputerSetSoftwareRepository computerSetSoftwareRepository,
                             AffiliationRepository affiliationRepository,
                             HardwareRepository hardwareRepository,
-                            SoftwareRepository softwareRepository) {
+                            SoftwareRepository softwareRepository, InventoryNumberService inventoryNumberService) {
     this.computerSetRepository = computerSetRepository;
     this.affiliationComputerSetRepository = affiliationComputerSetRepository;
     this.computerSetHardwareRepository = computerSetHardwareRepository;
@@ -55,6 +58,7 @@ public class ComputerSetService {
     this.affiliationRepository = affiliationRepository;
     this.hardwareRepository = hardwareRepository;
     this.softwareRepository = softwareRepository;
+    this.inventoryNumberService = inventoryNumberService;
   }
 
   public PaginatedResult<ComputerSetOutputDTO> getAllComputerSets() {
@@ -73,8 +77,18 @@ public class ComputerSetService {
   }
 
   @Transactional
-  public void createComputerSet(ComputerSetInputDTO request) {
+  public void createComputerSet(ComputerSetDTO request) {
+
     ComputerSet computerSet = new ComputerSet();
+
+    /* INVENTORY NUMBER */
+    if (request.getInventoryNumber() != null)
+      throw new BadRequestException("Zakaz ręcznego wprowadzania numeru inwentarzowego.");
+
+    String newInvNumb = inventoryNumberService
+            .generateInventoryNumber(InventoryNumberEnum.COMPUTER_SET, computerSetRepository.count());
+    computerSet.setInventoryNumber(newInvNumb);
+
     computerSet.setName(request.getName());
     computerSetRepository.save(computerSet);
 
@@ -103,7 +117,7 @@ public class ComputerSetService {
   }
 
   @Transactional
-  public void editComputerSet(Long id, ComputerSetInputDTO request) throws NotFoundException {
+  public void editComputerSet(Long id, ComputerSetDTO request) throws NotFoundException {
     ComputerSet computerSet = computerSetRepository.findByIdAndValidToIsNull(id)
             .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", id));
     computerSet.setName(request.getName());

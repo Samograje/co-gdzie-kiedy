@@ -1,7 +1,7 @@
 package org.polsl.backend.controller;
 
 import org.polsl.backend.dto.ApiBasicResponse;
-import org.polsl.backend.dto.computerset.ComputerSetInputDTO;
+import org.polsl.backend.dto.computerset.ComputerSetDTO;
 import org.polsl.backend.service.ComputerSetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -42,11 +42,11 @@ public class ComputerSetController {
   /**
    * Endpoint obsługujący dodawanie nowego zestawu komputerowego.
    *
-   * @param request stuktura {@link ComputerSetInputDTO} zawierająca dane nowego zestawu komputerowego
+   * @param request stuktura {@link ComputerSetDTO} zawierająca dane nowego zestawu komputerowego
    * @return informacja o poprawnym utworzeniu zestawu komputerowego
    */
   @PostMapping
-  public ResponseEntity<?> createComputerSet(@Valid @RequestBody ComputerSetInputDTO request) {
+  public ResponseEntity<?> createComputerSet(@Valid @RequestBody ComputerSetDTO request) {
     computerSetService.createComputerSet(request);
     return ResponseEntity.ok(new ApiBasicResponse(true, "Utworzono Zestaw komputerowy"));
   }
@@ -54,13 +54,13 @@ public class ComputerSetController {
   /**
    * Endpoint obsługujący edycję parametrów zestawu komputerowego.
    *
-   * @param request stuktura {@link ComputerSetInputDTO} zawierająca nowe dane zestawu komputerowego
+   * @param request stuktura {@link ComputerSetDTO} zawierająca nowe dane zestawu komputerowego
    * @return informacja o poprawnym zaktualizowaniu parametrów zestawu komputerowego
    */
   @PutMapping("/{id}")
   public ResponseEntity<?> editComputerSet(
           @PathVariable(value = "id") Long id,
-          @Valid @RequestBody ComputerSetInputDTO request
+          @Valid @RequestBody ComputerSetDTO request
   ) {
     computerSetService.editComputerSet(id, request);
     return ResponseEntity.ok(new ApiBasicResponse(true, "Zaktualizowano parametry zestawu komputerowego"));

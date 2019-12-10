@@ -4,7 +4,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
-public class ComputerSetInputDTO {
+public class ComputerSetDTO {
   @NotEmpty
   private String name;
   @NotNull
@@ -13,6 +13,8 @@ public class ComputerSetInputDTO {
   private Set<Long> hardwareIds;
   @NotNull
   private Set<Long> softwareIds;
+
+  private String inventoryNumber;
 
   public String getName() {
     return name;
@@ -44,5 +46,13 @@ public class ComputerSetInputDTO {
 
   public void setSoftwareIds(Set<Long> softwareIds) {
     this.softwareIds = softwareIds;
+  }
+
+  public String getInventoryNumber() {
+    return inventoryNumber;
+  }
+
+  public void setInventoryNumber(String inventoryNumber) {
+    this.inventoryNumber = inventoryNumber;
   }
 }
