@@ -21,7 +21,7 @@ public class SoftwareDTO {
   private Long id;
   private String inventoryNumber;
   private Set<Long> computerSetIds;
-  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
   private LocalDateTime validTo;
 
   public String getName() { return name; }

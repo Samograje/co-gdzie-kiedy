@@ -21,7 +21,7 @@ public class Software {
   private String key;
   private Long availableKeys;
   private Long duration;
-  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
   private LocalDateTime validTo;
 
   @OneToMany(mappedBy = "software")
