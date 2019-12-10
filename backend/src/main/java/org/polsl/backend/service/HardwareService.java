@@ -118,9 +118,9 @@ public class HardwareService {
     for (AffiliationHardware affiliationHardware : affiliationHardwareList) {
       AffiliationHardwareHistoryDTO dto = new AffiliationHardwareHistoryDTO();
       dto.setAffiliationName(AffiliationService.generateName(affiliationHardware.getAffiliation()));
-      dto.setValidFrom(affiliationHardware.getValidFrom().toString());
+      dto.setValidFrom(affiliationHardware.getValidFrom());
       if (affiliationHardware.getValidTo() != null) {
-        dto.setValidTo(affiliationHardware.getValidTo().toString());
+        dto.setValidTo(affiliationHardware.getValidTo());
       }
       dtos.add(dto);
     }
@@ -141,9 +141,9 @@ public class HardwareService {
       ComputerSetHardwareHistoryDTO dto = new ComputerSetHardwareHistoryDTO();
       dto.setComputerSetInventoryNumber(computerSetHardware.getComputerSet().getInventoryNumber());
       dto.setComputerSetName(computerSetHardware.getComputerSet().getName());
-      dto.setValidFrom(computerSetHardware.getValidFrom().toString());
+      dto.setValidFrom(computerSetHardware.getValidFrom());
       if (computerSetHardware.getValidTo() != null) {
-        dto.setValidTo(computerSetHardware.getValidTo().toString());
+        dto.setValidTo(computerSetHardware.getValidTo());
       }
       dtos.add(dto);
     }
