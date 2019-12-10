@@ -1,5 +1,5 @@
 import React from 'react';
-import {ActivityIndicator, StyleSheet, View, Text} from 'react-native';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import ErrorElement from "../ui/ErrorElement";
 import ResponsiveTable from "../ui/ResponsiveTable";
 
@@ -28,18 +28,14 @@ const HardwareListComponent = (props) => {
         />
       )}
       {!loading && !error && (
-        <>
-        <Text style={styles.responseText}>{items.map(item => item.name)}</Text>
-
-          <ResponsiveTable
-            items={items}
-            totalElements={totalElements}
-            onFetchData={onFetchData}
-            columns={columns}
-            itemActions={itemActions}
-            footerActions={footerActions}
-          />
-        </>
+        <ResponsiveTable
+          items={items}
+          totalElements={totalElements}
+          onFetchData={onFetchData}
+          columns={columns}
+          itemActions={itemActions}
+          footerActions={footerActions}
+        />
       )}
     </View>
   );

@@ -1,6 +1,7 @@
 import React from 'react';
-import {Button, StyleSheet, Text, View} from 'react-native';
+import {ActivityIndicator, Button, StyleSheet, View} from 'react-native';
 import ResponsiveTable from "../ui/ResponsiveTable";
+import ErrorElement from "../ui/ErrorElement";
 
 const AffiliationsListComponent = (props) => {
   const {
@@ -16,23 +17,25 @@ const AffiliationsListComponent = (props) => {
 
   return (
     <View style={styles.container}>
-      <Text>Tutaj znajdzie się lista przynależności</Text>
-
-      <Text>Dane:</Text>
-      {items.map(item => (
-        <Text>{item.name}</Text>
-      ))}
-
-      <Text>Tabela:</Text>
-      <ResponsiveTable
-        items={items}
-        totalElements={totalElements}
-        onFetchData={onFetchData}
-        columns={columns}
-        itemActions={itemActions}
-        footerActions={footerActions}
-      />
-
+      {loading && (
+        <ActivityIndicator size="large"/>
+      )}
+      {error && (
+        <ErrorElement
+          message="Nie udało się pobrać danych z serwera"
+          type="error"
+        />
+      )}
+      {!loading && !error && (
+        <ResponsiveTable
+          items={items}
+          totalElements={totalElements}
+          onFetchData={onFetchData}
+          columns={columns}
+          itemActions={itemActions}
+          footerActions={footerActions}
+        />
+      )}
       <Button
         title="Dodaj przynależność"
         onPress={footerActions[0].onClick}

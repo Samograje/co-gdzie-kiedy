@@ -18,7 +18,7 @@ class HardwareListContainer extends Component {
 
   fetchData = () => {
     // TODO: po zaktualizowaniu backendu tutaj należy zaktualizować url
-    fetch('/api/hardware?solo-only=false')
+    fetch('/api/hardware?solo-only=true')
       .then((response) => response.json())
       .then((response) => {
         this.setState({
