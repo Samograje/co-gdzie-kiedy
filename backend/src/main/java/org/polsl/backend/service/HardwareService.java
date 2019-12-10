@@ -40,7 +40,6 @@ public class HardwareService {
   private final ComputerSetHardwareRepository computerSetHardwareRepository;
   private final AffiliationRepository affiliationRepository;
   private final AffiliationHardwareRepository affiliationHardwareRepository;
-  private final InventoryNumberService inventoryNumberService;
 
   @Autowired
   public HardwareService(HardwareRepository hardwareRepository,
@@ -48,15 +47,13 @@ public class HardwareService {
                          ComputerSetRepository computerSetRepository,
                          ComputerSetHardwareRepository computerSetHardwareRepository1,
                          AffiliationRepository affiliationRepository,
-                         AffiliationHardwareRepository affiliationHardwareRepository,
-                         InventoryNumberService inventoryNumberService) {
+                         AffiliationHardwareRepository affiliationHardwareRepository) {
     this.hardwareRepository = hardwareRepository;
     this.hardwareDictionaryRepository = hardwareDictionaryRepository;
     this.computerSetRepository = computerSetRepository;
     this.computerSetHardwareRepository = computerSetHardwareRepository1;
     this.affiliationRepository = affiliationRepository;
     this.affiliationHardwareRepository = affiliationHardwareRepository;
-    this.inventoryNumberService = inventoryNumberService;
   }
 
   public PaginatedResult<HardwareListOutputDTO> getHardwareList(boolean soloOnly) {
@@ -161,7 +158,7 @@ public class HardwareService {
 
     Hardware hardware = new Hardware();
 
-    String newInvNumb = inventoryNumberService
+    String newInvNumb = InventoryNumberGenerator
         .generateInventoryNumber(InventoryNumberEnum.HARDWARE, hardwareRepository.count());
     hardware.setInventoryNumber(newInvNumb);
 

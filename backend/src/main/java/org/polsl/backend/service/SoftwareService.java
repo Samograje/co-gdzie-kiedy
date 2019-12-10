@@ -31,17 +31,14 @@ public class SoftwareService {
   private final SoftwareRepository softwareRepository;
   private final ComputerSetRepository computerSetRepository;
   private final ComputerSetSoftwareRepository computerSetSoftwareRepository;
-  private final InventoryNumberService inventoryNumberService;
 
   @Autowired
   public SoftwareService(SoftwareRepository softwareRepository,
                          ComputerSetRepository computerSetRepository,
-                         ComputerSetSoftwareRepository computerSetSoftwareRepository,
-                         InventoryNumberService inventoryNumberService) {
+                         ComputerSetSoftwareRepository computerSetSoftwareRepository) {
     this.softwareRepository = softwareRepository;
     this.computerSetRepository = computerSetRepository;
     this.computerSetSoftwareRepository = computerSetSoftwareRepository;
-    this.inventoryNumberService = inventoryNumberService;
   }
 
   public PaginatedResult<SoftwareListOutputDTO> getAllSoftware() {
@@ -89,7 +86,7 @@ public class SoftwareService {
     inputDataValidation(request);
 
     Software software = new Software();
-    String newInventoryNumber = inventoryNumberService.generateInventoryNumber(InventoryNumberEnum.SOFTWARE, softwareRepository.count());
+    String newInventoryNumber = InventoryNumberGenerator.generateInventoryNumber(InventoryNumberEnum.SOFTWARE, softwareRepository.count());
     software.setName(request.getName());
     software.setInventoryNumber(newInventoryNumber);
     software.setKey(request.getKey());
