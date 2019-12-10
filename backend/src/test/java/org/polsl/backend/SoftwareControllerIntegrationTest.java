@@ -49,8 +49,8 @@ public class SoftwareControllerIntegrationTest {
   public void givenCorrectRequest_whenGettingSoftwareList_thenReturnStatus200AndData() throws Exception {
     mvc.perform(get("/api/software"))
         .andExpect(status().is(200))
-        .andExpect(jsonPath("$.totalElements").value(4))
-        .andExpect(jsonPath("$.items", hasSize(4)))
+        .andExpect(jsonPath("$.totalElements").value(3))
+        .andExpect(jsonPath("$.items", hasSize(3)))
         .andExpect(jsonPath("$.items[0].id").value(1))
         .andExpect(jsonPath("$.items[0].availableKeys").value(5))
         .andExpect(jsonPath("$.items[0].duration").value(1607106864))
@@ -71,14 +71,7 @@ public class SoftwareControllerIntegrationTest {
         .andExpect(jsonPath("$.items[2].inventoryNumber").value("S3/2019"))
         .andExpect(jsonPath("$.items[2].key").value("47FD-YIJD-MKN7-PDU5"))
         .andExpect(jsonPath("$.items[2].name").value("Postman"))
-        .andExpect(jsonPath("$.items[2].validTo").doesNotExist())
-        .andExpect(jsonPath("$.items[3].id").value(4))
-        .andExpect(jsonPath("$.items[3].availableKeys").value(4))
-        .andExpect(jsonPath("$.items[3].duration").value(1547213253))
-        .andExpect(jsonPath("$.items[3].inventoryNumber").value("S4/2019"))
-        .andExpect(jsonPath("$.items[3].key").value("54FG-KSIT-5HUD-IKT9"))
-        .andExpect(jsonPath("$.items[3].name").value("Mathematica"))
-        .andExpect(jsonPath("$.items[3].validTo").value("2019-11-01 14:27:33"));
+        .andExpect(jsonPath("$.items[2].validTo").doesNotExist());
   }
 
   @Test
