@@ -1,10 +1,16 @@
 package org.polsl.backend.dto.computersethardware;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.time.LocalDateTime;
+
 public class ComputerSetHardwareHistoryDTO {
   private String computerSetInventoryNumber;
   private String computerSetName;
-  private String validFrom;
-  private String validTo;
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+  private LocalDateTime validFrom;
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+  private LocalDateTime validTo;
 
   public String getComputerSetInventoryNumber() {
     return computerSetInventoryNumber;
@@ -22,19 +28,19 @@ public class ComputerSetHardwareHistoryDTO {
     this.computerSetName = computerSetName;
   }
 
-  public String getValidFrom() {
+  public LocalDateTime getValidFrom() {
     return validFrom;
   }
 
-  public void setValidFrom(String validFrom) {
+  public void setValidFrom(LocalDateTime validFrom) {
     this.validFrom = validFrom;
   }
 
-  public String getValidTo() {
+  public LocalDateTime getValidTo() {
     return validTo;
   }
 
-  public void setValidTo(String validTo) {
+  public void setValidTo(LocalDateTime validTo) {
     this.validTo = validTo;
   }
 }

@@ -143,13 +143,13 @@ public class HardwareControllerIntegrationTest {
         .andExpect(jsonPath("$.totalElements").value(3))
         .andExpect(jsonPath("$.items", hasSize(3)))
         .andExpect(jsonPath("$.items[0].affiliationName").value("Szymon Jęczyzel - Solaris"))
-        .andExpect(jsonPath("$.items[0].validFrom").value("2019-07-12T00:00"))
-        .andExpect(jsonPath("$.items[0].validTo").value("2019-07-14T00:00"))
+        .andExpect(jsonPath("$.items[0].validFrom").value("2019-07-12 12:00"))
+        .andExpect(jsonPath("$.items[0].validTo").value("2019-07-14 12:00"))
         .andExpect(jsonPath("$.items[1].affiliationName").value("Bartłomiej Szlachta - 130"))
-        .andExpect(jsonPath("$.items[1].validFrom").value("2019-07-14T00:00"))
-        .andExpect(jsonPath("$.items[1].validTo").value("2019-09-10T00:00"))
+        .andExpect(jsonPath("$.items[1].validFrom").value("2019-07-14 12:00"))
+        .andExpect(jsonPath("$.items[1].validTo").value("2019-09-10 12:00"))
         .andExpect(jsonPath("$.items[2].affiliationName").value("Szymon Jęczyzel - Solaris"))
-        .andExpect(jsonPath("$.items[2].validFrom").value("2019-09-10T00:00"))
+        .andExpect(jsonPath("$.items[2].validFrom").value("2019-09-10 12:00"))
         .andExpect(jsonPath("$.items[2].validTo").doesNotExist());
   }
 
@@ -161,15 +161,15 @@ public class HardwareControllerIntegrationTest {
         .andExpect(jsonPath("$.items", hasSize(3)))
         .andExpect(jsonPath("$.items[0].computerSetInventoryNumber").value("C1/2019"))
         .andExpect(jsonPath("$.items[0].computerSetName").value("HP ProBook"))
-        .andExpect(jsonPath("$.items[0].validFrom").value("2017-07-23T00:00"))
-        .andExpect(jsonPath("$.items[0].validTo").value("2017-08-01T00:00"))
+        .andExpect(jsonPath("$.items[0].validFrom").value("2017-07-23 12:00"))
+        .andExpect(jsonPath("$.items[0].validTo").value("2017-08-01 12:00"))
         .andExpect(jsonPath("$.items[1].computerSetInventoryNumber").value("C2/2019"))
         .andExpect(jsonPath("$.items[1].computerSetName").value("ACER Laptop"))
-        .andExpect(jsonPath("$.items[1].validFrom").value("2017-08-01T00:00"))
-        .andExpect(jsonPath("$.items[1].validTo").value("2018-01-01T00:00"))
+        .andExpect(jsonPath("$.items[1].validFrom").value("2017-08-01 12:00"))
+        .andExpect(jsonPath("$.items[1].validTo").value("2018-01-01 12:00"))
         .andExpect(jsonPath("$.items[2].computerSetInventoryNumber").value("C1/2019"))
         .andExpect(jsonPath("$.items[2].computerSetName").value("HP ProBook"))
-        .andExpect(jsonPath("$.items[2].validFrom").value("2018-01-01T00:00"))
+        .andExpect(jsonPath("$.items[2].validFrom").value("2018-01-01 12:00"))
         .andExpect(jsonPath("$.items[2].validTo").doesNotExist());
   }
 

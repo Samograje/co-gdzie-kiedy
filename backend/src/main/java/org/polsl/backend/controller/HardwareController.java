@@ -29,7 +29,6 @@ public class HardwareController {
   public HardwareController(HardwareService hardwareService) {
     this.hardwareService = hardwareService;
   }
-
   /**
    * Endpoint obsługujący uzyskiwanie listy wszystkich hardware'ów bądź niebędących składowymi żadnego zestawu komputerowego.
    *
