@@ -32,8 +32,8 @@ class ResponsiveTable extends React.Component {
         <FlatList
           data={items}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({item}) => (
-            <View style={styles.item}>
+          renderItem={({item, index}) => (
+            <View style={[styles.item, index % 2 === 0 && styles.greyRow]}>
               {columns.map((column, key) => (
                 <View style={styles.row} key={key}>
                   <Text style={[styles.label, styles.text]}>{column.label}</Text>
