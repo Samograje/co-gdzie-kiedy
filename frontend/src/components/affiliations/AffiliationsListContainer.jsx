@@ -40,7 +40,7 @@ class AffiliationsListContainer extends Component {
       {
         name: 'name',
         label: 'Nazwa',
-      }
+      },
     ];
 
     const itemActions = [

@@ -22,7 +22,7 @@ class HomepageContainer extends Component {
         this.setState({
           loading: false,
           error: false,
-          ...response
+          ...response,
         })
       })
       .catch((response) => {

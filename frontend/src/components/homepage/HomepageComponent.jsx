@@ -4,8 +4,9 @@ import StatisticsElement from "./StatisticsElement";
 import LinkElement from "./LinkElement";
 import ErrorElement from "../ui/ErrorElement";
 
-const HomepageComponent = (
-  {
+const HomepageComponent = (props) => {
+
+  const {
     loading,
     error,
     affiliationsCount,
@@ -18,8 +19,7 @@ const HomepageComponent = (
     goToHardware,
     goToSoftware,
     handleLayout,
-  }
-) => {
+  } = props;
 
   const layoutStyle = isWide ? styles.wide : styles.small;
 
