@@ -41,7 +41,6 @@ public class ComputerSetService {
   private final AffiliationRepository affiliationRepository;
   private final HardwareRepository hardwareRepository;
   private final SoftwareRepository softwareRepository;
-  private final InventoryNumberService inventoryNumberService;
 
   @Autowired
   public ComputerSetService(ComputerSetRepository computerSetRepository,
@@ -50,7 +49,7 @@ public class ComputerSetService {
                             ComputerSetSoftwareRepository computerSetSoftwareRepository,
                             AffiliationRepository affiliationRepository,
                             HardwareRepository hardwareRepository,
-                            SoftwareRepository softwareRepository, InventoryNumberService inventoryNumberService) {
+                            SoftwareRepository softwareRepository) {
     this.computerSetRepository = computerSetRepository;
     this.affiliationComputerSetRepository = affiliationComputerSetRepository;
     this.computerSetHardwareRepository = computerSetHardwareRepository;
@@ -58,7 +57,6 @@ public class ComputerSetService {
     this.affiliationRepository = affiliationRepository;
     this.hardwareRepository = hardwareRepository;
     this.softwareRepository = softwareRepository;
-    this.inventoryNumberService = inventoryNumberService;
   }
 
   public PaginatedResult<ComputerSetOutputDTO> getAllComputerSets() {
@@ -85,7 +83,7 @@ public class ComputerSetService {
     if (request.getInventoryNumber() != null)
       throw new BadRequestException("Zakaz ręcznego wprowadzania numeru inwentarzowego.");
 
-    String newInvNumb = inventoryNumberService
+    String newInvNumb = InventoryNumberGenerator
             .generateInventoryNumber(InventoryNumberEnum.COMPUTER_SET, computerSetRepository.count());
     computerSet.setInventoryNumber(newInvNumb);
 

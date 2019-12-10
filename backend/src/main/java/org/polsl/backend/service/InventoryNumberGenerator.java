@@ -5,10 +5,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
-@Service
-public class InventoryNumberService {
+public class InventoryNumberGenerator {
 
-  String generateInventoryNumber(InventoryNumberEnum type, Long size) {
+  static String generateInventoryNumber(InventoryNumberEnum type, Long size) {
     StringBuilder stringBuilder = new StringBuilder();
     switch (type) {
       case HARDWARE:
