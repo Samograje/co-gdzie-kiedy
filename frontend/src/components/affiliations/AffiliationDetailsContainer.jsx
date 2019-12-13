@@ -3,9 +3,9 @@ import AffiliationDetailsComponent from './AffiliationDetailsComponent';
 
 class AffiliationDetailsContainer extends Component {
 
-  onSubmit = () => this.props.history.goBack();
+  onSubmit = () => this.props.navigation.goBack();
 
-  onReject = () => this.props.history.goBack();
+  onReject = () => this.props.navigation.goBack();
 
   render() {
     return (

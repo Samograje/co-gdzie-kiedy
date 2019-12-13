@@ -25,7 +25,7 @@ const withTopbar = (MainComponent, label, isHomePage) => {
       <Topbar
         label={label}
         isHomePage={isHomePage}
-        onGoBack={props.history.goBack}
+        onGoBack={props.navigation.goBack}
       />
       <MainComponent {...props}/>
     </>

@@ -62,7 +62,10 @@ class HardwareListContainer extends Component {
     const itemActions = [
       {
         label: 'Edytuj',
-        onClick: (itemData) => this.props.history.push(`/hardware/edit/${itemData.id}`),
+        onClick: (itemData) => this.props.navigation.navigate('HardwareDetails', {
+          mode: 'edit',
+          id: itemData.id,
+        }),
       },
       // TODO: akcja usuwania hardware'u
     ];
@@ -70,7 +73,9 @@ class HardwareListContainer extends Component {
     const footerActions = [
       {
         label: 'Dodaj sprzęt',
-        onClick: () => this.props.history.push('/hardware/create'),
+        onClick: () => this.props.navigation.navigate('HardwareDetails', {
+          mode: 'create',
+        }),
       },
     ];
 
