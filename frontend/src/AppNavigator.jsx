@@ -23,14 +23,14 @@ const routeConfigs = {
     screen: AffiliationsListContainer,
     path: 'affiliations',
     navigationOptions: () => ({
-      title: 'Przeznaczenia',
+      title: 'Osoby / miejsca',
     })
   },
   AffiliationDetails: {
     screen: AffiliationDetailsContainer,
     path: 'affiliations/:mode/:id?',
     navigationOptions: ({navigation}) => ({
-      title: navigation.getParam('mode', null) === 'edit' ? 'Edycja przynależności' : 'Dodawanie przynależności',
+      title: navigation.getParam('mode', null) === 'edit' ? 'Edycja osoby / miejsca' : 'Dodawanie osoby / miejsca',
     }),
   },
   ComputerSetsList: {
@@ -51,14 +51,14 @@ const routeConfigs = {
     screen: HardwareListContainer,
     path: 'hardware',
     navigationOptions: () => ({
-      title: 'Hardware',
+      title: 'Sprzęty',
     })
   },
   HardwareDetails: {
     screen: HardwareDetailsContainer,
     path: 'hardware/:mode/:id?',
     navigationOptions: ({navigation}) => ({
-      title: navigation.getParam('mode', null) === 'edit' ? "Edycja hardware'u" : "Dodawanie hardware'u",
+      title: navigation.getParam('mode', null) === 'edit' ? "Edycja sprzętu" : "Dodawanie sprzętu",
     }),
   },
   SoftwareList: {
