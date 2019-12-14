@@ -30,5 +30,9 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:8080"
+  "proxy": "http://localhost:8080",
+  "devDependencies": {
+    "metro": "^0.57.0",
+    "metro-core": "^0.57.0"
+  }
 }
