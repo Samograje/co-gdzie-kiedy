@@ -1,8 +1,10 @@
 package org.polsl.backend.service;
 
 import org.polsl.backend.dto.PaginatedResult;
+import org.polsl.backend.dto.computersethardware.ComputerSetHardwareHistoryDTO;
 import org.polsl.backend.dto.software.SoftwareDTO;
 import org.polsl.backend.dto.software.SoftwareListOutputDTO;
+import org.polsl.backend.dto.softwarecomputerset.SoftwareComputerSetHistoryDTO;
 import org.polsl.backend.entity.ComputerSet;
 import org.polsl.backend.entity.ComputerSetSoftware;
 import org.polsl.backend.entity.Software;
@@ -80,7 +82,24 @@ public class SoftwareService {
     dto.setDuration(software.getDuration());
     return dto;
   }
+  public PaginatedResult<SoftwareComputerSetHistoryDTO> getSoftwareComputerSetsHistory(Long id) {
+    List<ComputerSetSoftware> computerSetSoftwareList = computerSetSoftwareRepository.findAllBySoftwareIdAndValidToIsNotNull(id);
+    List<SoftwareComputerSetHistoryDTO> dtos = new ArrayList<>();
 
+    computerSetSoftwareList.forEach(computerSetSoftware -> {
+      SoftwareComputerSetHistoryDTO dto = new SoftwareComputerSetHistoryDTO();
+      dto.setComputerSetName(computerSetSoftware.getComputerSet().getName());
+      dto.setComputerSetInventoryNumber(computerSetSoftware.getComputerSet().getInventoryNumber());
+      dto.setValidFrom(computerSetSoftware.getValidFrom());
+      dto.setValidFrom(computerSetSoftware.getValidFrom());
+      dtos.add(dto);
+    });
+
+    PaginatedResult<SoftwareComputerSetHistoryDTO> response = new PaginatedResult<>();
+    response.setItems(dtos);
+    response.setTotalElements((long) dtos.size());
+    return response;
+  }
   @Transactional
   public void createSoftware(SoftwareDTO request) {
     inputDataValidation(request);
