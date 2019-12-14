@@ -83,7 +83,7 @@ public class SoftwareService {
     return dto;
   }
   public PaginatedResult<SoftwareComputerSetHistoryDTO> getSoftwareComputerSetsHistory(Long id) {
-    List<ComputerSetSoftware> computerSetSoftwareList = computerSetSoftwareRepository.findAllBySoftwareIdAndValidToIsNotNull(id);
+    List<ComputerSetSoftware> computerSetSoftwareList = computerSetSoftwareRepository.findAllBySoftwareId(id);
     List<SoftwareComputerSetHistoryDTO> dtos = new ArrayList<>();
 
     computerSetSoftwareList.forEach(computerSetSoftware -> {
@@ -91,7 +91,7 @@ public class SoftwareService {
       dto.setComputerSetName(computerSetSoftware.getComputerSet().getName());
       dto.setComputerSetInventoryNumber(computerSetSoftware.getComputerSet().getInventoryNumber());
       dto.setValidFrom(computerSetSoftware.getValidFrom());
-      dto.setValidFrom(computerSetSoftware.getValidFrom());
+      dto.setValidTo(computerSetSoftware.getValidTo());
       dtos.add(dto);
     });
 
