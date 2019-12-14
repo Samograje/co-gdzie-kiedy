@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
 
-public class SoftwareComputerSetHistoryDTO {
+public class ComputerSetSoftwareHistoryDTO {
     private String computerSetInventoryNumber;
     private String computerSetName;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
