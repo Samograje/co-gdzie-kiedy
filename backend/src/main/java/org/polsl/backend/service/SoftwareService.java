@@ -82,6 +82,8 @@ public class SoftwareService {
     return dto;
   }
   public PaginatedResult<ComputerSetSoftwareHistoryDTO> getSoftwareComputerSetsHistory(Long id) {
+    softwareRepository.findByIdAndValidToIsNull(id).orElseThrow(() -> new NotFoundException("oprogramowanie", "id", id));
+
     List<ComputerSetSoftware> computerSetSoftwareList = computerSetSoftwareRepository.findAllBySoftwareId(id);
     List<ComputerSetSoftwareHistoryDTO> dtos = new ArrayList<>();
 
