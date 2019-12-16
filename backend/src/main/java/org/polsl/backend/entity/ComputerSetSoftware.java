@@ -1,6 +1,5 @@
 package org.polsl.backend.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.polsl.backend.key.ComputerSetSoftwareKey;
 
 import javax.persistence.Column;
@@ -33,10 +32,8 @@ public class ComputerSetSoftware {
 
   @Column(name = "valid_from", insertable = false, updatable = false)
   @MapsId("valid_from")
-  @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
   private LocalDateTime validFrom;
 
-  @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
   private LocalDateTime validTo;
 
   public ComputerSetSoftware() {
