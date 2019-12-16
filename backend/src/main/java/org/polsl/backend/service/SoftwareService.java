@@ -52,7 +52,6 @@ public class SoftwareService {
       dto.setInventoryNumber(software.getInventoryNumber());
       dto.setAvailableKeys(software.getAvailableKeys());
       dto.setKey(software.getKey());
-      dto.setValidTo(software.getValidTo());
       dto.setDuration(software.getDuration());
       softwareListOutputDTO.add(dto);
     }
