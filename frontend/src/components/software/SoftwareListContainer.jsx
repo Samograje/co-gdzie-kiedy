@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import SoftwareListComponent from './SoftwareListComponent';
+import HardwareListComponent from "../hardware/HardwareListComponent";
 
 class SoftwareListContainer extends Component {
   constructor(props) {
@@ -39,32 +40,31 @@ class SoftwareListContainer extends Component {
         label: 'Nazwa',
       },
       {
-        inventoryNumber: 'inventoryNumber',
+        name: 'inventoryNumber',
         label: 'Numer inwentażowy',
       },
       {
-        key: 'key',
+        name: 'key',
         label: 'Klucz produktu',
       },
       {
-        availableKeys: 'availableKeys',
+        name: 'availableKeys',
         label: 'Ilość dostępnych kluczy',
       },
       {
-        duration: 'duration',
+        name: 'duration',
         label: 'Ważna do',
-      },
-      {
-        validTo: 'validTo',
-        label: 'Usunięta dnia',
       },
     ];
 
     return (
       <SoftwareListComponent
           onFetchData={this.fetchData}
+          error={this.state.error}
+          loading={this.state.loading}
+          items={this.state.items}
+          totalElements={this.state.totalElements}
           columns={columns}
-          {...this.state}
       />
     );
   }
