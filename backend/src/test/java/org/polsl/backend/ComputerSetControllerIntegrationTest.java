@@ -5,7 +5,6 @@ import org.hamcrest.collection.IsCollectionWithSize;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.polsl.backend.dto.computerset.ComputerSetDTO;
-import org.polsl.backend.dto.software.SoftwareDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,8 +20,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -164,7 +162,7 @@ public class ComputerSetControllerIntegrationTest {
   }
 
   @Test
-  public void givenCorrectRequestWithInventoryNumber_whenAddingComputerSet_thenReturnStatus40() throws Exception{
+  public void givenCorrectRequestWithInventoryNumber_whenAddingComputerSet_thenReturnStatus400() throws Exception{
     ComputerSetDTO request = new ComputerSetDTO();
     Set<Long> hardwareIds = new HashSet<>();
     Set<Long> softwareIds = new HashSet<>();
@@ -183,7 +181,42 @@ public class ComputerSetControllerIntegrationTest {
       .andExpect(jsonPath("$.success").value(false))
       .andExpect(jsonPath("$.message").value("Zakaz ręcznego wprowadzania numeru inwentarzowego."));
   }
+  //endregion
 
+  //region PUT
+
+  //endregion
+
+  //region DELETE
+  @Test
+  public void givenCorrectRequest_whenDeletingComputerSet_thenReturnStatus200AndData() throws Exception{
+    mvc.perform(delete("/api/computer-sets/1"))
+    .andExpect(status().is(200))
+    .andExpect(jsonPath("$.success").value(true))
+    .andExpect(jsonPath("$.message").value("Usunięto zestaw komputerowy"));
+  }
+
+  @Test
+  public void givenNotExistingComputerSetId_whenDeletingComputerSet_thenReturnStatus404() throws Exception{
+    mvc.perform(delete("/api/computer-sets/0"))
+      .andExpect(status().is(404))
+      .andExpect(jsonPath("$.success").value(false))
+      .andExpect(jsonPath("$.message").value("Nie istnieje zestaw komputerowy o id: '0'"));
+  }
+
+  @Test
+  public void givenDeletedComputerSetId_whenDeletingSoftware_thenReturnStatus404() throws Exception{
+    mvc.perform(delete("/api/computer-sets/3"))
+      .andExpect(status().is(404))
+      .andExpect(jsonPath("$.success").value(false))
+      .andExpect(jsonPath("$.message").value("Nie istnieje zestaw komputerowy o id: '3'"));
+  }
+
+  @Test
+  public void givenNoId_whenDeletingComputerSet_thenReturnStatus405() throws Exception {
+    mvc.perform(delete("/api/computer-sets"))
+            .andExpect(status().is(405));
+  }
   //endregion
 
 }
