@@ -146,19 +146,16 @@ public class SoftwareControllerIntegrationTest {
             .andExpect(jsonPath("$.message").value("Nie istnieje oprogramowanie o id: '0'"));
   }
 
-  @Test 
+  @Test
   public void givenInvalidParameter_whenGettingSoftwareHistory_thenReturnStatus400() throws Exception{
     mvc.perform(get("/api/software/test/computer-sets-history"))
       .andExpect(status().is(400))
       .andExpect(jsonPath("$.success").value(false))
       .andExpect(jsonPath("$.message").value("Podana wartość nie jest liczbą"));
   }
-
-
-
-
   //endregion
 
+  //region POST
   @Test
   public void givenEmptyRequest_whenAddingSoftware_thenReturnStatus400() throws Exception {
     SoftwareDTO request = new SoftwareDTO();
@@ -211,6 +208,61 @@ public class SoftwareControllerIntegrationTest {
   }
 
   @Test
+  public void givenInactiveLicense_whenAddingSoftware_thenReturnStatus400() throws Exception {
+    SoftwareDTO request = new SoftwareDTO();
+    Set<Long> ids = new HashSet<>();
+    ids.add((long) 3);
+    request.setName("Mathematica");
+    request.setKey("KDHI-KDIG-OI48-PDIT");
+    request.setDuration((long) 0);
+    request.setAvailableKeys((long) 5);
+    request.setComputerSetIds(ids);
+    mvc.perform(post("/api/software/")
+            .content(objectMapper.writeValueAsString(request))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().is(400))
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.message").value("Wprowadzono nieaktywną licencję."));
+  }
+
+  @Test
+  public void givenNoAvailableLicenseKeys_whenAddingSoftware_thenReturnStatus400() throws Exception{
+    SoftwareDTO request = new SoftwareDTO();
+    Set<Long> ids = new HashSet<>();
+    ids.add((long) 3);
+    request.setName("Mathematica");
+    request.setKey("KDHI-KDIG-OI48-PDIT");
+    request.setDuration((long) 1607106864);
+    request.setAvailableKeys((long) 0);
+    request.setComputerSetIds(ids);
+    mvc.perform(post("/api/software/")
+            .content(objectMapper.writeValueAsString(request))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().is(400))
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.message").value("Należy wprowadzić co najmniej jeden dostępny do użycia klucz produktu."));
+  }
+
+  @Test
+  public void givenMoreComputerSetsThanAvailableKeys_whenAddingSoftware_thenReturnStatus400() throws Exception{
+    SoftwareDTO request = new SoftwareDTO();
+    Set<Long> ids = new HashSet<>();
+    ids.add((long) 2);
+    ids.add((long) 1);
+    request.setName("Mathematica");
+    request.setKey("KDHI-KDIG-OI48-PDIT");
+    request.setDuration((long) 1607106864);
+    request.setAvailableKeys((long) 1);
+    request.setComputerSetIds(ids);
+    mvc.perform(post("/api/software/")
+            .content(objectMapper.writeValueAsString(request))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().is(400))
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.message").value("Wybrano więcej urządzeń niż wprowadzono licencji. Operacja nieudana."));
+  }
+
+  @Test
   public void givenCorrectRequestWithoutComputerSetIds_whenAddingSoftware_thenReturnStatus200AndData() throws Exception {
     SoftwareDTO request = new SoftwareDTO();
     request.setName("Notepad ++");
@@ -243,6 +295,7 @@ public class SoftwareControllerIntegrationTest {
         .andExpect(jsonPath("$.success").value(true))
         .andExpect(jsonPath("$.message").value("Utworzono oprogramowanie."));
   }
+  //endregion
 
   @Test
   public void givenEmptyRequest_whenEditingSoftware_thenReturnStatus400() throws Exception {
