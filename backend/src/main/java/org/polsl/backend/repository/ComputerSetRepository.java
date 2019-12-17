@@ -15,4 +15,6 @@ public interface ComputerSetRepository extends JpaRepository<ComputerSet, Long> 
   long countByValidToIsNull();
 
   long count();
+
+  Iterable<ComputerSet> findAllByValidToIsNull();
 }

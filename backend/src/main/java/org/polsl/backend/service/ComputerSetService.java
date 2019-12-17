@@ -60,12 +60,13 @@ public class ComputerSetService {
   }
 
   public PaginatedResult<ComputerSetOutputDTO> getAllComputerSets() {
-    Iterable<ComputerSet> computerSets = computerSetRepository.findAll();
+    Iterable<ComputerSet> computerSets = computerSetRepository.findAllByValidToIsNull();
     List<ComputerSetOutputDTO> dtos = new ArrayList<>();
     for (ComputerSet computerSet : computerSets) {
       ComputerSetOutputDTO dto = new ComputerSetOutputDTO();
       dto.setId(computerSet.getId());
       dto.setName(computerSet.getName());
+      dto.setInventoryNumber(computerSet.getInventoryNumber());
       dtos.add(dto);
     }
     PaginatedResult<ComputerSetOutputDTO> response = new PaginatedResult<>();
