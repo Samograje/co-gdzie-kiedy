@@ -245,7 +245,143 @@ public class ComputerSetControllerIntegrationTest {
   //endregion
 
   //region PUT
+  @Test
+  public void givenEmptyRequest_whenEditingComputerSet_thenReturnStatus400() throws Exception{
+    ComputerSetDTO request = new ComputerSetDTO();
+    mvc.perform(put("/api/computer-sets/1")
+    .content(objectMapper.writeValueAsString(request))
+    .contentType(MediaType.APPLICATION_JSON))
+    .andExpect(status().is(400))
+    .andExpect(jsonPath("$.fieldErrors", IsCollectionWithSize.hasSize(4)))
+    .andExpect(jsonPath("$.fieldErrors[?(@.field =~ /name/)].message").value("must not be empty"))
+    .andExpect(jsonPath("$.fieldErrors[?(@.field =~ /affiliationId/)].message").value("must not be null"))
+    .andExpect(jsonPath("$.fieldErrors[?(@.field =~ /hardwareIds/)].message").value("must not be null"))
+    .andExpect(jsonPath("$.fieldErrors[?(@.field =~ /softwareIds/)].message").value("must not be null"));
+  }
 
+  @Test
+  public void givenNotExistingComputerSetId_whenEditingComputerSet_thenReturnStatus404() throws Exception {
+    ComputerSetDTO request = new ComputerSetDTO();
+    Set<Long> hardwareIds = new HashSet<>();
+    Set<Long> softwareIds = new HashSet<>();
+    hardwareIds.add((long) 1);
+    hardwareIds.add((long) 2);
+    softwareIds.add((long) 1);
+    softwareIds.add((long) 2);
+    request.setName("Lenovo Yoga");
+    request.setAffiliationId((long) 1);
+    request.setHardwareIds(hardwareIds);
+    request.setSoftwareIds(softwareIds);
+    mvc.perform(put("/api/computer-sets/0")
+      .content(objectMapper.writeValueAsString(request))
+      .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().is(404))
+      .andExpect(jsonPath("$.success").value(false))
+      .andExpect(jsonPath("$.message").value("Nie istnieje zestaw komputerowy o id: '0'"));
+  }
+
+  @Test
+  public void givenDeletedComputerSetId_whenEditingComputerSet_thenReturnStatus404() throws Exception {
+    ComputerSetDTO request = new ComputerSetDTO();
+    Set<Long> hardwareIds = new HashSet<>();
+    Set<Long> softwareIds = new HashSet<>();
+    hardwareIds.add((long) 1);
+    hardwareIds.add((long) 2);
+    softwareIds.add((long) 1);
+    softwareIds.add((long) 2);
+    request.setName("Lenovo Yoga");
+    request.setAffiliationId((long) 1);
+    request.setHardwareIds(hardwareIds);
+    request.setSoftwareIds(softwareIds);
+    mvc.perform(put("/api/computer-sets/3")
+            .content(objectMapper.writeValueAsString(request))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().is(404))
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.message").value("Nie istnieje zestaw komputerowy o id: '3'"));
+  }
+
+  @Test
+  public void givenInvalidParameter_whenEditingComputerSet_thenReturnStatus400() throws Exception{
+    mvc.perform(put("/api/computer-sets/test"))
+      .andExpect(status().is(400))
+      .andExpect(jsonPath("$.success").value(false))
+      .andExpect(jsonPath("$.message").value("Podana wartość nie jest liczbą"));
+  }
+
+  @Test
+  public void givenNoId_whenEditingComputerSet_thenReturnStatus405() throws Exception {
+    mvc.perform(put("/api/computer-sets/")
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().is(405));
+  }
+
+  @Test
+  public void givenNotExistingAffiliationId_whenEditingComputerSet_thenReturnStatus404() throws Exception{
+    ComputerSetDTO request = new ComputerSetDTO();
+    Set<Long> hardwareIds = new HashSet<>();
+    Set<Long> softwareIds = new HashSet<>();
+    hardwareIds.add((long) 1);
+    hardwareIds.add((long) 2);
+    softwareIds.add((long) 1);
+    softwareIds.add((long) 2);
+    request.setName("Lenovo Yoga");
+    request.setAffiliationId((long) 0);
+    request.setHardwareIds(hardwareIds);
+    request.setSoftwareIds(softwareIds);
+    mvc.perform(put("/api/computer-sets/1")
+            .content(objectMapper.writeValueAsString(request))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().is(404))
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.message").value("Nie istnieje afiliacja o id: '0'"));
+  }
+
+  @Test
+  public void givenNotExistingHardwareId_whenEditingComputerSet_thenReturnStatus404() throws Exception{
+  //TODO:
+  }
+
+  @Test
+  public void givenNotExistingSoftwareId_whenEditingComputerSet_thenReturnStatus404() throws Exception{
+  //TODO:
+  }
+
+  @Test
+  public void givenCorrectRequestWithInventoryNumber_whenEditingComputerSet_thenReturnStatus400() throws Exception{
+  //TODO:
+  }
+
+  @Test
+  public void givenDeletedAffiliationId_whenEditingComputerSet_thenReturnStatus404() throws Exception{
+    ComputerSetDTO request = new ComputerSetDTO();
+    Set<Long> hardwareIds = new HashSet<>();
+    Set<Long> softwareIds = new HashSet<>();
+    hardwareIds.add((long) 1);
+    hardwareIds.add((long) 2);
+    softwareIds.add((long) 1);
+    softwareIds.add((long) 2);
+    request.setName("Lenovo Yoga");
+    request.setAffiliationId((long) 3);
+    request.setHardwareIds(hardwareIds);
+    request.setSoftwareIds(softwareIds);
+    mvc.perform(put("/api/computer-sets/1")
+            .content(objectMapper.writeValueAsString(request))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().is(404))
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.message").value("Nie istnieje afiliacja o id: '3'"));
+  }
+
+  @Test
+  public void givenDeletedHardwareId_whenEditingComputerSet_thenReturnStatus404() throws Exception{
+  //TODO
+  }
+
+  @Test
+  public void givenDeletedSoftwareId_whenEditingComputerSet_thenReturnStatus404() throws Exception{
+  //TODO
+  }
   //endregion
 
   //region DELETE
