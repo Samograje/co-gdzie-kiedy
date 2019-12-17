@@ -181,6 +181,67 @@ public class ComputerSetControllerIntegrationTest {
       .andExpect(jsonPath("$.success").value(false))
       .andExpect(jsonPath("$.message").value("Zakaz ręcznego wprowadzania numeru inwentarzowego."));
   }
+
+  @Test
+  public void givenDeletedAffiliationId_whenAddingComputerSet_thenReturnStatus404() throws Exception{
+    ComputerSetDTO request = new ComputerSetDTO();
+    Set<Long> hardwareIds = new HashSet<>();
+    Set<Long> softwareIds = new HashSet<>();
+    hardwareIds.add((long) 1);
+    hardwareIds.add((long) 2);
+    softwareIds.add((long) 1);
+    softwareIds.add((long) 2);
+    request.setName("Lenovo Yoga");
+    request.setAffiliationId((long) 3);
+    request.setHardwareIds(hardwareIds);
+    request.setSoftwareIds(softwareIds);
+    mvc.perform(post("/api/computer-sets/")
+            .content(objectMapper.writeValueAsString(request))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().is(404))
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.message").value("Nie istnieje przynależność o id: '3'"));
+  }
+
+  @Test
+  public void givenDeletedHardwareId_whenAddingComputerSet_thenReturnStatus404() throws Exception{
+    ComputerSetDTO request = new ComputerSetDTO();
+    Set<Long> hardwareIds = new HashSet<>();
+    Set<Long> softwareIds = new HashSet<>();
+    hardwareIds.add((long) 5);
+    softwareIds.add((long) 1);
+    softwareIds.add((long) 2);
+    request.setName("Lenovo Yoga");
+    request.setAffiliationId((long) 1);
+    request.setHardwareIds(hardwareIds);
+    request.setSoftwareIds(softwareIds);
+    mvc.perform(post("/api/computer-sets/")
+            .content(objectMapper.writeValueAsString(request))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().is(404))
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.message").value("Nie istnieje sprzęt o id: '5'"));
+  }
+
+  @Test
+  public void givenDeletedSoftwareId_whenAddingComputerSet_thenReturnStatus404() throws Exception{
+    ComputerSetDTO request = new ComputerSetDTO();
+    Set<Long> hardwareIds = new HashSet<>();
+    Set<Long> softwareIds = new HashSet<>();
+    hardwareIds.add((long) 1);
+    hardwareIds.add((long) 2);
+    softwareIds.add((long) 4);
+    request.setName("Lenovo Yoga");
+    request.setAffiliationId((long) 1);
+    request.setHardwareIds(hardwareIds);
+    request.setSoftwareIds(softwareIds);
+    mvc.perform(post("/api/computer-sets/")
+            .content(objectMapper.writeValueAsString(request))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().is(404))
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.message").value("Nie istnieje oprogramowanie o id: '4'"));
+  }
   //endregion
 
   //region PUT
