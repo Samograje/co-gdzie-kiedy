@@ -41,7 +41,7 @@ class SoftwareListContainer extends Component {
       },
       {
         name: 'inventoryNumber',
-        label: 'Numer inwentażowy',
+        label: 'Numer inwentarzowy',
       },
       {
         name: 'key',
