@@ -33,15 +33,16 @@ public class ComputerSetControllerIntegrationTest {
   public void givenCorrectRequest_whenGettingComputerSetsList_thenReturnStatus200AndData() throws Exception {
     mvc.perform(get("/api/computer-sets"))
         .andExpect(status().is(200))
-            .andExpect(jsonPath("$.totalElements").value(4))
-            .andExpect(jsonPath("$.items", hasSize(4)))
+        .andExpect(jsonPath("$.totalElements").value(3))
+        .andExpect(jsonPath("$.items", hasSize(3)))
         .andExpect(jsonPath("$.items[0].id").value(1))
         .andExpect(jsonPath("$.items[0].name").value("HP ProBook"))
+        .andExpect(jsonPath("$.items[0].inventoryNumber").value("C1/2019"))
         .andExpect(jsonPath("$.items[1].id").value(2))
         .andExpect(jsonPath("$.items[1].name").value("ACER Laptop"))
-        .andExpect(jsonPath("$.items[2].id").value(3))
-        .andExpect(jsonPath("$.items[2].name").value("Lenovo V310"))
-        .andExpect(jsonPath("$.items[3].id").value(4))
-        .andExpect(jsonPath("$.items[3].name").value("Lenovo Legion"));
+        .andExpect(jsonPath("$.items[1].inventoryNumber").value("C2/2019"))
+        .andExpect(jsonPath("$.items[2].id").value(4))
+        .andExpect(jsonPath("$.items[2].name").value("Lenovo Legion"))
+        .andExpect(jsonPath("$.items[2].inventoryNumber").value("C4/2019"));
   }
 }

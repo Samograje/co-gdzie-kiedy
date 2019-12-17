@@ -97,14 +97,16 @@ public class SoftwareControllerIntegrationTest {
 
   @Test
   public void givenCorrectRequestWithoutComputerSetId_whenGettingOneSoftware_thenReturnStatus200AndData() throws Exception {
-    mvc.perform(get("/api/software/2"))
+    mvc.perform(get("/api/software/3"))
     .andExpect(status().is(200))
-    .andExpect(jsonPath("$.name").value("Visual Studio"))
-    .andExpect(jsonPath("$.duration").value(1575480864))
-    .andExpect(jsonPath("$.inventoryNumber").value("S2/2019"))
-    .andExpect(jsonPath("$.key").value("874G-54D7-JHKI-LLKI"))
+    .andExpect(jsonPath("$.computerSetIds").isArray())
+    .andExpect(jsonPath("$.computerSetIds", hasSize(0)))
+    .andExpect(jsonPath("$.name").value("Postman"))
+    .andExpect(jsonPath("$.duration").value(1767116064))
+    .andExpect(jsonPath("$.inventoryNumber").value("S3/2019"))
+    .andExpect(jsonPath("$.key").value("47FD-YIJD-MKN7-PDU5"))
     .andExpect(jsonPath("$.validTo").doesNotExist())
-    .andExpect(jsonPath("$.availableKeys").value(3));
+    .andExpect(jsonPath("$.availableKeys").value(1));
   }
 
   @Test
