@@ -44,48 +44,86 @@ public class SoftwareControllerIntegrationTest {
 
   @Autowired
   private ObjectMapper objectMapper;
-
+  //region GET
   @Test
   public void givenCorrectRequest_whenGettingSoftwareList_thenReturnStatus200AndData() throws Exception {
     mvc.perform(get("/api/software"))
-        .andExpect(status().is(200))
-        .andExpect(jsonPath("$.totalElements").value(3))
-        .andExpect(jsonPath("$.items", hasSize(3)))
-        .andExpect(jsonPath("$.items[0].id").value(1))
-        .andExpect(jsonPath("$.items[0].availableKeys").value(5))
-        .andExpect(jsonPath("$.items[0].duration").value(1607106864))
-        .andExpect(jsonPath("$.items[0].inventoryNumber").value("S1/2019"))
-        .andExpect(jsonPath("$.items[0].key").value("T847-54GF-7845-FSF5"))
-        .andExpect(jsonPath("$.items[0].name").value("Photoshop"))
-        .andExpect(jsonPath("$.items[0].validTo").doesNotExist())
-        .andExpect(jsonPath("$.items[1].id").value(2))
-        .andExpect(jsonPath("$.items[1].availableKeys").value(3))
-        .andExpect(jsonPath("$.items[1].duration").value(1575480864))
-        .andExpect(jsonPath("$.items[1].inventoryNumber").value("S2/2019"))
-        .andExpect(jsonPath("$.items[1].key").value("874G-54D7-JHKI-LLKI"))
-        .andExpect(jsonPath("$.items[1].name").value("Visual Studio"))
-        .andExpect(jsonPath("$.items[1].validTo").doesNotExist())
-        .andExpect(jsonPath("$.items[2].id").value(3))
-        .andExpect(jsonPath("$.items[2].availableKeys").value(1))
-        .andExpect(jsonPath("$.items[2].duration").value(1767116064))
-        .andExpect(jsonPath("$.items[2].inventoryNumber").value("S3/2019"))
-        .andExpect(jsonPath("$.items[2].key").value("47FD-YIJD-MKN7-PDU5"))
-        .andExpect(jsonPath("$.items[2].name").value("Postman"))
-        .andExpect(jsonPath("$.items[2].validTo").doesNotExist());
+      .andExpect(status().is(200))
+      .andExpect(jsonPath("$.totalElements").value(3))
+      .andExpect(jsonPath("$.items", hasSize(3)))
+      .andExpect(jsonPath("$.items[0].id").value(1))
+      .andExpect(jsonPath("$.items[0].availableKeys").value(5))
+      .andExpect(jsonPath("$.items[0].duration").value(1607106864))
+      .andExpect(jsonPath("$.items[0].inventoryNumber").value("S1/2019"))
+      .andExpect(jsonPath("$.items[0].key").value("T847-54GF-7845-FSF5"))
+      .andExpect(jsonPath("$.items[0].name").value("Photoshop"))
+      .andExpect(jsonPath("$.items[0].validTo").doesNotExist())
+      .andExpect(jsonPath("$.items[1].id").value(2))
+      .andExpect(jsonPath("$.items[1].availableKeys").value(3))
+      .andExpect(jsonPath("$.items[1].duration").value(1575480864))
+      .andExpect(jsonPath("$.items[1].inventoryNumber").value("S2/2019"))
+      .andExpect(jsonPath("$.items[1].key").value("874G-54D7-JHKI-LLKI"))
+      .andExpect(jsonPath("$.items[1].name").value("Visual Studio"))
+      .andExpect(jsonPath("$.items[1].validTo").doesNotExist())
+      .andExpect(jsonPath("$.items[2].id").value(3))
+      .andExpect(jsonPath("$.items[2].availableKeys").value(1))
+      .andExpect(jsonPath("$.items[2].duration").value(1767116064))
+      .andExpect(jsonPath("$.items[2].inventoryNumber").value("S3/2019"))
+      .andExpect(jsonPath("$.items[2].key").value("47FD-YIJD-MKN7-PDU5"))
+      .andExpect(jsonPath("$.items[2].name").value("Postman"))
+      .andExpect(jsonPath("$.items[2].validTo").doesNotExist());
   }
 
   @Test
   public void givenInvalidId_whenGettingOneSoftware_thenReturnStatus404() throws Exception {
     mvc.perform(get("/api/software/0"))
-        .andExpect(status().is(404))
-        .andExpect(jsonPath("$.success").value(false))
-        .andExpect(jsonPath("$.message").value("Nie istnieje oprogramowanie o id: '0'"));
+      .andExpect(status().is(404))
+      .andExpect(jsonPath("$.success").value(false))
+      .andExpect(jsonPath("$.message").value("Nie istnieje oprogramowanie o id: '0'"));
   }
 
   @Test
   public void givenInvalidParameter_whenGettingOneSoftware_thenReturnStatus400() throws Exception {
     mvc.perform(get("/api/software/test"))
-        .andExpect(status().is(400));
+      .andExpect(status().is(400))
+      .andExpect(jsonPath("$.success").value(false))
+      .andExpect(jsonPath("$.message").value("Podana wartość nie jest liczbą"));
+  }
+
+  @Test //New
+  public void givenCorrectRequest_whenGettingSoftwareHistory_thenReturnStatus200AndData() throws Exception{
+    mvc.perform(get("/api/software/1/computer-sets-history"))
+      .andExpect(status().is(200))
+      .andExpect(jsonPath("$.totalElements").value(3))
+      .andExpect(jsonPath("$.items", hasSize(3)))
+      .andExpect(jsonPath("$.items[0].computerSetInventoryNumber").value("C1/2019"))
+      .andExpect(jsonPath("$.items[0].computerSetName").value("HP ProBook"))
+      .andExpect(jsonPath("$.items[0].validFrom").value("2017-07-23 00:00"))
+      .andExpect(jsonPath("$.items[0].validTo").doesNotExist())
+      .andExpect(jsonPath("$.items[1].computerSetInventoryNumber").value("C2/2019"))
+      .andExpect(jsonPath("$.items[1].computerSetName").value("ACER Laptop"))
+      .andExpect(jsonPath("$.items[1].validFrom").value("2018-09-28 00:00"))
+      .andExpect(jsonPath("$.items[1].validTo").doesNotExist())
+      .andExpect(jsonPath("$.items[2].computerSetInventoryNumber").value("C3/2019"))
+      .andExpect(jsonPath("$.items[2].computerSetName").value("Lenovo V310"))
+      .andExpect(jsonPath("$.items[2].validFrom").value("2018-09-28 00:00"))
+      .andExpect(jsonPath("$.items[2].validTo").value("2019-11-04 14:27"));
+  }
+
+  @Test //New
+  public void givenInvalidId_whenGettingSoftwareHistory_thenReturnStatus404() throws Exception{
+    mvc.perform(get("/api/software/0/computer-sets-history"))
+            .andExpect(status().is(404))
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.message").value("Nie istnieje oprogramowanie o id: '0'"));
+  }
+
+  @Test //New
+  public void givenInvalidParameter_whenGettingSoftwareHistory_thenReturnStatus400() throws Exception{
+    mvc.perform(get("/api/software/test/computer-sets-history"))
+      .andExpect(status().is(400))
+      .andExpect(jsonPath("$.success").value(false))
+      .andExpect(jsonPath("$.message").value("Podana wartość nie jest liczbą"));
   }
 
   @Test
@@ -115,6 +153,7 @@ public class SoftwareControllerIntegrationTest {
         .andExpect(jsonPath("$.validTo").doesNotExist())
         .andExpect(jsonPath("$.availableKeys").value(3));
   }
+  //endregion
 
   @Test
   public void givenEmptyRequest_whenAddingSoftware_thenReturnStatus400() throws Exception {
