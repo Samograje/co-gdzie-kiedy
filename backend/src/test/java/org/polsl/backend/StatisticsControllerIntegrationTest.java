@@ -38,7 +38,7 @@ public class StatisticsControllerIntegrationTest {
     mvc.perform(get("/api/statistics"))
             .andExpect(status().is(200))
             .andExpect(jsonPath("$.affiliationsCount").value(3))
-            .andExpect(jsonPath("$.computerSetsCount").value(2))
+            .andExpect(jsonPath("$.computerSetsCount").value(3))
             .andExpect(jsonPath("$.hardwareCount").value(4))
             .andExpect(jsonPath("$.softwareCount").value(3));
   }
