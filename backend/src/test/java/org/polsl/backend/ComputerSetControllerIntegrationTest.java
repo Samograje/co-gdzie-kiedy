@@ -35,7 +35,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     @Sql(scripts = "/scripts/create-test-affiliation.sql"),
     @Sql(scripts = "/scripts/create-test-hardware_dictionary.sql"),
     @Sql(scripts = "/scripts/create-test-hardware.sql"),
-    @Sql(scripts = "/scripts/create-test-affiliation_hardware.sql")
+    @Sql(scripts = "/scripts/create-test-affiliation_hardware.sql"),
+    @Sql(scripts = "/scripts/create-test-affiliations_computer_sets.sql")
+
 })
 public class ComputerSetControllerIntegrationTest {
   @Autowired
@@ -339,17 +341,47 @@ public class ComputerSetControllerIntegrationTest {
 
   @Test
   public void givenNotExistingHardwareId_whenEditingComputerSet_thenReturnStatus404() throws Exception{
-  //TODO:
+    ComputerSetDTO request = new ComputerSetDTO();
+    Set<Long> hardwareIds = new HashSet<>();
+    Set<Long> softwareIds = new HashSet<>();
+    hardwareIds.add((long) 0);
+    softwareIds.add((long) 1);
+    softwareIds.add((long) 2);
+    request.setName("Lenovo Yoga");
+    request.setAffiliationId((long) 1);
+    request.setHardwareIds(hardwareIds);
+    request.setSoftwareIds(softwareIds);
+    mvc.perform(put("/api/computer-sets/1")
+      .content(objectMapper.writeValueAsString(request))
+      .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().is(404))
+      .andExpect(jsonPath("$.success").value(false))
+      .andExpect(jsonPath("$.message").value("Nie istnieje sprzęt o id: '0'"));
   }
 
   @Test
   public void givenNotExistingSoftwareId_whenEditingComputerSet_thenReturnStatus404() throws Exception{
-  //TODO:
+    ComputerSetDTO request = new ComputerSetDTO();
+    Set<Long> hardwareIds = new HashSet<>();
+    Set<Long> softwareIds = new HashSet<>();
+    hardwareIds.add((long) 1);
+    hardwareIds.add((long) 2);
+    softwareIds.add((long) 0);
+    request.setName("Lenovo Yoga");
+    request.setAffiliationId((long) 1);
+    request.setHardwareIds(hardwareIds);
+    request.setSoftwareIds(softwareIds);
+    mvc.perform(put("/api/computer-sets/1")
+      .content(objectMapper.writeValueAsString(request))
+      .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().is(404))
+      .andExpect(jsonPath("$.success").value(false))
+      .andExpect(jsonPath("$.message").value("Nie istnieje oprogramowanie o id: '0'"));
   }
 
   @Test
   public void givenCorrectRequestWithInventoryNumber_whenEditingComputerSet_thenReturnStatus400() throws Exception{
-  //TODO:
+  //TODO: edycja przepuszcza numer inwentarzowy
   }
 
   @Test
@@ -375,12 +407,44 @@ public class ComputerSetControllerIntegrationTest {
 
   @Test
   public void givenDeletedHardwareId_whenEditingComputerSet_thenReturnStatus404() throws Exception{
-  //TODO
+    ComputerSetDTO request = new ComputerSetDTO();
+    Set<Long> hardwareIds = new HashSet<>();
+    Set<Long> softwareIds = new HashSet<>();
+    hardwareIds.add((long) 1);
+    hardwareIds.add((long) 5);
+    softwareIds.add((long) 1);
+    softwareIds.add((long) 2);
+    request.setName("Lenovo Yoga");
+    request.setAffiliationId((long) 1);
+    request.setHardwareIds(hardwareIds);
+    request.setSoftwareIds(softwareIds);
+    mvc.perform(put("/api/computer-sets/1")
+            .content(objectMapper.writeValueAsString(request))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().is(404))
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.message").value("Nie istnieje sprzęt o id: '5'"));
   }
 
   @Test
   public void givenDeletedSoftwareId_whenEditingComputerSet_thenReturnStatus404() throws Exception{
-  //TODO
+    ComputerSetDTO request = new ComputerSetDTO();
+    Set<Long> hardwareIds = new HashSet<>();
+    Set<Long> softwareIds = new HashSet<>();
+    hardwareIds.add((long) 1);
+    hardwareIds.add((long) 2);
+    softwareIds.add((long) 1);
+    softwareIds.add((long) 4);
+    request.setName("Lenovo Yoga");
+    request.setAffiliationId((long) 1);
+    request.setHardwareIds(hardwareIds);
+    request.setSoftwareIds(softwareIds);
+    mvc.perform(put("/api/computer-sets/1")
+      .content(objectMapper.writeValueAsString(request))
+      .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().is(404))
+      .andExpect(jsonPath("$.success").value(false))
+      .andExpect(jsonPath("$.message").value("Nie istnieje oprogramowanie o id: '4'"));
   }
   //endregion
 
