@@ -332,11 +332,11 @@ public class ComputerSetControllerIntegrationTest {
     request.setHardwareIds(hardwareIds);
     request.setSoftwareIds(softwareIds);
     mvc.perform(put("/api/computer-sets/1")
-            .content(objectMapper.writeValueAsString(request))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().is(404))
-            .andExpect(jsonPath("$.success").value(false))
-            .andExpect(jsonPath("$.message").value("Nie istnieje afiliacja o id: '0'"));
+      .content(objectMapper.writeValueAsString(request))
+      .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().is(404))
+      .andExpect(jsonPath("$.success").value(false))
+      .andExpect(jsonPath("$.message").value("Nie istnieje afiliacja o id: '0'"));
   }
 
   @Test
