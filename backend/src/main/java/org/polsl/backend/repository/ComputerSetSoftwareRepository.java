@@ -12,7 +12,7 @@ import java.util.Set;
 public interface ComputerSetSoftwareRepository extends CrudRepository<ComputerSetSoftware, ComputerSetSoftwareKey> {
   Set<ComputerSetSoftware> findAllBySoftwareIdAndValidToIsNull(Long id);
 
-  Iterable<ComputerSetSoftware> findAllByComputerSetIdAndValidToIsNull(Long computerSetId);
+  Set<ComputerSetSoftware> findAllByComputerSetIdAndValidToIsNull(Long computerSetId);
 
   ComputerSetSoftware findByComputerSetIdAndSoftwareIdAndValidToIsNull(Long computerSetId, Long softwareId);
 

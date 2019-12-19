@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface ComputerSetHardwareRepository extends CrudRepository<ComputerSetHardware, ComputerSetHardwareKey> {
@@ -18,7 +19,9 @@ public interface ComputerSetHardwareRepository extends CrudRepository<ComputerSe
 
   List<ComputerSetHardware> findAllByHardwareId(Long id);
 
-  Iterable<ComputerSetHardware> findAllByComputerSetIdAndValidToIsNull(Long computerSetId);
+  Set<ComputerSetHardware> findAllByComputerSetIdAndValidToIsNull(Long computerSetId);
 
   ComputerSetHardware findByComputerSetIdAndHardwareIdAndValidToIsNull(Long computerSetId, Long hardwareId);
+
+  Set<ComputerSetHardware> findByComputerSetIdAndValidToIsNull(Long computerSetId);
 }
