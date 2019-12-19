@@ -91,7 +91,7 @@ public class ComputerSetService {
     computerSetRepository.save(computerSet);
 
     Affiliation affiliation = affiliationRepository.findByIdAndIsDeletedIsFalse(request.getAffiliationId())
-        .orElseThrow(() -> new NotFoundException("przynależność", "id", request.getAffiliationId()));
+            .orElseThrow(() -> new NotFoundException("przynależność", "id", request.getAffiliationId()));
     AffiliationComputerSet affiliationComputerSet = new AffiliationComputerSet(affiliation, computerSet);
     affiliationComputerSetRepository.save(affiliationComputerSet);
 
@@ -129,6 +129,11 @@ public class ComputerSetService {
     Set<Long> currentHardwareIds = computerSet.getCurrentHardwareIds();
     Set<Long> currentSoftwareIds = computerSet.getCurrentSoftwareIds();
 
+    //----------------------------------------INVENTORY NB----------------------------------------
+    if (request.getInventoryNumber() != null) {
+      throw new BadRequestException("Zakaz ręcznego wprowadzania numeru inwentarzowego.");
+    }
+
     //----------------------------------------AFFILIATION----------------------------------------
     if (currentAffiliationId != requestAffiliationId) {
       //NOWE POŁĄCZENIE
@@ -139,7 +144,7 @@ public class ComputerSetService {
       affiliationComputerSetRepository.save(newAffiliationComputerSet);
       //STARE POŁĄCZENIE
       AffiliationComputerSet oldAffiliationComputerSet = affiliationComputerSetRepository
-          .findByAffiliationIdAndComputerSetIdAndValidToIsNull(currentAffiliationId, computerSet.getId());
+              .findByAffiliationIdAndComputerSetIdAndValidToIsNull(currentAffiliationId, computerSet.getId());
       oldAffiliationComputerSet.setValidTo(LocalDateTime.now());
     }
 
@@ -158,7 +163,7 @@ public class ComputerSetService {
     currentHardwareIds.forEach(currentHardwareId -> {
       if (!requestHardwareIds.contains(currentHardwareId)) {
         ComputerSetHardware oldComputerSetHardware = computerSetHardwareRepository
-            .findByComputerSetIdAndHardwareIdAndValidToIsNull(computerSet.getId(), currentHardwareId);
+                .findByComputerSetIdAndHardwareIdAndValidToIsNull(computerSet.getId(), currentHardwareId);
         oldComputerSetHardware.setValidTo(LocalDateTime.now());
       }
     });
@@ -178,7 +183,7 @@ public class ComputerSetService {
     currentSoftwareIds.forEach(currentSoftwareId -> {
       if (!requestSoftwareIds.contains(currentSoftwareId)) {
         ComputerSetSoftware oldComputerSetSoftware = computerSetSoftwareRepository
-            .findByComputerSetIdAndSoftwareIdAndValidToIsNull(computerSet.getId(), currentSoftwareId);
+                .findByComputerSetIdAndSoftwareIdAndValidToIsNull(computerSet.getId(), currentSoftwareId);
         oldComputerSetSoftware.setValidTo(LocalDateTime.now());
       }
     });
