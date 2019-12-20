@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -206,5 +207,42 @@ public class ComputerSetService {
     });
   }
 
+  public ComputerSetDTO getOneComputerSet(Long id) {
+    ComputerSetDTO dto = new ComputerSetDTO();
+    Set<Long> hardwareIds = new HashSet<>();
+    Set<Long> softwareIds = new HashSet<>();
+
+
+    ComputerSet computerSet = computerSetRepository.findByIdAndValidToIsNull(id)
+            .orElseThrow(() -> new NotFoundException("zestaw", "id", id));
+
+    dto.setName(computerSet.getName());
+
+    AffiliationComputerSet ac = affiliationComputerSetRepository.findByComputerSetIdAndValidToIsNull(id);
+
+    dto.setAffiliationId(ac.getAffiliation().getId());
+
+    Set<ComputerSetHardware> chs = computerSetHardwareRepository.findAllByComputerSetIdAndValidToIsNull(id);
+
+    if (chs != null) {
+      chs.forEach(ch -> {
+        hardwareIds.add(ch.getHardware().getId());
+      });
+    }
+
+    dto.setHardwareIds(hardwareIds);
+
+    Set<ComputerSetSoftware> css = computerSetSoftwareRepository.findAllByComputerSetIdAndValidToIsNull(id);
+
+    if (css != null) {
+      css.forEach(cs -> {
+        softwareIds.add(cs.getSoftware().getId());
+      });
+    }
+
+    dto.setSoftwareIds(softwareIds);
+
+    return dto;
+  }
 
 }

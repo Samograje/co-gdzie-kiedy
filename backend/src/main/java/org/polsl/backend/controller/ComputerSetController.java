@@ -77,4 +77,15 @@ public class ComputerSetController {
     computerSetService.deleteComputerSet(id);
     return ResponseEntity.ok(new ApiBasicResponse(true, "Usunięto zestaw komputerowy"));
   }
+
+  /**
+   * Endpoint obsługujący uzyskiwanie zestawu komputerowego o danym id.
+   *
+   * @param id ID wybranego zestawu komputerowego
+   * @return zestaw komputerowy o danym id
+   */
+  @GetMapping("/{id}")
+  public ResponseEntity<?> getHardware(@PathVariable(value = "id") Long id) {
+    return ResponseEntity.ok(computerSetService.getOneComputerSet(id));
+  }
 }
