@@ -50,6 +50,17 @@ public class SoftwareController {
   }
 
   /**
+   * Endpoint obsługujący uzyskiwanie historii powiązań oprogramowania o danym id z zestawami komputerowymi.
+   *
+   * @param id ID wybranego oprogramowania
+   * @return historia powiązań oprogramowania o danym id z zestawami komputerowymi
+   */
+  @GetMapping("/{id}/computer-sets-history")
+  public ResponseEntity<?> getHardwareComputerSetsHistoryList(@PathVariable(value = "id") Long id) {
+    return ResponseEntity.ok(softwareService.getSoftwareComputerSetsHistory(id));
+  }
+
+  /**
    * Endpoint obsługujący dodawanie nowego oprogramowania.
    *
    * @param request struktura {@link SoftwareDTO} zawierająca dane nowego oprogramwoania
