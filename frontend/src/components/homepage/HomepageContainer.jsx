@@ -43,10 +43,10 @@ class HomepageContainer extends Component {
   render() {
     return (
       <HomepageComponent
-        goToAffiliations={() => this.props.navigation.navigate('AffiliationsList')}
-        goToComputerSets={() => this.props.navigation.navigate('ComputerSetsList')}
-        goToHardware={() => this.props.navigation.navigate('HardwareList')}
-        goToSoftware={() => this.props.navigation.navigate('SoftwareList')}
+        goToAffiliations={() => this.props.push('AffiliationsList')}
+        goToComputerSets={() => this.props.push('ComputerSetsList')}
+        goToHardware={() => this.props.push('HardwareList')}
+        goToSoftware={() => this.props.push('SoftwareList')}
         handleLayout={this.handleLayout}
         {...this.state}
       />

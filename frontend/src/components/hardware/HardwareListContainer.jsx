@@ -62,7 +62,7 @@ class HardwareListContainer extends Component {
     const itemActions = [
       {
         label: 'Edytuj',
-        onClick: (itemData) => this.props.navigation.navigate('HardwareDetails', {
+        onClick: (itemData) => this.props.push('HardwareDetails', {
           mode: 'edit',
           id: itemData.id,
         }),
@@ -73,10 +73,11 @@ class HardwareListContainer extends Component {
     const footerActions = [
       {
         label: 'Dodaj sprzęt',
-        onClick: () => this.props.navigation.navigate('HardwareDetails', {
+        onClick: () => this.props.push('HardwareDetails', {
           mode: 'create',
         }),
       },
+      // TODO: akcje wyświetlania historii oraz wyszukiwania po kodzie QR
     ];
 
     return (
