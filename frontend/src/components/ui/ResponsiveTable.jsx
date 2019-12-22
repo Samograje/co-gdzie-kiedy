@@ -1,5 +1,6 @@
 import React from 'react';
-import {FlatList, ScrollView, StyleSheet, Text, View} from "react-native";
+import {Button, FlatList, ScrollView, StyleSheet, Text, View} from "react-native";
+import {mainColor} from "../../constValues";
 
 class ResponsiveTable extends React.Component {
   constructor(props) {
@@ -17,7 +18,6 @@ class ResponsiveTable extends React.Component {
   };
 
   render() {
-
     const {
       items,
       totalElements,
@@ -48,37 +48,66 @@ class ResponsiveTable extends React.Component {
 
     const wideLayout = (
       <View style={styles.table}>
+
+        {/* nagłówki kolumn */}
         <View style={styles.tr}>
+          {/* zadeklarowane kolumny */}
           {columns.map((column, key) => (
             <View style={styles.th} key={key}>
               <Text style={[styles.thText, styles.text]}>{column.label}</Text>
             </View>
           ))}
+
+          {/* kolumna akcji */}
+          {itemActions && (
+            <View style={styles.th}>
+              <Text style={[styles.thText, styles.text]}>Akcje</Text>
+            </View>
+          )}
         </View>
+
+        {/* rekordy tabeli */}
         {items.map((item, rowId) => (
           <View style={[styles.tr, rowId % 2 !== 0 && styles.greyRow]} key={rowId}>
+
+            {/* dane do komórek */}
             {columns.map((column, key) => (
               <View style={styles.td} key={key}>
                 <Text style={[styles.tdText, styles.text]}>{item[column.name]}</Text>
               </View>
             ))}
+
+            {/* komórka z akcjami */}
+            {itemActions && (
+              <View style={styles.td}>
+                {itemActions.map((action, idx) => (
+                  <View style={styles.buttonContainer} key={idx}>
+                    <Button
+                      title={action.label}
+                      onPress={() => action.onClick(item)}
+                      color={mainColor}
+                    />
+                  </View>
+                ))}
+              </View>
+            )}
           </View>
         ))}
       </View>
     );
 
     return (
-      <ScrollView>
         <View style={styles.container} onLayout={this.handleLayout}>
           {this.state.isWide ? wideLayout : mobileLayout}
         </View>
-      </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    margin: 5,
+  },
 
   // dotyczy widoku mobilnego
   list: {},
@@ -104,6 +133,8 @@ const styles = StyleSheet.create({
   },
   th: {
     flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
     backgroundColor: 'darkgrey',
   },
   thText: {
@@ -111,6 +142,9 @@ const styles = StyleSheet.create({
   },
   td: {
     flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
   },
   tdText: {},
 
@@ -120,6 +154,10 @@ const styles = StyleSheet.create({
   },
   greyRow: {
     backgroundColor: 'lightgrey',
+  },
+  buttonContainer: {
+    width: 75,
+    margin: 2,
   },
 });
 
