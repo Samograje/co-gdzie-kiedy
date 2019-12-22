@@ -34,12 +34,29 @@ class ResponsiveTable extends React.Component {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({item, index}) => (
             <View style={[styles.item, index % 2 === 0 && styles.greyRow]}>
+
+              {/* wiersze z danymi */}
               {columns.map((column, key) => (
                 <View style={styles.row} key={key}>
                   <Text style={[styles.label, styles.text]}>{column.label}</Text>
                   <Text style={[styles.value, styles.text]}>{item[column.name]}</Text>
                 </View>
               ))}
+
+              {/* przyciski akcji */}
+              {itemActions && (
+                <View style={styles.buttons}>
+                  {itemActions.map((action, idx) => (
+                    <View style={styles.buttonContainerMobile} key={idx}>
+                      <Button
+                        title={action.label}
+                        onPress={() => action.onClick(item)}
+                        color={mainColor}
+                      />
+                    </View>
+                  ))}
+                </View>
+              )}
             </View>
           )}
         />
@@ -81,7 +98,7 @@ class ResponsiveTable extends React.Component {
             {itemActions && (
               <View style={styles.td}>
                 {itemActions.map((action, idx) => (
-                  <View style={styles.buttonContainer} key={idx}>
+                  <View style={styles.buttonContainerDesktop} key={idx}>
                     <Button
                       title={action.label}
                       onPress={() => action.onClick(item)}
@@ -125,6 +142,15 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     flex: 1,
   },
+  buttons: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+  },
+  buttonContainerMobile: {
+    flex: 1,
+    margin: 5,
+  },
 
   // dotyczy widoku tabeli na szerokie ekrany
   table: {},
@@ -155,7 +181,7 @@ const styles = StyleSheet.create({
   greyRow: {
     backgroundColor: 'lightgrey',
   },
-  buttonContainer: {
+  buttonContainerDesktop: {
     width: 75,
     margin: 2,
   },
