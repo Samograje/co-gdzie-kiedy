@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
     height: 50,
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
   },
   label: {
     color: 'white',

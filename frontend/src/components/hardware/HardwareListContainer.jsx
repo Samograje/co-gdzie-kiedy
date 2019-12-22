@@ -64,7 +64,12 @@ class HardwareListContainer extends Component {
         label: 'Edytuj',
         onClick: (itemData) => this.props.history.push(`/hardware/edit/${itemData.id}`),
       },
-      // TODO: akcja usuwania hardware'u
+      {
+        label: 'Usuń',
+        onClick: (itemData) => {
+          // TODO: usuwanie hardware'u
+        },
+      }
     ];
 
     const footerActions = [
