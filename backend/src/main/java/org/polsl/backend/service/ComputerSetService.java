@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -92,7 +93,7 @@ public class ComputerSetService {
     computerSetRepository.save(computerSet);
 
     Affiliation affiliation = affiliationRepository.findByIdAndIsDeletedIsFalse(request.getAffiliationId())
-        .orElseThrow(() -> new NotFoundException("przynależność", "id", request.getAffiliationId()));
+            .orElseThrow(() -> new NotFoundException("przynależność", "id", request.getAffiliationId()));
     AffiliationComputerSet affiliationComputerSet = new AffiliationComputerSet(affiliation, computerSet);
     affiliationComputerSetRepository.save(affiliationComputerSet);
 
@@ -130,6 +131,11 @@ public class ComputerSetService {
     Set<Long> currentHardwareIds = computerSet.getCurrentHardwareIds();
     Set<Long> currentSoftwareIds = computerSet.getCurrentSoftwareIds();
 
+    //----------------------------------------INVENTORY NB----------------------------------------
+    if (request.getInventoryNumber() != null) {
+      throw new BadRequestException("Zakaz ręcznego wprowadzania numeru inwentarzowego.");
+    }
+
     //----------------------------------------AFFILIATION----------------------------------------
     if (currentAffiliationId != requestAffiliationId) {
       //NOWE POŁĄCZENIE
@@ -140,7 +146,7 @@ public class ComputerSetService {
       affiliationComputerSetRepository.save(newAffiliationComputerSet);
       //STARE POŁĄCZENIE
       AffiliationComputerSet oldAffiliationComputerSet = affiliationComputerSetRepository
-          .findByAffiliationIdAndComputerSetIdAndValidToIsNull(currentAffiliationId, computerSet.getId());
+              .findByAffiliationIdAndComputerSetIdAndValidToIsNull(currentAffiliationId, computerSet.getId());
       oldAffiliationComputerSet.setValidTo(LocalDateTime.now());
     }
 
@@ -159,7 +165,7 @@ public class ComputerSetService {
     currentHardwareIds.forEach(currentHardwareId -> {
       if (!requestHardwareIds.contains(currentHardwareId)) {
         ComputerSetHardware oldComputerSetHardware = computerSetHardwareRepository
-            .findByComputerSetIdAndHardwareIdAndValidToIsNull(computerSet.getId(), currentHardwareId);
+                .findByComputerSetIdAndHardwareIdAndValidToIsNull(computerSet.getId(), currentHardwareId);
         oldComputerSetHardware.setValidTo(LocalDateTime.now());
       }
     });
@@ -179,7 +185,7 @@ public class ComputerSetService {
     currentSoftwareIds.forEach(currentSoftwareId -> {
       if (!requestSoftwareIds.contains(currentSoftwareId)) {
         ComputerSetSoftware oldComputerSetSoftware = computerSetSoftwareRepository
-            .findByComputerSetIdAndSoftwareIdAndValidToIsNull(computerSet.getId(), currentSoftwareId);
+                .findByComputerSetIdAndSoftwareIdAndValidToIsNull(computerSet.getId(), currentSoftwareId);
         oldComputerSetSoftware.setValidTo(LocalDateTime.now());
       }
     });
@@ -207,5 +213,42 @@ public class ComputerSetService {
     });
   }
 
+  public ComputerSetDTO getOneComputerSet(Long id) {
+    ComputerSetDTO dto = new ComputerSetDTO();
+    Set<Long> hardwareIds = new HashSet<>();
+    Set<Long> softwareIds = new HashSet<>();
+
+
+    ComputerSet computerSet = computerSetRepository.findByIdAndValidToIsNull(id)
+            .orElseThrow(() -> new NotFoundException("zestaw", "id", id));
+
+    dto.setName(computerSet.getName());
+
+    AffiliationComputerSet ac = affiliationComputerSetRepository.findByComputerSetIdAndValidToIsNull(id);
+
+    dto.setAffiliationId(ac.getAffiliation().getId());
+
+    Set<ComputerSetHardware> chs = computerSetHardwareRepository.findAllByComputerSetIdAndValidToIsNull(id);
+
+    if (chs != null) {
+      chs.forEach(ch -> {
+        hardwareIds.add(ch.getHardware().getId());
+      });
+    }
+
+    dto.setHardwareIds(hardwareIds);
+
+    Set<ComputerSetSoftware> css = computerSetSoftwareRepository.findAllByComputerSetIdAndValidToIsNull(id);
+
+    if (css != null) {
+      css.forEach(cs -> {
+        softwareIds.add(cs.getSoftware().getId());
+      });
+    }
+
+    dto.setSoftwareIds(softwareIds);
+
+    return dto;
+  }
 
 }
