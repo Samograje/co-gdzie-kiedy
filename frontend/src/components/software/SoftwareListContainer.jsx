@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import SoftwareListComponent from './SoftwareListComponent';
-import HardwareListComponent from "../hardware/HardwareListComponent";
+import request from "../../APIClient";
 
 class SoftwareListContainer extends Component {
   constructor(props) {
@@ -17,7 +17,7 @@ class SoftwareListContainer extends Component {
   }
 
   fetchData = () => {
-    fetch('/api/software')
+    request('/api/software')
         .then((response) => response.json())
         .then((response) => {
           this.setState({

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import HardwareListComponent from './HardwareListComponent';
+import request from "../../APIClient";
 
 class HardwareListContainer extends Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class HardwareListContainer extends Component {
   }
 
   fetchData = () => {
-    fetch('/api/hardware')
+    request('/api/hardware')
       .then((response) => response.json())
       .then((response) => {
         this.setState({

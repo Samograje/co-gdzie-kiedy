@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import AffiliationsListComponent from './AffiliationsListComponent';
+import request from "../../APIClient";
 
 class AffiliationsListContainer extends Component {
 
@@ -18,7 +19,7 @@ class AffiliationsListContainer extends Component {
   }
 
   fetchData = () => {
-    fetch('/api/affiliations')
+    request('/api/affiliations')
       .then((response) => response.json())
       .then((response) => {
         this.setState({
