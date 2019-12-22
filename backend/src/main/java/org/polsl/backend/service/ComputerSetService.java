@@ -2,7 +2,7 @@ package org.polsl.backend.service;
 
 import org.polsl.backend.dto.PaginatedResult;
 import org.polsl.backend.dto.computerset.ComputerSetDTO;
-import org.polsl.backend.dto.computerset.ComputerSetOutputDTO;
+import org.polsl.backend.dto.computerset.ComputerSetListOutputDTO;
 import org.polsl.backend.entity.Affiliation;
 import org.polsl.backend.entity.AffiliationComputerSet;
 import org.polsl.backend.entity.ComputerSet;
@@ -60,16 +60,20 @@ public class ComputerSetService {
     this.softwareRepository = softwareRepository;
   }
 
-  public PaginatedResult<ComputerSetOutputDTO> getAllComputerSets() {
-    Iterable<ComputerSet> computerSets = computerSetRepository.findAll();
-    List<ComputerSetOutputDTO> dtos = new ArrayList<>();
+  public PaginatedResult<ComputerSetListOutputDTO> getAllComputerSets() {
+    Iterable<ComputerSet> computerSets = computerSetRepository.findAllByValidToIsNull();
+    List<ComputerSetListOutputDTO> dtos = new ArrayList<>();
     for (ComputerSet computerSet : computerSets) {
-      ComputerSetOutputDTO dto = new ComputerSetOutputDTO();
+      ComputerSetListOutputDTO dto = new ComputerSetListOutputDTO();
       dto.setId(computerSet.getId());
       dto.setName(computerSet.getName());
+      dto.setComputerSetInventoryNumber(computerSet.getInventoryNumber());
+      dto.setAffiliationName(computerSet.getValidAffiliationName());
+      dto.setHardwareInventoryNumbers(computerSet.getValidHardwareInventoryNumbers());
+      dto.setSoftwareInventoryNumbers(computerSet.getValidSoftwareInventoryNumbers());
       dtos.add(dto);
     }
-    PaginatedResult<ComputerSetOutputDTO> response = new PaginatedResult<>();
+    PaginatedResult<ComputerSetListOutputDTO> response = new PaginatedResult<>();
     response.setItems(dtos);
     response.setTotalElements((long) dtos.size());
     return response;
@@ -249,5 +253,4 @@ public class ComputerSetService {
 
     return dto;
   }
-
 }

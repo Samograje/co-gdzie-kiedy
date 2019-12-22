@@ -43,6 +43,40 @@ public class ComputerSet {
   public ComputerSet() {
   }
 
+  public String getValidAffiliationName() {
+    for (AffiliationComputerSet affiliationComputerSet : affiliationComputerSetSet) {
+      if (affiliationComputerSet.getValidTo() == null) {
+        return affiliationComputerSet.getAffiliation().getFullName();
+      }
+    }
+    return null;
+  }
+
+  public Set<String> getValidHardwareInventoryNumbers() {
+    Set<String> inventoryNumbers = new HashSet<>();
+
+    computerSetHardwareSet.forEach(computerSetHardware -> {
+      if (computerSetHardware.getValidTo() == null) {
+        inventoryNumbers.add(computerSetHardware.getHardware().getInventoryNumber());
+      }
+    });
+
+    return inventoryNumbers;
+  }
+
+  public Set<String> getValidSoftwareInventoryNumbers() {
+    Set<String> inventoryNumbers = new HashSet<>();
+
+    computerSetSoftwareSet.forEach(computerSetSoftware -> {
+      if (computerSetSoftware.getValidTo() == null) {
+        inventoryNumbers.add(computerSetSoftware.getSoftware().getInventoryNumber());
+      }
+    });
+
+    return inventoryNumbers;
+  }
+
+
   public Set<AffiliationComputerSet> getValidAffiliationComputerSetSet() {
     if (affiliationComputerSetSet != null) {
       Set<AffiliationComputerSet> validAffiliationComputerSetSet = affiliationComputerSetSet;

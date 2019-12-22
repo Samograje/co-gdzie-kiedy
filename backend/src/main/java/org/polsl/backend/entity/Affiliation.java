@@ -37,6 +37,10 @@ public class Affiliation {
   public Affiliation() {
   }
 
+  public String getFullName() {
+    return String.format("%s %s %s", firstName, lastName, location);
+  }
+
   public Long getId() {
     return id;
   }
