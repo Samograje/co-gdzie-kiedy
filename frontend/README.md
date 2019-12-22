@@ -14,12 +14,14 @@ Wykorzystywane technologie:
 ## Przygotowanie środowiska deweloperskiego
 
 Wymagane do uruchomienia strony internetowej oraz aplikacji mobilnej:
-1. Instalacja npm (składnika [node.js](https://nodejs.org/en/))
-2. Popranie plików bibliotek, wykonując polecenie `npm i` w katalogu `frontend`
+1. Instalacja npm w wersji 10.16 (składnika [node.js](https://nodejs.org/en/))
+2. Pobranie plików bibliotek - polecenie `npm i` w katalogu `frontend`
 
 Dodatkowe czynności wymagane do uruchomienia aplikacji mobilnej:
 1. Wykonanie wszystkich czynności opisanych [na tej stronie](https://facebook.github.io/react-native/docs/getting-started) w zakładce 'React Native CLI Quickstart'
 2. Ponowne uruchomienie komputera
+
+Jeśli node.js jest w wersji nowszej niż 10.16, mogą pojawiać się problemy z uruchamianiem metro serwera. Instrukcje do naprawy tych błędów znajdują się na końcu tej dokumentacji.
 
 ## Uruchamianie
 
@@ -65,3 +67,17 @@ Polecenie:
 npm run build-web
 ```
 Tworzy wersję produkcyjną w katalogu `/build`.
+
+
+## Inne informacje:
+
+Jeśli node.js jest w wersji nowszej niż 10.16, mogą pojawiać się problemy z uruchamianiem metro serwera. Wtedy można je rozwiązać następująco:
+- zmodyfikować plik `frontend\node_modules\metro-config\src\defaults\blacklist.js`:
+```
+var sharedBlacklist = [
+  /node_modules[\/\\]react[\/\\]dist[\/\\].*/,
+  /website\/node_modules\/.*/,
+  /heapCapture\/bundle\.js/,
+  /.*\/__tests__\/.*/
+];
+```
