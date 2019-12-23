@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import HardwareDetailsComponent from './HardwareDetailsComponent';
-import AffiliationDetailsComponent from "../affiliations/AffiliationDetailsComponent";
 
 class HardwareDetailsContainer extends Component {
 
