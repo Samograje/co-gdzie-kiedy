@@ -31,6 +31,11 @@ class ResponsiveTable extends React.Component {
         <FlatList
           data={items}
           keyExtractor={(item) => item.id.toString()}
+          ListEmptyComponent={() => (
+            <View style={styles.item}>
+              <Text style={styles.text}>Brak elementów do wyświetlenia</Text>
+            </View>
+          )}
           renderItem={({item}) => (
             <View style={styles.item}>
 
@@ -109,6 +114,13 @@ class ResponsiveTable extends React.Component {
             )}
           </View>
         ))}
+
+        {/* informacja o braku rekordów */}
+        {!items.length && (
+          <View style={styles.tr}>
+            <Text style={[styles.tdText, styles.text]}>Brak elementów do wyświetlenia</Text>
+          </View>
+        )}
       </View>
     );
 
