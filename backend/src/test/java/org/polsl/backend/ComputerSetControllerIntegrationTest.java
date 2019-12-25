@@ -86,17 +86,17 @@ public class ComputerSetControllerIntegrationTest {
   @Test
   public void givenInvalidId_whenGettingOneComputerSet_thenReturnStatus404() throws Exception {
     mvc.perform(get("/api/computer-sets/0"))
-            .andExpect(status().is(404))
-            .andExpect(jsonPath("$.success").value(false))
-            .andExpect(jsonPath("$.message").value("Nie istnieje zestaw o id: '0'"));
+      .andExpect(status().is(404))
+      .andExpect(jsonPath("$.success").value(false))
+      .andExpect(jsonPath("$.message").value("Nie istnieje zestaw o id: '0'"));
   }
 
   @Test
   public void givenInvalidParameter_whenGettingOneComputerSet_thenReturnStatus400() throws Exception {
     mvc.perform(get("/api/computer-sets/test"))
-            .andExpect(status().is(400))
-            .andExpect(jsonPath("$.success").value(false))
-            .andExpect(jsonPath("$.message").value("Podana wartość nie jest liczbą"));
+    .andExpect(status().is(400))
+    .andExpect(jsonPath("$.success").value(false))
+    .andExpect(jsonPath("$.message").value("Podana wartość nie jest liczbą"));
   }
   //endregion
 
@@ -232,11 +232,11 @@ public class ComputerSetControllerIntegrationTest {
     request.setHardwareIds(hardwareIds);
     request.setSoftwareIds(softwareIds);
     mvc.perform(post("/api/computer-sets/")
-            .content(objectMapper.writeValueAsString(request))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().is(404))
-            .andExpect(jsonPath("$.success").value(false))
-            .andExpect(jsonPath("$.message").value("Nie istnieje przynależność o id: '3'"));
+      .content(objectMapper.writeValueAsString(request))
+      .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().is(404))
+      .andExpect(jsonPath("$.success").value(false))
+      .andExpect(jsonPath("$.message").value("Nie istnieje przynależność o id: '3'"));
   }
 
   @Test
@@ -252,11 +252,11 @@ public class ComputerSetControllerIntegrationTest {
     request.setHardwareIds(hardwareIds);
     request.setSoftwareIds(softwareIds);
     mvc.perform(post("/api/computer-sets/")
-            .content(objectMapper.writeValueAsString(request))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().is(404))
-            .andExpect(jsonPath("$.success").value(false))
-            .andExpect(jsonPath("$.message").value("Nie istnieje sprzęt o id: '5'"));
+      .content(objectMapper.writeValueAsString(request))
+      .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().is(404))
+      .andExpect(jsonPath("$.success").value(false))
+      .andExpect(jsonPath("$.message").value("Nie istnieje sprzęt o id: '5'"));
   }
 
   @Test
@@ -272,11 +272,11 @@ public class ComputerSetControllerIntegrationTest {
     request.setHardwareIds(hardwareIds);
     request.setSoftwareIds(softwareIds);
     mvc.perform(post("/api/computer-sets/")
-            .content(objectMapper.writeValueAsString(request))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().is(404))
-            .andExpect(jsonPath("$.success").value(false))
-            .andExpect(jsonPath("$.message").value("Nie istnieje oprogramowanie o id: '4'"));
+      .content(objectMapper.writeValueAsString(request))
+      .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().is(404))
+      .andExpect(jsonPath("$.success").value(false))
+      .andExpect(jsonPath("$.message").value("Nie istnieje oprogramowanie o id: '4'"));
   }
   //endregion
 
@@ -330,11 +330,11 @@ public class ComputerSetControllerIntegrationTest {
     request.setHardwareIds(hardwareIds);
     request.setSoftwareIds(softwareIds);
     mvc.perform(put("/api/computer-sets/3")
-            .content(objectMapper.writeValueAsString(request))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().is(404))
-            .andExpect(jsonPath("$.success").value(false))
-            .andExpect(jsonPath("$.message").value("Nie istnieje zestaw komputerowy o id: '3'"));
+      .content(objectMapper.writeValueAsString(request))
+      .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().is(404))
+      .andExpect(jsonPath("$.success").value(false))
+      .andExpect(jsonPath("$.message").value("Nie istnieje zestaw komputerowy o id: '3'"));
   }
 
   @Test
@@ -348,8 +348,8 @@ public class ComputerSetControllerIntegrationTest {
   @Test
   public void givenNoId_whenEditingComputerSet_thenReturnStatus405() throws Exception {
     mvc.perform(put("/api/computer-sets/")
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().is(405));
+      .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().is(405));
   }
 
   @Test
@@ -427,11 +427,11 @@ public class ComputerSetControllerIntegrationTest {
     request.setSoftwareIds(softwareIds);
     request.setInventoryNumber("C1/2019");
     mvc.perform(put("/api/computer-sets/1")
-            .content(objectMapper.writeValueAsString(request))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().is(400))
-            .andExpect(jsonPath("$.success").value(false))
-            .andExpect(jsonPath("$.message").value("Zakaz ręcznego wprowadzania numeru inwentarzowego."));
+      .content(objectMapper.writeValueAsString(request))
+      .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().is(400))
+      .andExpect(jsonPath("$.success").value(false))
+      .andExpect(jsonPath("$.message").value("Zakaz ręcznego wprowadzania numeru inwentarzowego."));
   }
 
   @Test
@@ -448,11 +448,11 @@ public class ComputerSetControllerIntegrationTest {
     request.setHardwareIds(hardwareIds);
     request.setSoftwareIds(softwareIds);
     mvc.perform(put("/api/computer-sets/1")
-            .content(objectMapper.writeValueAsString(request))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().is(404))
-            .andExpect(jsonPath("$.success").value(false))
-            .andExpect(jsonPath("$.message").value("Nie istnieje afiliacja o id: '3'"));
+      .content(objectMapper.writeValueAsString(request))
+      .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().is(404))
+      .andExpect(jsonPath("$.success").value(false))
+      .andExpect(jsonPath("$.message").value("Nie istnieje afiliacja o id: '3'"));
   }
 
   @Test
@@ -469,11 +469,11 @@ public class ComputerSetControllerIntegrationTest {
     request.setHardwareIds(hardwareIds);
     request.setSoftwareIds(softwareIds);
     mvc.perform(put("/api/computer-sets/1")
-            .content(objectMapper.writeValueAsString(request))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().is(404))
-            .andExpect(jsonPath("$.success").value(false))
-            .andExpect(jsonPath("$.message").value("Nie istnieje sprzęt o id: '5'"));
+      .content(objectMapper.writeValueAsString(request))
+      .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().is(404))
+      .andExpect(jsonPath("$.success").value(false))
+      .andExpect(jsonPath("$.message").value("Nie istnieje sprzęt o id: '5'"));
   }
 
   @Test
@@ -526,7 +526,7 @@ public class ComputerSetControllerIntegrationTest {
   @Test
   public void givenNoId_whenDeletingComputerSet_thenReturnStatus405() throws Exception {
     mvc.perform(delete("/api/computer-sets"))
-            .andExpect(status().is(405));
+      .andExpect(status().is(405));
   }
   //endregion
 
