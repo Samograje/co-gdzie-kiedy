@@ -31,8 +31,8 @@ class ResponsiveTable extends React.Component {
         <FlatList
           data={items}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({item, index}) => (
-            <View style={[styles.item, index % 2 === 0 && styles.greyRow]}>
+          renderItem={({item}) => (
+            <View style={styles.item}>
 
               {/* wiersze z danymi */}
               {columns.map((column, key) => (
@@ -66,17 +66,17 @@ class ResponsiveTable extends React.Component {
       <View style={styles.table}>
 
         {/* nagłówki kolumn */}
-        <View style={styles.tr}>
+        <View style={styles.trHead}>
           {/* zadeklarowane kolumny */}
           {columns.map((column, key) => (
-            <View style={styles.th} key={key}>
+            <View style={styles.cell} key={key}>
               <Text style={[styles.thText, styles.text]}>{column.label}</Text>
             </View>
           ))}
 
           {/* kolumna akcji */}
           {itemActions && (
-            <View style={styles.th}>
+            <View style={styles.cell}>
               <Text style={[styles.thText, styles.text]}>Akcje</Text>
             </View>
           )}
@@ -84,18 +84,18 @@ class ResponsiveTable extends React.Component {
 
         {/* rekordy tabeli */}
         {items.map((item, rowId) => (
-          <View style={[styles.tr, rowId % 2 !== 0 && styles.greyRow]} key={rowId}>
+          <View style={styles.tr} key={rowId}>
 
             {/* dane do komórek */}
             {columns.map((column, key) => (
-              <View style={styles.td} key={key}>
+              <View style={styles.cell} key={key}>
                 <Text style={[styles.tdText, styles.text]}>{item[column.name]}</Text>
               </View>
             ))}
 
             {/* komórka z akcjami */}
             {itemActions && (
-              <View style={styles.td}>
+              <View style={styles.cell}>
                 {itemActions.map((action, idx) => (
                   <View style={styles.buttonContainerDesktop} key={idx}>
                     <Button
@@ -126,10 +126,20 @@ const styles = StyleSheet.create({
   },
 
   // dotyczy widoku mobilnego
-  list: {},
-  item: {},
+  list: {
+    borderRadius: 2,
+    overflow: 'hidden',
+  },
+  item: {
+    borderWidth: 1,
+    borderRadius: 2,
+    marginTop: 5,
+    marginBottom: 5,
+    padding: 5,
+  },
   row: {
     flexDirection: 'row',
+    margin: 2,
   },
   label: {
     flex: 1,
@@ -152,33 +162,36 @@ const styles = StyleSheet.create({
   },
 
   // dotyczy widoku tabeli na szerokie ekrany
-  table: {},
+  table: {
+    borderWidth: 1,
+    borderRadius: 2,
+    overflow: 'hidden',
+  },
   tr: {
     flexDirection: 'row',
+    borderTopWidth: 1,
+    padding: 2,
   },
-  th: {
-    flex: 1,
+  trHead: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    backgroundColor: 'darkgrey',
+    backgroundColor: 'lightgrey',
   },
-  thText: {
-    fontWeight: 'bold',
-  },
-  td: {
+  cell: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     flexWrap: 'wrap',
+    alignItems: 'center',
+  },
+  thText: {
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   tdText: {},
 
   // dotyczy obu widoków
   text: {
     fontSize: 16,
-  },
-  greyRow: {
-    backgroundColor: 'lightgrey',
   },
   buttonContainerDesktop: {
     width: 75,
