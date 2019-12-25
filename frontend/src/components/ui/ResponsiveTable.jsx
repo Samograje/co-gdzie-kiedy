@@ -1,19 +1,18 @@
 import React from 'react';
-import {Button, FlatList, ScrollView, StyleSheet, Text, View} from "react-native";
+import {Button, Dimensions, FlatList, StyleSheet, Text, View} from "react-native";
 import {mainColor} from "../../constValues";
 
 class ResponsiveTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isWide: null,
+      isWide: Dimensions.get('window').width > 650,
     }
   }
 
-  handleLayout = ({nativeEvent}) => {
-    const {width} = nativeEvent.layout;
+  handleLayout = () => {
     this.setState({
-      isWide: width > 650,
+      isWide: Dimensions.get('window').width > 650,
     });
   };
 
@@ -114,9 +113,9 @@ class ResponsiveTable extends React.Component {
     );
 
     return (
-        <View style={styles.container} onLayout={this.handleLayout}>
-          {this.state.isWide ? wideLayout : mobileLayout}
-        </View>
+      <View style={styles.container} onLayout={this.handleLayout}>
+        {this.state.isWide ? wideLayout : mobileLayout}
+      </View>
     );
   }
 }
