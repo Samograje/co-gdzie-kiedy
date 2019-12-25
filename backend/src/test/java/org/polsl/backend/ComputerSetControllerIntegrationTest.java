@@ -36,8 +36,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     @Sql(scripts = "/scripts/create-test-hardware_dictionary.sql"),
     @Sql(scripts = "/scripts/create-test-hardware.sql"),
     @Sql(scripts = "/scripts/create-test-affiliation_hardware.sql"),
-    @Sql(scripts = "/scripts/create-test-affiliations_computer_sets.sql")
-
+    @Sql(scripts = "/scripts/create-test-affiliations_computer_sets.sql"),
+    @Sql(scripts = "/scripts/create-test-computer_sets_hardware.sql"),
+    @Sql(scripts = "/scripts/create-test-computer_sets_software.sql")
 })
 public class ComputerSetControllerIntegrationTest {
   @Autowired
@@ -63,7 +64,40 @@ public class ComputerSetControllerIntegrationTest {
       .andExpect(jsonPath("$.items[2].name").value("Lenovo Legion"))
       .andExpect(jsonPath("$.items[2].inventoryNumber").value("C4/2019"));
   }
-  //TODO: Kamil: testy dla pobierania pojedyńczego oprogramowania (nie widzę takiej metody w serwisie), poprawny request, ze złym id, czymś innym niż id
+
+  @Test
+  public void givenCorrectRequest_whenGettingOneComputerSet_thenReturnStatus200AndData() throws Exception
+  {
+    mvc.perform(get("/api/computer-sets/1"))
+      .andExpect(status().is(200))
+      .andExpect(jsonPath("$.name").value("HP ProBook"))
+      .andExpect(jsonPath("$.affiliationId").value(1))
+      .andExpect(jsonPath("$.hardwareIds").isArray())
+      .andExpect(jsonPath("$.hardwareIds", IsCollectionWithSize.hasSize(2)))
+      .andExpect(jsonPath("$.hardwareIds[0]").value(1))
+      .andExpect(jsonPath("$.hardwareIds[1]").value(3))
+      .andExpect(jsonPath("$.softwareIds").isArray())
+      .andExpect(jsonPath("$.softwareIds", IsCollectionWithSize.hasSize(2)))
+      .andExpect(jsonPath("$.softwareIds[0]").value(1))
+      .andExpect(jsonPath("$.softwareIds[1]").value(2));
+//      .andExpect(jsonPath("$.inventoryNumber").value("C1/2019")); //TODO: odkomentować jak Oliwia poprawi swój kod
+  }
+
+  @Test
+  public void givenInvalidId_whenGettingOneComputerSet_thenReturnStatus404() throws Exception {
+    mvc.perform(get("/api/computer-sets/0"))
+            .andExpect(status().is(404))
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.message").value("Nie istnieje zestaw o id: '0'"));
+  }
+
+  @Test
+  public void givenInvalidParameter_whenGettingOneComputerSet_thenReturnStatus400() throws Exception {
+    mvc.perform(get("/api/computer-sets/test"))
+            .andExpect(status().is(400))
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.message").value("Podana wartość nie jest liczbą"));
+  }
   //endregion
 
   //region POST
@@ -381,7 +415,23 @@ public class ComputerSetControllerIntegrationTest {
 
   @Test
   public void givenCorrectRequestWithInventoryNumber_whenEditingComputerSet_thenReturnStatus400() throws Exception{
-  //TODO: edycja przepuszcza numer inwentarzowy
+    ComputerSetDTO request = new ComputerSetDTO();
+    Set<Long> hardwareIds = new HashSet<>();
+    Set<Long> softwareIds = new HashSet<>();
+    hardwareIds.add((long) 1);
+    hardwareIds.add((long) 2);
+    softwareIds.add((long) 1);
+    request.setName("Lenovo Yoga");
+    request.setAffiliationId((long) 1);
+    request.setHardwareIds(hardwareIds);
+    request.setSoftwareIds(softwareIds);
+    request.setInventoryNumber("C1/2019");
+    mvc.perform(put("/api/computer-sets/1")
+            .content(objectMapper.writeValueAsString(request))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().is(400))
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.message").value("Zakaz ręcznego wprowadzania numeru inwentarzowego."));
   }
 
   @Test
