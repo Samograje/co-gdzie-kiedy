@@ -57,6 +57,19 @@ class SoftwareListContainer extends Component {
       },
     ];
 
+    const itemActions = [
+      {
+        label: 'Edytuj',
+        onClick: (itemData) => this.props.history.push(`/software/edit/${itemData.id}`),
+      },
+      {
+        label: 'Usuń',
+        onClick: (itemData) => {
+          // TODO: usuwanie software'u
+        },
+      }
+    ];
+    
     return (
       <SoftwareListComponent
           onFetchData={this.fetchData}
@@ -65,6 +78,7 @@ class SoftwareListContainer extends Component {
           items={this.state.items}
           totalElements={this.state.totalElements}
           columns={columns}
+          itemActions={itemActions}
       />
     );
   }
