@@ -1,9 +1,19 @@
 import React from 'react';
-import {StyleSheet, Text} from 'react-native';
+import {Button, StyleSheet, Text} from 'react-native';
 
 const SoftwareDetailsComponent = (props) => {
   return (
-    <Text>Tutaj znajdzie się formularz software'u</Text>
+    <>
+      <Text>Tutaj znajdzie się formularz software'u</Text>
+      <Button
+          title="Zapisz"
+          onPress={props.onSubmit}
+      />
+      <Button
+          title="Wróć"
+          onPress={props.onReject}
+      />
+    </>
   );
 };
 
