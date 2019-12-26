@@ -1,5 +1,5 @@
 import React from 'react';
-import {ActivityIndicator, ScrollView, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, Button, ScrollView, StyleSheet, View} from 'react-native';
 import ErrorElement from "../ui/ErrorElement";
 import ResponsiveTable from "../ui/ResponsiveTable";
 
@@ -36,6 +36,10 @@ const SoftwareListComponent = (props) => {
             footerActions={footerActions}
           />
         )}
+        <Button
+            title="Dodaj oprogramowanie"
+            onPress={footerActions[0].onClick}
+        />
       </View>
     </ScrollView>
   );

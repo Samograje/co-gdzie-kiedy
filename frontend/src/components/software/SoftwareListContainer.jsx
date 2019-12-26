@@ -69,7 +69,12 @@ class SoftwareListContainer extends Component {
         },
       }
     ];
-    
+    const footerActions = [
+      {
+        label: 'Dodaj oprogramowanie',
+        onClick: () => this.props.history.push('/software/create'),
+      },
+    ];
     return (
       <SoftwareListComponent
           onFetchData={this.fetchData}
@@ -79,6 +84,7 @@ class SoftwareListContainer extends Component {
           totalElements={this.state.totalElements}
           columns={columns}
           itemActions={itemActions}
+          footerActions={footerActions}
       />
     );
   }
