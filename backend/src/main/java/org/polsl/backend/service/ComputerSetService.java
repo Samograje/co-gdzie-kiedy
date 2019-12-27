@@ -253,17 +253,62 @@ public class ComputerSetService {
 
   public PaginatedResult<HistoryDTO> getComputerSetSoftwareHistory(Long computerSetId) {
 
-    return null;
+    List<HistoryDTO> dtos = new ArrayList<>();
+    HistoryDTO dto = new HistoryDTO();
+    ComputerSet cs = computerSetRepository.findById(computerSetId)
+            .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
+
+    Set<ComputerSetSoftware> computerSetSoftwareSet = cs.getComputerSetSoftwareSet();
+    computerSetSoftwareSet.forEach(computerSetSoftware -> {
+      dto.setInventoryNumber(computerSetSoftware.getSoftware().getInventoryNumber());
+      dto.setName(computerSetSoftware.getSoftware().getName());
+      //dto.setValidFrom(computerSetSoftware.getSoftware().getValidFrom());
+      dto.setValidTo(computerSetSoftware.getSoftware().getValidTo());
+    });
+
+    PaginatedResult<HistoryDTO> response = new PaginatedResult<>();
+    response.setItems(dtos);
+    response.setTotalElements((long) dtos.size());
+    return response;
   }
 
   public PaginatedResult<HistoryDTO> getComputerSetHardwareHistory(Long computerSetId) {
 
-    return null;
+    List<HistoryDTO> dtos = new ArrayList<>();
+    HistoryDTO dto = new HistoryDTO();
+    ComputerSet cs = computerSetRepository.findById(computerSetId)
+            .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
+    Set<ComputerSetHardware> computerSetHardwareSet = cs.getComputerSetHardwareSet();
+    computerSetHardwareSet.forEach(computerSetHardware -> {
+      dto.setInventoryNumber(computerSetHardware.getHardware().getInventoryNumber());
+      dto.setName(computerSetHardware.getHardware().getName());
+      //dto.setValidFrom(computerSetHardware.getHardware().getValidFrom());
+      dto.setValidTo(computerSetHardware.getHardware().getValidTo());
+    });
+
+    PaginatedResult<HistoryDTO> response = new PaginatedResult<>();
+    response.setItems(dtos);
+    response.setTotalElements((long) dtos.size());
+    return response;
   }
 
   public PaginatedResult<HistoryDTO> getComputerSetAffiliationsHistory(Long computerSetId) {
+    List<HistoryDTO> dtos = new ArrayList<>();
+    HistoryDTO dto = new HistoryDTO();
+    ComputerSet cs = computerSetRepository.findById(computerSetId)
+            .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
+    Set<ComputerSetSoftware> computerSetSoftwareSet = cs.getComputerSetSoftwareSet();
+    computerSetSoftwareSet.forEach(computerSetSoftware -> {
+      dto.setInventoryNumber(computerSetSoftware.getSoftware().getInventoryNumber());
+      dto.setName(computerSetSoftware.getSoftware().getName());
+      //dto.setValidFrom(computerSetSoftware.getSoftware().getValidFrom());
+      dto.setValidTo(computerSetSoftware.getSoftware().getValidTo());
+    });
 
-    return null;
+    PaginatedResult<HistoryDTO> response = new PaginatedResult<>();
+    response.setItems(dtos);
+    response.setTotalElements((long) dtos.size());
+    return response;
   }
 
 }
