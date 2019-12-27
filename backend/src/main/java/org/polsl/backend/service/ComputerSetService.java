@@ -3,6 +3,7 @@ package org.polsl.backend.service;
 import org.polsl.backend.dto.PaginatedResult;
 import org.polsl.backend.dto.computerset.ComputerSetDTO;
 import org.polsl.backend.dto.computerset.ComputerSetOutputDTO;
+import org.polsl.backend.dto.history.HistoryDTO;
 import org.polsl.backend.entity.Affiliation;
 import org.polsl.backend.entity.AffiliationComputerSet;
 import org.polsl.backend.entity.ComputerSet;
@@ -248,6 +249,11 @@ public class ComputerSetService {
     dto.setSoftwareIds(softwareIds);
 
     return dto;
+  }
+
+  public PaginatedResult<HistoryDTO> getComputerSetSoftwareHistory(Long computerSetId) {
+
+    return null;
   }
 
 }
