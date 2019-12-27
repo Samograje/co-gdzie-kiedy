@@ -262,8 +262,8 @@ public class ComputerSetService {
     computerSetSoftwareSet.forEach(computerSetSoftware -> {
       dto.setInventoryNumber(computerSetSoftware.getSoftware().getInventoryNumber());
       dto.setName(computerSetSoftware.getSoftware().getName());
-      //dto.setValidFrom(computerSetSoftware.getSoftware().getValidFrom());
-      dto.setValidTo(computerSetSoftware.getSoftware().getValidTo());
+      dto.setValidFrom(computerSetSoftware.getValidFrom());
+      dto.setValidTo(computerSetSoftware.getValidTo());
     });
 
     PaginatedResult<HistoryDTO> response = new PaginatedResult<>();
@@ -282,8 +282,8 @@ public class ComputerSetService {
     computerSetHardwareSet.forEach(computerSetHardware -> {
       dto.setInventoryNumber(computerSetHardware.getHardware().getInventoryNumber());
       dto.setName(computerSetHardware.getHardware().getName());
-      //dto.setValidFrom(computerSetHardware.getHardware().getValidFrom());
-      dto.setValidTo(computerSetHardware.getHardware().getValidTo());
+      dto.setValidFrom(computerSetHardware.getValidFrom());
+      dto.setValidTo(computerSetHardware.getValidTo());
     });
 
     PaginatedResult<HistoryDTO> response = new PaginatedResult<>();
@@ -297,12 +297,11 @@ public class ComputerSetService {
     HistoryDTO dto = new HistoryDTO();
     ComputerSet cs = computerSetRepository.findById(computerSetId)
             .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
-    Set<ComputerSetSoftware> computerSetSoftwareSet = cs.getComputerSetSoftwareSet();
-    computerSetSoftwareSet.forEach(computerSetSoftware -> {
-      dto.setInventoryNumber(computerSetSoftware.getSoftware().getInventoryNumber());
-      dto.setName(computerSetSoftware.getSoftware().getName());
-      //dto.setValidFrom(computerSetSoftware.getSoftware().getValidFrom());
-      dto.setValidTo(computerSetSoftware.getSoftware().getValidTo());
+    Set<AffiliationComputerSet> affiliationComputerSetSet = cs.getAffiliationComputerSetSet();
+    affiliationComputerSetSet.forEach(affiliationComputerSet -> {
+      /*dto.setName(affiliationComputerSet.getAffiliation().getName());
+      dto.setValidFrom(computerSetSoftware.getSoftware().getValidFrom());
+      dto.setValidTo(affiliationComputerSet.getSoftware().getValidTo());*/
     });
 
     PaginatedResult<HistoryDTO> response = new PaginatedResult<>();
