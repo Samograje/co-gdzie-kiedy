@@ -99,4 +99,26 @@ public class ComputerSetController {
   public ResponseEntity<?> getComputerSetSoftwareHistory(@PathVariable(value = "id") Long id) {
     return ResponseEntity.ok(computerSetService.getComputerSetSoftwareHistory(id));
   }
+
+  /**
+   * Endpoint obsługujący uzyskiwanie historii oprogramowania zestawu komputerowego o podanym id.
+   *
+   * @param id ID zestawu komputerowego
+   * @return historia sprzętu dla zestawu komputerowego
+   */
+  @GetMapping("/{id}/hardware-history")
+  public ResponseEntity<?> getComputerSetHardwareHistory(@PathVariable(value = "id") Long id) {
+    return ResponseEntity.ok(computerSetService.getComputerSetHardwareHistory(id));
+  }
+
+  /**
+   * Endpoint obsługujący uzyskiwanie historii oprogramowania zestawu komputerowego o podanym id.
+   *
+   * @param id ID zestawu komputerowego
+   * @return historia osób i miejsc dla zestawu komputerowego
+   */
+  @GetMapping("/{id}/affiliations-history")
+  public ResponseEntity<?> getComputerSetAffiliationsHistory(@PathVariable(value = "id") Long id) {
+    return ResponseEntity.ok(computerSetService.getComputerSetAffiliationsHistory(id));
+  }
 }

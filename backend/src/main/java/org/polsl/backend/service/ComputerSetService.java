@@ -256,4 +256,14 @@ public class ComputerSetService {
     return null;
   }
 
+  public PaginatedResult<HistoryDTO> getComputerSetHardwareHistory(Long computerSetId) {
+
+    return null;
+  }
+
+  public PaginatedResult<HistoryDTO> getComputerSetAffiliationsHistory(Long computerSetId) {
+
+    return null;
+  }
+
 }
