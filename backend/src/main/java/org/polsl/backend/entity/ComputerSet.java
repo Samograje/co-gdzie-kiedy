@@ -8,7 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -41,85 +40,6 @@ public class ComputerSet {
   private Set<ComputerSetSoftware> computerSetSoftwareSet;
 
   public ComputerSet() {
-  }
-
-  public String getValidAffiliationName() {
-    for (AffiliationComputerSet affiliationComputerSet : affiliationComputerSetSet) {
-      if (affiliationComputerSet.getValidTo() == null) {
-        return affiliationComputerSet.getAffiliation().getFullName();
-      }
-    }
-    return null;
-  }
-
-  public Set<String> getValidHardwareInventoryNumbers() {
-    Set<String> inventoryNumbers = new HashSet<>();
-
-    computerSetHardwareSet.forEach(computerSetHardware -> {
-      if (computerSetHardware.getValidTo() == null) {
-        inventoryNumbers.add(computerSetHardware.getHardware().getInventoryNumber());
-      }
-    });
-
-    return inventoryNumbers;
-  }
-
-  public Set<String> getValidSoftwareInventoryNumbers() {
-    Set<String> inventoryNumbers = new HashSet<>();
-
-    computerSetSoftwareSet.forEach(computerSetSoftware -> {
-      if (computerSetSoftware.getValidTo() == null) {
-        inventoryNumbers.add(computerSetSoftware.getSoftware().getInventoryNumber());
-      }
-    });
-
-    return inventoryNumbers;
-  }
-
-
-  public Set<AffiliationComputerSet> getValidAffiliationComputerSetSet() {
-    if (affiliationComputerSetSet != null) {
-      Set<AffiliationComputerSet> validAffiliationComputerSetSet = affiliationComputerSetSet;
-      validAffiliationComputerSetSet.removeIf(validAffiliationComputerSet ->
-              validAffiliationComputerSet.getValidTo() == null);
-      return validAffiliationComputerSetSet;
-    } else {
-      return null;
-    }
-  }
-
-  public Long getCurrentAffiliationId() {
-
-    for (AffiliationComputerSet affiliationComputerSet : affiliationComputerSetSet) {
-      if (affiliationComputerSet.getValidTo() == null) {
-        return (affiliationComputerSet.getAffiliation()).getId();
-      }
-    }
-      return null;
-  }
-
-  public Set<Long> getCurrentHardwareIds() {
-    Set<Long> ids = new HashSet<>();
-
-    computerSetHardwareSet.forEach(computerSetHardware -> {
-      if (computerSetHardware.getValidTo() == null) {
-        ids.add(computerSetHardware.getHardware().getId());
-      }
-    });
-
-    return ids;
-  }
-
-  public Set<Long> getCurrentSoftwareIds() {
-    Set<Long> ids = new HashSet<>();
-
-    computerSetSoftwareSet.forEach(computerSetSoftware -> {
-      if (computerSetSoftware.getValidTo() == null) {
-        ids.add(computerSetSoftware.getSoftware().getId());
-      }
-    });
-
-    return ids;
   }
 
   public Long getId() {
