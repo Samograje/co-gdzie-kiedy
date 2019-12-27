@@ -264,6 +264,7 @@ public class ComputerSetService {
       dto.setName(computerSetSoftware.getSoftware().getName());
       dto.setValidFrom(computerSetSoftware.getValidFrom());
       dto.setValidTo(computerSetSoftware.getValidTo());
+      dtos.add(dto);
     });
 
     PaginatedResult<HistoryDTO> response = new PaginatedResult<>();
@@ -284,6 +285,7 @@ public class ComputerSetService {
       dto.setName(computerSetHardware.getHardware().getName());
       dto.setValidFrom(computerSetHardware.getValidFrom());
       dto.setValidTo(computerSetHardware.getValidTo());
+      dtos.add(dto);
     });
 
     PaginatedResult<HistoryDTO> response = new PaginatedResult<>();
@@ -299,9 +301,10 @@ public class ComputerSetService {
             .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
     Set<AffiliationComputerSet> affiliationComputerSetSet = cs.getAffiliationComputerSetSet();
     affiliationComputerSetSet.forEach(affiliationComputerSet -> {
-      /*dto.setName(affiliationComputerSet.getAffiliation().getName());
-      dto.setValidFrom(computerSetSoftware.getSoftware().getValidFrom());
-      dto.setValidTo(affiliationComputerSet.getSoftware().getValidTo());*/
+      dto.setName(AffiliationService.generateName(affiliationComputerSet.getAffiliation()));
+      dto.setValidFrom(affiliationComputerSet.getValidFrom());
+      dto.setValidTo(affiliationComputerSet.getValidTo());
+      dtos.add(dto);
     });
 
     PaginatedResult<HistoryDTO> response = new PaginatedResult<>();
