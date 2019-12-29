@@ -139,11 +139,13 @@ const styles = StyleSheet.create({
 
   // dotyczy widoku mobilnego
   list: {
+    borderWidth: 1,
+    borderTopWidth: 0,
     borderRadius: 2,
     overflow: 'hidden',
   },
   item: {
-    borderWidth: 1,
+    borderTopWidth: 1,
     borderBottomWidth: 0,
     padding: 5,
   },
