@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import HomepageComponent from './HomepageComponent';
+import request from "../../APIClient";
 
 class HomepageContainer extends Component {
   constructor(props) {
@@ -16,7 +17,7 @@ class HomepageContainer extends Component {
   }
 
   componentDidMount() {
-    fetch('/api/statistics')
+    request('/api/statistics')
       .then((response) => response.json())
       .then((response) => {
         this.setState({
