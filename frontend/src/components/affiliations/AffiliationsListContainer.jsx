@@ -47,7 +47,10 @@ class AffiliationsListContainer extends Component {
     const itemActions = [
       {
         label: 'Edytuj',
-        onClick: (itemData) => this.props.history.push(`/affiliations/edit/${itemData.id}`),
+        onClick: (itemData) => this.props.push('AffiliationDetails', {
+          mode: 'edit',
+          id: itemData.id,
+        }),
       },
       // TODO: akcja usuwania afiliacji
     ];
@@ -55,7 +58,9 @@ class AffiliationsListContainer extends Component {
     const footerActions = [
       {
         label: 'Dodaj osobę / miejsce',
-        onClick: () => this.props.history.push('/affiliations/create'),
+        onClick: () => this.props.push('AffiliationDetails', {
+          mode: 'create',
+        }),
       },
     ];
 
