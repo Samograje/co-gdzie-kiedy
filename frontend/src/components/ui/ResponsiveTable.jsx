@@ -144,9 +144,7 @@ const styles = StyleSheet.create({
   },
   item: {
     borderWidth: 1,
-    borderRadius: 2,
-    marginTop: 5,
-    marginBottom: 5,
+    borderBottomWidth: 0,
     padding: 5,
   },
   row: {
