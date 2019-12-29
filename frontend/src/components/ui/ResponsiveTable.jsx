@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Dimensions, FlatList, StyleSheet, Text, View} from "react-native";
+import {Button, Dimensions, StyleSheet, Text, View} from "react-native";
 import {mainColor} from "../../constValues";
 
 class ResponsiveTable extends React.Component {
@@ -28,42 +28,42 @@ class ResponsiveTable extends React.Component {
 
     const mobileLayout = (
       <View style={styles.list}>
-        <FlatList
-          data={items}
-          keyExtractor={(item) => item.id.toString()}
-          ListEmptyComponent={() => (
-            <View style={styles.item}>
-              <Text style={styles.text}>Brak elementów do wyświetlenia</Text>
-            </View>
-          )}
-          renderItem={({item}) => (
-            <View style={styles.item}>
 
-              {/* wiersze z danymi */}
-              {columns.map((column, key) => (
-                <View style={styles.row} key={key}>
-                  <Text style={[styles.label, styles.text]}>{column.label}</Text>
-                  <Text style={[styles.value, styles.text]}>{item[column.name]}</Text>
-                </View>
-              ))}
+        {/* rekordy */}
+        {items.map((item, idx) => (
+          <View style={styles.item} key={idx}>
 
-              {/* przyciski akcji */}
-              {itemActions && (
-                <View style={styles.buttons}>
-                  {itemActions.map((action, idx) => (
-                    <View style={styles.buttonContainerMobile} key={idx}>
-                      <Button
-                        title={action.label}
-                        onPress={() => action.onClick(item)}
-                        color={mainColor}
-                      />
-                    </View>
-                  ))}
-                </View>
-              )}
-            </View>
-          )}
-        />
+            {/* wiersze z danymi */}
+            {columns.map((column, key) => (
+              <View style={styles.row} key={key}>
+                <Text style={[styles.label, styles.text]}>{column.label}</Text>
+                <Text style={[styles.value, styles.text]}>{item[column.name]}</Text>
+              </View>
+            ))}
+
+            {/* przyciski akcji */}
+            {itemActions && (
+              <View style={styles.buttons}>
+                {itemActions.map((action, idx) => (
+                  <View style={styles.buttonContainerMobile} key={idx}>
+                    <Button
+                      title={action.label}
+                      onPress={() => action.onClick(item)}
+                      color={mainColor}
+                    />
+                  </View>
+                ))}
+              </View>
+            )}
+          </View>
+        ))}
+
+        {/* informacja o braku rekordów */}
+        {!items.length && (
+          <View style={styles.item}>
+            <Text style={styles.text}>Brak elementów do wyświetlenia</Text>
+          </View>
+        )}
       </View>
     );
 
