@@ -68,19 +68,17 @@ const WideTable = (props) => {
       )}
 
       {/* stopka */}
-      {items.length && (
-        <View style={[styles.tr, styles.footer]}>
-          {footerActions.map((action, idx) => (
-            <View style={styles.buttonContainer} key={idx}>
-              <Button
-                title={action.label}
-                onPress={() => action.onClick()}
-                color={mainColor}
-              />
-            </View>
-          ))}
-        </View>
-      )}
+      <View style={[styles.tr, styles.footer]}>
+        {footerActions.map((action, idx) => (
+          <View style={styles.buttonContainer} key={idx}>
+            <Button
+              title={action.label}
+              onPress={() => action.onClick()}
+              color={mainColor}
+            />
+          </View>
+        ))}
+      </View>
     </View>
   );
 };
