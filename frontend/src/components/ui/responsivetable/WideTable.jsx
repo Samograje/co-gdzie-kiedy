@@ -47,7 +47,7 @@ const WideTable = (props) => {
           {itemActions && (
             <View style={styles.cell}>
               {itemActions.map((action, idx) => (
-                <View style={styles.buttonContainerDesktop} key={idx}>
+                <View style={styles.buttonContainer} key={idx}>
                   <Button
                     title={action.label}
                     onPress={() => action.onClick(item)}
@@ -64,6 +64,21 @@ const WideTable = (props) => {
       {!items.length && (
         <View style={styles.tr}>
           <Text style={[styles.tdText, styles.text]}>Brak elementów do wyświetlenia</Text>
+        </View>
+      )}
+
+      {/* stopka */}
+      {items.length && (
+        <View style={[styles.tr, styles.footer]}>
+          {footerActions.map((action, idx) => (
+            <View style={styles.buttonContainer} key={idx}>
+              <Button
+                title={action.label}
+                onPress={() => action.onClick()}
+                color={mainColor}
+              />
+            </View>
+          ))}
         </View>
       )}
     </View>
@@ -97,12 +112,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   tdText: {},
-  buttonContainerDesktop: {
-    width: 75,
+  buttonContainer: {
     margin: 2,
   },
   text: {
     fontSize: 16,
+  },
+  footer: {
+    backgroundColor: 'lightgrey',
+    padding: 5,
   },
 });
 

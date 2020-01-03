@@ -31,7 +31,7 @@ const MobileTable = (props) => {
           {itemActions && (
             <View style={styles.buttons}>
               {itemActions.map((action, idx) => (
-                <View style={styles.buttonContainerMobile} key={idx}>
+                <View style={styles.buttonContainer} key={idx}>
                   <Button
                     title={action.label}
                     onPress={() => action.onClick(item)}
@@ -48,6 +48,21 @@ const MobileTable = (props) => {
       {!items.length && (
         <View style={styles.item}>
           <Text style={styles.text}>Brak elementów do wyświetlenia</Text>
+        </View>
+      )}
+
+      {/* stopka */}
+      {items.length && (
+        <View style={[styles.item, styles.footer]}>
+          {footerActions.map((action, idx) => (
+            <View style={styles.buttonContainer} key={idx}>
+              <Button
+                title={action.label}
+                onPress={() => action.onClick()}
+                color={mainColor}
+              />
+            </View>
+          ))}
         </View>
       )}
     </View>
@@ -85,12 +100,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexWrap: 'wrap',
   },
-  buttonContainerMobile: {
+  buttonContainer: {
     flex: 1,
     margin: 5,
   },
   text: {
     fontSize: 16,
+  },
+  footer: {
+    backgroundColor: 'lightgrey',
   },
 });
 
