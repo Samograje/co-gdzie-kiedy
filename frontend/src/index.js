@@ -37,12 +37,12 @@ const styles = StyleSheet.create({
 // ignorowanie warningów pochodzących z bibliotek
 const warnedComponents = ['ScrollView', 'TouchableOpacity'];
 const defineNewConsole = (oldConsole => ({
-  log: text => oldConsole.log(text),
-  info: text => oldConsole.info(text),
-  warn: text => {
+  log: (text) => oldConsole.log(text),
+  info: (text) => oldConsole.info(text),
+  warn: (text) => {
     let shouldIgnore = false;
     warnedComponents.forEach((name) => {
-      if (text.includes(name) && text.includes('Please update the following components:')) {
+      if (text.includes(`Please update the following components: ${name}`)) {
         shouldIgnore = true;
       }
     });
@@ -50,7 +50,7 @@ const defineNewConsole = (oldConsole => ({
       oldConsole.warn(text);
     }
   },
-  error: text => oldConsole.error(text)
+  error: (text) => oldConsole.error(text)
 }));
 window.console = defineNewConsole(window.console);
 
