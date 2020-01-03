@@ -1,19 +1,18 @@
 import React from 'react';
-import {Button, FlatList, ScrollView, StyleSheet, Text, View} from "react-native";
+import {Button, Dimensions, StyleSheet, Text, View} from "react-native";
 import {mainColor} from "../../constValues";
 
 class ResponsiveTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isWide: null,
+      isWide: Dimensions.get('window').width > 650,
     }
   }
 
-  handleLayout = ({nativeEvent}) => {
-    const {width} = nativeEvent.layout;
+  handleLayout = () => {
     this.setState({
-      isWide: width > 650,
+      isWide: Dimensions.get('window').width > 650,
     });
   };
 
@@ -29,37 +28,42 @@ class ResponsiveTable extends React.Component {
 
     const mobileLayout = (
       <View style={styles.list}>
-        <FlatList
-          data={items}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({item, index}) => (
-            <View style={[styles.item, index % 2 === 0 && styles.greyRow]}>
 
-              {/* wiersze z danymi */}
-              {columns.map((column, key) => (
-                <View style={styles.row} key={key}>
-                  <Text style={[styles.label, styles.text]}>{column.label}</Text>
-                  <Text style={[styles.value, styles.text]}>{item[column.name]}</Text>
-                </View>
-              ))}
+        {/* rekordy */}
+        {items.map((item, idx) => (
+          <View style={styles.item} key={idx}>
 
-              {/* przyciski akcji */}
-              {itemActions && (
-                <View style={styles.buttons}>
-                  {itemActions.map((action, idx) => (
-                    <View style={styles.buttonContainerMobile} key={idx}>
-                      <Button
-                        title={action.label}
-                        onPress={() => action.onClick(item)}
-                        color={mainColor}
-                      />
-                    </View>
-                  ))}
-                </View>
-              )}
-            </View>
-          )}
-        />
+            {/* wiersze z danymi */}
+            {columns.map((column, key) => (
+              <View style={styles.row} key={key}>
+                <Text style={[styles.label, styles.text]}>{column.label}</Text>
+                <Text style={[styles.value, styles.text]}>{item[column.name]}</Text>
+              </View>
+            ))}
+
+            {/* przyciski akcji */}
+            {itemActions && (
+              <View style={styles.buttons}>
+                {itemActions.map((action, idx) => (
+                  <View style={styles.buttonContainerMobile} key={idx}>
+                    <Button
+                      title={action.label}
+                      onPress={() => action.onClick(item)}
+                      color={mainColor}
+                    />
+                  </View>
+                ))}
+              </View>
+            )}
+          </View>
+        ))}
+
+        {/* informacja o braku rekordów */}
+        {!items.length && (
+          <View style={styles.item}>
+            <Text style={styles.text}>Brak elementów do wyświetlenia</Text>
+          </View>
+        )}
       </View>
     );
 
@@ -67,17 +71,17 @@ class ResponsiveTable extends React.Component {
       <View style={styles.table}>
 
         {/* nagłówki kolumn */}
-        <View style={styles.tr}>
+        <View style={styles.trHead}>
           {/* zadeklarowane kolumny */}
           {columns.map((column, key) => (
-            <View style={styles.th} key={key}>
+            <View style={styles.cell} key={key}>
               <Text style={[styles.thText, styles.text]}>{column.label}</Text>
             </View>
           ))}
 
           {/* kolumna akcji */}
           {itemActions && (
-            <View style={styles.th}>
+            <View style={styles.cell}>
               <Text style={[styles.thText, styles.text]}>Akcje</Text>
             </View>
           )}
@@ -85,18 +89,18 @@ class ResponsiveTable extends React.Component {
 
         {/* rekordy tabeli */}
         {items.map((item, rowId) => (
-          <View style={[styles.tr, rowId % 2 !== 0 && styles.greyRow]} key={rowId}>
+          <View style={styles.tr} key={rowId}>
 
             {/* dane do komórek */}
             {columns.map((column, key) => (
-              <View style={styles.td} key={key}>
+              <View style={styles.cell} key={key}>
                 <Text style={[styles.tdText, styles.text]}>{item[column.name]}</Text>
               </View>
             ))}
 
             {/* komórka z akcjami */}
             {itemActions && (
-              <View style={styles.td}>
+              <View style={styles.cell}>
                 {itemActions.map((action, idx) => (
                   <View style={styles.buttonContainerDesktop} key={idx}>
                     <Button
@@ -110,13 +114,20 @@ class ResponsiveTable extends React.Component {
             )}
           </View>
         ))}
+
+        {/* informacja o braku rekordów */}
+        {!items.length && (
+          <View style={styles.tr}>
+            <Text style={[styles.tdText, styles.text]}>Brak elementów do wyświetlenia</Text>
+          </View>
+        )}
       </View>
     );
 
     return (
-        <View style={styles.container} onLayout={this.handleLayout}>
-          {this.state.isWide ? wideLayout : mobileLayout}
-        </View>
+      <View style={styles.container} onLayout={this.handleLayout}>
+        {this.state.isWide ? wideLayout : mobileLayout}
+      </View>
     );
   }
 }
@@ -127,10 +138,20 @@ const styles = StyleSheet.create({
   },
 
   // dotyczy widoku mobilnego
-  list: {},
-  item: {},
+  list: {
+    borderWidth: 1,
+    borderTopWidth: 0,
+    borderRadius: 2,
+    overflow: 'hidden',
+  },
+  item: {
+    borderTopWidth: 1,
+    borderBottomWidth: 0,
+    padding: 5,
+  },
   row: {
     flexDirection: 'row',
+    margin: 2,
   },
   label: {
     flex: 1,
@@ -153,33 +174,36 @@ const styles = StyleSheet.create({
   },
 
   // dotyczy widoku tabeli na szerokie ekrany
-  table: {},
+  table: {
+    borderWidth: 1,
+    borderRadius: 2,
+    overflow: 'hidden',
+  },
   tr: {
     flexDirection: 'row',
+    borderTopWidth: 1,
+    padding: 2,
   },
-  th: {
-    flex: 1,
+  trHead: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    backgroundColor: 'darkgrey',
+    backgroundColor: 'lightgrey',
   },
-  thText: {
-    fontWeight: 'bold',
-  },
-  td: {
+  cell: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     flexWrap: 'wrap',
+    alignItems: 'center',
+  },
+  thText: {
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   tdText: {},
 
   // dotyczy obu widoków
   text: {
     fontSize: 16,
-  },
-  greyRow: {
-    backgroundColor: 'lightgrey',
   },
   buttonContainerDesktop: {
     width: 75,
