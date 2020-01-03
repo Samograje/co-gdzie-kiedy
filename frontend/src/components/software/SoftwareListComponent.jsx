@@ -1,7 +1,7 @@
 import React from 'react';
 import {ActivityIndicator, ScrollView, StyleSheet, View} from 'react-native';
 import ErrorElement from "../ui/ErrorElement";
-import ResponsiveTable from "../ui/ResponsiveTable";
+import ResponsiveTable from "../ui/responsivetable/ResponsiveTable";
 
 const SoftwareListComponent = (props) => {
   const {

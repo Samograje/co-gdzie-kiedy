@@ -1,6 +1,6 @@
 import React from 'react';
 import {ActivityIndicator, Button, ScrollView, StyleSheet, View} from 'react-native';
-import ResponsiveTable from "../ui/ResponsiveTable";
+import ResponsiveTable from "../ui/responsivetable/ResponsiveTable";
 import ErrorElement from "../ui/ErrorElement";
 
 const AffiliationsListComponent = (props) => {
