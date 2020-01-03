@@ -34,4 +34,25 @@ const styles = StyleSheet.create({
   },
 });
 
+// ignorowanie warningów pochodzących z bibliotek
+const warnedComponents = ['ScrollView', 'TouchableOpacity'];
+const defineNewConsole = (oldConsole => ({
+  log: text => oldConsole.log(text),
+  info: text => oldConsole.info(text),
+  warn: text => {
+    let shouldIgnore = false;
+    warnedComponents.forEach((name) => {
+      if (text.includes(name) && text.includes('Please update the following components:')) {
+        shouldIgnore = true;
+      }
+    });
+    if (!shouldIgnore) {
+      oldConsole.warn(text);
+    }
+  },
+  error: text => oldConsole.error(text)
+}));
+window.console = defineNewConsole(window.console);
+
+// renderowanie aplikacji do drzewa DOM
 ReactDom.render(<App/>, document.getElementById('root'));
