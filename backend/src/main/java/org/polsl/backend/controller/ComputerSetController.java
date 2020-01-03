@@ -101,7 +101,7 @@ public class ComputerSetController {
   }
 
   /**
-   * Endpoint obsługujący uzyskiwanie historii oprogramowania zestawu komputerowego o podanym id.
+   * Endpoint obsługujący uzyskiwanie historii sprzętów należących do zestawu komputerowego o podanym id.
    *
    * @param id ID zestawu komputerowego
    * @return historia sprzętu dla zestawu komputerowego
@@ -112,7 +112,7 @@ public class ComputerSetController {
   }
 
   /**
-   * Endpoint obsługujący uzyskiwanie historii oprogramowania zestawu komputerowego o podanym id.
+   * Endpoint obsługujący uzyskiwanie historii osób i miejsc przypisanych do zestawu komputerowego o podanym id.
    *
    * @param id ID zestawu komputerowego
    * @return historia osób i miejsc dla zestawu komputerowego
