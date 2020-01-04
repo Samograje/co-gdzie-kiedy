@@ -29,11 +29,16 @@ Aplikację można uruchomić na urządzeniu mobilnym lub w przeglądarce na komp
 
 ### Aplikacja mobilna
 
+Instrukcje przygotowania emulatora znajdują [na tej stronie](https://facebook.github.io/react-native/docs/getting-started) pod hasłem 'Preparing the Android device'
+
+Instrukcje przygotowania fizycznego urządzenia znajdują się [na tej stronie](https://facebook.github.io/react-native/docs/running-on-device)
+
+
 Polecenie:
 ```
 npm run android-dev
 ```
-Instaluje aplikację na podłączonym urządzeniu z systemem Android oraz uruchamia lokalny deweloperski serwer Metro. Aplikacja jest odświeżana przy każdej zmianie kodu źródłowego. Potrząśnięcie urządzeniem włącza opcje deweloperskie.
+Instaluje aplikację na dostępnym urządzeniu z systemem Android (fizyczne urządzenie lub emulator) oraz uruchamia lokalny deweloperski serwer Metro. Aplikacja jest odświeżana przy każdej zmianie kodu źródłowego. Potrząśnięcie urządzeniem włącza opcje deweloperskie.
 
 Na chwilę obecną nie ma informacji o sposobie uzyskania połączenia z api-serwerem oraz o sposobach debugowania aplikacji na urządzeniu.
 
