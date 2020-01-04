@@ -19,6 +19,8 @@ public interface ComputerSetHardwareRepository extends CrudRepository<ComputerSe
 
   List<ComputerSetHardware> findAllByHardwareId(Long id);
 
+  Set<ComputerSetHardware> findAllByComputerSetId(Long id);
+
   Set<ComputerSetHardware> findAllByComputerSetIdAndValidToIsNull(Long computerSetId);
 
   ComputerSetHardware findByComputerSetIdAndHardwareIdAndValidToIsNull(Long computerSetId, Long hardwareId);

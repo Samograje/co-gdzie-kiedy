@@ -1,7 +1,8 @@
 import React from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import {Button, ScrollView, StyleSheet, View} from 'react-native';
 import ErrorElement from "../ui/ErrorElement";
-import ResponsiveTable from "../ui/ResponsiveTable";
+import ResponsiveTable from "../ui/responsivetable/ResponsiveTable";
+import {mainColor} from "../../constValues";
 
 const HardwareListComponent = (props) => {
 
@@ -13,31 +14,43 @@ const HardwareListComponent = (props) => {
     onFetchData,
     columns,
     itemActions,
-    footerActions,
+    groupActions,
   } = props;
 
   return (
-    <View style={styles.container}>
-      {loading && (
-        <ActivityIndicator size="large"/>
-      )}
-      {error && (
-        <ErrorElement
-          message="Nie udało się pobrać danych z serwera"
-          type="error"
-        />
-      )}
-      {!loading && !error && (
-        <ResponsiveTable
-          items={items}
-          totalElements={totalElements}
-          onFetchData={onFetchData}
-          columns={columns}
-          itemActions={itemActions}
-          footerActions={footerActions}
-        />
-      )}
-    </View>
+    <ScrollView>
+      <View style={styles.container}>
+        {groupActions && (
+          <View style={styles.groupActions}>
+            {groupActions.map((action, idx) => (
+              <View style={styles.buttonContainer} key={idx}>
+                <Button
+                  title={action.label}
+                  onPress={action.onClick}
+                  color={mainColor}
+                />
+              </View>
+            ))}
+          </View>
+        )}
+        {error && (
+          <ErrorElement
+            message="Nie udało się pobrać danych z serwera"
+            type="error"
+          />
+        )}
+        {!error && (
+          <ResponsiveTable
+            items={items}
+            totalElements={totalElements}
+            loading={loading}
+            onFetchData={onFetchData}
+            columns={columns}
+            itemActions={itemActions}
+          />
+        )}
+      </View>
+    </ScrollView>
   );
 };
 
@@ -48,7 +61,15 @@ const styles = StyleSheet.create({
   responseText: {
     flex: 1,
     flexDirection: 'row'
-  }
+  },
+  groupActions: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  buttonContainer: {
+    margin: 5,
+  },
 });
 
 export default HardwareListComponent;

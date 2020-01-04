@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import HardwareListComponent from './HardwareListComponent';
+import request from "../../APIClient";
 
 class HardwareListContainer extends Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class HardwareListContainer extends Component {
   }
 
   fetchData = () => {
-    fetch('/api/hardware')
+    request('/api/hardware')
       .then((response) => response.json())
       .then((response) => {
         this.setState({
@@ -62,16 +63,33 @@ class HardwareListContainer extends Component {
     const itemActions = [
       {
         label: 'Edytuj',
-        onClick: (itemData) => this.props.history.push(`/hardware/edit/${itemData.id}`),
+        onClick: (itemData) => this.props.push('HardwareDetails', {
+          mode: 'edit',
+          id: itemData.id,
+        }),
       },
-      // TODO: akcja usuwania hardware'u
+      {
+        label: 'Usuń',
+        onClick: (itemData) => {
+          // TODO: usuwanie hardware'u
+        },
+      },
+      // TODO: akcje wyświetlania historii powiązań
     ];
 
-    const footerActions = [
+    const groupActions = [
       {
         label: 'Dodaj sprzęt',
-        onClick: () => this.props.history.push('/hardware/create'),
+        onClick: () => this.props.push('HardwareDetails', {
+          mode: 'create',
+        }),
       },
+      {
+        label: 'Wyszukaj za pomocą kodu QR',
+        onClick: () => {
+          // TODO: wyszukiwanie po kodzie QR
+        },
+      }
     ];
 
     return (
@@ -83,7 +101,7 @@ class HardwareListContainer extends Component {
         totalElements={this.state.totalElements}
         columns={columns}
         itemActions={itemActions}
-        footerActions={footerActions}
+        groupActions={groupActions}
       />
     );
   }

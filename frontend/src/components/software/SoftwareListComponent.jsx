@@ -1,7 +1,7 @@
 import React from 'react';
-import {ActivityIndicator, Button, StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import ErrorElement from "../ui/ErrorElement";
-import ResponsiveTable from "../ui/ResponsiveTable";
+import ResponsiveTable from "../ui/responsivetable/ResponsiveTable";
 
 const SoftwareListComponent = (props) => {
   const {
@@ -12,30 +12,29 @@ const SoftwareListComponent = (props) => {
     onFetchData,
     columns,
     itemActions,
-    footerActions,
+    groupActions,
   } = props;
   return (
+    <ScrollView>
       <View style={styles.container}>
-        {loading && (
-            <ActivityIndicator size="large"/>
-        )}
         {error && (
-            <ErrorElement
-                message="Nie udało się pobrać danych z serwera"
-                type="error"
-            />
+          <ErrorElement
+            message="Nie udało się pobrać danych z serwera"
+            type="error"
+          />
         )}
-        {!loading && !error && (
-            <ResponsiveTable
-                items={items}
-                totalElements={totalElements}
-                onFetchData={onFetchData}
-                columns={columns}
-                itemActions={itemActions}
-                footerActions={footerActions}
-            />
+        {!error && (
+          <ResponsiveTable
+            items={items}
+            totalElements={totalElements}
+            loading={loading}
+            onFetchData={onFetchData}
+            columns={columns}
+            itemActions={itemActions}
+          />
         )}
       </View>
+    </ScrollView>
   );
 };
 

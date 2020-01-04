@@ -2,30 +2,27 @@ import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {mainColor} from '../../constValues';
 
-const Topbar = ({label, isHomePage, onGoBack}) => {
+// komponent nagłówka wykrzystywany w stronie internetowej
+
+const Topbar = ({onPress}) => {
   return (
     <View style={styles.topbar}>
-      {!isHomePage && (
-        // TODO: zamiast tego można by renderować ikonę powrotu
-        <TouchableOpacity
-          style={styles.button}
-          onPress={onGoBack}
-        >
-          <Text style={styles.buttonLabel}>Wróć</Text>
-        </TouchableOpacity>
-      )}
-      <Text style={styles.label}>{label}</Text>
+      <TouchableOpacity onPress={onPress}>
+        <Text style={styles.label}>
+          Co gdzie kiedy
+        </Text>
+      </TouchableOpacity>
     </View>
   )
 };
 
-const withTopbar = (MainComponent, label, isHomePage) => {
+const withTopbar = (MainComponent) => {
   return (props) => (
     <>
       <Topbar
-        label={label}
-        isHomePage={isHomePage}
-        onGoBack={props.history.goBack}
+        onPress={() => {
+          props.push('Home');
+        }}
       />
       <MainComponent {...props}/>
     </>
@@ -38,13 +35,13 @@ const styles = StyleSheet.create({
     height: 50,
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
   },
   label: {
     color: 'white',
     fontSize: 20,
     fontWeight: 'bold',
     marginLeft: 20,
+    textDecorationLine: 'underline',
   },
   button: {
     backgroundColor: 'white',
