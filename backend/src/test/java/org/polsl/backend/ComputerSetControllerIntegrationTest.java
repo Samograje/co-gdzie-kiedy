@@ -56,13 +56,27 @@ public class ComputerSetControllerIntegrationTest {
       .andExpect(jsonPath("$.items", hasSize(3)))
       .andExpect(jsonPath("$.items[0].id").value(1))
       .andExpect(jsonPath("$.items[0].name").value("HP ProBook"))
-      .andExpect(jsonPath("$.items[0].inventoryNumber").value("C1/2019"))
+      .andExpect(jsonPath("$.items[0].computerSetInventoryNumber").value("C1/2019"))
+      .andExpect(jsonPath("$.items[0].affiliationName").value("Szymon Jęczyzel - Solaris"))
+      .andExpect(jsonPath("$.items[0].softwareInventoryNumbers", IsCollectionWithSize.hasSize(2)))
+      .andExpect(jsonPath("$.items[0].softwareInventoryNumbers[0]").value("S2/2019"))
+      .andExpect(jsonPath("$.items[0].softwareInventoryNumbers[1]").value("S1/2019"))
+      .andExpect(jsonPath("$.items[0].hardwareInventoryNumbers", IsCollectionWithSize.hasSize(2)))
+      .andExpect(jsonPath("$.items[0].hardwareInventoryNumbers[0]").value("H1/2019"))
+      .andExpect(jsonPath("$.items[0].hardwareInventoryNumbers[1]").value("H3/2019"))
       .andExpect(jsonPath("$.items[1].id").value(2))
       .andExpect(jsonPath("$.items[1].name").value("ACER Laptop"))
-      .andExpect(jsonPath("$.items[1].inventoryNumber").value("C2/2019"))
+      .andExpect(jsonPath("$.items[1].computerSetInventoryNumber").value("C2/2019"))
+      .andExpect(jsonPath("$.items[1].affiliationName").value("Bartłomiej Szlachta - 130"))
+      .andExpect(jsonPath("$.items[1].softwareInventoryNumbers", IsCollectionWithSize.hasSize(1)))
+      .andExpect(jsonPath("$.items[1].softwareInventoryNumbers[0]").value("S1/2019"))
+      .andExpect(jsonPath("$.items[1].hardwareInventoryNumbers", IsCollectionWithSize.hasSize(0)))
       .andExpect(jsonPath("$.items[2].id").value(4))
       .andExpect(jsonPath("$.items[2].name").value("Lenovo Legion"))
-      .andExpect(jsonPath("$.items[2].inventoryNumber").value("C4/2019"));
+      .andExpect(jsonPath("$.items[2].computerSetInventoryNumber").value("C4/2019"))
+      .andExpect(jsonPath("$.items[2].affiliationName").value("Jan Kowalski"))
+      .andExpect(jsonPath("$.items[2].softwareInventoryNumbers", IsCollectionWithSize.hasSize(0)))
+      .andExpect(jsonPath("$.items[2].hardwareInventoryNumbers", IsCollectionWithSize.hasSize(0)));
   }
 
   @Test
