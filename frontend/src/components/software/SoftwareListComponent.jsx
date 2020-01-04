@@ -12,7 +12,7 @@ const SoftwareListComponent = (props) => {
     onFetchData,
     columns,
     itemActions,
-    footerActions,
+    groupActions,
   } = props;
   return (
     <ScrollView>
@@ -33,7 +33,6 @@ const SoftwareListComponent = (props) => {
             onFetchData={onFetchData}
             columns={columns}
             itemActions={itemActions}
-            footerActions={footerActions}
           />
         )}
       </View>

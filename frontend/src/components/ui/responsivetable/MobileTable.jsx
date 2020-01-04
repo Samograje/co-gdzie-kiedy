@@ -9,7 +9,6 @@ const MobileTable = (props) => {
     onFetchData,
     columns,
     itemActions,
-    footerActions,
   } = props;
 
   return (

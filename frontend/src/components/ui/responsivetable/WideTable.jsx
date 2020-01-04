@@ -9,7 +9,6 @@ const WideTable = (props) => {
     onFetchData,
     columns,
     itemActions,
-    footerActions,
   } = props;
 
   return (
