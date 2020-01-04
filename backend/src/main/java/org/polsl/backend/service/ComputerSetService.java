@@ -258,12 +258,13 @@ public class ComputerSetService {
   public PaginatedResult<HistoryDTO> getComputerSetSoftwareHistory(Long computerSetId) {
 
     List<HistoryDTO> dtos = new ArrayList<>();
-    HistoryDTO dto = new HistoryDTO();
+
     ComputerSet cs = computerSetRepository.findById(computerSetId)
             .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
 
     Set<ComputerSetSoftware> computerSetSoftwareSet = cs.getComputerSetSoftwareSet();
     computerSetSoftwareSet.forEach(computerSetSoftware -> {
+      HistoryDTO dto = new HistoryDTO();
       dto.setInventoryNumber(computerSetSoftware.getSoftware().getInventoryNumber());
       dto.setName(computerSetSoftware.getSoftware().getName());
       dto.setValidFrom(computerSetSoftware.getValidFrom());
@@ -280,11 +281,11 @@ public class ComputerSetService {
   public PaginatedResult<HistoryDTO> getComputerSetHardwareHistory(Long computerSetId) {
 
     List<HistoryDTO> dtos = new ArrayList<>();
-    HistoryDTO dto = new HistoryDTO();
     ComputerSet cs = computerSetRepository.findById(computerSetId)
             .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
     Set<ComputerSetHardware> computerSetHardwareSet = cs.getComputerSetHardwareSet();
     computerSetHardwareSet.forEach(computerSetHardware -> {
+      HistoryDTO dto = new HistoryDTO();
       dto.setInventoryNumber(computerSetHardware.getHardware().getInventoryNumber());
       dto.setName(computerSetHardware.getHardware().getName());
       dto.setValidFrom(computerSetHardware.getValidFrom());
@@ -300,11 +301,12 @@ public class ComputerSetService {
 
   public PaginatedResult<HistoryDTO> getComputerSetAffiliationsHistory(Long computerSetId) {
     List<HistoryDTO> dtos = new ArrayList<>();
-    HistoryDTO dto = new HistoryDTO();
+
     ComputerSet cs = computerSetRepository.findById(computerSetId)
             .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
     Set<AffiliationComputerSet> affiliationComputerSetSet = cs.getAffiliationComputerSetSet();
     affiliationComputerSetSet.forEach(affiliationComputerSet -> {
+      HistoryDTO dto = new HistoryDTO();
       dto.setName(AffiliationService.generateName(affiliationComputerSet.getAffiliation()));
       dto.setValidFrom(affiliationComputerSet.getValidFrom());
       dto.setValidTo(affiliationComputerSet.getValidTo());
