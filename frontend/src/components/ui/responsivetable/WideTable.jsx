@@ -80,7 +80,7 @@ const WideTable = (props) => {
       {/* stopka */}
       <View style={[styles.tr, styles.footer]}>
         <Text style={styles.text}>
-          Wyświetla {items.length || 0} z {totalElements} elementów
+          Wyświetla {items.length || 0} z {totalElements || 0} elementów
         </Text>
       </View>
     </View>
