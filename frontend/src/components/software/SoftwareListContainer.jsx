@@ -60,19 +60,19 @@ class SoftwareListContainer extends Component {
     const itemActions = [
       {
         label: 'Edytuj',
-        onClick: (itemData) => this.props.history.push(`/software/edit/${itemData.id}`),
+        onClick: (itemData) => this.props.push('SoftwareDetails', {
+          mode: 'edit',
+          id: itemData.id,
+        }),
       },
-      {
-        label: 'Usuń',
-        onClick: (itemData) => {
-          // TODO: usuwanie software'u
-        },
-      }
+      // TODO: akcja usuwania oprogramowania
     ];
     const footerActions = [
       {
         label: 'Dodaj oprogramowanie',
-        onClick: () => this.props.history.push('/software/create'),
+        onClick: () => this.props.push('SoftwareDetails', {
+          mode: 'create',
+        }),
       },
     ];
     return (
