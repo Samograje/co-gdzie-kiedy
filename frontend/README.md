@@ -14,7 +14,7 @@ Wykorzystywane technologie:
 ## Przygotowanie środowiska deweloperskiego
 
 Wymagane do uruchomienia strony internetowej oraz aplikacji mobilnej:
-1. Instalacja npm w wersji 10.16 (składnika [node.js](https://nodejs.org/en/))
+1. Instalacja [node.js](https://nodejs.org/en/) w wersji 10.16
 2. Pobranie plików bibliotek - polecenie `npm i` w katalogu `frontend`
 
 Dodatkowe czynności wymagane do uruchomienia aplikacji mobilnej:
