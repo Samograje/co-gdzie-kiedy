@@ -53,15 +53,9 @@ const MobileTable = (props) => {
 
       {/* stopka */}
       <View style={[styles.item, styles.footer]}>
-        {footerActions && footerActions.map((action, idx) => (
-          <View style={styles.buttonContainer} key={idx}>
-            <Button
-              title={action.label}
-              onPress={() => action.onClick()}
-              color={mainColor}
-            />
-          </View>
-        ))}
+        <Text style={styles.text}>
+          Wyświetla {items.length || 0} z {totalElements} elementów
+        </Text>
       </View>
     </View>
   );
@@ -106,6 +100,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   footer: {
+    justifyContent: 'center',
     backgroundColor: 'lightgrey',
   },
 });
