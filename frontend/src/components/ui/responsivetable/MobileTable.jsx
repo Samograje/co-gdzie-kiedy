@@ -39,8 +39,8 @@ const MobileTable = (props) => {
           {/* wiersze z danymi */}
           {columns.map((column, key) => (
             <View style={styles.row} key={key}>
-              <Text style={[styles.label, styles.text]}>{column.label}</Text>
-              <Text style={[styles.value, styles.text]}>{item[column.name]}</Text>
+              <Text style={[styles.text, styles.label]}>{column.label}</Text>
+              <Text style={[styles.text, styles.value]}>{item[column.name]}</Text>
             </View>
           ))}
 
