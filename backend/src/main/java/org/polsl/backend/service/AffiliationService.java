@@ -27,18 +27,18 @@ public class AffiliationService {
   static String generateName(Affiliation affiliation) {
     StringBuilder stringBuilder = new StringBuilder();
     boolean isSeparatorNeeded = false;
-    if (affiliation.getFirstName().length() > 0) {
+    if (affiliation.getFirstName() != null && affiliation.getFirstName().length() > 0) {
       stringBuilder.append(affiliation.getFirstName());
       isSeparatorNeeded = true;
     }
-    if (affiliation.getLastName().length() > 0) {
+    if (affiliation.getLastName() != null && affiliation.getLastName().length() > 0) {
       if (isSeparatorNeeded) {
         stringBuilder.append(" ");
       }
       stringBuilder.append(affiliation.getLastName());
       isSeparatorNeeded = true;
     }
-    if (affiliation.getLocation().length() > 0) {
+    if (affiliation.getLocation() != null && affiliation.getLocation().length() > 0) {
       if (isSeparatorNeeded) {
         stringBuilder.append(" - ");
       }
