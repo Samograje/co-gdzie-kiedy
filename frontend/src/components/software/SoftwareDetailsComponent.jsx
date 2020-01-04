@@ -14,16 +14,15 @@ const SoftwareDetailsComponent = (props) => {
       mode = "dodawania nowego";
   else
       return "";
-  console.log(props.dataForEditCall)
   return (
     <View style={styles.addform}>
       <Text style={styles.header}>Formularz {mode} oprogramowania.</Text>
       <View style={styles.onelineelement}>
       <Text style={styles.labeltext}>Nazwa oprogramowania:</Text>
       <TextInput style={styles.textinput}
-         placeholder={"np. Mathematica"}
-         onChangeText={(name) => props.setName(name)}
-         // value = {props.dataForEditCall.name}
+                 placeholder={"np. Mathematica"}
+                 onChangeText={(name) => props.setName(name)}
+                 value = {props.name}
       />
       </View>
       <View style={styles.onelineelement}>
@@ -31,6 +30,7 @@ const SoftwareDetailsComponent = (props) => {
         <TextInput style={styles.textinput}
                    placeholder={"np. T847-54GF-7845-FSF5"}
                    onChangeText={(key) => props.setKey(key)}
+                   value={props.keY}
         />
       </View>
       <View style={styles.onelineelement}>
@@ -38,6 +38,7 @@ const SoftwareDetailsComponent = (props) => {
         <TextInput style={styles.textinput}
                    placeholder={"np. 5"}
                    onChangeText={(availableKeys) => props.setAvailableKeys(availableKeys)}
+                   value={props.availableKeys}
         />
       </View>
       <View style={styles.onelineelement}>
@@ -45,6 +46,7 @@ const SoftwareDetailsComponent = (props) => {
         <TextInput style={styles.textinput}
                    placeholder={"Data końca licencji. "}
                    onChangeText={(duration) => props.setDuration(duration)}
+                   value={props.duration}
         />
       </View>
       <Button

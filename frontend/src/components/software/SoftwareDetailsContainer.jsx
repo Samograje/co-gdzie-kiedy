@@ -5,20 +5,22 @@ import request from "../../APIClient";
 class SoftwareDetailsContainer extends Component {
   constructor(props) {
     super(props);
-    this.addCall = this.addCall.bind(this);
     this.state = {
       name: '',
       key: '',
       availableKeys: '',
       duration: '',
-      mode: '',
-      id: '',
       loading: true,
       error: false,
     };
   }
 
-  addCall(){
+  componentDidMount() {
+    if(this.props.mode === 'edit')
+      this.getDataForEditCall();
+  }
+
+  addCall = () => {
     fetch('http://localhost:8080/api/software',{
       method: 'POST',
       body: JSON.stringify({
@@ -33,29 +35,23 @@ class SoftwareDetailsContainer extends Component {
       }
     }).then((response) => response.json())
       .then((responseJson) => {
+        console.log(responseJson);
         return responseJson;
       })
       .catch((error) => {
         console.error(error);
       });
-  }
+  };
 
   getDataForEditCall(){
-    console.log("XD");
-    fetch(`http://localhost:8080/api/software/${this.state.id}`,{
-      method: 'GET',
-    }).then((response) => response.json())
+    fetch(`http://localhost:8080/api/software/${this.props.id}`)
+        .then(response => response.json())
         .then(responseJson => {
-          console.log(responseJson);
-          // this.setState({name: responseJson.name});
-          // this.setState( {key: responseJson.key});
-          // this.setState({availableKeys: responseJson.availableKeys});
-          // this.setState({duration: responseJson.duration});
-          return responseJson;
+          this.setState({ name: responseJson.name });
+          this.setState({ key: responseJson.key});
+          this.setState({ availableKeys: responseJson.availableKeys });
+          this.setState({ duration: responseJson.duration });
         })
-        .catch((error) => {
-          console.error(error);
-        });
   };
 
   onSubmit = () => this.addCall();
@@ -64,11 +60,8 @@ class SoftwareDetailsContainer extends Component {
   setKey = (value) => this.setState( {key: value});
   setAvailableKeys = (value) => this.setState({availableKeys: value});
   setDuration = (value) => this.setState({duration: value});
-  getState() {return this.state.mode};
 
   render() {
-    this.state.mode = this.props.mode;
-    this.state.id = this.props.id;
     return (
       <SoftwareDetailsComponent
         setText={this.setText}
@@ -78,8 +71,11 @@ class SoftwareDetailsContainer extends Component {
         setKey={this.setKey}
         setAvailableKeys={this.setAvailableKeys}
         setDuration={this.setDuration}
-        mode = {this.getState()}
-        dataForEditCall={this.getDataForEditCall()}
+        mode={this.props.mode}
+        name={this.state.name}
+        keY={this.state.key}
+        availableKeys={this.state.availableKeys}
+        duration={this.state.duration}
       />
     );
   }
