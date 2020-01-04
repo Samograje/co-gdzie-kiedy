@@ -14,7 +14,7 @@ const SoftwareDetailsComponent = (props) => {
       mode = "dodawania nowego";
   else
       return "";
-  console.log(mode);
+  console.log(props.dataForEditCall)
   return (
     <View style={styles.addform}>
       <Text style={styles.header}>Formularz {mode} oprogramowania.</Text>
@@ -23,14 +23,15 @@ const SoftwareDetailsComponent = (props) => {
       <TextInput style={styles.textinput}
          placeholder={"np. Mathematica"}
          onChangeText={(name) => props.setName(name)}
+         // value = {props.dataForEditCall.name}
       />
       </View>
       <View style={styles.onelineelement}>
-      <Text style={styles.labeltext}>Klucz produktu:</Text>
-      <TextInput style={styles.textinput}
-                 placeholder={"np. T847-54GF-7845-FSF5"}
-                 onChangeText={(key) => props.setKey(key)}
-      />
+        <Text style={styles.labeltext}>Klucz produktu:</Text>
+        <TextInput style={styles.textinput}
+                   placeholder={"np. T847-54GF-7845-FSF5"}
+                   onChangeText={(key) => props.setKey(key)}
+        />
       </View>
       <View style={styles.onelineelement}>
         <Text style={styles.labeltext}>Ilość dostępnych kluczy:</Text>
@@ -60,7 +61,6 @@ const SoftwareDetailsComponent = (props) => {
 
 const styles = StyleSheet.create({
     addform: {
-        backgroundColor: '#f4f4f4',
         alignSelf: 'center',
         padding: 15,
     },
