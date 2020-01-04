@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
   trHead: {
     flexDirection: 'row',
     backgroundColor: 'lightgrey',
+    padding: 2,
   },
   cell: {
     flex: 1,
