@@ -3,6 +3,7 @@ package org.polsl.backend.service;
 import org.polsl.backend.dto.PaginatedResult;
 import org.polsl.backend.dto.computerset.ComputerSetDTO;
 import org.polsl.backend.dto.computerset.ComputerSetListOutputDTO;
+import org.polsl.backend.dto.history.HistoryDTO;
 import org.polsl.backend.entity.Affiliation;
 import org.polsl.backend.entity.AffiliationComputerSet;
 import org.polsl.backend.entity.ComputerSet;
@@ -254,37 +255,66 @@ public class ComputerSetService {
     return dto;
   }
 
-  public String getValidAffiliationName(ComputerSet cs) {
-    for (AffiliationComputerSet affiliationComputerSet : cs.getAffiliationComputerSetSet()) {
-      if (affiliationComputerSet.getValidTo() == null) {
-        return AffiliationService.generateName(affiliationComputerSet.getAffiliation());
-      }
-    }
-    return null;
-  }
+  public PaginatedResult<HistoryDTO> getComputerSetSoftwareHistory(Long computerSetId) {
 
-  public Set<String> getValidHardwareInventoryNumbers(ComputerSet cs) {
-    Set<String> inventoryNumbers = new HashSet<>();
+    List<HistoryDTO> dtos = new ArrayList<>();
+    HistoryDTO dto = new HistoryDTO();
+    ComputerSet cs = computerSetRepository.findById(computerSetId)
+            .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
 
-    cs.getComputerSetHardwareSet().forEach(computerSetHardware -> {
-      if (computerSetHardware.getValidTo() == null) {
-        inventoryNumbers.add(computerSetHardware.getHardware().getInventoryNumber());
-      }
+    Set<ComputerSetSoftware> computerSetSoftwareSet = cs.getComputerSetSoftwareSet();
+    computerSetSoftwareSet.forEach(computerSetSoftware -> {
+      dto.setInventoryNumber(computerSetSoftware.getSoftware().getInventoryNumber());
+      dto.setName(computerSetSoftware.getSoftware().getName());
+      dto.setValidFrom(computerSetSoftware.getValidFrom());
+      dto.setValidTo(computerSetSoftware.getValidTo());
+      dtos.add(dto);
     });
 
-    return inventoryNumbers;
+    PaginatedResult<HistoryDTO> response = new PaginatedResult<>();
+    response.setItems(dtos);
+    response.setTotalElements((long) dtos.size());
+    return response;
   }
 
-  public Set<String> getValidSoftwareInventoryNumbers(ComputerSet cs) {
-    Set<String> inventoryNumbers = new HashSet<>();
+  public PaginatedResult<HistoryDTO> getComputerSetHardwareHistory(Long computerSetId) {
 
-    cs.getComputerSetSoftwareSet().forEach(computerSetSoftware -> {
-      if (computerSetSoftware.getValidTo() == null) {
-        inventoryNumbers.add(computerSetSoftware.getSoftware().getInventoryNumber());
-      }
+    List<HistoryDTO> dtos = new ArrayList<>();
+    HistoryDTO dto = new HistoryDTO();
+    ComputerSet cs = computerSetRepository.findById(computerSetId)
+            .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
+    Set<ComputerSetHardware> computerSetHardwareSet = cs.getComputerSetHardwareSet();
+    computerSetHardwareSet.forEach(computerSetHardware -> {
+      dto.setInventoryNumber(computerSetHardware.getHardware().getInventoryNumber());
+      dto.setName(computerSetHardware.getHardware().getName());
+      dto.setValidFrom(computerSetHardware.getValidFrom());
+      dto.setValidTo(computerSetHardware.getValidTo());
+      dtos.add(dto);
     });
 
-    return inventoryNumbers;
+    PaginatedResult<HistoryDTO> response = new PaginatedResult<>();
+    response.setItems(dtos);
+    response.setTotalElements((long) dtos.size());
+    return response;
+  }
+
+  public PaginatedResult<HistoryDTO> getComputerSetAffiliationsHistory(Long computerSetId) {
+    List<HistoryDTO> dtos = new ArrayList<>();
+    HistoryDTO dto = new HistoryDTO();
+    ComputerSet cs = computerSetRepository.findById(computerSetId)
+            .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
+    Set<AffiliationComputerSet> affiliationComputerSetSet = cs.getAffiliationComputerSetSet();
+    affiliationComputerSetSet.forEach(affiliationComputerSet -> {
+      dto.setName(AffiliationService.generateName(affiliationComputerSet.getAffiliation()));
+      dto.setValidFrom(affiliationComputerSet.getValidFrom());
+      dto.setValidTo(affiliationComputerSet.getValidTo());
+      dtos.add(dto);
+    });
+
+    PaginatedResult<HistoryDTO> response = new PaginatedResult<>();
+    response.setItems(dtos);
+    response.setTotalElements((long) dtos.size());
+    return response;
   }
 
   //region metodyPomocnicze
@@ -320,6 +350,39 @@ public class ComputerSetService {
     });
 
     return ids;
+  }
+
+  public String getValidAffiliationName(ComputerSet cs) {
+    for (AffiliationComputerSet affiliationComputerSet : cs.getAffiliationComputerSetSet()) {
+      if (affiliationComputerSet.getValidTo() == null) {
+        return AffiliationService.generateName(affiliationComputerSet.getAffiliation());
+      }
+    }
+    return null;
+  }
+
+  public Set<String> getValidHardwareInventoryNumbers(ComputerSet cs) {
+    Set<String> inventoryNumbers = new HashSet<>();
+
+    cs.getComputerSetHardwareSet().forEach(computerSetHardware -> {
+      if (computerSetHardware.getValidTo() == null) {
+        inventoryNumbers.add(computerSetHardware.getHardware().getInventoryNumber());
+      }
+    });
+
+    return inventoryNumbers;
+  }
+
+  public Set<String> getValidSoftwareInventoryNumbers(ComputerSet cs) {
+    Set<String> inventoryNumbers = new HashSet<>();
+
+    cs.getComputerSetSoftwareSet().forEach(computerSetSoftware -> {
+      if (computerSetSoftware.getValidTo() == null) {
+        inventoryNumbers.add(computerSetSoftware.getSoftware().getInventoryNumber());
+      }
+    });
+
+    return inventoryNumbers;
   }
   //endregion
 }
