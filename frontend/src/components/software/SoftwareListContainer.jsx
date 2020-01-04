@@ -17,6 +17,10 @@ class SoftwareListContainer extends Component {
   }
 
   fetchData = () => {
+    this.setState({
+      loading: true,
+      error: false,
+    });
     request('/api/software')
         .then((response) => response.json())
         .then((response) => {

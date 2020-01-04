@@ -18,6 +18,10 @@ class HardwareListContainer extends Component {
   }
 
   fetchData = () => {
+    this.setState({
+      loading: true,
+      error: false,
+    });
     request('/api/hardware')
       .then((response) => response.json())
       .then((response) => {

@@ -19,6 +19,10 @@ class AffiliationsListContainer extends Component {
   }
 
   fetchData = () => {
+    this.setState({
+      loading: true,
+      error: false,
+    });
     request('/api/affiliations')
       .then((response) => response.json())
       .then((response) => {
