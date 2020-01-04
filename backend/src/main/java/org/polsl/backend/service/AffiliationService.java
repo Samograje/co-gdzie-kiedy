@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Logika biznesowa przynależności.
@@ -25,21 +24,21 @@ public class AffiliationService {
     this.affiliationRepository = affiliationRepository;
   }
 
-  public static String generateName(Affiliation affiliation) {
+  static String generateName(Affiliation affiliation) {
     StringBuilder stringBuilder = new StringBuilder();
     boolean isSeparatorNeeded = false;
-    if (!Objects.equals(affiliation.getFirstName(), "")) {
+    if (affiliation.getFirstName().length() > 0) {
       stringBuilder.append(affiliation.getFirstName());
       isSeparatorNeeded = true;
     }
-    if (!Objects.equals(affiliation.getLastName(), "")) {
+    if (affiliation.getLastName().length() > 0) {
       if (isSeparatorNeeded) {
         stringBuilder.append(" ");
       }
       stringBuilder.append(affiliation.getLastName());
       isSeparatorNeeded = true;
     }
-    if (!Objects.equals(affiliation.getLocation(), "")) {
+    if (affiliation.getLocation().length() > 0) {
       if (isSeparatorNeeded) {
         stringBuilder.append(" - ");
       }
