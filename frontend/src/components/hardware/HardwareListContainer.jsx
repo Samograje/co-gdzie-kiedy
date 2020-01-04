@@ -27,7 +27,6 @@ class HardwareListContainer extends Component {
       .then((response) => {
         this.setState({
           loading: false,
-          error: false,
           ...response
         })
       })
