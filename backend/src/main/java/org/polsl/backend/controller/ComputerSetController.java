@@ -85,7 +85,7 @@ public class ComputerSetController {
    * @return zestaw komputerowy o danym id
    */
   @GetMapping("/{id}")
-  public ResponseEntity<?> getHardware(@PathVariable(value = "id") Long id) {
+  public ResponseEntity<?> getComputerSet(@PathVariable(value = "id") Long id) {
     return ResponseEntity.ok(computerSetService.getOneComputerSet(id));
   }
 
