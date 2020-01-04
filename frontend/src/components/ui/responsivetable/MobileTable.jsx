@@ -53,7 +53,7 @@ const MobileTable = (props) => {
 
       {/* stopka */}
       <View style={[styles.item, styles.footer]}>
-        {footerActions.map((action, idx) => (
+        {footerActions && footerActions.map((action, idx) => (
           <View style={styles.buttonContainer} key={idx}>
             <Button
               title={action.label}
