@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import HardwareListComponent from './HardwareListComponent';
+import request from "../../APIClient";
 
 class HardwareListContainer extends Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class HardwareListContainer extends Component {
   }
 
   fetchData = () => {
-    fetch('/api/hardware')
+    request('/api/hardware')
       .then((response) => response.json())
       .then((response) => {
         this.setState({
@@ -62,7 +63,10 @@ class HardwareListContainer extends Component {
     const itemActions = [
       {
         label: 'Edytuj',
-        onClick: (itemData) => this.props.history.push(`/hardware/edit/${itemData.id}`),
+        onClick: (itemData) => this.props.push('HardwareDetails', {
+          mode: 'edit',
+          id: itemData.id,
+        }),
       },
       {
         label: 'Usuń',
@@ -75,8 +79,11 @@ class HardwareListContainer extends Component {
     const footerActions = [
       {
         label: 'Dodaj sprzęt',
-        onClick: () => this.props.history.push('/hardware/create'),
+        onClick: () => this.props.push('HardwareDetails', {
+          mode: 'create',
+        }),
       },
+      // TODO: akcje wyświetlania historii oraz wyszukiwania po kodzie QR
     ];
 
     return (
