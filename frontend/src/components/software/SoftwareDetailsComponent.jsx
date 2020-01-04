@@ -7,46 +7,53 @@ import {Button,
         } from 'react-native';
 
 const SoftwareDetailsComponent = (props) => {
+  let mode;
+  if(props.mode === 'edit')
+      mode = "edycji";
+  else if (props.mode === 'create')
+      mode = "dodawania nowego";
+  else
+      return "";
+  console.log(mode);
   return (
     <View style={styles.addform}>
-      <Text style={styles.header}>Formularz dodawania lub edycji oprogramowania</Text>
-        <View style={styles.onelineelement}>
-            <Text style={styles.labeltext}>Nazwa oprogramowania:</Text>
-            <TextInput style={styles.textinput}
-                       placeholder={"np. Mathematica"}
-                       onChangeText={(name) => props.setName(name)}
-            />
-        </View>
-        <View style={styles.onelineelement}>
-            <Text style={styles.labeltext}>Klucz produktu:</Text>
-            <TextInput style={styles.textinput}
-                       placeholder={"np. T847-54GF-7845-FSF5"}
-                       onChangeText={(key) => props.setKey(key)}
-            />
-        </View>
-        <View style={styles.onelineelement}>
-            <Text style={styles.labeltext}>Ilość dostępnych kluczy:</Text>
-            <TextInput style={styles.textinput}
-                       placeholder={"np. 5"}
-                       onChangeText={(availableKeys) => props.setAvailableKeys(availableKeys)}
-            />
-        </View>
-        <View style={styles.onelineelement}>
-            <Text style={styles.labeltext}>Ważna do:</Text>
-            <TextInput style={styles.textinput}
-                       placeholder={"Data końca licencji. "}
-                       onChangeText={(duration) => props.setDuration(duration)}
-            />
-        </View>
-
-        <Button
-          title="Zapisz"
-          onPress={props.onSubmit}
+      <Text style={styles.header}>Formularz {mode} oprogramowania.</Text>
+      <View style={styles.onelineelement}>
+      <Text style={styles.labeltext}>Nazwa oprogramowania:</Text>
+      <TextInput style={styles.textinput}
+         placeholder={"np. Mathematica"}
+         onChangeText={(name) => props.setName(name)}
+      />
+      </View>
+      <View style={styles.onelineelement}>
+      <Text style={styles.labeltext}>Klucz produktu:</Text>
+      <TextInput style={styles.textinput}
+                 placeholder={"np. T847-54GF-7845-FSF5"}
+                 onChangeText={(key) => props.setKey(key)}
+      />
+      </View>
+      <View style={styles.onelineelement}>
+        <Text style={styles.labeltext}>Ilość dostępnych kluczy:</Text>
+        <TextInput style={styles.textinput}
+                   placeholder={"np. 5"}
+                   onChangeText={(availableKeys) => props.setAvailableKeys(availableKeys)}
         />
-        <Button
-          title="Wróć"
-          onPress={props.onReject}
+      </View>
+      <View style={styles.onelineelement}>
+        <Text style={styles.labeltext}>Ważna do:</Text>
+        <TextInput style={styles.textinput}
+                   placeholder={"Data końca licencji. "}
+                   onChangeText={(duration) => props.setDuration(duration)}
         />
+      </View>
+      <Button
+        title="Zapisz"
+        onPress={props.onSubmit}
+      />
+      <Button
+        title="Wróć"
+        onPress={props.onReject}
+      />
     </View>
   );
 };

@@ -10,8 +10,13 @@ class SoftwareDetailsContainer extends Component {
       key: '',
       availableKeys: '',
       duration: '',
+      mode: '',
+      id: '',
     };
   }
+
+
+
   addCall(){
     fetch('http://localhost:8080/api/software',{
       method: 'POST',
@@ -22,34 +27,34 @@ class SoftwareDetailsContainer extends Component {
         'Access-Control-Allow-Origin': '*',
       }
     }).then((response) => response.json())
-        .then((responseJson) => {
-          console.log(responseJson);
-          return responseJson;
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-
+      .then((responseJson) => {
+        console.log(responseJson);
+        return responseJson;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   onSubmit = () => this.addCall();
-
-  onReject = () => this.props.history.goBack();
-
+  onReject = () => this.props.goBack();
   setName = (value) => this.setState({name: value});
   setKey = (value) => this.setState( {key: value});
   setAvailableKeys = (value) => this.setState({availableKeys: value});
   setDuration = (value) => this.setState({duration: value});
-
+  getState() {return this.state.mode};
   render() {
+    this.state.mode = this.props.mode;
     return (
       <SoftwareDetailsComponent
-          onSubmit={this.onSubmit}
-          onReject={this.onReject}
-          setName={this.setName}
-          setKey={this.setKey}
-          setAvailableKeys={this.setAvailableKeys}
-          setDuration={this.setDuration}
+        setText={this.setText}
+        onSubmit={this.onSubmit}
+        onReject={this.onReject}
+        setName={this.setName}
+        setKey={this.setKey}
+        setAvailableKeys={this.setAvailableKeys}
+        setDuration={this.setDuration}
+        mode = {this.getState()}
       />
     );
   }
