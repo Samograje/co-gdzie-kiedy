@@ -1,11 +1,12 @@
 import React from 'react';
-import {Button, StyleSheet, Text, View} from 'react-native';
+import {ActivityIndicator, Button, StyleSheet, Text, View} from 'react-native';
 import {mainColor} from '../../../constValues';
 
 const MobileTable = (props) => {
   const {
     items,
     totalElements,
+    loading,
     onFetchData,
     columns,
     itemActions,
@@ -14,8 +15,25 @@ const MobileTable = (props) => {
   return (
     <View style={styles.list}>
 
+      {/* spinner ładowania danych */}
+      {loading && (
+        <View style={styles.loading}>
+          <ActivityIndicator
+            size="large"
+            color={mainColor}
+          />
+        </View>
+      )}
+
+      {/* informacja o braku rekordów */}
+      {!loading && !items.length && (
+        <View style={styles.item}>
+          <Text style={styles.text}>Brak elementów do wyświetlenia</Text>
+        </View>
+      )}
+
       {/* rekordy */}
-      {items.map((item, idx) => (
+      {!loading && items.map((item, idx) => (
         <View style={styles.item} key={idx}>
 
           {/* wiersze z danymi */}
@@ -42,13 +60,6 @@ const MobileTable = (props) => {
           )}
         </View>
       ))}
-
-      {/* informacja o braku rekordów */}
-      {!items.length && (
-        <View style={styles.item}>
-          <Text style={styles.text}>Brak elementów do wyświetlenia</Text>
-        </View>
-      )}
 
       {/* stopka */}
       <View style={[styles.item, styles.footer]}>
@@ -102,6 +113,11 @@ const styles = StyleSheet.create({
   footer: {
     justifyContent: 'center',
     backgroundColor: 'lightgrey',
+  },
+  loading: {
+    flex: 1,
+    borderTopWidth: 1,
+    padding: 5,
   },
 });
 

@@ -1,11 +1,12 @@
 import React from 'react';
-import {Button, StyleSheet, Text, View} from 'react-native';
+import {ActivityIndicator, Button, StyleSheet, Text, View} from 'react-native';
 import {mainColor} from '../../../constValues';
 
 const WideTable = (props) => {
   const {
     items,
     totalElements,
+    loading,
     onFetchData,
     columns,
     itemActions,
@@ -31,8 +32,25 @@ const WideTable = (props) => {
         )}
       </View>
 
+      {/* spinner ładowania danych */}
+      {loading && (
+        <View style={styles.loading}>
+          <ActivityIndicator
+            size="large"
+            color={mainColor}
+          />
+        </View>
+      )}
+
+      {/* informacja o braku rekordów */}
+      {!loading && !items.length && (
+        <View style={styles.tr}>
+          <Text style={[styles.tdText, styles.text]}>Brak elementów do wyświetlenia</Text>
+        </View>
+      )}
+
       {/* rekordy tabeli */}
-      {items.map((item, rowId) => (
+      {!loading && items.map((item, rowId) => (
         <View style={styles.tr} key={rowId}>
 
           {/* dane do komórek */}
@@ -58,13 +76,6 @@ const WideTable = (props) => {
           )}
         </View>
       ))}
-
-      {/* informacja o braku rekordów */}
-      {!items.length && (
-        <View style={styles.tr}>
-          <Text style={[styles.tdText, styles.text]}>Brak elementów do wyświetlenia</Text>
-        </View>
-      )}
 
       {/* stopka */}
       <View style={[styles.tr, styles.footer]}>
@@ -114,6 +125,11 @@ const styles = StyleSheet.create({
   footer: {
     justifyContent: 'center',
     backgroundColor: 'lightgrey',
+    padding: 5,
+  },
+  loading: {
+    flex: 1,
+    borderTopWidth: 1,
     padding: 5,
   },
 });

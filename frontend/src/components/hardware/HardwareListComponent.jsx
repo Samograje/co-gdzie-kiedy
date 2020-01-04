@@ -1,5 +1,5 @@
 import React from 'react';
-import {ActivityIndicator, Button, ScrollView, StyleSheet, View} from 'react-native';
+import {Button, ScrollView, StyleSheet, View} from 'react-native';
 import ErrorElement from "../ui/ErrorElement";
 import ResponsiveTable from "../ui/responsivetable/ResponsiveTable";
 import {mainColor} from "../../constValues";
@@ -33,19 +33,17 @@ const HardwareListComponent = (props) => {
             ))}
           </View>
         )}
-        {loading && (
-          <ActivityIndicator size="large"/>
-        )}
         {error && (
           <ErrorElement
             message="Nie udało się pobrać danych z serwera"
             type="error"
           />
         )}
-        {!loading && !error && (
+        {!error && (
           <ResponsiveTable
             items={items}
             totalElements={totalElements}
+            loading={loading}
             onFetchData={onFetchData}
             columns={columns}
             itemActions={itemActions}
