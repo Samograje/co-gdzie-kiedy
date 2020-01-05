@@ -228,6 +228,8 @@ public class ComputerSetService {
 
     dto.setName(computerSet.getName());
 
+    dto.setInventoryNumber(computerSet.getInventoryNumber());
+
     AffiliationComputerSet ac = affiliationComputerSetRepository.findByComputerSetIdAndValidToIsNull(id);
 
     dto.setAffiliationId(ac.getAffiliation().getId());
