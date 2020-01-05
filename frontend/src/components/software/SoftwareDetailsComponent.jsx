@@ -38,16 +38,16 @@ const SoftwareDetailsComponent = (props) => {
                  onChangeText={(availableKeys) => props.setAvailableKeys(availableKeys)}
                  value={props.availableKeys}
       />
-      <Text style={styles.labeltext}>* Ważna do:</Text>
+      <Text style={styles.labeltext}>* Czas trwania (w miesiącach):</Text>
       <TextInput style={styles.textinput}
-                 placeholder={"Data końca licencji. "}
+                 placeholder={"np. 4 "}
                  onChangeText={(duration) => props.setDuration(duration)}
                  value={props.duration}
       />
       <Button
         title="Zapisz"
         onPress={props.onSubmit}
-        disabled={!props.validationStatus}
+        // disabled={!props.validationStatus}
       />
       <Button
         title="Wróć"

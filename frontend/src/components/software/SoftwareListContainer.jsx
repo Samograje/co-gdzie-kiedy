@@ -53,7 +53,7 @@ class SoftwareListContainer extends Component {
       },
       {
         name: 'duration',
-        label: 'Ważna do',
+        label: 'Ważna przez (msc)',
       },
     ];
 
