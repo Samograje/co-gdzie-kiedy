@@ -47,7 +47,7 @@ const SoftwareDetailsComponent = (props) => {
       <Button
         title="Zapisz"
         onPress={props.onSubmit}
-        // disabled={!props.validationStatus}
+        disabled={!props.validationStatus}
       />
       <Button
         title="Wróć"
