@@ -12,7 +12,6 @@ const SoftwareListComponent = (props) => {
     onFetchData,
     columns,
     itemActions,
-    groupActions,
     footerActions,
   } = props;
   return (

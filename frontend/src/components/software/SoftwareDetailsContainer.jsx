@@ -55,12 +55,19 @@ class SoftwareDetailsContainer extends Component {
   getDataForEditCall(){
     fetch(`http://localhost:8080/api/software/${this.props.id}`)
         .then(response => response.json())
-        .then(responseJson => {
+        .then(response => {
+          let duration = response.duration;
+          let months = moment(duration).month() +  12 * (moment(duration).year() - moment(0).year());
+          if(months <= 0)
+            response.duration = "Licencja utraciła ważność";
+          else
+            response.duration = months;
+
           this.setState({
-            name: responseJson.name,
-            key: responseJson.key,
-            availableKeys: responseJson.availableKeys,
-            duration: responseJson.duration,
+            name: response.name,
+            key: response.key,
+            availableKeys: response.availableKeys,
+            duration: response.duration,
         });
         })
   };
