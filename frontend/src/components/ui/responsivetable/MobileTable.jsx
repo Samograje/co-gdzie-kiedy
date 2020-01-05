@@ -1,5 +1,12 @@
 import React from 'react';
-import {ActivityIndicator, Button, StyleSheet, Text, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Button,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import {mainColor} from '../../../constValues';
 
 const MobileTable = (props) => {
@@ -7,7 +14,7 @@ const MobileTable = (props) => {
     items,
     totalElements,
     loading,
-    onFetchData,
+    onFilterChange,
     columns,
     itemActions,
   } = props;

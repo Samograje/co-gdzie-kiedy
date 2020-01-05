@@ -11,7 +11,7 @@ const HardwareListComponent = (props) => {
     error,
     items,
     totalElements,
-    onFetchData,
+    onFilterChange,
     columns,
     itemActions,
     groupActions,
@@ -44,7 +44,7 @@ const HardwareListComponent = (props) => {
             items={items}
             totalElements={totalElements}
             loading={loading}
-            onFetchData={onFetchData}
+            onFilterChange={onFilterChange}
             columns={columns}
             itemActions={itemActions}
           />

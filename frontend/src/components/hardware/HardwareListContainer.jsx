@@ -10,6 +10,7 @@ class HardwareListContainer extends Component {
       error: false,
       items: [],
       totalElements: null,
+      filters: {},
     };
   }
 
@@ -17,12 +18,12 @@ class HardwareListContainer extends Component {
     this.fetchData();
   }
 
-  fetchData = () => {
+  fetchData = (options) => {
     this.setState({
       loading: true,
       error: false,
     });
-    request('/api/hardware')
+    request('/api/hardware', options)
       .then((response) => response.json())
       .then((response) => {
         this.setState({
@@ -36,6 +37,19 @@ class HardwareListContainer extends Component {
           error: true
         });
       })
+  };
+
+  handleFilterChange = (fieldName, text) => {
+    const newFilters = {
+      ...this.state.filters,
+      [fieldName]: text,
+    };
+    this.setState({
+      filters: newFilters,
+    });
+    this.fetchData({
+      filters: newFilters,
+    });
   };
 
   render() {
@@ -97,11 +111,12 @@ class HardwareListContainer extends Component {
 
     return (
       <HardwareListComponent
-        onFetchData={this.fetchData}
         error={this.state.error}
         loading={this.state.loading}
         items={this.state.items}
         totalElements={this.state.totalElements}
+        filters={this.state.filters}
+        onFilterChange={this.handleFilterChange}
         columns={columns}
         itemActions={itemActions}
         groupActions={groupActions}

@@ -1,5 +1,12 @@
 import React from 'react';
-import {ActivityIndicator, Button, StyleSheet, Text, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Button,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import {mainColor} from '../../../constValues';
 
 const WideTable = (props) => {
@@ -7,7 +14,7 @@ const WideTable = (props) => {
     items,
     totalElements,
     loading,
-    onFetchData,
+    onFilterChange,
     columns,
     itemActions,
   } = props;
@@ -21,6 +28,13 @@ const WideTable = (props) => {
         {columns.map((column, key) => (
           <View style={styles.cell} key={key}>
             <Text style={[styles.thText, styles.text]}>{column.label}</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Wyszukaj"
+              onChangeText={(text) => {
+                onFilterChange(column.name, text);
+              }}
+            />
           </View>
         ))}
 
@@ -132,6 +146,9 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     padding: 5,
   },
+  input: {
+    flex: 1,
+  }
 });
 
 export default WideTable;
