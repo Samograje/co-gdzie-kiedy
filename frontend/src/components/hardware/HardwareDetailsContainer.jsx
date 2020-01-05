@@ -42,14 +42,39 @@ class HardwareDetailsContainer extends Component {
         });
   };
 
+  getDataForEditCall(){
+    fetch(`http://localhost:8080/api/hardware/${this.props.id}`)
+        .then(response => response.json())
+        .then(responseJson => {
+          this.setState({
+            name: responseJson.name,
+            dictionaryID: responseJson.key,
+            affiliationID: responseJson.affiliationID,
+            computerSetID: responseJson.computerSetID
+          })})
+  };
+
   onSubmit = () => this.props.history.goBack();
   onReject = () => this.props.history.goBack();
+  setName = (value) => this.setState({name: value});
+  setDictionaryID = (value) => this.setState( {dictionaryID: value});
+  setAffiliationID = (value) => this.setState({affiliationID: value});
+  setComputerSetID = (value) => this.setState({computerSetID: value});
 
   render() {
     return (
         <HardwareDetailsComponent
             onSubmit={this.onSubmit}
             onReject={this.onReject}
+            setName={this.setName}
+            setDictionaryID={this.setDictionaryID}
+            setAffiliationID={this.setAffiliationID}
+            setComputerSetID={this.setComputerSetID}
+            mode={this.props.mode}
+            name={this.state.name}
+            dictionaryID={this.state.dictionaryID}
+            affiliationID={this.state.affiliationID}
+            computerSetID={this.state.computerSetID}
         />
     );
   }
