@@ -1,7 +1,8 @@
 import React from 'react';
-import {ActivityIndicator, ScrollView, StyleSheet, View} from 'react-native';
+import {Button, ScrollView, StyleSheet, View} from 'react-native';
 import ErrorElement from "../ui/ErrorElement";
-import ResponsiveTable from "../ui/ResponsiveTable";
+import ResponsiveTable from "../ui/responsivetable/ResponsiveTable";
+import {mainColor} from "../../constValues";
 
 const HardwareListComponent = (props) => {
 
@@ -13,14 +14,24 @@ const HardwareListComponent = (props) => {
     onFetchData,
     columns,
     itemActions,
-    footerActions,
+    groupActions,
   } = props;
 
   return (
     <ScrollView>
       <View style={styles.container}>
-        {loading && (
-          <ActivityIndicator size="large"/>
+        {groupActions && (
+          <View style={styles.groupActions}>
+            {groupActions.map((action, idx) => (
+              <View style={styles.buttonContainer} key={idx}>
+                <Button
+                  title={action.label}
+                  onPress={action.onClick}
+                  color={mainColor}
+                />
+              </View>
+            ))}
+          </View>
         )}
         {error && (
           <ErrorElement
@@ -28,14 +39,14 @@ const HardwareListComponent = (props) => {
             type="error"
           />
         )}
-        {!loading && !error && (
+        {!error && (
           <ResponsiveTable
             items={items}
             totalElements={totalElements}
+            loading={loading}
             onFetchData={onFetchData}
             columns={columns}
             itemActions={itemActions}
-            footerActions={footerActions}
           />
         )}
       </View>
@@ -50,7 +61,15 @@ const styles = StyleSheet.create({
   responseText: {
     flex: 1,
     flexDirection: 'row'
-  }
+  },
+  groupActions: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  buttonContainer: {
+    margin: 5,
+  },
 });
 
 export default HardwareListComponent;

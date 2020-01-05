@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import AffiliationsListComponent from './AffiliationsListComponent';
+import request from "../../APIClient";
 
 class AffiliationsListContainer extends Component {
 
@@ -18,7 +19,7 @@ class AffiliationsListContainer extends Component {
   }
 
   fetchData = () => {
-    fetch('/api/affiliations')
+    request('/api/affiliations')
       .then((response) => response.json())
       .then((response) => {
         this.setState({
@@ -46,15 +47,26 @@ class AffiliationsListContainer extends Component {
     const itemActions = [
       {
         label: 'Edytuj',
-        onClick: (itemData) => this.props.history.push(`/affiliations/edit/${itemData.id}`),
+        onClick: (itemData) => this.props.push('AffiliationDetails', {
+          mode: 'edit',
+          id: itemData.id,
+        }),
       },
-      // TODO: akcja usuwania afiliacji
+      {
+        label: 'Usuń',
+        onClick: (itemData) => {
+          // TODO: usuwanie afiliacji
+        },
+      },
+      // TODO: akcje wyświetlania historii powiązań
     ];
 
-    const footerActions = [
+    const groupActions = [
       {
         label: 'Dodaj osobę / miejsce',
-        onClick: () => this.props.history.push('/affiliations/create'),
+        onClick: () => this.props.push('AffiliationDetails', {
+          mode: 'create',
+        }),
       },
     ];
 
@@ -63,7 +75,7 @@ class AffiliationsListContainer extends Component {
         onFetchData={this.fetchData}
         columns={columns}
         itemActions={itemActions}
-        footerActions={footerActions}
+        groupActions={groupActions}
         {...this.state}
       />
     );
