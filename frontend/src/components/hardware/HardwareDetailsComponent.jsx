@@ -2,17 +2,17 @@ import React from 'react';
 import {Button, StyleSheet, Text, View, TextInput,} from 'react-native';
 
 const HardwareDetailsComponent = (props) => {
-  let mode;
+  let modeInfo;
   if (props.mode === 'edit')
-    mode = "edycji";
+    modeInfo = "edycji";
   else if (props.mode === 'create')
-    mode = "dodawania nowego";
+    modeInfo = "dodawania nowego";
   else
     return "";
 
   return (
       <View style={styles.addform}>
-        <Text style={styles.header}>Formularz {mode} sprzętu.</Text>
+        <Text style={styles.header}>Formularz {modeInfo} sprzętu.</Text>
         <View style={styles.onelineelement}>
           <Text style={styles.labeltext}>Nazwa sprzętu:</Text>
           <TextInput style={styles.textinput}
