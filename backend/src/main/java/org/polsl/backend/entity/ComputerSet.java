@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Klasa reprezentująca bazodanową encję zestawu komputerowego.
@@ -31,13 +31,13 @@ public class ComputerSet {
   private LocalDateTime validTo;
 
   @OneToMany(mappedBy = "computerSet")
-  private List<AffiliationComputerSet> affiliationComputerSetSet;
+  private Set<AffiliationComputerSet> affiliationComputerSetSet;
 
   @OneToMany(mappedBy = "computerSet")
-  private List<ComputerSetHardware> computerSetHardwareSet;
+  private Set<ComputerSetHardware> computerSetHardwareSet;
 
   @OneToMany(mappedBy = "computerSet")
-  private List<ComputerSetSoftware> computerSetSoftwareSet;
+  private Set<ComputerSetSoftware> computerSetSoftwareSet;
 
   public ComputerSet() {
   }
@@ -66,27 +66,27 @@ public class ComputerSet {
     this.inventoryNumber = inventoryNumber;
   }
 
-  public List<AffiliationComputerSet> getAffiliationComputerSetSet() {
+  public Set<AffiliationComputerSet> getAffiliationComputerSetSet() {
     return affiliationComputerSetSet;
   }
 
-  public void setAffiliationComputerSetSet(List<AffiliationComputerSet> affiliationComputerSetSet) {
+  public void setAffiliationComputerSetSet(Set<AffiliationComputerSet> affiliationComputerSetSet) {
     this.affiliationComputerSetSet = affiliationComputerSetSet;
   }
 
-  public List<ComputerSetHardware> getComputerSetHardwareSet() {
+  public Set<ComputerSetHardware> getComputerSetHardwareSet() {
     return computerSetHardwareSet;
   }
 
-  public void setComputerSetHardwareSet(List<ComputerSetHardware> computerSetHardwareSet) {
+  public void setComputerSetHardwareSet(Set<ComputerSetHardware> computerSetHardwareSet) {
     this.computerSetHardwareSet = computerSetHardwareSet;
   }
 
-  public List<ComputerSetSoftware> getComputerSetSoftwareSet() {
+  public Set<ComputerSetSoftware> getComputerSetSoftwareSet() {
     return computerSetSoftwareSet;
   }
 
-  public void setComputerSetSoftwareSet(List<ComputerSetSoftware> computerSetSoftwareSet) {
+  public void setComputerSetSoftwareSet(Set<ComputerSetSoftware> computerSetSoftwareSet) {
     this.computerSetSoftwareSet = computerSetSoftwareSet;
   }
 
