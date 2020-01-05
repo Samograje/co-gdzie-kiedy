@@ -34,10 +34,13 @@ const HardwareDetailsComponent = (props) => {
         <View style={styles.onelineelement}>
           <Text style={styles.labeltext}>Przynależność:</Text>
           <Picker
-              onValueChange={(itemValue, itemIndex) => props.setAffiliationID({affiliationID: itemValue})}>
+              //TODO: onValueChange nie działa jak należy, ale na dole już tak WTF?
+              onValueChange={(itemValue, itemIndex) => props.setAffiliationID(itemValue)}>
+            <Picker.Item label="--------" value={null}/>
             {
               props.dataSourceAffiliations.items.map((item, key) => (
-                  <Picker.Item label={item.name} value={item.name} key={key}/>)
+                      <Picker.Item label={item.name} value={item.id} key={key}/>
+                  )
               )
             }
           </Picker>
@@ -46,10 +49,12 @@ const HardwareDetailsComponent = (props) => {
         <View style={styles.onelineelement}>
           <Text style={styles.labeltext}>W zestawie komputerowym:</Text>
           <Picker
-              onValueChange={(itemValue, itemIndex) => props.setComputerSetID({computerSetID: itemValue})}>
+              onValueChange={(itemValue, itemIndex) => props.setComputerSetID(itemValue)}>
+            <Picker.Item label="--------" value={null}/>
             {
               props.dataSourceComputerSets.items.map((item, key) => (
-                  <Picker.Item label={item.name} value={item.name} key={key}/>)
+                      <Picker.Item label={item.name} value={item.id} key={key}/>
+                  )
               )
             }
           </Picker>

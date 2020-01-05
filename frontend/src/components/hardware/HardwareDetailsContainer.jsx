@@ -64,12 +64,13 @@ class HardwareDetailsContainer extends Component {
   };
 
   addCall = () => {
+    console.log(this.state.name+","+this.state.dictionaryID+","+this.state.dictionaryID+","+this.state.computerSetID)
     fetch('http://localhost:8080/api/hardware', {
       method: 'POST',
       body: JSON.stringify({
         "name": this.state.name,
         "dictionaryID": this.state.dictionaryID,
-        "affiliationID": this.state.affiliationID,
+        "affiliationID": this.state.dictionaryID,
         "computerSetID": this.state.computerSetID
       }),
       headers: {
