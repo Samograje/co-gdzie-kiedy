@@ -17,38 +17,30 @@ const SoftwareDetailsComponent = (props) => {
   return (
     <View style={styles.addform}>
       <Text style={styles.header}>Formularz {mode} oprogramowania.</Text>
-      <View style={styles.onelineelement}>
       <Text style={styles.labeltext}>Nazwa oprogramowania:</Text>
       <TextInput style={styles.textinput}
                  placeholder={"np. Mathematica"}
                  onChangeText={(name) => props.setName(name)}
                  value = {props.name}
       />
-      </View>
-      <View style={styles.onelineelement}>
         <Text style={styles.labeltext}>Klucz produktu:</Text>
         <TextInput style={styles.textinput}
                    placeholder={"np. T847-54GF-7845-FSF5"}
                    onChangeText={(key) => props.setKey(key)}
                    value={props.keY}
         />
-      </View>
-      <View style={styles.onelineelement}>
         <Text style={styles.labeltext}>Ilość dostępnych kluczy:</Text>
         <TextInput style={styles.textinput}
                    placeholder={"np. 5"}
                    onChangeText={(availableKeys) => props.setAvailableKeys(availableKeys)}
                    value={props.availableKeys}
         />
-      </View>
-      <View style={styles.onelineelement}>
         <Text style={styles.labeltext}>Ważna do:</Text>
         <TextInput style={styles.textinput}
                    placeholder={"Data końca licencji. "}
                    onChangeText={(duration) => props.setDuration(duration)}
                    value={props.duration}
         />
-      </View>
       <Button
         title="Zapisz"
         onPress={props.onSubmit}
@@ -67,22 +59,28 @@ const styles = StyleSheet.create({
         padding: 15,
     },
     labeltext: {
-      marginRight: 10,
+      marginTop: 10,
+      fontSize: 20,
+      marginBottom: 5,
+      fontWeight: 500,
     },
     header: {
         fontSize: 24,
         paddingBottom: 10,
-        marginBottom: 40,
+        marginBottom: 25,
         borderBottomColor: '#199187',
         borderBottomWidth: 1,
     },
     textinput: {
-
+      marginBottom: 10,
+      width: 500,
+      height: 35,
+      borderColor: '#009000',
+      borderWidth: 1.2,
+      padding: 2,
+      borderRadius: 7,
+      fontWeight: 500,
     },
-    onelineelement: {
-        flexDirection: 'row',
-        marginBottom: 15,
-    }
 });
 
 export default SoftwareDetailsComponent;
