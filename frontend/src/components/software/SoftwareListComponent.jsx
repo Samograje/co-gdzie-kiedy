@@ -1,6 +1,5 @@
 import React from 'react';
 import {ActivityIndicator, Button, ScrollView, StyleSheet, View} from 'react-native';
-import {ScrollView, StyleSheet, View} from 'react-native';
 import ErrorElement from "../ui/ErrorElement";
 import ResponsiveTable from "../ui/responsivetable/ResponsiveTable";
 
@@ -14,6 +13,7 @@ const SoftwareListComponent = (props) => {
     columns,
     itemActions,
     groupActions,
+    footerActions,
   } = props;
   return (
     <ScrollView>
