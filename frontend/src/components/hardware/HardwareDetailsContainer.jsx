@@ -14,6 +14,7 @@ class HardwareDetailsContainer extends Component {
       computerSetID: '',
       loading: true,
       error: false,
+      dataSourceAffiliations: { "items": []}
     };
   }
 
@@ -22,17 +23,16 @@ class HardwareDetailsContainer extends Component {
       this.getDataForEditCall();
 
     this.fetchDataAffiliations();
+    console.log("works");
   }
 
   fetchDataAffiliations = () => {
-    request('/api/affiliations')
+    request('http://localhost:8080/api/affiliations')
         .then((response) => response.json())
         .then((response) => {
           this.setState({
             loading: false,
-            dataSource: response
-            //...response,
-            //TODO: wartości do mapy wrzucić, dataSource:response to robi
+            dataSourceAffiliations: response
           });
         })
         .catch(() => {
@@ -41,11 +41,6 @@ class HardwareDetailsContainer extends Component {
             error: true,
           });
         })
-  };
-
-  //TODO: do usunięcia, tylko dla testów
-  GetPickerSelectedItemValue=()=>{
-    Alert.Alert(this.state.affiliationID);
   };
 
   addCall = () => {
@@ -112,6 +107,7 @@ class HardwareDetailsContainer extends Component {
             dictionaryID={this.state.dictionaryID}
             affiliationID={this.state.affiliationID}
             computerSetID={this.state.computerSetID}
+            dataSourceAffiliations={this.state.dataSourceAffiliations}
         />
     );
   }

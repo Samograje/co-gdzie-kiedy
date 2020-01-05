@@ -30,26 +30,17 @@ const HardwareDetailsComponent = (props) => {
                      value={props.dictionaryID}
           />
         </View>
+        <Text style={styles.labeltext}>Przynależność:</Text>
         <Picker
-            selectedValue={props.affiliationID}
             onValueChange={(itemValue, itemIndex) => props.setAffiliationID({affiliationID: itemValue})}>
           {
             //TODO: jakby ten dataSource był nullem?
-            props.dataSource.map((item, key) => (
+            props.dataSourceAffiliations.items.map((item, key) => (
                 <Picker.Item label={item.name} value={item.name} key={key}/>)
             )
           }
-
         </Picker>
-        /*<View style={styles.onelineelement}>
-          <Text style={styles.labeltext}>Przynależność:</Text>
-          <TextInput style={styles.textinput}
-                     placeholder={"np. Sala 410"}
-                     //TODO: dropdown na przynależność
-                     onChangeText={(affiliationID) => props.setAffiliationID(affiliationID)}
-                     value={props.affiliationID}
-          />
-        </View>*/
+
         <View style={styles.onelineelement}>
           <Text style={styles.labeltext}>W zestawie komputerowym:</Text>
           <TextInput style={styles.textinput}
