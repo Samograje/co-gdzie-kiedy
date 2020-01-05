@@ -9,41 +9,45 @@ import {Button,
 const SoftwareDetailsComponent = (props) => {
   let mode;
   if(props.mode === 'edit')
-      mode = "edycji";
+    mode = "edycji";
   else if (props.mode === 'create')
-      mode = "dodawania nowego";
+    mode = "dodawania nowego";
   else
-      return "";
+    return "";
+
   return (
     <View style={styles.addform}>
+
       <Text style={styles.header}>Formularz {mode} oprogramowania.</Text>
-      <Text style={styles.labeltext}>Nazwa oprogramowania:</Text>
+      <Text>Pola z * są obowiązkowe.</Text>
+      <Text style={styles.labeltext}>* Nazwa oprogramowania:</Text>
       <TextInput style={styles.textinput}
                  placeholder={"np. Mathematica"}
+                 value={props.name}
                  onChangeText={(name) => props.setName(name)}
-                 value = {props.name}
       />
-        <Text style={styles.labeltext}>Klucz produktu:</Text>
-        <TextInput style={styles.textinput}
-                   placeholder={"np. T847-54GF-7845-FSF5"}
-                   onChangeText={(key) => props.setKey(key)}
-                   value={props.keY}
-        />
-        <Text style={styles.labeltext}>Ilość dostępnych kluczy:</Text>
-        <TextInput style={styles.textinput}
-                   placeholder={"np. 5"}
-                   onChangeText={(availableKeys) => props.setAvailableKeys(availableKeys)}
-                   value={props.availableKeys}
-        />
-        <Text style={styles.labeltext}>Ważna do:</Text>
-        <TextInput style={styles.textinput}
-                   placeholder={"Data końca licencji. "}
-                   onChangeText={(duration) => props.setDuration(duration)}
-                   value={props.duration}
-        />
+      <Text style={styles.labeltext}>* Klucz produktu:</Text>
+      <TextInput style={styles.textinput}
+                 placeholder={"np. T847-54GF-7845-FSF5"}
+                 onChangeText={(key) => props.setKey(key)}
+                 value={props.keY}
+      />
+      <Text style={styles.labeltext}>* Ilość dostępnych kluczy:</Text>
+      <TextInput style={styles.textinput}
+                 placeholder={"np. 5"}
+                 onChangeText={(availableKeys) => props.setAvailableKeys(availableKeys)}
+                 value={props.availableKeys}
+      />
+      <Text style={styles.labeltext}>* Ważna do:</Text>
+      <TextInput style={styles.textinput}
+                 placeholder={"Data końca licencji. "}
+                 onChangeText={(duration) => props.setDuration(duration)}
+                 value={props.duration}
+      />
       <Button
         title="Zapisz"
         onPress={props.onSubmit}
+        disabled={!props.validationStatus}
       />
       <Button
         title="Wróć"
@@ -55,8 +59,8 @@ const SoftwareDetailsComponent = (props) => {
 
 const styles = StyleSheet.create({
     addform: {
-        alignSelf: 'center',
-        padding: 15,
+      alignSelf: 'center',
+      padding: 15,
     },
     labeltext: {
       marginTop: 10,
@@ -65,11 +69,11 @@ const styles = StyleSheet.create({
       fontWeight: 500,
     },
     header: {
-        fontSize: 24,
-        paddingBottom: 10,
-        marginBottom: 25,
-        borderBottomColor: '#199187',
-        borderBottomWidth: 1,
+      fontSize: 24,
+      paddingBottom: 10,
+      marginBottom: 25,
+      borderBottomColor: '#199187',
+      borderBottomWidth: 1,
     },
     textinput: {
       marginBottom: 10,
@@ -81,6 +85,11 @@ const styles = StyleSheet.create({
       borderRadius: 7,
       fontWeight: 500,
     },
+
+    validationError:{
+      color: '#ff0000',
+      fontSize: 10,
+    }
 });
 
 export default SoftwareDetailsComponent;

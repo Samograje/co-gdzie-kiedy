@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import SoftwareDetailsComponent from './SoftwareDetailsComponent';
-import request from "../../APIClient";
+import isEmpty from "react-native-web/dist/vendor/react-native/isEmpty";
 
 class SoftwareDetailsContainer extends Component {
   constructor(props) {
@@ -10,6 +10,7 @@ class SoftwareDetailsContainer extends Component {
       key: '',
       availableKeys: '',
       duration: '',
+      validationStatus: false,
       loading: true,
       error: false,
     };
@@ -57,7 +58,7 @@ class SoftwareDetailsContainer extends Component {
 
   onSubmit = () => this.addCall();
   onReject = () => this.props.goBack();
-  setName = (value) => this.setState({name: value});
+  setName = (value) => {this.setState({name: value});};
   setKey = (value) => this.setState( {key: value});
   setAvailableKeys = (value) => this.setState({availableKeys: value});
   setDuration = (value) => this.setState({duration: value});
@@ -77,6 +78,8 @@ class SoftwareDetailsContainer extends Component {
         keY={this.state.key}
         availableKeys={this.state.availableKeys}
         duration={this.state.duration}
+        validationStatus={!isEmpty(this.state.name) && !isEmpty(this.state.key) &&
+                          !isEmpty(this.state.availableKeys) && !isEmpty(this.state.duration)}
       />
     );
   }
