@@ -30,26 +30,31 @@ const HardwareDetailsComponent = (props) => {
                      value={props.dictionaryID}
           />
         </View>
-        <Text style={styles.labeltext}>Przynależność:</Text>
-        <Picker
-            onValueChange={(itemValue, itemIndex) => props.setAffiliationID({affiliationID: itemValue})}>
-          {
-            //TODO: jakby ten dataSource był nullem?
-            props.dataSourceAffiliations.items.map((item, key) => (
-                <Picker.Item label={item.name} value={item.name} key={key}/>)
-            )
-          }
-        </Picker>
+
+        <View style={styles.onelineelement}>
+          <Text style={styles.labeltext}>Przynależność:</Text>
+          <Picker
+              onValueChange={(itemValue, itemIndex) => props.setAffiliationID({affiliationID: itemValue})}>
+            {
+              props.dataSourceAffiliations.items.map((item, key) => (
+                  <Picker.Item label={item.name} value={item.name} key={key}/>)
+              )
+            }
+          </Picker>
+        </View>
 
         <View style={styles.onelineelement}>
           <Text style={styles.labeltext}>W zestawie komputerowym:</Text>
-          <TextInput style={styles.textinput}
-                     placeholder={"Nazwa zestawu komputerowego. "}
-              //TODO: dropdown na zestaw komputerowy
-                     onChangeText={(computerSetID) => props.setComputerSetID(computerSetID)}
-                     value={props.computerSetID}
-          />
+          <Picker
+              onValueChange={(itemValue, itemIndex) => props.setComputerSetID({computerSetID: itemValue})}>
+            {
+              props.dataSourceComputerSets.items.map((item, key) => (
+                  <Picker.Item label={item.name} value={item.name} key={key}/>)
+              )
+            }
+          </Picker>
         </View>
+
         <Button
             title="Zapisz"
             onPress={props.onSubmit}

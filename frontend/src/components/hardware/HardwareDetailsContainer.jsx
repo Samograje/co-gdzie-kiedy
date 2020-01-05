@@ -14,7 +14,8 @@ class HardwareDetailsContainer extends Component {
       computerSetID: '',
       loading: true,
       error: false,
-      dataSourceAffiliations: { "items": []}
+      dataSourceAffiliations: { "items": []},
+      dataSourceComputerSets: { "items": []}
     };
   }
 
@@ -23,6 +24,8 @@ class HardwareDetailsContainer extends Component {
       this.getDataForEditCall();
 
     this.fetchDataAffiliations();
+    this.fetchDataComputerSets();
+
     console.log("works");
   }
 
@@ -33,6 +36,23 @@ class HardwareDetailsContainer extends Component {
           this.setState({
             loading: false,
             dataSourceAffiliations: response
+          });
+        })
+        .catch(() => {
+          this.setState({
+            loading: false,
+            error: true,
+          });
+        })
+  };
+
+  fetchDataComputerSets = () => {
+    request('http://localhost:8080/api/computer-sets')
+        .then((response) => response.json())
+        .then((response) => {
+          this.setState({
+            loading: false,
+            dataSourceComputerSets: response
           });
         })
         .catch(() => {
@@ -108,6 +128,7 @@ class HardwareDetailsContainer extends Component {
             affiliationID={this.state.affiliationID}
             computerSetID={this.state.computerSetID}
             dataSourceAffiliations={this.state.dataSourceAffiliations}
+            dataSourceComputerSets={this.state.dataSourceComputerSets}
         />
     );
   }
