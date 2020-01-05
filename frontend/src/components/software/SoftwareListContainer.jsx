@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import SoftwareListComponent from './SoftwareListComponent';
 import request from "../../APIClient";
+import moment from "moment";
 
 class SoftwareListContainer extends Component {
   constructor(props) {
@@ -20,6 +21,15 @@ class SoftwareListContainer extends Component {
     request('/api/software')
         .then((response) => response.json())
         .then((response) => {
+          for(let i = 0; i < response.items.length; i++)
+          {
+            let duration = response.items[i].duration;
+            let months = moment(duration).month() +  12 * (moment(duration).year() - moment(0).year());
+            if(months <= 0)
+              response.items[i].duration = "Licencja utraciła ważność";
+            else
+              response.items[i].duration = months;
+          }
           this.setState({
             loading: false,
             ...response,
