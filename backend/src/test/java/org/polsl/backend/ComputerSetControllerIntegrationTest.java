@@ -112,6 +112,60 @@ public class ComputerSetControllerIntegrationTest {
     .andExpect(jsonPath("$.success").value(false))
     .andExpect(jsonPath("$.message").value("Podana wartość nie jest liczbą"));
   }
+
+  @Test
+  public void givenCorrectRequest_whenGettingAffiliationHistoryForOneComputerSet_thenReturnStatus200AndData() throws Exception {
+    mvc.perform(get("/api/computer-sets/1/affiliations-history"))
+      .andExpect(status().is(200))
+      .andExpect(jsonPath("$.totalElements").value(3))
+      .andExpect(jsonPath("$.items", hasSize(3)))
+      .andExpect(jsonPath("$.items[0].inventoryNumber").doesNotExist())
+      .andExpect(jsonPath("$.items[0].name").value("Szymon Jęczyzel - Solaris"))
+      .andExpect(jsonPath("$.items[0].validFrom").value("2019-07-12 12:00"))
+      .andExpect(jsonPath("$.items[0].validTo").value("2019-07-14 12:00"))
+      .andExpect(jsonPath("$.items[1].inventoryNumber").doesNotExist())
+      .andExpect(jsonPath("$.items[1].name").value("Bartłomiej Szlachta - 130"))
+      .andExpect(jsonPath("$.items[1].validFrom").value("2019-07-14 12:00"))
+      .andExpect(jsonPath("$.items[1].validTo").value("2019-09-10 12:00"))
+      .andExpect(jsonPath("$.items[2].inventoryNumber").doesNotExist())
+      .andExpect(jsonPath("$.items[2].name").value("Szymon Jęczyzel - Solaris"))
+      .andExpect(jsonPath("$.items[2].validFrom").value("2019-09-10 12:00"))
+      .andExpect(jsonPath("$.items[2].validTo").doesNotExist());
+  }
+
+  @Test
+  public void givenCorrectRequest_whenGettingSoftwareHistoryForOneComputerSet_thenReturnStatus200AndData() throws Exception {
+    mvc.perform(get("/api/computer-sets/1/software-history"))
+      .andExpect(status().is(200))
+      .andExpect(jsonPath("$.totalElements").value(2))
+      .andExpect(jsonPath("$.items[0].inventoryNumber").value("S1/2019"))
+      .andExpect(jsonPath("$.items[0].name").value("Photoshop"))
+      .andExpect(jsonPath("$.items[0].validFrom").value("2017-07-23 00:00"))
+      .andExpect(jsonPath("$.items[0].validTo").doesNotExist())
+      .andExpect(jsonPath("$.items[1].inventoryNumber").value("S2/2019"))
+      .andExpect(jsonPath("$.items[1].name").value("Visual Studio"))
+      .andExpect(jsonPath("$.items[1].validFrom").value("2018-09-28 00:00"))
+      .andExpect(jsonPath("$.items[1].validTo").doesNotExist());
+  }
+
+  @Test
+  public void givenCorrectRequest_whenGettingHardwareHistoryForOneComputerSet_thenReturnStatus200AndData() throws Exception {
+    mvc.perform(get("/api/computer-sets/1/hardware-history"))
+    .andExpect(status().is(200))
+    .andExpect(jsonPath("$.totalElements").value(3))
+    .andExpect(jsonPath("$.items[0].inventoryNumber").value("H1/2019"))
+    .andExpect(jsonPath("$.items[0].name").value("GTX 1040"))
+    .andExpect(jsonPath("$.items[0].validFrom").value("2018-09-28 12:00"))
+    .andExpect(jsonPath("$.items[0].validTo").doesNotExist())
+    .andExpect(jsonPath("$.items[1].inventoryNumber").value("H3/2019"))
+    .andExpect(jsonPath("$.items[1].name").value("i5-7070"))
+    .andExpect(jsonPath("$.items[1].validFrom").value("2018-01-01 12:00"))
+    .andExpect(jsonPath("$.items[1].validTo").doesNotExist())
+    .andExpect(jsonPath("$.items[2].inventoryNumber").value("H3/2019"))
+    .andExpect(jsonPath("$.items[2].name").value("i5-7070"))
+    .andExpect(jsonPath("$.items[2].validFrom").value("2017-07-23 12:00"))
+    .andExpect(jsonPath("$.items[2].validTo").value("2017-08-01 12:00"));
+  }
   //endregion
 
   //region POST
