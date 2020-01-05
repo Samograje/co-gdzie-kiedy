@@ -1,9 +1,9 @@
 package org.polsl.backend.service;
 
 import org.polsl.backend.dto.PaginatedResult;
+import org.polsl.backend.dto.history.HistoryDTO;
 import org.polsl.backend.dto.software.SoftwareDTO;
 import org.polsl.backend.dto.software.SoftwareListOutputDTO;
-import org.polsl.backend.dto.softwarecomputerset.ComputerSetSoftwareHistoryDTO;
 import org.polsl.backend.entity.ComputerSet;
 import org.polsl.backend.entity.ComputerSetSoftware;
 import org.polsl.backend.entity.Software;
@@ -80,22 +80,23 @@ public class SoftwareService {
     dto.setDuration(software.getDuration());
     return dto;
   }
-  public PaginatedResult<ComputerSetSoftwareHistoryDTO> getSoftwareComputerSetsHistory(Long id) {
+
+  public PaginatedResult<HistoryDTO> getSoftwareComputerSetsHistory(Long id) {
     softwareRepository.findByIdAndValidToIsNull(id).orElseThrow(() -> new NotFoundException("oprogramowanie", "id", id));
 
     List<ComputerSetSoftware> computerSetSoftwareList = computerSetSoftwareRepository.findAllBySoftwareId(id);
-    List<ComputerSetSoftwareHistoryDTO> dtos = new ArrayList<>();
+    List<HistoryDTO> dtos = new ArrayList<>();
 
     computerSetSoftwareList.forEach(computerSetSoftware -> {
-      ComputerSetSoftwareHistoryDTO dto = new ComputerSetSoftwareHistoryDTO();
-      dto.setComputerSetName(computerSetSoftware.getComputerSet().getName());
-      dto.setComputerSetInventoryNumber(computerSetSoftware.getComputerSet().getInventoryNumber());
+      HistoryDTO dto = new HistoryDTO();
+      dto.setName(computerSetSoftware.getComputerSet().getName());
+      dto.setInventoryNumber(computerSetSoftware.getComputerSet().getInventoryNumber());
       dto.setValidFrom(computerSetSoftware.getValidFrom());
       dto.setValidTo(computerSetSoftware.getValidTo());
       dtos.add(dto);
     });
 
-    PaginatedResult<ComputerSetSoftwareHistoryDTO> response = new PaginatedResult<>();
+    PaginatedResult<HistoryDTO> response = new PaginatedResult<>();
     response.setItems(dtos);
     response.setTotalElements((long) dtos.size());
     return response;

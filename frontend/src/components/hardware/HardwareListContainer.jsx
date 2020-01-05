@@ -73,17 +73,23 @@ class HardwareListContainer extends Component {
         onClick: (itemData) => {
           // TODO: usuwanie hardware'u
         },
-      }
+      },
+      // TODO: akcje wyświetlania historii powiązań
     ];
 
-    const footerActions = [
+    const groupActions = [
       {
         label: 'Dodaj sprzęt',
         onClick: () => this.props.push('HardwareDetails', {
           mode: 'create',
         }),
       },
-      // TODO: akcje wyświetlania historii oraz wyszukiwania po kodzie QR
+      {
+        label: 'Wyszukaj za pomocą kodu QR',
+        onClick: () => {
+          // TODO: wyszukiwanie po kodzie QR
+        },
+      }
     ];
 
     return (
@@ -95,7 +101,7 @@ class HardwareListContainer extends Component {
         totalElements={this.state.totalElements}
         columns={columns}
         itemActions={itemActions}
-        footerActions={footerActions}
+        groupActions={groupActions}
       />
     );
   }

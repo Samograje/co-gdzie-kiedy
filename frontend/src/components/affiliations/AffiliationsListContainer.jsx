@@ -52,10 +52,16 @@ class AffiliationsListContainer extends Component {
           id: itemData.id,
         }),
       },
-      // TODO: akcja usuwania afiliacji
+      {
+        label: 'Usuń',
+        onClick: (itemData) => {
+          // TODO: usuwanie afiliacji
+        },
+      },
+      // TODO: akcje wyświetlania historii powiązań
     ];
 
-    const footerActions = [
+    const groupActions = [
       {
         label: 'Dodaj osobę / miejsce',
         onClick: () => this.props.push('AffiliationDetails', {
@@ -69,7 +75,7 @@ class AffiliationsListContainer extends Component {
         onFetchData={this.fetchData}
         columns={columns}
         itemActions={itemActions}
-        footerActions={footerActions}
+        groupActions={groupActions}
         {...this.state}
       />
     );
