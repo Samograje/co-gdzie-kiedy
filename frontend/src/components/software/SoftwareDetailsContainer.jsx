@@ -47,11 +47,12 @@ class SoftwareDetailsContainer extends Component {
     fetch(`http://localhost:8080/api/software/${this.props.id}`)
         .then(response => response.json())
         .then(responseJson => {
-          this.setState({ name: responseJson.name });
-          this.setState({ key: responseJson.key});
-          this.setState({ availableKeys: responseJson.availableKeys });
-          this.setState({ duration: responseJson.duration });
-        })
+          this.setState({
+            name: responseJson.name,
+            key: responseJson.key,
+            availableKeys: responseJson.availableKeys,
+            duration: responseJson.duration
+        })})
   };
 
   onSubmit = () => this.addCall();
