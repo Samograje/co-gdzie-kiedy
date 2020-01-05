@@ -262,7 +262,7 @@ public class ComputerSetService {
     ComputerSet cs = computerSetRepository.findById(computerSetId)
             .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
 
-    Set<ComputerSetSoftware> computerSetSoftwareSet = cs.getComputerSetSoftwareSet();
+    List<ComputerSetSoftware> computerSetSoftwareSet = cs.getComputerSetSoftwareSet();
     computerSetSoftwareSet.forEach(computerSetSoftware -> {
       HistoryDTO dto = new HistoryDTO();
       dto.setInventoryNumber(computerSetSoftware.getSoftware().getInventoryNumber());
@@ -283,7 +283,7 @@ public class ComputerSetService {
     List<HistoryDTO> dtos = new ArrayList<>();
     ComputerSet cs = computerSetRepository.findById(computerSetId)
             .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
-    Set<ComputerSetHardware> computerSetHardwareSet = cs.getComputerSetHardwareSet();
+    List<ComputerSetHardware> computerSetHardwareSet = cs.getComputerSetHardwareSet();
     computerSetHardwareSet.forEach(computerSetHardware -> {
       HistoryDTO dto = new HistoryDTO();
       dto.setInventoryNumber(computerSetHardware.getHardware().getInventoryNumber());
@@ -304,7 +304,7 @@ public class ComputerSetService {
 
     ComputerSet cs = computerSetRepository.findById(computerSetId)
             .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", computerSetId));
-    Set<AffiliationComputerSet> affiliationComputerSetSet = cs.getAffiliationComputerSetSet();
+    List<AffiliationComputerSet> affiliationComputerSetSet = cs.getAffiliationComputerSetSet();
     affiliationComputerSetSet.forEach(affiliationComputerSet -> {
       HistoryDTO dto = new HistoryDTO();
       dto.setName(AffiliationService.generateName(affiliationComputerSet.getAffiliation()));
