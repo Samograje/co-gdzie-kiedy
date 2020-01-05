@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, StyleSheet, Text, View, TextInput,} from 'react-native';
+import {Button, StyleSheet, Text, View, TextInput, Picker} from 'react-native';
 
 const HardwareDetailsComponent = (props) => {
   let modeInfo;
@@ -25,12 +25,23 @@ const HardwareDetailsComponent = (props) => {
           <Text style={styles.labeltext}>Typ:</Text>
           <TextInput style={styles.textinput}
                      placeholder={"np. Karta sieciowa"}
-                     //TODO: dropdown na typ z Dictionary
+              //TODO: dropdown na typ z Dictionary
                      onChangeText={(dictionaryID) => props.setDictionaryID(dictionaryID)}
                      value={props.dictionaryID}
           />
         </View>
-        <View style={styles.onelineelement}>
+        <Picker
+            selectedValue={props.affiliationID}
+            onValueChange={(itemValue, itemIndex) => props.setAffiliationID({affiliationID: itemValue})}>
+          {
+            //TODO: jakby ten dataSource był nullem?
+            props.dataSource.map((item, key) => (
+                <Picker.Item label={item.name} value={item.name} key={key}/>)
+            )
+          }
+
+        </Picker>
+        /*<View style={styles.onelineelement}>
           <Text style={styles.labeltext}>Przynależność:</Text>
           <TextInput style={styles.textinput}
                      placeholder={"np. Sala 410"}
@@ -38,12 +49,12 @@ const HardwareDetailsComponent = (props) => {
                      onChangeText={(affiliationID) => props.setAffiliationID(affiliationID)}
                      value={props.affiliationID}
           />
-        </View>
+        </View>*/
         <View style={styles.onelineelement}>
           <Text style={styles.labeltext}>W zestawie komputerowym:</Text>
           <TextInput style={styles.textinput}
                      placeholder={"Nazwa zestawu komputerowego. "}
-                     //TODO: dropdown na zestaw komputerowy
+              //TODO: dropdown na zestaw komputerowy
                      onChangeText={(computerSetID) => props.setComputerSetID(computerSetID)}
                      value={props.computerSetID}
           />

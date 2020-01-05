@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 import HardwareDetailsComponent from './HardwareDetailsComponent';
+import {ActivityIndicator, View} from 'react-native';
+import request from "../../APIClient";
+import * as Alert from "react-native-web";
 
 class HardwareDetailsContainer extends Component {
   constructor(props) {
@@ -17,7 +20,33 @@ class HardwareDetailsContainer extends Component {
   componentDidMount() {
     if (this.props.mode === 'edit')
       this.getDataForEditCall();
+
+    this.fetchDataAffiliations();
   }
+
+  fetchDataAffiliations = () => {
+    request('/api/affiliations')
+        .then((response) => response.json())
+        .then((response) => {
+          this.setState({
+            loading: false,
+            dataSource: response
+            //...response,
+            //TODO: wartości do mapy wrzucić, dataSource:response to robi
+          });
+        })
+        .catch(() => {
+          this.setState({
+            loading: false,
+            error: true,
+          });
+        })
+  };
+
+  //TODO: do usunięcia, tylko dla testów
+  GetPickerSelectedItemValue=()=>{
+    Alert.Alert(this.state.affiliationID);
+  };
 
   addCall = () => {
     fetch('http://localhost:8080/api/hardware', {
@@ -54,16 +83,24 @@ class HardwareDetailsContainer extends Component {
           })})
   };
 
-  onSubmit = () => this.props.history.goBack();
-  onReject = () => this.props.history.goBack();
+  onSubmit = () => this.addCall();
+  onReject = () => this.props.goBack();
   setName = (value) => this.setState({name: value});
   setDictionaryID = (value) => this.setState( {dictionaryID: value});
   setAffiliationID = (value) => this.setState({affiliationID: value});
   setComputerSetID = (value) => this.setState({computerSetID: value});
 
   render() {
-    return (
-        <HardwareDetailsComponent
+    if (this.state.Loading) {
+      return (
+          <View style={{flex: 1, paddingTop: 20}}>
+            <ActivityIndicator />
+          </View>
+      );
+    }
+
+     return (
+         <HardwareDetailsComponent
             onSubmit={this.onSubmit}
             onReject={this.onReject}
             setName={this.setName}
