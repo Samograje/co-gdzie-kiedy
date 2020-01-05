@@ -93,8 +93,8 @@ public class ComputerSetControllerIntegrationTest {
       .andExpect(jsonPath("$.softwareIds").isArray())
       .andExpect(jsonPath("$.softwareIds", IsCollectionWithSize.hasSize(2)))
       .andExpect(jsonPath("$.softwareIds[0]").value(1))
-      .andExpect(jsonPath("$.softwareIds[1]").value(2));
-//      .andExpect(jsonPath("$.inventoryNumber").value("C1/2019")); //TODO: odkomentować jak Oliwia poprawi swój kod
+      .andExpect(jsonPath("$.softwareIds[1]").value(2))
+      .andExpect(jsonPath("$.inventoryNumber").value("C1/2019"));
   }
 
   @Test
