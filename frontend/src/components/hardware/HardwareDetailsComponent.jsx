@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, StyleSheet, Text, View, TextInput, Picker} from 'react-native';
+import {Button, StyleSheet, Text, View, TextInput, Picker, ActivityIndicator} from 'react-native';
 
 const HardwareDetailsComponent = (props) => {
   let modeInfo;
@@ -11,52 +11,62 @@ const HardwareDetailsComponent = (props) => {
   return (
       <View style={styles.addForm}>
         <Text style={styles.header}>Formularz {modeInfo} sprzętu.</Text>
-        <View style={styles.oneLineElement}>
-          <Text style={styles.labelText}>Nazwa sprzętu:</Text>
-          <TextInput style={styles.textInput}
-                     placeholder={"np. HD 7780"}
-                     onChangeText={(name) => props.setName(name)}
-                     value={props.name}
-          />
-        </View>
-        <View style={styles.oneLineElement}>
-          <Text style={styles.labelText}>Typ:</Text>
-          <TextInput style={styles.textInput}
-                     placeholder={"np. Karta sieciowa"}
-              //TODO: dropdown na typ z Dictionary
-                     onChangeText={(dictionaryID) => props.setDictionaryID(dictionaryID)}
-                     value={props.dictionaryID}
-          />
-        </View>
 
-        <View style={styles.oneLineElement}>
-          <Text style={styles.labelText}>Przynależność:</Text>
-          <Picker
-              //TODO: onValueChange nie działa jak należy, ale na dole już tak WTF?
-              onValueChange={(itemValue, itemIndex) => props.setAffiliationID(itemValue)}>
-            <Picker.Item label="--------" value={null}/>
-            {
-              props.dataSourceAffiliations.items.map((item, key) => (
-                      <Picker.Item label={item.name} value={item.id} key={key}/>
-                  )
-              )
-            }
-          </Picker>
-        </View>
+        {props.loading && (
+            <View style={{flex: 1, paddingTop: 20}}>
+              <ActivityIndicator/>
+            </View>
+        )}
 
-        <View style={styles.oneLineElement}>
-          <Text style={styles.labelText}>W zestawie komputerowym:</Text>
-          <Picker
-              onValueChange={(itemValue, itemIndex) => props.setComputerSetID(itemValue)}>
-            <Picker.Item label="--------" value={null}/>
-            {
-              props.dataSourceComputerSets.items.map((item, key) => (
-                      <Picker.Item label={item.name} value={item.id} key={key}/>
-                  )
-              )
-            }
-          </Picker>
-        </View>
+        {!props.loading && (
+            <>
+              <View style={styles.oneLineElement}>
+                <Text style={styles.labelText}>Nazwa sprzętu:</Text>
+                <TextInput style={styles.textInput}
+                           placeholder={"np. HD 7780"}
+                           onChangeText={(name) => props.setName(name)}
+                           value={props.name}
+                />
+              </View>
+              <View style={styles.oneLineElement}>
+                <Text style={styles.labelText}>Typ:</Text>
+                <TextInput style={styles.textInput}
+                           placeholder={"np. Karta sieciowa"}
+                    //TODO: dropdown na typ z Dictionary
+                           onChangeText={(dictionaryID) => props.setDictionaryID(dictionaryID)}
+                           value={props.dictionaryID}
+                />
+              </View>
+
+              <View style={styles.oneLineElement}>
+                <Text style={styles.labelText}>Przynależność:</Text>
+                <Picker
+                    onValueChange={(itemValue, itemIndex) => props.setAffiliationID(itemValue)}>
+                  <Picker.Item label="--------" value={null}/>
+                  {
+                    props.dataSourceAffiliations.items.map((item, key) => (
+                            <Picker.Item label={item.name} value={item.id} key={key}/>
+                        )
+                    )
+                  }
+                </Picker>
+              </View>
+
+              <View style={styles.oneLineElement}>
+                <Text style={styles.labelText}>W zestawie komputerowym:</Text>
+                <Picker
+                    onValueChange={(itemValue, itemIndex) => props.setComputerSetID(itemValue)}>
+                  <Picker.Item label="--------" value={null}/>
+                  {
+                    props.dataSourceComputerSets.items.map((item, key) => (
+                            <Picker.Item label={item.name} value={item.id} key={key}/>
+                        )
+                    )
+                  }
+                </Picker>
+              </View>
+            </>
+        )}
 
         <Button
             title="Zapisz"

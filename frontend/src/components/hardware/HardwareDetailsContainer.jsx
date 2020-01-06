@@ -106,14 +106,6 @@ class HardwareDetailsContainer extends Component {
   setComputerSetID = (value) => this.setState({computerSetID: value});
 
   render() {
-    if (this.state.Loading) {
-      return (
-          <View style={{flex: 1, paddingTop: 20}}>
-            <ActivityIndicator />
-          </View>
-      );
-    }
-
      return (
          <HardwareDetailsComponent
             onSubmit={this.onSubmit}
@@ -124,6 +116,7 @@ class HardwareDetailsContainer extends Component {
             setComputerSetID={this.setComputerSetID}
             mode={this.props.mode}
             name={this.state.name}
+            loading={this.state.loading}
             dictionaryID={this.state.dictionaryID}
             affiliationID={this.state.affiliationID}
             computerSetID={this.state.computerSetID}
