@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import HardwareListComponent from './HardwareListComponent';
-import request from "../../APIClient";
+import request from '../../APIClient';
 
 class HardwareListContainer extends Component {
   constructor(props) {
@@ -28,13 +28,13 @@ class HardwareListContainer extends Component {
       .then((response) => {
         this.setState({
           loading: false,
-          ...response
+          ...response,
         })
       })
       .catch(() => {
         this.setState({
           loading: false,
-          error: true
+          error: true,
         });
       })
   };

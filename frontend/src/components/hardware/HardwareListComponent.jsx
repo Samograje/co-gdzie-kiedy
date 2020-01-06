@@ -1,8 +1,8 @@
 import React from 'react';
 import {Button, ScrollView, StyleSheet, View} from 'react-native';
-import ErrorElement from "../ui/ErrorElement";
-import ResponsiveTable from "../ui/responsivetable/ResponsiveTable";
-import {mainColor} from "../../constValues";
+import ErrorElement from '../ui/ErrorElement';
+import ResponsiveTable from '../ui/responsivetable/ResponsiveTable';
+import {mainColor} from '../../constValues';
 
 const HardwareListComponent = (props) => {
 
