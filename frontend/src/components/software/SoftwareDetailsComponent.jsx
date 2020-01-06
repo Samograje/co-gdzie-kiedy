@@ -34,7 +34,7 @@ const SoftwareDetailsComponent = (props) => {
       <TextInput style={styles.textinput}
                  placeholder={"np. 5"}
                  onChangeText={(availableKeys) => props.setAvailableKeys(availableKeys)}
-                 value={props.availableKeys}
+                 value={props.availableKeys.toString()}
       />
       <Text  style={styles.validationError}>{props.validationAvailableKeysIsNumberStatus ? "Wartość musi być liczbą" : ""}</Text>
       <Text  style={styles.validationError}>{!props.validationAvailableKeysIsBiggerThan0NumberStatus ? "Wartość musi być liczbą większą od 0" : ""}</Text>
@@ -42,7 +42,7 @@ const SoftwareDetailsComponent = (props) => {
       <TextInput style={styles.textinput}
                  placeholder={"np. 4 "}
                  onChangeText={(duration) => props.setDuration(duration)}
-                 value={props.duration}
+                 value={props.duration.toString()}
                  disabled={props.validationDisableDuration}
       />
       <Text  style={styles.validationError}>{props.validationDurationIsNumberStatus ? "Wartość musi być liczbą" : ""}</Text>
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
       marginTop: 10,
       fontSize: 20,
       marginBottom: 5,
-      fontWeight: 500,
+      fontWeight: '500',
     },
     header: {
       fontSize: 24,
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
       borderWidth: 1.2,
       padding: 2,
       borderRadius: 7,
-      fontWeight: 500,
+      fontWeight: '500',
     },
 
     validationError:{
