@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import SoftwareDetailsComponent from './SoftwareDetailsComponent';
 import isEmpty from "react-native-web/dist/vendor/react-native/isEmpty";
 import moment from "moment";
+import request from "../../APIClient";
 
 class SoftwareDetailsContainer extends Component {
   constructor(props) {
@@ -28,7 +29,7 @@ class SoftwareDetailsContainer extends Component {
     let endDate = moment(currentDate).add(this.state.duration, 'month');
     let duration = endDate - currentDate; //to poleci jsonem
 
-    fetch(path,{
+    request(path,{
       method: method,
       body: JSON.stringify({
         "name": this.state.name,
@@ -51,7 +52,7 @@ class SoftwareDetailsContainer extends Component {
   };
 
   getDataForEditCall(){
-    fetch(`http://localhost:8080/api/software/${this.props.id}`)
+    request(`http://localhost:8080/api/software/${this.props.id}`)
         .then(response => response.json())
         .then(response => {
           let duration = response.duration;

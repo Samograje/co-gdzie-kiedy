@@ -43,6 +43,22 @@ class SoftwareListContainer extends Component {
         })
   };
 
+  deleteCall = (id) => {
+    request(`http://localhost:8080/api/software/${id}`,{
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      }
+    }).then((response) => response.json())
+        .then((responseJson) => {
+          console.log(responseJson);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+  };
+
   render() {
     const columns = [
       {
@@ -75,7 +91,10 @@ class SoftwareListContainer extends Component {
           id: itemData.id,
         }),
       },
-      // TODO: akcja usuwania oprogramowania
+      {
+        label: 'Usuń',
+        onClick: (itemData) => this.deleteCall(itemData.id)
+      },
     ];
     const footerActions = [
       {
