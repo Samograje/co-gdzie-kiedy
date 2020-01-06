@@ -111,7 +111,7 @@ class HardwareListContainer extends Component {
         onClick: () => {
           // TODO: wyszukiwanie po kodzie QR
         },
-      }
+      },
     ];
 
     return (

@@ -104,6 +104,12 @@ class ComputerSetsListContainer extends Component {
           mode: 'create',
         }),
       },
+      {
+        label: 'Wyszukaj za pomocą kodu QR',
+        onClick: () => {
+          // TODO: wyszukiwanie po kodzie QR
+        },
+      },
     ];
 
     return (
