@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Kontroler odpowiedzialny za zarządzanie hardwareDictionary'em.
  */
 @RestController
-@RequestMapping("api/hardware")
+@RequestMapping("api/hardware-dictionaries")
 public class HardwareDictionaryController {
   private final HardwareDictionaryService hardwareDictionaryService;
 
