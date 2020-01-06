@@ -97,9 +97,9 @@ class SoftwareDetailsContainer extends Component {
         validationEmptyStatus={isEmpty(this.state.name) || isEmpty(this.state.key) ||
                           isEmpty(this.state.availableKeys) || isEmpty(this.state.duration)}
         validationAvailableKeysIsNumberStatus={isNaN(this.state.availableKeys)}
-        validationAvailableKeysIsBiggerThan0NumberStatus={this.state.availableKeys === '' ? true : Number(this.state.availableKeys) > 0}
+        validationAvailableKeysIsBiggerThan0NumberStatus={this.state.availableKeys === '' ? true : Number.parseInt(this.state.availableKeys) > 0}
         validationDurationIsNumberStatus={this.state.duration === 'Licencja utraciła ważność' ? false : isNaN(this.state.duration)}
-        validationDurationIsBiggerThan0NumberStatus={(this.state.duration === '' || this.state.duration === 'Licencja utraciła ważność') ? true : Number(this.state.duration) > 0}
+        validationDurationIsBiggerThan0NumberStatus={(this.state.duration === '' || this.state.duration === 'Licencja utraciła ważność') ? true : Number.parseInt(this.state.duration) > 0}
         validationDisableDuration={this.state.duration === 'Licencja utraciła ważność'}
       />
     );
