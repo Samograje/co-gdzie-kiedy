@@ -139,6 +139,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
+    marginTop: 5,
+    marginBottom: 5,
   },
   text: {
     fontSize: 16,
