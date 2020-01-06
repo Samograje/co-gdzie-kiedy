@@ -58,6 +58,7 @@ class AffiliationsListContainer extends Component {
       {
         name: 'name',
         label: 'Nazwa',
+        filter: true,
       },
     ];
 

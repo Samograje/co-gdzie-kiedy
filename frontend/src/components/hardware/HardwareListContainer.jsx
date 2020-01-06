@@ -58,22 +58,27 @@ class HardwareListContainer extends Component {
       {
         name: 'name',
         label: 'Nazwa',
+        filter: true,
       },
       {
         name: 'type',
         label: 'Typ',
+        filter: true,
       },
       {
         name: 'inventoryNumber',
         label: 'Numer inwentarzowy',
+        filter: true,
       },
       {
         name: 'affiliationName',
         label: 'Przynależy do',
+        filter: true,
       },
       {
         name: 'computerSetInventoryNumber',
         label: 'Numer inwentarzowy powiązanego zestawu komputerowego',
+        filter: true,
       },
     ];
 
