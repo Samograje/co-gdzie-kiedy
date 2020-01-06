@@ -51,6 +51,7 @@ const SoftwareDetailsComponent = (props) => {
                  placeholder={"np. 4 "}
                  onChangeText={(duration) => props.setDuration(duration)}
                  value={props.duration}
+                 disabled={props.validationDisableDuration}
       />
       <Text  style={styles.validationError}>{props.validationDurationIsNumberStatus ? "Wartość musi być liczbą" : ""}</Text>
       <Text  style={styles.validationError}>{!props.validationDurationIsBiggerThan0NumberStatus ? "Wartość musi być liczbą większą od 0" : ""}</Text>
