@@ -22,16 +22,14 @@ class SoftwareDetailsContainer extends Component {
       this.getDataForEditCall();
   }
 
-  addCall = () => {
+  addOrEditCallCall = (method, path) => {
+    console.log(method);
     let currentDate = new Date();
     let endDate = moment(currentDate).add(this.state.duration, 'month');
     let duration = endDate - currentDate; //to poleci jsonem
 
-    let months = 12 * (moment(duration).year() - moment(0).year()); //sumujemy jesli jest >= 12 msc.
-    console.log(moment(duration).month() + months); // to jest wynik ostateczny msc'y
-
-    fetch('http://localhost:8080/api/software',{
-      method: 'POST',
+    fetch(path,{
+      method: method,
       body: JSON.stringify({
         "name": this.state.name,
         "key": this.state.key,
@@ -68,7 +66,12 @@ class SoftwareDetailsContainer extends Component {
         })
   };
 
-  onSubmit = () => this.addCall();
+  onSubmit = () => {
+    if(this.props.mode === 'create')
+      this.addOrEditCallCall('POST', 'http://localhost:8080/api/software');
+    else if (this.props.mode === 'edit')
+      this.addOrEditCallCall('PUT', `http://localhost:8080/api/software/${this.props.id}`);
+  };
   onReject = () => this.props.goBack();
   setName = (value) => {this.setState({name: value});};
   setKey = (value) => this.setState( {key: value});
