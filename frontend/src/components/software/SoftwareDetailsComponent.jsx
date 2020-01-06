@@ -15,6 +15,12 @@ const SoftwareDetailsComponent = (props) => {
   else
     return "";
 
+  console.log(props.validationEmptyStatus);
+  console.log(props.validationDurationIsNumberStatus);
+  console.log(props.validationDurationIsBiggerThan0NumberStatus);
+  console.log(props.validationAvailableKeysIsNumberStatus);
+  console.log(props.validationAvailableKeysIsBiggerThan0NumberStatus);
+  console.log("*****");
   return (
     <View style={styles.addform}>
 
@@ -39,6 +45,7 @@ const SoftwareDetailsComponent = (props) => {
                  value={props.availableKeys}
       />
       <Text  style={styles.validationError}>{props.validationAvailableKeysIsNumberStatus ? "Wartość musi być liczbą" : ""}</Text>
+      <Text  style={styles.validationError}>{!props.validationAvailableKeysIsBiggerThan0NumberStatus ? "Wartość musi być liczbą większą od 0" : ""}</Text>
       <Text style={styles.labeltext}>* Czas trwania (w miesiącach):</Text>
       <TextInput style={styles.textinput}
                  placeholder={"np. 4 "}
@@ -46,10 +53,15 @@ const SoftwareDetailsComponent = (props) => {
                  value={props.duration}
       />
       <Text  style={styles.validationError}>{props.validationDurationIsNumberStatus ? "Wartość musi być liczbą" : ""}</Text>
+      <Text  style={styles.validationError}>{!props.validationDurationIsBiggerThan0NumberStatus ? "Wartość musi być liczbą większą od 0" : ""}</Text>
       <Button
         title="Zapisz"
         onPress={props.onSubmit}
-        disabled={!props.validationStatus}
+        disabled={props.validationEmptyStatus ||
+                  props.validationAvailableKeysIsNumberStatus ||
+                  !props.validationAvailableKeysIsBiggerThan0NumberStatus ||
+                  props.validationDurationIsNumberStatus ||
+                  !props.validationDurationIsBiggerThan0NumberStatus}
       />
       <Button
         title="Wróć"

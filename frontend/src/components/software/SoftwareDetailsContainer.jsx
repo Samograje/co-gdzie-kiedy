@@ -80,6 +80,7 @@ class SoftwareDetailsContainer extends Component {
   setDuration = (value) => this.setState({duration: value});;
 
   render() {
+
     return (
       <SoftwareDetailsComponent
         setText={this.setText}
@@ -94,12 +95,12 @@ class SoftwareDetailsContainer extends Component {
         keY={this.state.key}
         availableKeys={this.state.availableKeys}
         duration={this.state.duration}
-        validationStatus={!isEmpty(this.state.name) && !isEmpty(this.state.key) &&
-                          !isEmpty(this.state.availableKeys) && !isEmpty(this.state.duration) &&
-                          !isNaN(this.state.duration) && !isNaN(this.state.availableKeys)}
+        validationEmptyStatus={isEmpty(this.state.name) || isEmpty(this.state.key) ||
+                          isEmpty(this.state.availableKeys) || isEmpty(this.state.duration)}
         validationAvailableKeysIsNumberStatus={isNaN(this.state.availableKeys)}
-        validationDurationIsNumberStatus={this.state.duration === 'Licencja utraciła ważność' ? false : isNaN(this.state.duration)}
-
+        validationAvailableKeysIsBiggerThan0NumberStatus={this.state.availableKeys === '' ? true : Number(this.state.availableKeys) > 0}
+        validationDurationIsNumberStatus={this.state.duration === 'Licencja utraciła ważność' ? true : isNaN(this.state.duration)}
+        validationDurationIsBiggerThan0NumberStatus={this.state.duration === '' ? true : Number(this.state.duration) > 0}
       />
     );
   }
