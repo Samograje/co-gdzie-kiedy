@@ -1,6 +1,7 @@
 import {Platform} from 'react-native';
 
-const baseUrl = 'https://dry-wildwood-77221.herokuapp.com';
+//const baseUrl = 'https://dry-wildwood-77221.herokuapp.com';
+const baseUrl = 'http://localhost:8080';
 
 const request = (url, options) => {
   // TODO: docelowo trzeba to rozwiązać w inny sposób - bez proxy w package.json

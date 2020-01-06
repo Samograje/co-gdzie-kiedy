@@ -7,23 +7,21 @@ const HardwareDetailsComponent = (props) => {
     modeInfo = "edycji";
   else if (props.mode === 'create')
     modeInfo = "dodawania nowego";
-  else
-    return "";
 
   return (
-      <View style={styles.addform}>
+      <View style={styles.addForm}>
         <Text style={styles.header}>Formularz {modeInfo} sprzętu.</Text>
-        <View style={styles.onelineelement}>
-          <Text style={styles.labeltext}>Nazwa sprzętu:</Text>
-          <TextInput style={styles.textinput}
+        <View style={styles.oneLineElement}>
+          <Text style={styles.labelText}>Nazwa sprzętu:</Text>
+          <TextInput style={styles.textInput}
                      placeholder={"np. HD 7780"}
                      onChangeText={(name) => props.setName(name)}
                      value={props.name}
           />
         </View>
-        <View style={styles.onelineelement}>
-          <Text style={styles.labeltext}>Typ:</Text>
-          <TextInput style={styles.textinput}
+        <View style={styles.oneLineElement}>
+          <Text style={styles.labelText}>Typ:</Text>
+          <TextInput style={styles.textInput}
                      placeholder={"np. Karta sieciowa"}
               //TODO: dropdown na typ z Dictionary
                      onChangeText={(dictionaryID) => props.setDictionaryID(dictionaryID)}
@@ -31,8 +29,8 @@ const HardwareDetailsComponent = (props) => {
           />
         </View>
 
-        <View style={styles.onelineelement}>
-          <Text style={styles.labeltext}>Przynależność:</Text>
+        <View style={styles.oneLineElement}>
+          <Text style={styles.labelText}>Przynależność:</Text>
           <Picker
               //TODO: onValueChange nie działa jak należy, ale na dole już tak WTF?
               onValueChange={(itemValue, itemIndex) => props.setAffiliationID(itemValue)}>
@@ -46,8 +44,8 @@ const HardwareDetailsComponent = (props) => {
           </Picker>
         </View>
 
-        <View style={styles.onelineelement}>
-          <Text style={styles.labeltext}>W zestawie komputerowym:</Text>
+        <View style={styles.oneLineElement}>
+          <Text style={styles.labelText}>W zestawie komputerowym:</Text>
           <Picker
               onValueChange={(itemValue, itemIndex) => props.setComputerSetID(itemValue)}>
             <Picker.Item label="--------" value={null}/>
@@ -73,11 +71,11 @@ const HardwareDetailsComponent = (props) => {
 };
 
 const styles = StyleSheet.create({
-  addform: {
+  addForm: {
     alignSelf: 'center',
     padding: 15,
   },
-  labeltext: {
+  labelText: {
     marginRight: 10,
   },
   header: {
@@ -87,8 +85,8 @@ const styles = StyleSheet.create({
     borderBottomColor: '#199187',
     borderBottomWidth: 1,
   },
-  textinput: {},
-  onelineelement: {
+  textInput: {},
+  oneLineElement: {
     flexDirection: 'row',
     marginBottom: 15,
   }

@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import HardwareDetailsComponent from './HardwareDetailsComponent';
 import {ActivityIndicator, View} from 'react-native';
 import request from "../../APIClient";
-import * as Alert from "react-native-web";
 
 class HardwareDetailsContainer extends Component {
   constructor(props) {
@@ -30,7 +29,7 @@ class HardwareDetailsContainer extends Component {
   }
 
   fetchDataAffiliations = () => {
-    request('http://localhost:8080/api/affiliations')
+    request('/api/affiliations')
         .then((response) => response.json())
         .then((response) => {
           this.setState({
@@ -47,7 +46,7 @@ class HardwareDetailsContainer extends Component {
   };
 
   fetchDataComputerSets = () => {
-    request('http://localhost:8080/api/computer-sets')
+    request('/api/computer-sets')
         .then((response) => response.json())
         .then((response) => {
           this.setState({
@@ -64,14 +63,14 @@ class HardwareDetailsContainer extends Component {
   };
 
   addCall = () => {
-    console.log(this.state.name+","+this.state.dictionaryID+","+this.state.dictionaryID+","+this.state.computerSetID)
-    fetch('http://localhost:8080/api/hardware', {
+    console.log(this.state.name+","+this.state.dictionaryID+","+this.state.affiliationID+","+this.state.computerSetID)
+    request('/api/hardware', {
       method: 'POST',
       body: JSON.stringify({
         "name": this.state.name,
-        "dictionaryID": this.state.dictionaryID,
-        "affiliationID": this.state.dictionaryID,
-        "computerSetID": this.state.computerSetID
+        "dictionaryId": Number(this.state.dictionaryID),
+        "affiliationId": Number(this.state.dictionaryID),
+        "computerSetId": Number(this.state.computerSetID)
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -88,7 +87,7 @@ class HardwareDetailsContainer extends Component {
   };
 
   getDataForEditCall(){
-    fetch(`http://localhost:8080/api/hardware/${this.props.id}`)
+    request(`/api/hardware/${this.props.id}`)
         .then(response => response.json())
         .then(responseJson => {
           this.setState({
