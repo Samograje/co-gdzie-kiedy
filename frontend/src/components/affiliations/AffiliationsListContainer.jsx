@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import AffiliationsListComponent from './AffiliationsListComponent';
-import request from "../../APIClient";
+import request from '../../APIClient';
 
 class AffiliationsListContainer extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -11,6 +10,7 @@ class AffiliationsListContainer extends Component {
       error: false,
       items: [],
       totalElements: null,
+      filters: {},
     };
   }
 
@@ -18,12 +18,12 @@ class AffiliationsListContainer extends Component {
     this.fetchData();
   }
 
-  fetchData = () => {
+  fetchData = (options) => {
     this.setState({
       loading: true,
       error: false,
     });
-    request('/api/affiliations')
+    request('/api/affiliations', options)
       .then((response) => response.json())
       .then((response) => {
         this.setState({
@@ -37,6 +37,19 @@ class AffiliationsListContainer extends Component {
           error: true,
         });
       })
+  };
+
+  handleFilterChange = (fieldName, text) => {
+    const newFilters = {
+      ...this.state.filters,
+      [fieldName]: text,
+    };
+    this.setState({
+      filters: newFilters,
+    });
+    this.fetchData({
+      filters: newFilters,
+    });
   };
 
   render() {
@@ -76,11 +89,15 @@ class AffiliationsListContainer extends Component {
 
     return (
       <AffiliationsListComponent
-        onFetchData={this.fetchData}
         columns={columns}
         itemActions={itemActions}
         groupActions={groupActions}
-        {...this.state}
+        filters={this.state.filters}
+        onFilterChange={this.handleFilterChange}
+        loading={this.state.loading}
+        error={this.state.error}
+        items={this.state.items}
+        totalElements={this.state.totalElements}
       />
     );
   }
