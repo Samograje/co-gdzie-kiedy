@@ -31,7 +31,6 @@ const request = (url, options) => {
 // dodaje parametry do urlu
 const prepareUrl = (url, {filters}) => {
   let finalUrl = `${url}`;
-  console.log(filters);
   if (filters && Object.values(filters).filter((filter) => filter).length > 0) {
     finalUrl =`${url}?search=`;
   }
