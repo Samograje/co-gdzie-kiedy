@@ -30,13 +30,15 @@ const WideTable = (props) => {
             <View style={styles.headTextContainer}>
               <Text style={styles.headText}>{column.label}</Text>
             </View>
-            <TextInput
-              style={styles.input}
-              placeholder="Wyszukaj"
-              onChangeText={(text) => {
-                onFilterChange(column.name, text);
-              }}
-            />
+            {column.filter && (
+              <TextInput
+                style={styles.input}
+                placeholder="Wyszukaj"
+                onChangeText={(text) => {
+                  onFilterChange(column.name, text);
+                }}
+              />
+            )}
           </View>
         ))}
 
