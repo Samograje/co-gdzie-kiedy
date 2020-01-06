@@ -53,6 +53,7 @@ class SoftwareListContainer extends Component {
     }).then((response) => response.json())
         .then((responseJson) => {
           console.log(responseJson);
+          window.location.reload();
         })
         .catch((error) => {
           console.error(error);
