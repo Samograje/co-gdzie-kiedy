@@ -1,10 +1,10 @@
 package org.polsl.backend.dto.hardwaredictionary;
 
-public class HardwareDictionaryListOutputDTO {
+public class HardwareDictionaryOutputDTO {
   private Long id;
   private String value;
 
-  public HardwareDictionaryListOutputDTO() {
+  public HardwareDictionaryOutputDTO() {
   }
 
   public Long getId() {

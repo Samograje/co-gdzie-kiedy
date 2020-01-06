@@ -1,6 +1,6 @@
 package org.polsl.backend.service;
 
-import org.polsl.backend.dto.hardwaredictionary.HardwareDictionaryListOutputDTO;
+import org.polsl.backend.dto.hardwaredictionary.HardwareDictionaryOutputDTO;
 import org.polsl.backend.entity.HardwareDictionary;
 import org.polsl.backend.repository.HardwareDictionaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +18,15 @@ public class HardwareDictionaryService {
     this.hardwareDictionaryRepository = hardwareDictionaryRepository;
   }
 
-  public List<HardwareDictionaryListOutputDTO> getAllHardwareDictionaries() {
+  public List<HardwareDictionaryOutputDTO> getHardwareDictionaryList() {
     Iterable<HardwareDictionary> hardwareDictionaries = hardwareDictionaryRepository.findAll();
-    List<HardwareDictionaryListOutputDTO> dtos = new ArrayList<>();
+    List<HardwareDictionaryOutputDTO> dtos = new ArrayList<>();
     for(HardwareDictionary hardwareDictionary : hardwareDictionaries){
-      HardwareDictionaryListOutputDTO dto = new HardwareDictionaryListOutputDTO();
+      HardwareDictionaryOutputDTO dto = new HardwareDictionaryOutputDTO();
       dto.setId(hardwareDictionary.getId());
       dto.setValue(hardwareDictionary.getValue());
       dtos.add(dto);
     }
-    return  dtos;
+    return dtos;
   }
 }
