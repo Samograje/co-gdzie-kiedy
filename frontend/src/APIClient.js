@@ -30,10 +30,16 @@ const request = (url, options) => {
 
 // dodaje parametry do urlu
 const prepareUrl = (url, {filters}) => {
-  let finalUrl = `${url}?search=`;
+  let finalUrl = `${url}`;
+  console.log(filters);
+  if (filters && Object.values(filters).filter((filter) => filter).length > 0) {
+    finalUrl =`${url}?search=`;
+  }
   Object.keys(filters).forEach((key) => {
     const value = filters[key];
-    finalUrl = `${finalUrl}${key}:${value},`;
+    if (value) {
+      finalUrl = `${finalUrl}${key}:${value},`;
+    }
   });
   return finalUrl;
 };
