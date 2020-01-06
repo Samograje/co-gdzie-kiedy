@@ -87,6 +87,7 @@ public class SoftwareController {
    * @param id ID wybranego oprogramowania
    * @return informacja o poprawnym usunięciu oprogramowania
    */
+  @CrossOrigin(origins = "http://localhost:3000")
   @DeleteMapping("/{id}")
   public ResponseEntity<?> deleteSoftware(@PathVariable(value = "id") Long id) {
     softwareService.deleteSoftware(id);

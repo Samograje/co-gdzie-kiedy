@@ -95,7 +95,11 @@ class SoftwareDetailsContainer extends Component {
         availableKeys={this.state.availableKeys}
         duration={this.state.duration}
         validationStatus={!isEmpty(this.state.name) && !isEmpty(this.state.key) &&
-                          !isEmpty(this.state.availableKeys) && !isEmpty(this.state.duration)}
+                          !isEmpty(this.state.availableKeys) && !isEmpty(this.state.duration) &&
+                          !isNaN(this.state.duration) && !isNaN(this.state.availableKeys)}
+        validationAvailableKeysIsNumberStatus={isNaN(this.state.availableKeys)}
+        validationDurationIsNumberStatus={this.state.duration === 'Licencja utraciła ważność' ? false : isNaN(this.state.duration)}
+
       />
     );
   }

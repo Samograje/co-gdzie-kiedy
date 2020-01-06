@@ -38,12 +38,14 @@ const SoftwareDetailsComponent = (props) => {
                  onChangeText={(availableKeys) => props.setAvailableKeys(availableKeys)}
                  value={props.availableKeys}
       />
+      <Text  style={styles.validationError}>{props.validationAvailableKeysIsNumberStatus ? "Wartość musi być liczbą" : ""}</Text>
       <Text style={styles.labeltext}>* Czas trwania (w miesiącach):</Text>
       <TextInput style={styles.textinput}
                  placeholder={"np. 4 "}
                  onChangeText={(duration) => props.setDuration(duration)}
                  value={props.duration}
       />
+      <Text  style={styles.validationError}>{props.validationDurationIsNumberStatus ? "Wartość musi być liczbą" : ""}</Text>
       <Button
         title="Zapisz"
         onPress={props.onSubmit}
