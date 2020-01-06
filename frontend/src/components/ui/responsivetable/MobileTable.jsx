@@ -19,8 +19,34 @@ const MobileTable = (props) => {
     itemActions,
   } = props;
 
+  const filtersEnabled = columns.filter((column) => column.filter).length > 0;
+
   return (
     <View style={styles.list}>
+
+      {/* nagłówek listy */}
+      {filtersEnabled && (
+        <View style={[styles.head, styles.item]}>
+          <Text style={styles.filterHeader}>Filtry</Text>
+          {columns.map((column, key) => {
+            if (!column.filter) {
+              return null;
+            }
+            return (
+              <View style={styles.row} key={key}>
+                <Text style={[styles.text, styles.label]}>{column.label}</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Wyszukaj"
+                  onChangeText={(text) => {
+                    onFilterChange(column.name, text);
+                  }}
+                />
+              </View>
+            );
+          })}
+        </View>
+      )}
 
       {/* spinner ładowania danych */}
       {loading && (
@@ -84,6 +110,24 @@ const styles = StyleSheet.create({
     borderTopWidth: 0,
     borderRadius: 2,
     overflow: 'hidden',
+  },
+  head: {
+    backgroundColor: 'lightgrey',
+  },
+  filterHeader: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    margin: 5,
+    marginBottom: 20,
+  },
+  input: {
+    flex: 1,
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderRadius: 2,
+    padding: 2,
+    margin: 2,
   },
   item: {
     borderTopWidth: 1,
