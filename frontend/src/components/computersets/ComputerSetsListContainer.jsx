@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import ComputerSetsListComponent from './ComputerSetsListComponent';
-import request from "../../APIClient";
+import request from '../../APIClient';
 
 class ComputerSetsListContainer extends Component {
 
@@ -11,6 +11,7 @@ class ComputerSetsListContainer extends Component {
       error: false,
       items: [],
       totalElements: null,
+      filters: {},
     };
   }
 
@@ -18,21 +19,38 @@ class ComputerSetsListContainer extends Component {
     this.fetchData();
   }
 
-  fetchData = () => {
-    request('/api/computer-sets')
-        .then((response) => response.json())
-        .then((response) => {
-          this.setState({
-            loading: false,
-            ...response,
-          });
-        })
-        .catch(() => {
-          this.setState({
-            loading: false,
-            error: true,
-          });
-        })
+  fetchData = (options) => {
+    this.setState({
+      loading: true,
+      error: false,
+    });
+    request('/api/computer-sets', options)
+      .then((response) => response.json())
+      .then((response) => {
+        this.setState({
+          loading: false,
+          ...response,
+        });
+      })
+      .catch(() => {
+        this.setState({
+          loading: false,
+          error: true,
+        });
+      })
+  };
+
+  handleFilterChange = (fieldName, text) => {
+    const newFilters = {
+      ...this.state.filters,
+      [fieldName]: text,
+    };
+    this.setState({
+      filters: newFilters,
+    });
+    this.fetchData({
+      filters: newFilters,
+    });
   };
 
   render() {
@@ -40,14 +58,17 @@ class ComputerSetsListContainer extends Component {
       {
         name: 'name',
         label: 'Nazwa',
+        filter: true,
       },
       {
         name: 'computerSetInventoryNumber',
         label: 'Numer inwentarzowy',
+        filter: true,
       },
       {
         name: 'affiliationName',
         label: 'Przynależy do',
+        filter: true,
       },
       {
         name: 'softwareInventoryNumbers',
@@ -86,13 +107,13 @@ class ComputerSetsListContainer extends Component {
     ];
 
     return (
-        <ComputerSetsListComponent
-            onFetchData={this.fetchData}
-            columns={columns}
-            itemActions={itemActions}
-            groupActions={groupActions}
-            {...this.state}
-        />
+      <ComputerSetsListComponent
+        onFilterChange={this.handleFilterChange}
+        columns={columns}
+        itemActions={itemActions}
+        groupActions={groupActions}
+        {...this.state}
+      />
     );
   }
 }
