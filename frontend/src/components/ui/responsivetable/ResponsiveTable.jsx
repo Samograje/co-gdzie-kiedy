@@ -1,14 +1,14 @@
 import React from 'react';
-import {Dimensions, StyleSheet, View} from "react-native";
-import WideTable from "./WideTable";
-import MobileTable from "./MobileTable";
+import {Dimensions, StyleSheet, View} from 'react-native';
+import WideTable from './WideTable';
+import MobileTable from './MobileTable';
 
 class ResponsiveTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isWide: Dimensions.get('window').width > 650,
-    }
+    };
   }
 
   handleLayout = () => {
@@ -19,12 +19,15 @@ class ResponsiveTable extends React.Component {
 
   render() {
     return (
-      <View style={styles.container} onLayout={this.handleLayout}>
+      <View
+        style={styles.container}
+        onLayout={this.handleLayout}
+      >
         {this.state.isWide && (
-          <WideTable {...this.props}/>
+          <WideTable {...this.props} />
         )}
         {!this.state.isWide && (
-          <MobileTable {...this.props}/>
+          <MobileTable {...this.props} />
         )}
       </View>
     );
