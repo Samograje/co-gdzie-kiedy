@@ -14,16 +14,8 @@ const SoftwareDetailsComponent = (props) => {
     mode = "dodawania nowego";
   else
     return "";
-
-  console.log(props.validationEmptyStatus);
-  console.log(props.validationDurationIsNumberStatus);
-  console.log(props.validationDurationIsBiggerThan0NumberStatus);
-  console.log(props.validationAvailableKeysIsNumberStatus);
-  console.log(props.validationAvailableKeysIsBiggerThan0NumberStatus);
-  console.log("*****");
   return (
     <View style={styles.addform}>
-
       <Text style={styles.header}>Formularz {mode} oprogramowania.</Text>
       <Text>Pola z * są obowiązkowe.</Text>
       <Text style={styles.labeltext}>* Nazwa oprogramowania:</Text>

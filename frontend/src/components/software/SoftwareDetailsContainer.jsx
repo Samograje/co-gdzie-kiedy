@@ -24,7 +24,6 @@ class SoftwareDetailsContainer extends Component {
   }
 
   addOrEditCallCall = (method, path) => {
-    console.log(method);
     let currentDate = new Date();
     let endDate = moment(currentDate).add(this.state.duration, 'month');
     let duration = endDate - currentDate; //to poleci jsonem
