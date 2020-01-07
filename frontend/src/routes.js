@@ -36,9 +36,9 @@ const routes = {
   },
   AffiliationsHistory: {
     component: AffiliationHistoryContainer,
-    path: '/computer-sets/:id/history',
+    path: '/affiliations/:id/history/:mode',
     exact: false,
-    title: 'Historia osób / miejsc',
+    title: 'Historia osób / miejsc', // TODO: historia dla wybranej osoby / miejsca
   },
   ComputerSetsList: {
     component: ComputerSetsListContainer,
@@ -86,7 +86,7 @@ const routes = {
     exact: false,
     title: {
       affiliations: 'Historia osób / miejsc sprzętu',
-      computersets: 'Historia zestawów komputerowych sprzętu',
+      'computer-sets': 'Historia zestawów komputerowych sprzętu',
     },
   },
   SoftwareList: {
@@ -104,12 +104,13 @@ const routes = {
       edit: 'Edycja oprogramowania',
     },
   },
-  //TODO: Nie wyświetla się prawidłowy kontener
   SoftwareHistory: {
     component: SoftwareHistoryContainer,
-    path: '/software/:id/history',
+    path: '/software/:id/history/:mode',
     exact: false,
-    title: 'Historia oprogramowania',
+    title: {
+      'computer-sets': 'Historia zestawów komputerowych',
+    },
   },
 };
 

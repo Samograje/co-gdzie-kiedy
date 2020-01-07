@@ -82,7 +82,7 @@ class ComputerSetHistoryContainer extends Component {
         if (this.props.mode === 'affiliations') {
             actualColumns = columnsAffiliationsMode
         }
-        if (this.props.mode === 'computersets') {
+        if (this.props.mode === 'computer-sets') {
             actualColumns = columnsHardwareMode
         }
         if (this.props.mode === 'software') {

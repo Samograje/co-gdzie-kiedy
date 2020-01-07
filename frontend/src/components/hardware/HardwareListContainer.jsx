@@ -84,7 +84,7 @@ class HardwareListContainer extends Component {
         {
             label: 'HC',
             onClick: (itemData) => this.props.push('HardwareHistory', {
-                mode: 'computersets',
+                mode: 'computer-sets',
                 id: itemData.id,
             }),
         },
