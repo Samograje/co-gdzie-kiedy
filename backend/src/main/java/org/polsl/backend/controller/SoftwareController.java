@@ -73,6 +73,7 @@ public class SoftwareController {
    * @return informacja o poprawnym zaktualizowaniu parametrów oprogramowania
    */
   @PutMapping("/{id}")
+  @CrossOrigin(origins = "http://localhost:3000")
   public ResponseEntity<?> editSoftware(
       @PathVariable(value = "id") Long id,
       @Valid @RequestBody SoftwareDTO request
