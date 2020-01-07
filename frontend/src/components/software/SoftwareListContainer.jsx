@@ -104,6 +104,36 @@ class SoftwareListContainer extends Component {
       },
     ];
 
+    const itemActions = [
+      {
+        label: 'Edytuj',
+        onClick: (itemData) => this.props.push('SoftwareDetails', {
+          mode: 'edit',
+          id: itemData.id,
+        }),
+      },
+      {
+        label: 'Usuń',
+        onClick: (itemData) => {this.deleteCall(itemData.id)},
+      },
+      // TODO: akcje wyświetlania historii powiązań
+    ];
+
+    const groupActions = [
+      {
+        label: 'Dodaj oprogramowanie',
+        onClick: () => this.props.push('SoftwareDetails', {
+          mode: 'create',
+        }),
+      },
+      {
+        label: 'Wyszukaj za pomocą kodu QR',
+        onClick: () => {
+          // TODO: wyszukiwanie po kodzie QR
+        },
+      },
+    ];
+
     return (
       <SoftwareListComponent
         error={this.state.error}
