@@ -18,7 +18,7 @@ class ComputerSetHistoryContainer extends Component {
     }
 
     fetchData = () => {
-        request('/api/computer-sets/' + this.props.id.toString + '/history/' + this.props.mode.toString)
+        request(`/api/computer-sets/${this.props.id}/${this.props.mode}-history`)
             .then((response) => response.json())
             .then((response) => {
                 this.setState({

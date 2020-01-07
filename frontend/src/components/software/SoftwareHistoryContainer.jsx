@@ -18,7 +18,7 @@ class SoftwareHistoryContainer extends Component {
     }
 
     fetchData = () => {
-        request('/api/software/')
+        request(`/api/software/${this.props.id}/computer-sets-history`)
             .then((response) => response.json())
             .then((response) => {
                 this.setState({

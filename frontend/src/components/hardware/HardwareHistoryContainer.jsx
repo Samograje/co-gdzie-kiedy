@@ -18,7 +18,7 @@ class HardwareHistoryContainer extends Component {
     }
 
     fetchData = () => {
-        request('/api/hardware/' + this.props.id.toString + '/history/' + this.props.mode.toString)
+        request(`/api/hardware/${this.props.id}/${this.props.mode}-history`)
             .then((response) => response.json())
             .then((response) => {
                 this.setState({
