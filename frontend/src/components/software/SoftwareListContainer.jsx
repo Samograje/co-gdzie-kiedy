@@ -57,6 +57,28 @@ class SoftwareListContainer extends Component {
       },
     ];
 
+    const itemActions = [
+      {
+        label: 'Edytuj',
+        onClick: (itemData) => this.props.push('SoftwareDetails', {
+          mode: 'edit',
+          id: itemData.id,
+        }),
+      },
+      {
+        label: 'Usuń',
+        onClick: (itemData) => {
+          // TODO: usuwanie software'u
+        },
+      },
+      {
+        label: 'H',
+        onClick: (itemData) => this.props.push('SoftwareHistory', {
+          id: itemData.id,
+        }),
+      },
+    ];
+
     return (
       <SoftwareListComponent
           onFetchData={this.fetchData}
@@ -64,6 +86,7 @@ class SoftwareListContainer extends Component {
           loading={this.state.loading}
           items={this.state.items}
           totalElements={this.state.totalElements}
+          itemActions={itemActions}
           columns={columns}
       />
     );

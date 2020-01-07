@@ -58,7 +58,12 @@ class AffiliationsListContainer extends Component {
           // TODO: usuwanie afiliacji
         },
       },
-      // TODO: akcje wyświetlania historii powiązań
+        {
+            label: 'H',
+            onClick: (itemData) => this.props.push('ComputerSetHistory', {
+                id: itemData.id,
+            }),
+        },
     ];
 
     const groupActions = [

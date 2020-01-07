@@ -3,10 +3,14 @@ import AffiliationsListContainer from "./components/affiliations/AffiliationsLis
 import AffiliationDetailsContainer from "./components/affiliations/AffiliationDetailsContainer";
 import ComputerSetsListContainer from "./components/computersets/ComputerSetsListContainer";
 import ComputerSetDetailsContainer from "./components/computersets/ComputerSetDetailsContainer";
+import ComputerSetHistoryContainer from "./components/computersets/ComputerSetHistoryContainer";
 import HardwareListContainer from "./components/hardware/HardwareListContainer";
 import HardwareDetailsContainer from "./components/hardware/HardwareDetailsContainer";
 import SoftwareListContainer from "./components/software/SoftwareListContainer";
 import SoftwareDetailsContainer from "./components/software/SoftwareDetailsContainer";
+import HardwareHistoryContainer from "./components/hardware/HardwareHistoryContainer";
+import SoftwareHistoryContainer from "./components/software/SoftwareHistoryContainer";
+import AffiliationHistoryContainer from "./components/affiliations/AffiliationHistoryContainer";
 
 const routes = {
   Home: {
@@ -24,11 +28,17 @@ const routes = {
   AffiliationDetails: {
     component: AffiliationDetailsContainer,
     path: '/affiliations/:mode/:id?',
-    exact: false,
+    exact: true,
     title: {
       create: 'Dodawanie osoby / miejsca',
       edit: 'Edycja osoby / miejsca',
     },
+  },
+  AffiliationsHistory: {
+    component: AffiliationHistoryContainer,
+    path: '/computer-sets/:id/history',
+    exact: false,
+    title: 'Historia osób / miejsc',
   },
   ComputerSetsList: {
     component: ComputerSetsListContainer,
@@ -39,10 +49,20 @@ const routes = {
   ComputerSetDetails: {
     component: ComputerSetDetailsContainer,
     path: '/computer-sets/:mode/:id?',
-    exact: false,
+    exact: true,
     title: {
       create: 'Dodawanie zestawu komputerowego',
       edit: 'Edycja zestawu komputerowego',
+    },
+  },
+  ComputerSetHistory: {
+    component: ComputerSetHistoryContainer,
+    path: '/computer-sets/:id/history/:mode',
+    exact: false,
+    title: {
+      affiliations: 'Historia osób / miejsc zestawu komputerowego',
+      hardware: 'Historia sprzętów zestawu komputerowego',
+      software: 'Historia oprogramowania zestawu komputerowego'
     },
   },
   HardwareList: {
@@ -54,10 +74,19 @@ const routes = {
   HardwareDetails: {
     component: HardwareDetailsContainer,
     path: '/hardware/:mode/:id?',
-    exact: false,
+    exact: true,
     title: {
       create: 'Dodawanie sprzętu',
       edit: 'Edycja sprzętu',
+    },
+  },
+  HardwareHistory: {
+    component: HardwareHistoryContainer,
+    path: '/hardware/:id/history/:mode',
+    exact: false,
+    title: {
+      affiliations: 'Historia osób / miejsc sprzętu',
+      computersets: 'Historia zestawów komputerowych sprzętu',
     },
   },
   SoftwareList: {
@@ -69,12 +98,20 @@ const routes = {
   SoftwareDetails: {
     component: SoftwareDetailsContainer,
     path: '/software/:mode/:id?',
-    exact: false,
+    exact: true,
     title: {
       create: 'Dodawanie oprogramowania',
       edit: 'Edycja oprogramowania',
     },
   },
+  //TODO: Nie wyświetla się prawidłowy kontener
+  SoftwareHistory: {
+    component: SoftwareHistoryContainer,
+    path: '/software/:id/history',
+    exact: false,
+    title: 'Historia oprogramowania',
+  },
 };
+
 
 export default routes;
