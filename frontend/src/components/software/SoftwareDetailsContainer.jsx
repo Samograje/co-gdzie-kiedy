@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import SoftwareDetailsComponent from './SoftwareDetailsComponent';
-import isEmpty from "react-native-web/dist/vendor/react-native/isEmpty";
 import moment from "moment";
 import request from "../../APIClient";
 
@@ -94,8 +93,8 @@ class SoftwareDetailsContainer extends Component {
         keY={this.state.key}
         availableKeys={this.state.availableKeys}
         duration={this.state.duration}
-        validationEmptyStatus={isEmpty(this.state.name) || isEmpty(this.state.key) ||
-                          isEmpty(this.state.availableKeys) || isEmpty(this.state.duration)}
+        validationEmptyStatus={this.state.name === '' || this.state.key === '' ||
+                          this.state.availableKeys === '' || this.state.duration === ''}
         validationAvailableKeysIsNumberStatus={isNaN(this.state.availableKeys)}
         validationAvailableKeysIsBiggerThan0NumberStatus={this.state.availableKeys === '' ? true : Number.parseInt(this.state.availableKeys) > 0}
         validationDurationIsNumberStatus={this.state.duration === 'Licencja utraciła ważność' ? false : isNaN(this.state.duration)}

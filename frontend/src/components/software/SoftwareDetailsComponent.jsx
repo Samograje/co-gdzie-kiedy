@@ -15,24 +15,24 @@ const SoftwareDetailsComponent = (props) => {
   else
     return "";
   return (
-    <View style={styles.addform}>
+    <View style={styles.addForm}>
       <Text style={styles.header}>Formularz {mode} oprogramowania.</Text>
       <Text>Pola z * są obowiązkowe.</Text>
       <Text style={styles.labeltext}>* Nazwa oprogramowania:</Text>
       <TextInput style={styles.textinput}
-                 placeholder={"np. Mathematica"}
+                 placeholder={"Wprowadź nazwe nowego oprogramowania"}
                  value={props.name}
                  onChangeText={(name) => props.setName(name)}
       />
       <Text style={styles.labeltext}>* Klucz produktu:</Text>
       <TextInput style={styles.textinput}
-                 placeholder={"np. T847-54GF-7845-FSF5"}
+                 placeholder={"Wprowadź klucz produktu"}
                  onChangeText={(key) => props.setKey(key)}
                  value={props.keY}
       />
       <Text style={styles.labeltext}>* Ilość dostępnych kluczy:</Text>
       <TextInput style={styles.textinput}
-                 placeholder={"np. 5"}
+                 placeholder={'Wprowadź ilość dostępnych kluczy'}
                  onChangeText={(availableKeys) => props.setAvailableKeys(availableKeys)}
                  value={props.availableKeys.toString()}
       />
@@ -40,7 +40,7 @@ const SoftwareDetailsComponent = (props) => {
       <Text  style={styles.validationError}>{!props.validationAvailableKeysIsBiggerThan0NumberStatus ? "Wartość musi być liczbą większą od 0" : ""}</Text>
       <Text style={styles.labeltext}>* Czas trwania (w miesiącach):</Text>
       <TextInput style={styles.textinput}
-                 placeholder={"np. 4 "}
+                 placeholder={"Wprowadź okres trwania licencji, w miesiącach "}
                  onChangeText={(duration) => props.setDuration(duration)}
                  value={props.duration.toString()}
                  disabled={props.validationDisableDuration}
@@ -65,7 +65,7 @@ const SoftwareDetailsComponent = (props) => {
 };
 
 const styles = StyleSheet.create({
-    addform: {
+    addForm: {
       alignSelf: 'center',
       padding: 15,
     },
