@@ -50,7 +50,7 @@ class SoftwareDetailsContainer extends Component {
   };
 
   getDataForEditCall(){
-    request(`http://localhost:8080/api/software/${this.props.id}`)
+    request(`/api/software/${this.props.id}`)
         .then(response => response.json())
         .then(response => {
           let duration = response.duration;
@@ -67,9 +67,9 @@ class SoftwareDetailsContainer extends Component {
 
   onSubmit = () => {
     if(this.props.mode === 'create')
-      this.addOrEditCallCall('POST', 'http://localhost:8080/api/software');
+      this.addOrEditCallCall('POST', '/api/software');
     else if (this.props.mode === 'edit')
-      this.addOrEditCallCall('PUT', `http://localhost:8080/api/software/${this.props.id}`);
+      this.addOrEditCallCall('PUT', `/api/software/${this.props.id}`);
   };
   onReject = () => this.props.goBack();
   setName = (value) => {this.setState({name: value});};

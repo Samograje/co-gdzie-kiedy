@@ -62,7 +62,7 @@ class SoftwareListContainer extends Component {
   };
 
   deleteCall = (id) => {
-    request(`http://localhost:8080/api/software/${id}`,{
+    request(`/api/software/${id}`,{
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
