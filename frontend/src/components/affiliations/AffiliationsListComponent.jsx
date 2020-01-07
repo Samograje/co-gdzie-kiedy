@@ -1,8 +1,8 @@
 import React from 'react';
 import {Button, ScrollView, StyleSheet, View} from 'react-native';
-import ResponsiveTable from "../ui/responsivetable/ResponsiveTable";
-import ErrorElement from "../ui/ErrorElement";
-import {mainColor} from "../../constValues";
+import ResponsiveTable from '../ui/responsivetable/ResponsiveTable';
+import ErrorElement from '../ui/ErrorElement';
+import {mainColor} from '../../constValues';
 
 const AffiliationsListComponent = (props) => {
   const {
@@ -10,7 +10,7 @@ const AffiliationsListComponent = (props) => {
     error,
     items,
     totalElements,
-    onFetchData,
+    onFilterChange,
     columns,
     itemActions,
     groupActions,
@@ -43,7 +43,7 @@ const AffiliationsListComponent = (props) => {
             items={items}
             totalElements={totalElements}
             loading={loading}
-            onFetchData={onFetchData}
+            onFilterChange={onFilterChange}
             columns={columns}
             itemActions={itemActions}
           />

@@ -11,13 +11,18 @@ class SoftwareListContainer extends Component {
       error: false,
       items: [],
       totalElements: null,
+      filters: {},
     };
   }
   componentDidMount() {
     this.fetchData();
   }
 
-  fetchData = () => {
+  fetchData = (options) => {
+    this.setState({
+      loading: true,
+      error: false,
+    });
     request('/api/software')
         .then((response) => response.json())
         .then((response) => {
@@ -43,6 +48,19 @@ class SoftwareListContainer extends Component {
         })
   };
 
+  handleFilterChange = (fieldName, text) => {
+    const newFilters = {
+      ...this.state.filters,
+      [fieldName]: text,
+    };
+    this.setState({
+      filters: newFilters,
+    });
+    this.fetchData({
+      filters: newFilters,
+    });
+  };
+
   deleteCall = (id) => {
     request(`http://localhost:8080/api/software/${id}`,{
       method: 'DELETE',
@@ -65,10 +83,12 @@ class SoftwareListContainer extends Component {
       {
         name: 'name',
         label: 'Nazwa',
+        filter: true,
       },
       {
         name: 'inventoryNumber',
         label: 'Numer inwentarzowy',
+        filter: true,
       },
       {
         name: 'key',
@@ -84,37 +104,17 @@ class SoftwareListContainer extends Component {
       },
     ];
 
-    const itemActions = [
-      {
-        label: 'Edytuj',
-        onClick: (itemData) => this.props.push('SoftwareDetails', {
-          mode: 'edit',
-          id: itemData.id,
-        }),
-      },
-      {
-        label: 'Usuń',
-        onClick: (itemData) => this.deleteCall(itemData.id)
-      },
-    ];
-    const footerActions = [
-      {
-        label: 'Dodaj oprogramowanie',
-        onClick: () => this.props.push('SoftwareDetails', {
-          mode: 'create',
-        }),
-      },
-    ];
     return (
       <SoftwareListComponent
-          onFetchData={this.fetchData}
-          error={this.state.error}
-          loading={this.state.loading}
-          items={this.state.items}
-          totalElements={this.state.totalElements}
-          columns={columns}
-          itemActions={itemActions}
-          footerActions={footerActions}
+        error={this.state.error}
+        loading={this.state.loading}
+        items={this.state.items}
+        totalElements={this.state.totalElements}
+        filters={this.state.filters}
+        onFilterChange={this.handleFilterChange}
+        columns={columns}
+        itemActions={itemActions}
+        groupActions={groupActions}
       />
     );
   }

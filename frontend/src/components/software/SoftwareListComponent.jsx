@@ -1,7 +1,8 @@
 import React from 'react';
-import {ActivityIndicator, Button, ScrollView, StyleSheet, View} from 'react-native';
-import ErrorElement from "../ui/ErrorElement";
-import ResponsiveTable from "../ui/responsivetable/ResponsiveTable";
+import {Button, ScrollView, StyleSheet, View} from 'react-native';
+import ErrorElement from '../ui/ErrorElement';
+import ResponsiveTable from '../ui/responsivetable/ResponsiveTable';
+import {mainColor} from '../../constValues';
 
 const SoftwareListComponent = (props) => {
   const {
@@ -9,14 +10,28 @@ const SoftwareListComponent = (props) => {
     error,
     items,
     totalElements,
-    onFetchData,
+    onFilterChange,
     columns,
     itemActions,
-    footerActions,
+    groupActions,
   } = props;
+
   return (
     <ScrollView>
       <View style={styles.container}>
+        {groupActions && (
+          <View style={styles.groupActions}>
+            {groupActions.map((action, idx) => (
+              <View style={styles.buttonContainer} key={idx}>
+                <Button
+                  title={action.label}
+                  onPress={action.onClick}
+                  color={mainColor}
+                />
+              </View>
+            ))}
+          </View>
+        )}
         {error && (
           <ErrorElement
             message="Nie udało się pobrać danych z serwera"
@@ -28,15 +43,11 @@ const SoftwareListComponent = (props) => {
             items={items}
             totalElements={totalElements}
             loading={loading}
-            onFetchData={onFetchData}
+            onFilterChange={onFilterChange}
             columns={columns}
             itemActions={itemActions}
           />
         )}
-        <Button
-            title="Dodaj oprogramowanie"
-            onPress={footerActions[0].onClick}
-        />
       </View>
     </ScrollView>
   );
@@ -44,12 +55,20 @@ const SoftwareListComponent = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   responseText: {
     flex: 1,
-    flexDirection: 'row'
-  }
+    flexDirection: 'row',
+  },
+  groupActions: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  buttonContainer: {
+    margin: 5,
+  },
 });
 
 export default SoftwareListComponent;

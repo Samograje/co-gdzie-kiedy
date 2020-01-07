@@ -11,11 +11,11 @@ import java.util.Set;
 public interface ComputerSetRepository extends JpaRepository<ComputerSet, Long> {
   Optional<ComputerSet> findById(Long id);
 
-  Set<ComputerSet> findAllByValidToIsNull();
-
   Optional<ComputerSet> findByIdAndValidToIsNull(Long id);
 
   long countByValidToIsNull();
 
   long count();
+
+  Iterable<ComputerSet> findAllByValidToIsNull();
 }
