@@ -12,6 +12,7 @@ class SoftwareListContainer extends Component {
       items: [],
       totalElements: null,
       filters: {},
+      xd: '',
     };
   }
   componentDidMount() {
@@ -70,6 +71,7 @@ class SoftwareListContainer extends Component {
       }
     }).then((response) => response.json())
         .then((responseJson) => {
+          this.componentDidMount();
           console.log(responseJson);
         })
         .catch((error) => {
