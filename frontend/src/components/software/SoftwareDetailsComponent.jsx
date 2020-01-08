@@ -54,7 +54,8 @@ const SoftwareDetailsComponent = (props) => {
                   props.validationAvailableKeysIsNumberStatus ||
                   !props.validationAvailableKeysIsBiggerThan0NumberStatus ||
                   props.validationDurationIsNumberStatus ||
-                  !props.validationDurationIsBiggerThan0NumberStatus}
+                  !props.validationDurationIsBiggerThan0NumberStatus ||
+                  props.validationDisableDuration}
       />
       <Button
         title="Wróć"
