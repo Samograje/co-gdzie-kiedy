@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import HardwareDetailsComponent from './HardwareDetailsComponent';
-import {ActivityIndicator, View} from 'react-native';
 import request from "../../APIClient";
 
 class HardwareDetailsContainer extends Component {
@@ -14,7 +13,8 @@ class HardwareDetailsContainer extends Component {
       loading: true,
       error: false,
       dataSourceAffiliations: { "items": []},
-      dataSourceComputerSets: { "items": []}
+      dataSourceComputerSets: { "items": []},
+      dataSourceDictionary: []
     };
   }
 
@@ -24,6 +24,7 @@ class HardwareDetailsContainer extends Component {
 
     this.fetchDataAffiliations();
     this.fetchDataComputerSets();
+    this.fetchDataHardwareDictionary();
 
     console.log("works");
   }
@@ -52,6 +53,23 @@ class HardwareDetailsContainer extends Component {
           this.setState({
             loading: false,
             dataSourceComputerSets: response
+          });
+        })
+        .catch(() => {
+          this.setState({
+            loading: false,
+            error: true,
+          });
+        })
+  };
+
+  fetchDataHardwareDictionary = () => {
+    request('/api/hardware-dictionaries')
+        .then((response) => response.json())
+        .then((response) => {
+          this.setState({
+            loading: false,
+            dataSourceDictionary: response
           });
         })
         .catch(() => {
@@ -92,9 +110,9 @@ class HardwareDetailsContainer extends Component {
         .then(responseJson => {
           this.setState({
             name: responseJson.name,
-            dictionaryID: responseJson.key,
-            affiliationID: responseJson.affiliationID,
-            computerSetID: responseJson.computerSetID
+            dictionaryID: responseJson.dictionaryId,
+            affiliationID: responseJson.affiliationId,
+            computerSetID: responseJson.computerSetId
           })})
   };
 
@@ -122,6 +140,7 @@ class HardwareDetailsContainer extends Component {
             computerSetID={this.state.computerSetID}
             dataSourceAffiliations={this.state.dataSourceAffiliations}
             dataSourceComputerSets={this.state.dataSourceComputerSets}
+            dataSourceDictionary={this.state.dataSourceDictionary}
         />
     );
   }

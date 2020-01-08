@@ -28,6 +28,7 @@ const HardwareDetailsComponent = (props) => {
                            value={props.name}
                 />
               </View>
+
               <View style={styles.oneLineElement}>
                 <Text style={styles.labelText}>Typ:</Text>
                 <TextInput style={styles.textInput}
@@ -36,6 +37,19 @@ const HardwareDetailsComponent = (props) => {
                            onChangeText={(dictionaryID) => props.setDictionaryID(dictionaryID)}
                            value={props.dictionaryID}
                 />
+              </View>
+
+              <View style={styles.oneLineElement}>
+                <Text style={styles.labelText}>Typ:</Text>
+                <Picker
+                    onValueChange={(itemValue, itemIndex) => props.setDictionaryID(itemValue)}>
+                  {
+                    props.dataSourceDictionary.map((item, key) => (
+                            <Picker.Item label={item.value} value={item.id} key={key}/>
+                        )
+                    )
+                  }
+                </Picker>
               </View>
 
               <View style={styles.oneLineElement}>
