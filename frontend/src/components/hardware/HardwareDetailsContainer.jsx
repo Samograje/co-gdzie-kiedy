@@ -16,7 +16,8 @@ class HardwareDetailsContainer extends Component {
       error: false,
       dataSourceAffiliations: { "items": []},
       dataSourceComputerSets: { "items": []},
-      dataSourceDictionary: []
+      dataSourceDictionary: [],
+      isInvalid: true
     };
   }
 
@@ -146,6 +147,7 @@ class HardwareDetailsContainer extends Component {
             dataSourceAffiliations={this.state.dataSourceAffiliations}
             dataSourceComputerSets={this.state.dataSourceComputerSets}
             dataSourceDictionary={this.state.dataSourceDictionary}
+            isInvalid={this.state.name === '' || this.state.dictionaryID === '' || this.state.affiliationID === ''}
         />
     );
   }

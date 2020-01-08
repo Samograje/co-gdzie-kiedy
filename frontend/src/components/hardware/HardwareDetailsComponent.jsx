@@ -11,6 +11,7 @@ const HardwareDetailsComponent = (props) => {
   return (
       <View style={styles.addForm}>
         <Text style={styles.header}>Formularz {modeInfo} sprzętu.</Text>
+        <Text>Pola z * są obowiązkowe.</Text>
 
         {(props.loadingAffiliations || props.loadingDictionary || props.loadingComputerSets) && (
             <View style={{flex: 1, paddingTop: 20}}>
@@ -20,29 +21,21 @@ const HardwareDetailsComponent = (props) => {
 
         {!(props.loadingAffiliations || props.loadingDictionary || props.loadingComputerSets) && (
             <>
-              <View style={styles.oneLineElement}>
-                <Text style={styles.labelText}>Nazwa sprzętu:</Text>
+              <View>
+                <Text style={styles.labelText}>* Nazwa sprzętu:</Text>
                 <TextInput style={styles.textInput}
-                           placeholder={"np. HD 7780"}
-                           onChangeText={(name) => props.setName(name)}
+                           placeholder={"Wprowadź nazwę sprzętu"}
                            value={props.name}
+                           onChangeText={(name) => props.setName(name)}
                 />
               </View>
 
-              <View style={styles.oneLineElement}>
-                <Text style={styles.labelText}>Typ:</Text>
-                <TextInput style={styles.textInput}
-                           placeholder={"np. Karta sieciowa"}
-                    //TODO: dropdown na typ z Dictionary
-                           onChangeText={(dictionaryID) => props.setDictionaryID(dictionaryID)}
-                           value={props.dictionaryID}
-                />
-              </View>
-
-              <View style={styles.oneLineElement}>
-                <Text style={styles.labelText}>Typ:</Text>
+              <View>
+                <Text style={styles.labelText}>* Typ:</Text>
                 <Picker
+                    style={styles.textInput}
                     onValueChange={(itemValue, itemIndex) => props.setDictionaryID(itemValue)}>
+                  <Picker.Item label="Wybierz" value={''}/>
                   {
                     props.dataSourceDictionary.map((item, key) => (
                             <Picker.Item label={item.value} value={item.id} key={key}/>
@@ -52,11 +45,16 @@ const HardwareDetailsComponent = (props) => {
                 </Picker>
               </View>
 
-              <View style={styles.oneLineElement}>
-                <Text style={styles.labelText}>Przynależność:</Text>
+              <View>
+                <Text style={styles.labelText}>* Przynależność:</Text>
+                <TextInput style={styles.textInput}
+                           placeholder={"Filtr do wyszukiwania"}
+                           // onChangeText={/*TODO: onChangeText funkcja do dropdown*/}
+                />
                 <Picker
+                    style={styles.textInput}
                     onValueChange={(itemValue, itemIndex) => props.setAffiliationID(itemValue)}>
-                  <Picker.Item label="--------" value={null}/>
+                  <Picker.Item label="Wybierz" value={''}/>
                   {
                     props.dataSourceAffiliations.items.map((item, key) => (
                             <Picker.Item label={item.name} value={item.id} key={key}/>
@@ -66,11 +64,16 @@ const HardwareDetailsComponent = (props) => {
                 </Picker>
               </View>
 
-              <View style={styles.oneLineElement}>
+              <View>
                 <Text style={styles.labelText}>W zestawie komputerowym:</Text>
+                <TextInput style={styles.textInput}
+                           placeholder={"Filtr do wyszukiwania"}
+                    // onChangeText={/*TODO: onChangeText funkcja do dropdown*/}
+                />
                 <Picker
+                    style={styles.textInput}
                     onValueChange={(itemValue, itemIndex) => props.setComputerSetID(itemValue)}>
-                  <Picker.Item label="--------" value={null}/>
+                  <Picker.Item label="--------" value={''}/>
                   {
                     props.dataSourceComputerSets.items.map((item, key) => (
                             <Picker.Item label={item.name} value={item.id} key={key}/>
@@ -85,6 +88,7 @@ const HardwareDetailsComponent = (props) => {
         <Button
             title="Zapisz"
             onPress={props.onSubmit}
+            disabled={props.isInvalid}
         />
         <Button
             title="Wróć"
@@ -100,20 +104,32 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   labelText: {
-    marginRight: 10,
+    marginTop: 10,
+    fontSize: 20,
+    marginBottom: 5,
+    fontWeight: '500',
   },
   header: {
     fontSize: 24,
     paddingBottom: 10,
-    marginBottom: 40,
+    marginBottom: 25,
     borderBottomColor: '#199187',
     borderBottomWidth: 1,
   },
-  textInput: {},
+  textInput: {
+    marginBottom: 10,
+    width: 500,
+    height: 35,
+    borderColor: '#009000',
+    borderWidth: 1.2,
+    padding: 2,
+    borderRadius: 7,
+    fontWeight: '500',
+  },
   oneLineElement: {
     flexDirection: 'row',
     marginBottom: 15,
-  }
+  },
 });
 
 export default HardwareDetailsComponent;
