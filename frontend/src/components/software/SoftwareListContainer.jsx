@@ -12,7 +12,6 @@ class SoftwareListContainer extends Component {
       items: [],
       totalElements: null,
       filters: {},
-      xd: '',
     };
   }
   componentDidMount() {
