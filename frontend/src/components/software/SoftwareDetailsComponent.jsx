@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     addForm: {
       alignSelf: 'center',
       padding: 15,
+      width: '75%',
     },
     labeltext: {
       marginTop: 10,
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
     },
     textinput: {
       marginBottom: 10,
-      width: 500,
+      width: '100%',
       height: 35,
       borderColor: '#009000',
       borderWidth: 1.2,
