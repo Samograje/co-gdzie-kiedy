@@ -10,7 +10,9 @@ class HardwareDetailsContainer extends Component {
       dictionaryID: '',
       affiliationID: '',
       computerSetID: '',
-      loading: true,
+      loadingDictionary: true,
+      loadingAffiliations: true,
+      loadingComputerSets: true,
       error: false,
       dataSourceAffiliations: { "items": []},
       dataSourceComputerSets: { "items": []},
@@ -22,9 +24,9 @@ class HardwareDetailsContainer extends Component {
     if (this.props.mode === 'edit')
       this.getDataForEditCall();
 
+    this.fetchDataHardwareDictionary();
     this.fetchDataAffiliations();
     this.fetchDataComputerSets();
-    this.fetchDataHardwareDictionary();
 
     console.log("works");
   }
@@ -34,13 +36,13 @@ class HardwareDetailsContainer extends Component {
         .then((response) => response.json())
         .then((response) => {
           this.setState({
-            loading: false,
+            loadingAffiliations: false,
             dataSourceAffiliations: response
           });
         })
         .catch(() => {
           this.setState({
-            loading: false,
+            loadingAffiliations: false,
             error: true,
           });
         })
@@ -51,13 +53,13 @@ class HardwareDetailsContainer extends Component {
         .then((response) => response.json())
         .then((response) => {
           this.setState({
-            loading: false,
+            loadingComputerSets: false,
             dataSourceComputerSets: response
           });
         })
         .catch(() => {
           this.setState({
-            loading: false,
+            loadingComputerSets: false,
             error: true,
           });
         })
@@ -67,14 +69,15 @@ class HardwareDetailsContainer extends Component {
     request('/api/hardware-dictionaries')
         .then((response) => response.json())
         .then((response) => {
+          console.log(response);
           this.setState({
-            loading: false,
+            loadingDictionary: false,
             dataSourceDictionary: response
           });
         })
         .catch(() => {
           this.setState({
-            loading: false,
+            loadingDictionary: false,
             error: true,
           });
         })
@@ -134,7 +137,9 @@ class HardwareDetailsContainer extends Component {
             setComputerSetID={this.setComputerSetID}
             mode={this.props.mode}
             name={this.state.name}
-            loading={this.state.loading}
+            loadingDictionary={this.state.loadingDictionary}
+            loadingAffiliations={this.state.loadingAffiliations}
+            loadingComputerSets={this.state.loadingComputerSets}
             dictionaryID={this.state.dictionaryID}
             affiliationID={this.state.affiliationID}
             computerSetID={this.state.computerSetID}

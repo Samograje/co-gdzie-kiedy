@@ -12,13 +12,13 @@ const HardwareDetailsComponent = (props) => {
       <View style={styles.addForm}>
         <Text style={styles.header}>Formularz {modeInfo} sprzętu.</Text>
 
-        {props.loading && (
+        {(props.loadingAffiliations || props.loadingDictionary || props.loadingComputerSets) && (
             <View style={{flex: 1, paddingTop: 20}}>
-              <ActivityIndicator/>
+              <ActivityIndicator size="large"/>
             </View>
         )}
 
-        {!props.loading && (
+        {!(props.loadingAffiliations || props.loadingDictionary || props.loadingComputerSets) && (
             <>
               <View style={styles.oneLineElement}>
                 <Text style={styles.labelText}>Nazwa sprzętu:</Text>
