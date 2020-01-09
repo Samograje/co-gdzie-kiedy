@@ -3,7 +3,7 @@ package org.polsl.backend;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.polsl.backend.dto.affiliation.AffiliationInputDTO;
+import org.polsl.backend.dto.affiliation.AffiliationDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -55,7 +55,7 @@ public class AffiliationControllerIntegrationTest {
 
   @Test
   public void givenEmptyRequest_whenAddingAffiliation_thenReturnStatus400() throws Exception {
-    AffiliationInputDTO request = new AffiliationInputDTO();
+    AffiliationDTO request = new AffiliationDTO();
     mvc.perform(post("/api/affiliations")
       .content(objectMapper.writeValueAsString(request))
       .contentType(MediaType.APPLICATION_JSON))
@@ -68,7 +68,7 @@ public class AffiliationControllerIntegrationTest {
 
   @Test
   public void givenCorrectRequest_whenAddingAffiliation_thenReturnStatus200AndData() throws Exception {
-    AffiliationInputDTO request = new AffiliationInputDTO();
+    AffiliationDTO request = new AffiliationDTO();
     request.setFirstName("Mike");
     request.setLastName("Ehrmantraut");
     request.setLocation("");
@@ -82,7 +82,7 @@ public class AffiliationControllerIntegrationTest {
 
   @Test
   public void givenEmptyRequest_whenEditingAffiliation_thenReturnStatus400() throws Exception {
-    AffiliationInputDTO request = new AffiliationInputDTO();
+    AffiliationDTO request = new AffiliationDTO();
     mvc.perform(put("/api/affiliations/1")
       .content(objectMapper.writeValueAsString(request))
       .contentType(MediaType.APPLICATION_JSON))
@@ -95,7 +95,7 @@ public class AffiliationControllerIntegrationTest {
 
   @Test
   public void givenInvalidId_whenEditingAffiliation_thenReturnStatus404() throws Exception {
-    AffiliationInputDTO request = new AffiliationInputDTO();
+    AffiliationDTO request = new AffiliationDTO();
     request.setFirstName("Mike");
     request.setLastName("Ehrmantraut");
     request.setLocation("");
@@ -116,7 +116,7 @@ public class AffiliationControllerIntegrationTest {
 
   @Test
   public void givenCorrectRequest_whenEditingAffiliation_thenReturnStatus200AndData() throws Exception {
-    AffiliationInputDTO request = new AffiliationInputDTO();
+    AffiliationDTO request = new AffiliationDTO();
     request.setFirstName("Mike");
     request.setLastName("Ehrmantraut");
     request.setLocation("");
