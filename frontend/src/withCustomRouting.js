@@ -9,7 +9,6 @@ const withCustomRouting = (InputComponent) => {
 
       const push = (screenName, options) => {
         let path = routes[screenName].path;
-        console.log(path.toString());
 
         // zastępowanie parametrów urlu wartościami
         const regex = /:[^/]*/g;

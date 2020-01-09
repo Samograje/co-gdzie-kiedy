@@ -49,25 +49,7 @@ class ComputerSetHistoryContainer extends Component {
                 label: 'Ważne do',
             },
         ];
-        const columnsSoftwareMode = [
-            {
-                name: 'name',
-                label: 'Nazwa',
-            },
-            {
-                name: 'inventoryNumber',
-                label: 'Numer inwentarzowy',
-            },
-            {
-                name: 'validFrom',
-                label: 'Ważne od',
-            },
-            {
-                name: 'validTo',
-                label: 'Ważne do',
-            },
-        ];
-        const columnsHardwareMode = [
+        const columnsSoftwareOrHardwareMode = [
             {
                 name: 'name',
                 label: 'Nazwa',
@@ -91,10 +73,10 @@ class ComputerSetHistoryContainer extends Component {
             actualColumns = columnsAffiliationsMode
         }
         if (this.props.mode === 'hardware') {
-            actualColumns = columnsHardwareMode
+            actualColumns = columnsSoftwareOrHardwareMode
         }
         if (this.props.mode === 'software') {
-            actualColumns = columnsSoftwareMode
+            actualColumns = columnsSoftwareOrHardwareMode
         }
 
         return (
