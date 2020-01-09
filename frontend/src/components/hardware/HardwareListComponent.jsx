@@ -1,8 +1,8 @@
 import React from 'react';
 import {Button, ScrollView, StyleSheet, View} from 'react-native';
-import ErrorElement from "../ui/ErrorElement";
-import ResponsiveTable from "../ui/responsivetable/ResponsiveTable";
-import {mainColor} from "../../constValues";
+import ErrorElement from '../ui/ErrorElement';
+import ResponsiveTable from '../ui/responsivetable/ResponsiveTable';
+import {mainColor} from '../../constValues';
 
 const HardwareListComponent = (props) => {
 
@@ -11,7 +11,7 @@ const HardwareListComponent = (props) => {
     error,
     items,
     totalElements,
-    onFetchData,
+    onFilterChange,
     columns,
     itemActions,
     groupActions,
@@ -44,7 +44,7 @@ const HardwareListComponent = (props) => {
             items={items}
             totalElements={totalElements}
             loading={loading}
-            onFetchData={onFetchData}
+            onFilterChange={onFilterChange}
             columns={columns}
             itemActions={itemActions}
           />
