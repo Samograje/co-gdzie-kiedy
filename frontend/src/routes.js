@@ -36,7 +36,7 @@ const routes = {
   },
   AffiliationsHistory: {
     component: AffiliationHistoryContainer,
-    path: '/affiliations/history/',
+    path: '/affiliations/history',
     exact: true,
     title: 'Historia osób / miejsc',
   },
