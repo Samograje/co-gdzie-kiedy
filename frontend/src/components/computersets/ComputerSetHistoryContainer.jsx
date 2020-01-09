@@ -41,12 +41,12 @@ class ComputerSetHistoryContainer extends Component {
                 label: 'Nazwa',
             },
             {
-                name: 'computerSetInventoryNumber',
-                label: 'Numer inwentarzowy',
+                name: 'validFrom',
+                label: 'Ważne od',
             },
             {
-                name: 'affiliationName',
-                label: 'Przynależy do',
+                name: 'validTo',
+                label: 'Ważne do',
             },
         ];
         const columnsSoftwareMode = [
@@ -55,12 +55,16 @@ class ComputerSetHistoryContainer extends Component {
                 label: 'Nazwa',
             },
             {
-                name: 'computerSetInventoryNumber',
+                name: 'inventoryNumber',
                 label: 'Numer inwentarzowy',
             },
             {
-                name: 'affiliationName',
-                label: 'Przynależy do',
+                name: 'validFrom',
+                label: 'Ważne od',
+            },
+            {
+                name: 'validTo',
+                label: 'Ważne do',
             },
         ];
         const columnsHardwareMode = [
@@ -69,12 +73,16 @@ class ComputerSetHistoryContainer extends Component {
                 label: 'Nazwa',
             },
             {
-                name: 'computerSetInventoryNumber',
+                name: 'inventoryNumber',
                 label: 'Numer inwentarzowy',
             },
             {
-                name: 'affiliationName',
-                label: 'Przynależy do',
+                name: 'validFrom',
+                label: 'Ważne od',
+            },
+            {
+                name: 'validTo',
+                label: 'Ważne do',
             },
         ];
 
@@ -82,7 +90,7 @@ class ComputerSetHistoryContainer extends Component {
         if (this.props.mode === 'affiliations') {
             actualColumns = columnsAffiliationsMode
         }
-        if (this.props.mode === 'computer-sets') {
+        if (this.props.mode === 'hardware') {
             actualColumns = columnsHardwareMode
         }
         if (this.props.mode === 'software') {

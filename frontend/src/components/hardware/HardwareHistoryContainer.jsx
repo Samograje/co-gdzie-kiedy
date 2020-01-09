@@ -41,11 +41,31 @@ class HardwareHistoryContainer extends Component {
                 name: 'name',
                 label: 'Nazwa',
             },
+            {
+                name: 'validFrom',
+                label: 'Ważne od',
+            },
+            {
+                name: 'validTo',
+                label: 'Ważne do',
+            },
         ];
         const columnsComputerSetsMode = [
             {
                 name: 'name',
                 label: 'Nazwa',
+            },
+            {
+                name: 'inventoryNumber',
+                label: 'Numer inwentarzowy',
+            },
+            {
+                name: 'validFrom',
+                label: 'Ważne od',
+            },
+            {
+                name: 'validTo',
+                label: 'Ważne do',
             },
         ];
 
