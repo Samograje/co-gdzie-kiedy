@@ -23,7 +23,7 @@ class SoftwareListContainer extends Component {
       loading: true,
       error: false,
     });
-    request('/api/software')
+    request('/api/software', options)
         .then((response) => response.json())
         .then((response) => {
           for(let i = 0; i < response.items.length; i++)
@@ -69,9 +69,8 @@ class SoftwareListContainer extends Component {
         'Access-Control-Allow-Origin': '*',
       }
     }).then((response) => response.json())
-        .then((responseJson) => {
-          this.componentDidMount();
-          console.log(responseJson);
+        .then(() => {
+          this.fetchData();
         })
         .catch((error) => {
           console.error(error);
