@@ -1,4 +1,3 @@
-import React from 'react';
 import {Platform} from 'react-native';
 import routes from "./routes";
 
@@ -42,24 +41,24 @@ const withCustomRouting = (InputComponent) => {
         history.goBack();
       };
 
-      return (
+      /*return (
         <InputComponent
           push={push}
           goBack={goBack}
           {...match.params}
         />
-      );
+      );*/
     };
   }
 
   if (Platform.OS === 'android') {
-    return ({navigation}) => (
-      <InputComponent
-        push={navigation.navigate}
-        goBack={navigation.goBack}
-        {...navigation.state.params}
-      />
-    );
+    /* return ({navigation}) => (
+       <InputComponent
+         push={navigation.navigate}
+         goBack={navigation.goBack}
+         {...navigation.state.params}
+       />
+     );*/
   }
 };
 

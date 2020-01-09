@@ -58,12 +58,6 @@ class AffiliationsListContainer extends Component {
           // TODO: usuwanie afiliacji
         },
       },
-        {
-            label: 'H',
-            onClick: (itemData) => this.props.push('ComputerSetHistory', {
-                id: itemData.id,
-            }),
-        },
     ];
 
     const groupActions = [
@@ -73,6 +67,17 @@ class AffiliationsListContainer extends Component {
           mode: 'create',
         }),
       },
+        /*{
+          label: 'H',
+          onClick: (itemData) => this.props.push('AffiliationHistory', {
+          }),
+        },*/
+        {
+            label: 'Historia',
+            onClick: () => this.props.push('AffiliationHistory', {
+                //mode: 'create',
+            }),
+        },
     ];
 
     return (

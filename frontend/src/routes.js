@@ -36,9 +36,9 @@ const routes = {
   },
   AffiliationsHistory: {
     component: AffiliationHistoryContainer,
-    path: '/affiliations/:id/history/:mode',
+    path: '/affiliations/history/',
     exact: false,
-    title: 'Historia osób / miejsc', // TODO: historia dla wybranej osoby / miejsca
+    title: 'Historia osób / miejsc',
   },
   ComputerSetsList: {
     component: ComputerSetsListContainer,

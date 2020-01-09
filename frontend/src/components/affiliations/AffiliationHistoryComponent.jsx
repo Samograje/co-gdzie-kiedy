@@ -13,6 +13,8 @@ const AffiliationHistoryComponent = (props) => {
         totalElements,
         onFetchData,
         columns,
+        /*itemActions,
+        groupActions,*/
     } = props;
 
     return (

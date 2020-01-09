@@ -18,7 +18,7 @@ class AffiliationHistoryContainer extends Component {
     }
 
     fetchData = () => {
-        request('/api/affiliations/')
+        request(`/api/affiliations/history`)
             .then((response) => response.json())
             .then((response) => {
                 this.setState({
@@ -39,6 +39,14 @@ class AffiliationHistoryContainer extends Component {
             {
                 name: 'name',
                 label: 'Nazwa',
+            },
+            {
+                name: 'validFrom',
+                label: 'Ważne od',
+            },
+            {
+                name: 'validTo',
+                label: 'Ważne do',
             },
         ];
 
