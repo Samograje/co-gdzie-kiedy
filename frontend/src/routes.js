@@ -106,11 +106,9 @@ const routes = {
   },
   SoftwareHistory: {
     component: SoftwareHistoryContainer,
-    path: '/software/:id/history/:mode',
+    path: '/software/:id/history/computer-sets-history',
     exact: false,
-    title: {
-      'computer-sets': 'Historia zestawów komputerowych',
-    },
+    title: 'Historia zestawów komputerowych',
   },
 };
 

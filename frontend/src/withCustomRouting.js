@@ -1,3 +1,4 @@
+import React from 'react';
 import {Platform} from 'react-native';
 import routes from "./routes";
 
@@ -8,6 +9,7 @@ const withCustomRouting = (InputComponent) => {
 
       const push = (screenName, options) => {
         let path = routes[screenName].path;
+        console.log(path.toString());
 
         // zastępowanie parametrów urlu wartościami
         const regex = /:[^/]*/g;
@@ -41,24 +43,24 @@ const withCustomRouting = (InputComponent) => {
         history.goBack();
       };
 
-      /*return (
-        <InputComponent
-          push={push}
-          goBack={goBack}
-          {...match.params}
-        />
-      );*/
+      return (
+          <InputComponent
+              push={push}
+              goBack={goBack}
+              {...match.params}
+          />
+      );
     };
   }
 
   if (Platform.OS === 'android') {
-    /* return ({navigation}) => (
-       <InputComponent
-         push={navigation.navigate}
-         goBack={navigation.goBack}
-         {...navigation.state.params}
-       />
-     );*/
+    return ({navigation}) => (
+        <InputComponent
+            push={navigation.navigate}
+            goBack={navigation.goBack}
+            {...navigation.state.params}
+        />
+    );
   }
 };
 

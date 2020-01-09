@@ -45,15 +45,11 @@ class SoftwareHistoryContainer extends Component {
                 label: 'Numer inwentarzowy',
             },
             {
-                name: 'key',
-                label: 'Klucz produktu',
+                name: 'validFrom',
+                label: 'Ważne od',
             },
             {
-                name: 'key',
-                label: 'Ilość dostępnych kluczy',
-            },
-            {
-                name: 'key',
+                name: 'validTo',
                 label: 'Ważne do',
             },
         ];
