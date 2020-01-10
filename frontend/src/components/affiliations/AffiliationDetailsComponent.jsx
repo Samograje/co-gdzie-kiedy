@@ -144,6 +144,11 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 5,
   },
+  label: {
+    fontSize: 16,
+    fontWeight: '500',
+    marginBottom: 2,
+  },
   input: {
     fontSize: 16,
     padding: 2,
