@@ -34,6 +34,7 @@ const HardwareDetailsComponent = (props) => {
                 <View>
                   <Text style={styles.labelText}>* Typ:</Text>
                   <Picker
+                      selectedValue={props.dictionaryID}
                       style={styles.picker}
                       onValueChange={(itemValue, itemIndex) => props.setDictionaryID(itemValue)}>
                     <Picker.Item label="Wybierz" value={''}/>
@@ -53,6 +54,7 @@ const HardwareDetailsComponent = (props) => {
                       // onChangeText={/*TODO: onChangeText funkcja do dropdown*/}
                   />
                   <Picker
+                      selectedValue={props.affiliationID}
                       style={styles.picker}
                       onValueChange={(itemValue, itemIndex) => props.setAffiliationID(itemValue)}>
                     <Picker.Item label="Wybierz" value={''}/>
@@ -72,6 +74,7 @@ const HardwareDetailsComponent = (props) => {
                       // onChangeText={/*TODO: onChangeText funkcja do dropdown*/}
                   />
                   <Picker
+                      selectedValue={props.computerSetID}
                       style={styles.picker}
                       onValueChange={(itemValue, itemIndex) => props.setComputerSetID(itemValue)}>
                     <Picker.Item label="--------" value={null}/>

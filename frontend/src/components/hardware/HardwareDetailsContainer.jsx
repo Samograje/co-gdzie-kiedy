@@ -22,14 +22,12 @@ class HardwareDetailsContainer extends Component {
   }
 
   componentDidMount() {
-    if (this.props.mode === 'edit')
-      this.getDataForEditCall();
-
     this.fetchDataHardwareDictionary();
     this.fetchDataAffiliations();
     this.fetchDataComputerSets();
 
-    console.log("works");
+    if (this.props.mode === 'edit')
+      this.getDataForEditCall();
   }
 
   fetchDataAffiliations = () => {
