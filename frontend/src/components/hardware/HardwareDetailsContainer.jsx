@@ -14,8 +14,8 @@ class HardwareDetailsContainer extends Component {
       loadingAffiliations: true,
       loadingComputerSets: true,
       error: false,
-      dataSourceAffiliations: { "items": []},
-      dataSourceComputerSets: { "items": []},
+      dataSourceAffiliations: {"items": []},
+      dataSourceComputerSets: {"items": []},
       dataSourceDictionary: [],
       isInvalid: true
     };
@@ -82,10 +82,10 @@ class HardwareDetailsContainer extends Component {
         })
   };
 
-  addCall = () => {
-    console.log(this.state.name+","+this.state.dictionaryID+","+this.state.affiliationID+","+this.state.computerSetID)
-    request('/api/hardware', {
-      method: 'POST',
+  addOrEditCallCall = (method, path) => {
+    console.log(this.state.name + "," + this.state.dictionaryID + "," + this.state.affiliationID + "," + this.state.computerSetID)
+    request(path, {
+      method: method,
       body: JSON.stringify({
         "name": this.state.name,
         "dictionaryId": this.state.dictionaryID,
@@ -106,7 +106,7 @@ class HardwareDetailsContainer extends Component {
         });
   };
 
-  getDataForEditCall(){
+  getDataForEditCall() {
     request(`/api/hardware/${this.props.id}`)
         .then(response => response.json())
         .then(responseJson => {
@@ -115,19 +115,25 @@ class HardwareDetailsContainer extends Component {
             dictionaryID: responseJson.dictionaryId,
             affiliationID: responseJson.affiliationId,
             computerSetID: responseJson.computerSetId
-          })})
+          })
+        })
   };
 
-  onSubmit = () => this.addCall();
+  onSubmit = () => {
+    if (this.props.mode === 'create')
+      this.addOrEditCallCall('POST', '/api/hardware');
+    else if (this.props.mode === 'edit')
+      this.addOrEditCallCall('PUT', `/api/hardware/${this.props.id}`);
+  };
   onReject = () => this.props.goBack();
   setName = (value) => this.setState({name: value});
-  setDictionaryID = (value) => this.setState( {dictionaryID: value});
+  setDictionaryID = (value) => this.setState({dictionaryID: value});
   setAffiliationID = (value) => this.setState({affiliationID: value});
   setComputerSetID = (value) => this.setState({computerSetID: value});
 
   render() {
-     return (
-         <HardwareDetailsComponent
+    return (
+        <HardwareDetailsComponent
             onSubmit={this.onSubmit}
             onReject={this.onReject}
             setName={this.setName}
