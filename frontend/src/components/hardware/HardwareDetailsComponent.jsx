@@ -1,5 +1,15 @@
 import React from 'react';
-import {Button, ScrollView, StyleSheet, Text, View, TextInput, Picker, ActivityIndicator} from 'react-native';
+import {
+  ActivityIndicator,
+  Button,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
+import AutoComplete from '../ui/form/AutoComplete';
+import PickerWithItems from '../ui/form/PickerWithItems';
 
 const HardwareDetailsComponent = (props) => {
   let modeInfo;
@@ -33,58 +43,31 @@ const HardwareDetailsComponent = (props) => {
 
                 <View>
                   <Text style={styles.labelText}>* Typ:</Text>
-                  <Picker
-                      selectedValue={props.dictionaryID}
-                      style={styles.picker}
-                      onValueChange={(itemValue, itemIndex) => props.setDictionaryID(itemValue)}>
-                    <Picker.Item label="Wybierz" value={''}/>
-                    {
-                      props.dataSourceDictionary.map((item, key) => (
-                              <Picker.Item label={item.value} value={item.id} key={key}/>
-                          )
-                      )
-                    }
-                  </Picker>
+                  <PickerWithItems
+                    value={props.dictionaryID}
+                    updateValue={props.setDictionaryID}
+                    options={props.dataSourceDictionary}
+                  />
                 </View>
 
                 <View>
                   <Text style={styles.labelText}>* Przynależność:</Text>
-                  <TextInput style={styles.textInput}
-                             placeholder={"Filtr do wyszukiwania"}
-                      // onChangeText={/*TODO: onChangeText funkcja do dropdown*/}
+                  <AutoComplete
+                      value={props.affiliationID}
+                      updateValue={props.setAffiliationID}
+                      options={props.dataSourceAffiliations.items}
+                      updateOptions={props.updateAffiliations}
                   />
-                  <Picker
-                      selectedValue={props.affiliationID}
-                      style={styles.picker}
-                      onValueChange={(itemValue, itemIndex) => props.setAffiliationID(itemValue)}>
-                    <Picker.Item label="Wybierz" value={''}/>
-                    {
-                      props.dataSourceAffiliations.items.map((item, key) => (
-                              <Picker.Item label={item.name} value={item.id} key={key}/>
-                          )
-                      )
-                    }
-                  </Picker>
                 </View>
 
                 <View>
                   <Text style={styles.labelText}>W zestawie komputerowym:</Text>
-                  <TextInput style={styles.textInput}
-                             placeholder={"Filtr do wyszukiwania"}
-                      // onChangeText={/*TODO: onChangeText funkcja do dropdown*/}
+                  <AutoComplete
+                      value={props.computerSetID}
+                      updateValue={props.setComputerSetID}
+                      options={props.dataSourceComputerSets.items}
+                      updateOptions={props.updateComputerSets}
                   />
-                  <Picker
-                      selectedValue={props.computerSetID}
-                      style={styles.picker}
-                      onValueChange={(itemValue, itemIndex) => props.setComputerSetID(itemValue)}>
-                    <Picker.Item label="--------" value={null}/>
-                    {
-                      props.dataSourceComputerSets.items.map((item, key) => (
-                              <Picker.Item label={item.name} value={item.id} key={key}/>
-                          )
-                      )
-                    }
-                  </Picker>
                 </View>
               </>
           )}
@@ -141,15 +124,6 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 20,
   },
-  picker: {
-    marginBottom: 10,
-    width: '100%',
-    height: 35,
-    borderColor: '#009000',
-    borderWidth: 1.2,
-    padding: 2,
-    borderRadius: 7,
-  }
 });
 
 export default HardwareDetailsComponent;

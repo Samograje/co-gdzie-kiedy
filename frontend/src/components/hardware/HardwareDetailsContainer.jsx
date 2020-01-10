@@ -30,8 +30,14 @@ class HardwareDetailsContainer extends Component {
       this.getDataForEditCall();
   }
 
-  fetchDataAffiliations = () => {
-    request('/api/affiliations')
+  fetchDataAffiliations = (query) => {
+    const options = {
+      filters: {
+        name: query,
+      },
+    };
+
+    request('/api/affiliations', options)
         .then((response) => response.json())
         .then((response) => {
           this.setState({
@@ -47,8 +53,14 @@ class HardwareDetailsContainer extends Component {
         })
   };
 
-  fetchDataComputerSets = () => {
-    request('/api/computer-sets')
+  fetchDataComputerSets = (query) => {
+    const options = {
+      filters: {
+        name: query,
+      },
+    };
+
+    request('/api/computer-sets', options)
         .then((response) => response.json())
         .then((response) => {
           this.setState({
@@ -68,7 +80,6 @@ class HardwareDetailsContainer extends Component {
     request('/api/hardware-dictionaries')
         .then((response) => response.json())
         .then((response) => {
-          console.log(response);
           this.setState({
             loadingDictionary: false,
             dataSourceDictionary: response
@@ -83,7 +94,6 @@ class HardwareDetailsContainer extends Component {
   };
 
   addOrEditCallCall = (method, path) => {
-    console.log(this.state.name + "," + this.state.dictionaryID + "," + this.state.affiliationID + "," + this.state.computerSetID)
     request(path, {
       method: method,
       body: JSON.stringify({
@@ -152,6 +162,8 @@ class HardwareDetailsContainer extends Component {
             dataSourceComputerSets={this.state.dataSourceComputerSets}
             dataSourceDictionary={this.state.dataSourceDictionary}
             isInvalid={this.state.name === '' || this.state.dictionaryID === '' || this.state.affiliationID === ''}
+            updateAffiliations={this.fetchDataAffiliations}
+            updateComputerSets={this.fetchDataComputerSets}
         />
     );
   }
