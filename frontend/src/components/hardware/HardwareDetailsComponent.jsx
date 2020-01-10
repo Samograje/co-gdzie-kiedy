@@ -33,7 +33,7 @@ const HardwareDetailsComponent = (props) => {
               <View>
                 <Text style={styles.labelText}>* Typ:</Text>
                 <Picker
-                    style={styles.textInput}
+                    style={styles.picker}
                     onValueChange={(itemValue, itemIndex) => props.setDictionaryID(itemValue)}>
                   <Picker.Item label="Wybierz" value={''}/>
                   {
@@ -52,7 +52,7 @@ const HardwareDetailsComponent = (props) => {
                            // onChangeText={/*TODO: onChangeText funkcja do dropdown*/}
                 />
                 <Picker
-                    style={styles.textInput}
+                    style={styles.picker}
                     onValueChange={(itemValue, itemIndex) => props.setAffiliationID(itemValue)}>
                   <Picker.Item label="Wybierz" value={''}/>
                   {
@@ -71,9 +71,9 @@ const HardwareDetailsComponent = (props) => {
                     // onChangeText={/*TODO: onChangeText funkcja do dropdown*/}
                 />
                 <Picker
-                    style={styles.textInput}
+                    style={styles.picker}
                     onValueChange={(itemValue, itemIndex) => props.setComputerSetID(itemValue)}>
-                  <Picker.Item label="--------" value={''}/>
+                  <Picker.Item label="--------" value={null}/>
                   {
                     props.dataSourceComputerSets.items.map((item, key) => (
                             <Picker.Item label={item.name} value={item.id} key={key}/>
@@ -135,6 +135,15 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 20,
     paddingBottom: 20,
+  },
+  picker: {
+    marginBottom: 10,
+    width: '100%',
+    height: 35,
+    borderColor: '#009000',
+    borderWidth: 1.2,
+    padding: 2,
+    borderRadius: 7,
   }
 });
 

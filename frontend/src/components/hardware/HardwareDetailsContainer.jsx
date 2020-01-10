@@ -90,9 +90,9 @@ class HardwareDetailsContainer extends Component {
       method: 'POST',
       body: JSON.stringify({
         "name": this.state.name,
-        "dictionaryId": Number(this.state.dictionaryID),
-        "affiliationId": Number(this.state.dictionaryID),
-        "computerSetId": Number(this.state.computerSetID)
+        "dictionaryId": this.state.dictionaryID,
+        "affiliationId": this.state.affiliationID,
+        "computerSetId": this.state.computerSetID
       }),
       headers: {
         'Content-Type': 'application/json',
