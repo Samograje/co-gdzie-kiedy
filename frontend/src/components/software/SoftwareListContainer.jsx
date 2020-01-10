@@ -23,7 +23,7 @@ class SoftwareListContainer extends Component {
       loading: true,
       error: false,
     });
-    request('/api/software')
+    request('/api/software', options)
         .then((response) => response.json())
         .then((response) => {
           for(let i = 0; i < response.items.length; i++)
@@ -62,16 +62,15 @@ class SoftwareListContainer extends Component {
   };
 
   deleteCall = (id) => {
-    request(`http://localhost:8080/api/software/${id}`,{
+    request(`/api/software/${id}`,{
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       }
     }).then((response) => response.json())
-        .then((responseJson) => {
-          console.log(responseJson);
-          window.location.reload();
+        .then(() => {
+          this.fetchData();
         })
         .catch((error) => {
           console.error(error);
