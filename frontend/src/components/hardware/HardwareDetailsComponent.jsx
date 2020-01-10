@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, StyleSheet, Text, View, TextInput, Picker, ActivityIndicator} from 'react-native';
+import {Button, ScrollView, StyleSheet, Text, View, TextInput, Picker, ActivityIndicator} from 'react-native';
 
 const HardwareDetailsComponent = (props) => {
   let modeInfo;
@@ -14,13 +14,13 @@ const HardwareDetailsComponent = (props) => {
         <Text>Pola z * są obowiązkowe.</Text>
 
         {(props.loadingAffiliations || props.loadingDictionary || props.loadingComputerSets) && (
-            <View style={{flex: 1, paddingTop: 20}}>
+            <View style={styles.indicator}>
               <ActivityIndicator size="large"/>
             </View>
         )}
 
         {!(props.loadingAffiliations || props.loadingDictionary || props.loadingComputerSets) && (
-            <>
+            <ScrollView>
               <View>
                 <Text style={styles.labelText}>* Nazwa sprzętu:</Text>
                 <TextInput style={styles.textInput}
@@ -82,7 +82,7 @@ const HardwareDetailsComponent = (props) => {
                   }
                 </Picker>
               </View>
-            </>
+            </ScrollView>
         )}
 
         <Button
@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
   addForm: {
     alignSelf: 'center',
     padding: 15,
+    width: '75%',
   },
   labelText: {
     marginTop: 10,
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     marginBottom: 10,
-    width: 500,
+    width: '100%',
     height: 35,
     borderColor: '#009000',
     borderWidth: 1.2,
@@ -130,6 +131,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 15,
   },
+  indicator: {
+    flex: 1,
+    paddingTop: 20,
+    paddingBottom: 20,
+  }
 });
 
 export default HardwareDetailsComponent;
