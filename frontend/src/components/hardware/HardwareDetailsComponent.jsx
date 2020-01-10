@@ -9,92 +9,94 @@ const HardwareDetailsComponent = (props) => {
     modeInfo = "dodawania nowego";
 
   return (
-      <View style={styles.addForm}>
-        <Text style={styles.header}>Formularz {modeInfo} sprzętu.</Text>
-        <Text>Pola z * są obowiązkowe.</Text>
+      <ScrollView>
+        <View style={styles.addForm}>
+          <Text style={styles.header}>Formularz {modeInfo} sprzętu.</Text>
+          <Text>Pola z * są obowiązkowe.</Text>
 
-        {(props.loadingAffiliations || props.loadingDictionary || props.loadingComputerSets) && (
-            <View style={styles.indicator}>
-              <ActivityIndicator size="large"/>
-            </View>
-        )}
-
-        {!(props.loadingAffiliations || props.loadingDictionary || props.loadingComputerSets) && (
-            <ScrollView>
-              <View>
-                <Text style={styles.labelText}>* Nazwa sprzętu:</Text>
-                <TextInput style={styles.textInput}
-                           placeholder={"Wprowadź nazwę sprzętu"}
-                           value={props.name}
-                           onChangeText={(name) => props.setName(name)}
-                />
+          {(props.loadingAffiliations || props.loadingDictionary || props.loadingComputerSets) && (
+              <View style={styles.indicator}>
+                <ActivityIndicator size="large"/>
               </View>
+          )}
 
-              <View>
-                <Text style={styles.labelText}>* Typ:</Text>
-                <Picker
-                    style={styles.picker}
-                    onValueChange={(itemValue, itemIndex) => props.setDictionaryID(itemValue)}>
-                  <Picker.Item label="Wybierz" value={''}/>
-                  {
-                    props.dataSourceDictionary.map((item, key) => (
-                            <Picker.Item label={item.value} value={item.id} key={key}/>
-                        )
-                    )
-                  }
-                </Picker>
-              </View>
+          {!(props.loadingAffiliations || props.loadingDictionary || props.loadingComputerSets) && (
+              <>
+                <View>
+                  <Text style={styles.labelText}>* Nazwa sprzętu:</Text>
+                  <TextInput style={styles.textInput}
+                             placeholder={"Wprowadź nazwę sprzętu"}
+                             value={props.name}
+                             onChangeText={(name) => props.setName(name)}
+                  />
+                </View>
 
-              <View>
-                <Text style={styles.labelText}>* Przynależność:</Text>
-                <TextInput style={styles.textInput}
-                           placeholder={"Filtr do wyszukiwania"}
-                           // onChangeText={/*TODO: onChangeText funkcja do dropdown*/}
-                />
-                <Picker
-                    style={styles.picker}
-                    onValueChange={(itemValue, itemIndex) => props.setAffiliationID(itemValue)}>
-                  <Picker.Item label="Wybierz" value={''}/>
-                  {
-                    props.dataSourceAffiliations.items.map((item, key) => (
-                            <Picker.Item label={item.name} value={item.id} key={key}/>
-                        )
-                    )
-                  }
-                </Picker>
-              </View>
+                <View>
+                  <Text style={styles.labelText}>* Typ:</Text>
+                  <Picker
+                      style={styles.picker}
+                      onValueChange={(itemValue, itemIndex) => props.setDictionaryID(itemValue)}>
+                    <Picker.Item label="Wybierz" value={''}/>
+                    {
+                      props.dataSourceDictionary.map((item, key) => (
+                              <Picker.Item label={item.value} value={item.id} key={key}/>
+                          )
+                      )
+                    }
+                  </Picker>
+                </View>
 
-              <View>
-                <Text style={styles.labelText}>W zestawie komputerowym:</Text>
-                <TextInput style={styles.textInput}
-                           placeholder={"Filtr do wyszukiwania"}
-                    // onChangeText={/*TODO: onChangeText funkcja do dropdown*/}
-                />
-                <Picker
-                    style={styles.picker}
-                    onValueChange={(itemValue, itemIndex) => props.setComputerSetID(itemValue)}>
-                  <Picker.Item label="--------" value={null}/>
-                  {
-                    props.dataSourceComputerSets.items.map((item, key) => (
-                            <Picker.Item label={item.name} value={item.id} key={key}/>
-                        )
-                    )
-                  }
-                </Picker>
-              </View>
-            </ScrollView>
-        )}
+                <View>
+                  <Text style={styles.labelText}>* Przynależność:</Text>
+                  <TextInput style={styles.textInput}
+                             placeholder={"Filtr do wyszukiwania"}
+                      // onChangeText={/*TODO: onChangeText funkcja do dropdown*/}
+                  />
+                  <Picker
+                      style={styles.picker}
+                      onValueChange={(itemValue, itemIndex) => props.setAffiliationID(itemValue)}>
+                    <Picker.Item label="Wybierz" value={''}/>
+                    {
+                      props.dataSourceAffiliations.items.map((item, key) => (
+                              <Picker.Item label={item.name} value={item.id} key={key}/>
+                          )
+                      )
+                    }
+                  </Picker>
+                </View>
 
-        <Button
-            title="Zapisz"
-            onPress={props.onSubmit}
-            disabled={props.isInvalid}
-        />
-        <Button
-            title="Wróć"
-            onPress={props.onReject}
-        />
-      </View>
+                <View>
+                  <Text style={styles.labelText}>W zestawie komputerowym:</Text>
+                  <TextInput style={styles.textInput}
+                             placeholder={"Filtr do wyszukiwania"}
+                      // onChangeText={/*TODO: onChangeText funkcja do dropdown*/}
+                  />
+                  <Picker
+                      style={styles.picker}
+                      onValueChange={(itemValue, itemIndex) => props.setComputerSetID(itemValue)}>
+                    <Picker.Item label="--------" value={null}/>
+                    {
+                      props.dataSourceComputerSets.items.map((item, key) => (
+                              <Picker.Item label={item.name} value={item.id} key={key}/>
+                          )
+                      )
+                    }
+                  </Picker>
+                </View>
+              </>
+          )}
+
+          <Button
+              title="Zapisz"
+              onPress={props.onSubmit}
+              disabled={props.isInvalid}
+          />
+          <Button
+              title="Wróć"
+              onPress={props.onReject}
+          />
+        </View>
+      </ScrollView>
   );
 };
 
