@@ -1,7 +1,6 @@
 import {Platform} from 'react-native';
 
-//const baseUrl = 'https://dry-wildwood-77221.herokuapp.com';
-const baseUrl = 'http://localhost:8080';
+const baseUrl = 'https://dry-wildwood-77221.herokuapp.com';
 
 const request = (url, options) => {
   let finalUrl;
