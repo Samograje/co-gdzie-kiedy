@@ -1,15 +1,15 @@
-import HomepageContainer from "./components/homepage/HomepageContainer";
-import AffiliationsListContainer from "./components/affiliations/AffiliationsListContainer";
-import AffiliationDetailsContainer from "./components/affiliations/AffiliationDetailsContainer";
-import ComputerSetsListContainer from "./components/computersets/ComputerSetsListContainer";
-import ComputerSetDetailsContainer from "./components/computersets/ComputerSetDetailsContainer";
-import ComputerSetHistoryContainer from "./components/computersets/ComputerSetHistoryContainer";
-import HardwareListContainer from "./components/hardware/HardwareListContainer";
-import HardwareDetailsContainer from "./components/hardware/HardwareDetailsContainer";
-import SoftwareListContainer from "./components/software/SoftwareListContainer";
-import SoftwareDetailsContainer from "./components/software/SoftwareDetailsContainer";
-import HardwareHistoryContainer from "./components/hardware/HardwareHistoryContainer";
-import SoftwareHistoryContainer from "./components/software/SoftwareHistoryContainer";
+import HomepageContainer from './components/homepage/HomepageContainer';
+import AffiliationsListContainer from './components/affiliations/AffiliationsListContainer';
+import AffiliationDetailsContainer from './components/affiliations/AffiliationDetailsContainer';
+import ComputerSetsListContainer from './components/computersets/ComputerSetsListContainer';
+import ComputerSetDetailsContainer from './components/computersets/ComputerSetDetailsContainer';
+import HardwareListContainer from './components/hardware/HardwareListContainer';
+import HardwareDetailsContainer from './components/hardware/HardwareDetailsContainer';
+import SoftwareListContainer from './components/software/SoftwareListContainer';
+import SoftwareDetailsContainer from './components/software/SoftwareDetailsContainer';
+import ComputerSetHistoryContainer from './components/computersets/ComputerSetHistoryContainer';
+import HardwareHistoryContainer from './components/hardware/HardwareHistoryContainer';
+import SoftwareHistoryContainer from './components/software/SoftwareHistoryContainer';
 
 const routes = {
   Home: {
