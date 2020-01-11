@@ -27,7 +27,7 @@ const routes = {
   AffiliationDetails: {
     component: AffiliationDetailsContainer,
     path: '/affiliations/:mode/:id?',
-    exact: true,
+    exact: false,
     title: {
       create: 'Dodawanie osoby / miejsca',
       edit: 'Edycja osoby / miejsca',
