@@ -27,7 +27,7 @@ const routes = {
   },
   AffiliationDetails: {
     component: AffiliationDetailsContainer,
-    path: '/affiliations/:mode/:id?',
+    path: '/affiliations/:mode/:id?(\d+)',
     exact: true,
     title: {
       create: 'Dodawanie osoby / miejsca',
@@ -37,7 +37,7 @@ const routes = {
   AffiliationsHistory: {
     component: AffiliationHistoryContainer,
     path: '/affiliations/history',
-      exact: false,
+    exact: true,
     title: 'Historia osób / miejsc',
   },
   ComputerSetsList: {
@@ -48,7 +48,7 @@ const routes = {
   },
   ComputerSetDetails: {
     component: ComputerSetDetailsContainer,
-    path: '/computer-sets/:mode/:id?',
+    path: '/computer-sets/:mode/:id?(\d+)',
     exact: true,
     title: {
       create: 'Dodawanie zestawu komputerowego',
@@ -57,7 +57,7 @@ const routes = {
   },
   ComputerSetHistory: {
     component: ComputerSetHistoryContainer,
-    path: '/computer-sets/:id/history/:mode',
+    path: '/computer-sets/:id(\d+)/history/:mode',
     exact: false,
     title: {
       affiliations: 'Historia osób / miejsc zestawu komputerowego',
@@ -73,7 +73,7 @@ const routes = {
   },
   HardwareDetails: {
     component: HardwareDetailsContainer,
-    path: '/hardware/:mode/:id?',
+    path: '/hardware/:mode/:id?(\d+)',
     exact: true,
     title: {
       create: 'Dodawanie sprzętu',
@@ -82,7 +82,7 @@ const routes = {
   },
   HardwareHistory: {
     component: HardwareHistoryContainer,
-    path: '/hardware/:id/history/:mode',
+    path: '/hardware/:id(\d+)/history/:mode',
     exact: false,
     title: {
       affiliations: 'Historia osób / miejsc sprzętu',
@@ -97,7 +97,7 @@ const routes = {
   },
   SoftwareDetails: {
     component: SoftwareDetailsContainer,
-    path: '/software/:mode/:id?',
+    path: '/software/:mode/:id?(\d+)',
     exact: true,
     title: {
       create: 'Dodawanie oprogramowania',
@@ -106,7 +106,7 @@ const routes = {
   },
   SoftwareHistory: {
     component: SoftwareHistoryContainer,
-    path: '/software/:id/history/computer-sets-history',
+    path: '/software/:id(\d+)/history/computer-sets-history',
     exact: false,
     title: 'Historia zestawów komputerowych',
   },

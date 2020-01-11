@@ -44,7 +44,7 @@ public class AffiliationController {
    *
    * @return lista przynależności
    */
-  @GetMapping("/history")
+  @GetMapping("/history/")
   public ResponseEntity<?> getAffiliationsHistory() {
     return ResponseEntity.ok(affiliationService.getAffiliationsHistory());
   }
