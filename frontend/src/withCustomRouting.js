@@ -43,22 +43,22 @@ const withCustomRouting = (InputComponent) => {
       };
 
       return (
-        <InputComponent
-          push={push}
-          goBack={goBack}
-          {...match.params}
-        />
+          <InputComponent
+              push={push}
+              goBack={goBack}
+              {...match.params}
+          />
       );
     };
   }
 
   if (Platform.OS === 'android') {
     return ({navigation}) => (
-      <InputComponent
-        push={navigation.navigate}
-        goBack={navigation.goBack}
-        {...navigation.state.params}
-      />
+        <InputComponent
+            push={navigation.navigate}
+            goBack={navigation.goBack}
+            {...navigation.state.params}
+        />
     );
   }
 };
