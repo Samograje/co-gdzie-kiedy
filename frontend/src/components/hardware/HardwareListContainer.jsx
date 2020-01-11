@@ -15,12 +15,12 @@ class HardwareListContainer extends Component {
   }
 
   componentDidMount() {
-    this._isMounted = true;
+    this.isMounted = true;
     this.fetchData();
   }
 
   componentWillUnmount() {
-    this._isMounted = false;
+    this.isMounted = false;
   }
 
   fetchData = (options) => {
@@ -31,7 +31,7 @@ class HardwareListContainer extends Component {
     request('/api/hardware', options)
       .then((response) => response.json())
       .then((response) => {
-        if (!this._isMounted) {
+        if (!this.isMounted) {
           return;
         }
         this.setState({
@@ -40,7 +40,7 @@ class HardwareListContainer extends Component {
         })
       })
       .catch(() => {
-        if (!this._isMounted) {
+        if (!this.isMounted) {
           return;
         }
         this.setState({
@@ -59,13 +59,13 @@ class HardwareListContainer extends Component {
       }
     }).then((response) => response.json())
         .then(() => {
-          if (!this._isMounted) {
+          if (!this.isMounted) {
             return;
           }
           this.fetchData();
         })
         .catch((error) => {
-          if (!this._isMounted) {
+          if (!this.isMounted) {
             return;
           }
           console.error(error);

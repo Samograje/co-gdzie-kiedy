@@ -15,12 +15,12 @@ class SoftwareListContainer extends Component {
     };
   }
   componentDidMount() {
-    this._isMounted = true;
+    this.isMounted = true;
     this.fetchData();
   }
 
   componentWillUnmount() {
-    this._isMounted = false;
+    this.isMounted = false;
   }
 
   fetchData = (options) => {
@@ -31,7 +31,7 @@ class SoftwareListContainer extends Component {
     request('/api/software', options)
         .then((response) => response.json())
         .then((response) => {
-          if (!this._isMounted) {
+          if (!this.isMounted) {
             return;
           }
           for(let i = 0; i < response.items.length; i++)
@@ -49,7 +49,7 @@ class SoftwareListContainer extends Component {
           });
         })
         .catch(() => {
-          if (!this._isMounted) {
+          if (!this.isMounted) {
             return;
           }
           this.setState({
@@ -81,13 +81,13 @@ class SoftwareListContainer extends Component {
       }
     }).then((response) => response.json())
         .then(() => {
-          if (!this._isMounted) {
+          if (!this.isMounted) {
             return;
           }
           this.fetchData();
         })
         .catch((error) => {
-          if (!this._isMounted) {
+          if (!this.isMounted) {
             return;
           }
           console.error(error);

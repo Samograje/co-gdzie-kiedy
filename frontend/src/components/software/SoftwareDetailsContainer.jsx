@@ -18,13 +18,13 @@ class SoftwareDetailsContainer extends Component {
   }
 
   componentDidMount() {
-    this._isMounted = true;
+    this.isMounted = true;
     if(this.props.mode === 'edit')
       this.getDataForEditCall();
   }
 
   componentWillUnmount() {
-    this._isMounted = false;
+    this.isMounted = false;
   }
 
   addOrEditCallCall = (method, path) => {
@@ -46,14 +46,14 @@ class SoftwareDetailsContainer extends Component {
       }
     }).then((response) => response.json())
       .then((responseJson) => {
-        if (!this._isMounted) {
+        if (!this.isMounted) {
           return;
         }
         console.log(responseJson);
         return responseJson;
       })
       .catch((error) => {
-        if (!this._isMounted) {
+        if (!this.isMounted) {
           return;
         }
         console.error(error);
@@ -64,7 +64,7 @@ class SoftwareDetailsContainer extends Component {
     request(`/api/software/${this.props.id}`)
         .then(response => response.json())
         .then(response => {
-          if (!this._isMounted) {
+          if (!this.isMounted) {
             return;
           }
           let duration = response.duration;

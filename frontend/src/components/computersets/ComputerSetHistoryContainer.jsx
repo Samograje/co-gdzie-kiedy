@@ -14,19 +14,19 @@ class ComputerSetHistoryContainer extends Component {
     }
 
     componentDidMount() {
-        this._isMounted = true;
+        this.isMounted = true;
         this.fetchData();
     }
 
     componentWillUnmount() {
-        this._isMounted = false;
+        this.isMounted = false;
     }
 
     fetchData = () => {
         request(`/api/computer-sets/${this.props.id}/${this.props.mode}-history`)
             .then((response) => response.json())
             .then((response) => {
-                if (!this._isMounted) {
+                if (!this.isMounted) {
                     return;
                 }
                 this.setState({
@@ -35,7 +35,7 @@ class ComputerSetHistoryContainer extends Component {
                 });
             })
             .catch(() => {
-                if (!this._isMounted) {
+                if (!this.isMounted) {
                     return;
                 }
                 this.setState({
