@@ -14,19 +14,30 @@ class ComputerSetHistoryContainer extends Component {
     }
 
     componentDidMount() {
+        this._isMounted = true;
         this.fetchData();
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     fetchData = () => {
         request(`/api/computer-sets/${this.props.id}/${this.props.mode}-history`)
             .then((response) => response.json())
             .then((response) => {
+                if (!this._isMounted) {
+                    return;
+                }
                 this.setState({
                     loading: false,
                     ...response,
                 });
             })
             .catch(() => {
+                if (!this._isMounted) {
+                    return;
+                }
                 this.setState({
                     loading: false,
                     error: true,
