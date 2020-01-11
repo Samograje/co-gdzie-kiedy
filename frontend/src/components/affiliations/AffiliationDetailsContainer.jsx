@@ -76,11 +76,52 @@ class AffiliationDetailsContainer extends Component {
         errors,
       });
     } else {
-      this.setState({
-        isSubmitting: true,
-      });
-      console.log(this.state.data);
+      this.sendData();
     }
+  };
+
+  sendData = () => {
+    const {id, mode} = this.props;
+
+    let url;
+    let method;
+    if (mode === 'create') {
+      url = '/api/affiliations';
+      method = 'POST';
+    }
+    if (mode === 'edit') {
+      url = `/api/affiliations/${id}`;
+      method = 'PUT';
+    }
+
+    this.setState({
+      isSubmitting: true,
+    });
+    request(url,{
+      method: method,
+      body: JSON.stringify(this.state.data),
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.success) {
+          this.props.goBack();
+        } else {
+          this.setState({
+            error: true,
+            isSubmitting: false,
+          });
+        }
+      })
+      .catch(() => {
+        this.setState({
+          error: true,
+          isSubmitting: false,
+        });
+      });
   };
 
   onReject = () => this.props.goBack();
