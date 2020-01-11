@@ -10,7 +10,6 @@ import SoftwareListContainer from "./components/software/SoftwareListContainer";
 import SoftwareDetailsContainer from "./components/software/SoftwareDetailsContainer";
 import HardwareHistoryContainer from "./components/hardware/HardwareHistoryContainer";
 import SoftwareHistoryContainer from "./components/software/SoftwareHistoryContainer";
-import AffiliationHistoryContainer from "./components/affiliations/AffiliationHistoryContainer";
 
 const routes = {
   Home: {
@@ -33,12 +32,6 @@ const routes = {
       create: 'Dodawanie osoby / miejsca',
       edit: 'Edycja osoby / miejsca',
     },
-  },
-  AffiliationsHistory: {
-    component: AffiliationHistoryContainer,
-    path: '/affiliations/history',
-    exact: true,
-    title: 'Historia osób / miejsc',
   },
   ComputerSetsList: {
     component: ComputerSetsListContainer,

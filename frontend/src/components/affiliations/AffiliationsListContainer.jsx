@@ -11,6 +11,7 @@ class AffiliationsListContainer extends Component {
       items: [],
       totalElements: null,
       filters: {},
+      withHistory: false,
     };
   }
 
@@ -28,7 +29,11 @@ class AffiliationsListContainer extends Component {
       .then((response) => {
         this.setState({
           loading: false,
-          ...response,
+          items: response.items.map((item) => ({
+            ...item,
+            isDeletedLabel: item.deleted ? 'TAK' : 'NIE',
+          })),
+          totalElements: response.totalElements,
         });
       })
       .catch(() => {
@@ -49,11 +54,11 @@ class AffiliationsListContainer extends Component {
     });
     this.fetchData({
       filters: newFilters,
+      withHistory: this.state.withHistory,
     });
   };
 
   render() {
-
     const columns = [
       {
         name: 'name',
@@ -61,6 +66,12 @@ class AffiliationsListContainer extends Component {
         filter: true,
       },
     ];
+    if (this.state.withHistory) {
+      columns.push({
+        name: 'isDeleted',
+        label: 'Usunięty',
+      })
+    }
 
     const itemActions = [
       {
@@ -69,12 +80,14 @@ class AffiliationsListContainer extends Component {
           mode: 'edit',
           id: itemData.id,
         }),
+        disabled: (itemData) => itemData.deleted,
       },
       {
         label: 'Usuń',
         onClick: (itemData) => {
           // TODO: usuwanie afiliacji
         },
+        disabled: (itemData) => itemData.deleted,
       },
     ];
 
@@ -85,10 +98,19 @@ class AffiliationsListContainer extends Component {
           mode: 'create',
         }),
       },
-        {
-            label: 'Historia',
-            onClick: () => this.props.push('AffiliationsHistory', {}),
+      {
+        label: this.state.withHistory ? 'Wyświetl tylko nieusunięte rekordy' : 'Wyświetl również usunięte rekordy',
+        onClick: () => {
+          const withHistory = !this.state.withHistory;
+          this.fetchData({
+            filters: this.state.filters,
+            withHistory,
+          });
+          this.setState({
+            withHistory,
+          });
         },
+      },
     ];
 
     return (

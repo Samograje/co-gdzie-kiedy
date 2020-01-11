@@ -47,13 +47,16 @@ public class AffiliationService {
     return stringBuilder.toString();
   }
 
-  public PaginatedResult<AffiliationOutputDTO> getAllAffiliations() {
-    Iterable<Affiliation> affiliations = affiliationRepository.findAllByIsDeletedIsFalse();
+  public PaginatedResult<AffiliationOutputDTO> getAffiliations(Boolean withDeleted) {
+    Iterable<Affiliation> affiliations = withDeleted
+        ? affiliationRepository.findAll()
+        : affiliationRepository.findAllByIsDeletedIsFalse();
     List<AffiliationOutputDTO> dtos = new ArrayList<>();
     for (Affiliation affiliation : affiliations) {
       AffiliationOutputDTO dto = new AffiliationOutputDTO();
       dto.setId(affiliation.getId());
       dto.setName(generateName(affiliation));
+      dto.setDeleted(affiliation.getDeleted());
       dtos.add(dto);
     }
     PaginatedResult<AffiliationOutputDTO> response = new PaginatedResult<>();
@@ -84,20 +87,5 @@ public class AffiliationService {
         .orElseThrow(() -> new NotFoundException("przynależność", "id", id));
     affiliation.setDeleted(true);
     affiliationRepository.save(affiliation);
-  }
-
-  public PaginatedResult<AffiliationOutputDTO> getAffiliationsHistory() {
-    Iterable<Affiliation> affiliations = affiliationRepository.findAll();
-    List<AffiliationOutputDTO> dtos = new ArrayList<>();
-    for (Affiliation affiliation : affiliations) {
-      AffiliationOutputDTO dto = new AffiliationOutputDTO();
-      dto.setId(affiliation.getId());
-      dto.setName(generateName(affiliation));
-      dtos.add(dto);
-    }
-    PaginatedResult<AffiliationOutputDTO> response = new PaginatedResult<>();
-    response.setItems(dtos);
-    response.setTotalElements((long) dtos.size());
-    return response;
   }
 }

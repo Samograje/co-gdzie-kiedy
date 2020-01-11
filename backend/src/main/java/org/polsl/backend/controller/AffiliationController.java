@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -32,23 +33,15 @@ public class AffiliationController {
   /**
    * Endpoint obsługujący uzyskiwanie listy przynależności.
    *
+   * @param withHistory informacja o tym, czy należy wyświetlić również usunięte rekordy
    * @return lista przynależności
    */
   @GetMapping
-  public ResponseEntity<?> getAllAffiliations() {
-    return ResponseEntity.ok(affiliationService.getAllAffiliations());
+  public ResponseEntity<?> getAllAffiliations(
+      @RequestParam(name = "with-history", required = false, defaultValue = "false") boolean withHistory
+  ) {
+    return ResponseEntity.ok(affiliationService.getAffiliations(withHistory));
   }
-
-  /**
-   * Endpoint obsługujący uzyskiwanie listy przynależności.
-   *
-   * @return lista przynależności
-   */
-  @GetMapping("/history/")
-  public ResponseEntity<?> getAffiliationsHistory() {
-    return ResponseEntity.ok(affiliationService.getAffiliationsHistory());
-  }
-
 
   /**
    * Endpoint obsługujący dodawanie nowej przynależności.

@@ -87,6 +87,7 @@ const WideTable = (props) => {
                     title={action.label}
                     onPress={() => action.onClick(item)}
                     color={mainColor}
+                    disabled={action.disabled && action.disabled(item)}
                   />
                 </View>
               ))}

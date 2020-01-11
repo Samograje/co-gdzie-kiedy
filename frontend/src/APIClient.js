@@ -18,28 +18,49 @@ const request = (url, options) => {
     return fetch(finalUrl);
   }
 
-  const {filters, ...otherOptions} = options;
+  const {filters, withHistory, ...otherOptions} = options;
 
   // dodanie parametrów do urlu
-  if (filters) {
-    finalUrl = prepareUrl(finalUrl, {filters});
-  }
+  finalUrl = prepareUrl(finalUrl, {filters, withHistory});
 
   return fetch(finalUrl, otherOptions);
 };
 
 // dodaje parametry do urlu
-const prepareUrl = (url, {filters}) => {
+const prepareUrl = (url, {filters, withHistory}) => {
   let finalUrl = `${url}`;
-  if (filters && Object.values(filters).filter((filter) => filter).length > 0) {
-    finalUrl =`${url}?search=`;
+  console.log(filters);
+  console.log(withHistory);
+
+  let filtersEnabled = false;
+  if (filters) {
+    filtersEnabled = Object.values(filters).filter((filter) => filter).length > 0;
   }
-  Object.keys(filters).forEach((key) => {
-    const value = filters[key];
-    if (value) {
-      finalUrl = `${finalUrl}${key}:${value},`;
+
+  if (filtersEnabled || withHistory) {
+    finalUrl = `${finalUrl}?`;
+  }
+
+  // dodanie parametru z filtrami
+  if (filters && filtersEnabled) {
+    finalUrl =`${finalUrl}search=`;
+    Object.keys(filters).forEach((key) => {
+      const value = filters[key];
+      if (value) {
+        finalUrl = `${finalUrl}${key}:${value},`;
+      }
+    });
+    finalUrl = finalUrl.substring(0, finalUrl.length - 1);
+  }
+
+  // dodanie parametru z historią
+  if (withHistory) {
+    if (filtersEnabled) {
+      finalUrl = `${finalUrl}&`
     }
-  });
+    finalUrl = `${finalUrl}with-history=true`;
+  }
+
   return finalUrl;
 };
 
