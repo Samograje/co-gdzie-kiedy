@@ -5,16 +5,46 @@ import {
   StyleSheet,
   View,
   Text,
-  Linking,
+  Alert,
 } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
-
 class ScanScreenComponent extends Component {
+
+  processTheQRCode = (qrCode) => {
+    if (qrCode.charAt(0) === 'H') {
+      this.props.push('HardwareDetails', {
+        mode: 'edit',
+        id: 3,
+      });
+    } else if (qrCode.charAt(0) === 'C') {
+      this.props.push('ComputerSetDetails', {
+        mode: 'edit',
+        id: 3,
+      });
+    } else if (qrCode.charAt(0) === 'S') {
+      this.props.push('SoftwareDetails', {
+        mode: 'edit',
+        id: 3,
+      });
+      //TODO: hardcoded ID
+    }
+  };
+
   onSuccess = (e) => {
-    Linking
-        .openURL(e.data)
-        .catch(err => console.error('An error occured', err));
+    Alert.alert(
+        'Wykryto kod',
+        e.data + ' kliknij OK, aby wyświetlić dane.',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {text: 'OK', onPress: () => this.processTheQRCode(e.data)},
+        ],
+        {cancelable: false},
+    );
   };
 
   render() {

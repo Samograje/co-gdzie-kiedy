@@ -14,6 +14,7 @@ class SoftwareListContainer extends Component {
       filters: {},
     };
   }
+
   componentDidMount() {
     this.fetchData();
   }
@@ -26,11 +27,10 @@ class SoftwareListContainer extends Component {
     request('/api/software', options)
         .then((response) => response.json())
         .then((response) => {
-          for(let i = 0; i < response.items.length; i++)
-          {
+          for (let i = 0; i < response.items.length; i++) {
             let duration = response.items[i].duration;
-            let months = moment(duration).month() +  12 * (moment(duration).year() - moment(0).year());
-            if(months <= 0)
+            let months = moment(duration).month() + 12 * (moment(duration).year() - moment(0).year());
+            if (months <= 0)
               response.items[i].duration = "Licencja utraciła ważność";
             else
               response.items[i].duration = months;
@@ -62,7 +62,7 @@ class SoftwareListContainer extends Component {
   };
 
   deleteCall = (id) => {
-    request(`/api/software/${id}`,{
+    request(`/api/software/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -113,7 +113,9 @@ class SoftwareListContainer extends Component {
       },
       {
         label: 'Usuń',
-        onClick: (itemData) => {this.deleteCall(itemData.id)},
+        onClick: (itemData) => {
+          this.deleteCall(itemData.id)
+        },
       },
       {
         label: 'HC',
@@ -133,23 +135,23 @@ class SoftwareListContainer extends Component {
       {
         label: 'Wyszukaj za pomocą kodu QR',
         onClick: () => {
-          // TODO: wyszukiwanie po kodzie QR
+          this.props.push('ScanScreen')
         },
       },
     ];
 
     return (
-      <SoftwareListComponent
-        error={this.state.error}
-        loading={this.state.loading}
-        items={this.state.items}
-        totalElements={this.state.totalElements}
-        filters={this.state.filters}
-        onFilterChange={this.handleFilterChange}
-        columns={columns}
-        itemActions={itemActions}
-        groupActions={groupActions}
-      />
+        <SoftwareListComponent
+            error={this.state.error}
+            loading={this.state.loading}
+            items={this.state.items}
+            totalElements={this.state.totalElements}
+            filters={this.state.filters}
+            onFilterChange={this.handleFilterChange}
+            columns={columns}
+            itemActions={itemActions}
+            groupActions={groupActions}
+        />
     );
   }
 }
