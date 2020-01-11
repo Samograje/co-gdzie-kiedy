@@ -9,10 +9,10 @@ const PickerWithItems = (props) => {
   } = props;
 
   const decideLabelText = (item) => {
-    if(item.name === undefined)
-      return item.value;
-    else if(item.value === undefined)
+    if(item.name !== undefined)
       return item.name;
+    else if(item.value !== undefined)
+      return item.value;
     else
       return "";
   };
