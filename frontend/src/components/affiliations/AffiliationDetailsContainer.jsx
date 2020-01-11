@@ -46,30 +46,33 @@ class AffiliationDetailsContainer extends Component {
       });
   };
 
-  onChange = (fieldName, value) => {
-    const newErrors = {...this.state.errors};
-    if (!value) {
-      newErrors[fieldName] = 'To pole jest wymagane';
-    } else {
-      newErrors[fieldName] = null;
+  validateData = (data) => {
+    const errors = {};
+    if (!data.firstName && !data.lastName && !data.location) {
+      const errorMessage = 'Należy podać wartość w co najmniej jednym polu';
+      errors.firstName = errorMessage;
+      errors.lastName = errorMessage;
+      errors.location = errorMessage;
     }
-    this.setState((prevState) => ({
-      data: {
-        ...prevState.data,
-        [fieldName]: value,
-      },
+    return errors;
+  };
+
+  onChange = (fieldName, value) => {
+    const newData = {
+      ...this.state.data,
+      [fieldName]: value,
+    };
+
+    const newErrors = this.validateData(newData);
+
+    this.setState({
+      data: newData,
       errors: newErrors,
-    }));
+    });
   };
 
   onSubmit = () => {
-    const errors = {};
-    Object.keys(this.state.data).forEach((key) => {
-      const value = this.state.data[key];
-      if (!value) {
-        errors[key] = 'To pole jest wymagane';
-      }
-    });
+    const errors = this.validateData(this.state.data);
     const noErrors = Object.keys(errors).length === 0;
     if (!noErrors) {
       this.setState({
