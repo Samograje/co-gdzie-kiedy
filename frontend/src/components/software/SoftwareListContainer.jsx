@@ -92,14 +92,17 @@ class SoftwareListContainer extends Component {
       {
         name: 'key',
         label: 'Klucz produktu',
+        filter: true,
       },
       {
         name: 'availableKeys',
         label: 'Ilość dostępnych kluczy',
+        filter: true,
       },
       {
         name: 'duration',
         label: 'Ważna przez (msc)',
+        filter: true,
       },
     ];
 
