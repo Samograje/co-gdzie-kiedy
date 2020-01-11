@@ -6,6 +6,7 @@ import org.polsl.backend.service.SoftwareService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 import javax.validation.Valid;
 
 /**
@@ -26,8 +27,8 @@ public class SoftwareController {
    * @return lista oprogramowania
    */
   @GetMapping
-  public ResponseEntity<?> getAllSoftware() {
-    return ResponseEntity.ok(softwareService.getAllSoftware());
+  public ResponseEntity<?> getAllSoftware(@RequestParam(value="search", required=false) String search) {
+    return ResponseEntity.ok(softwareService.getAllSoftware(search));
   }
 
   /**

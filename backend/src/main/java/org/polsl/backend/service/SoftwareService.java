@@ -42,7 +42,7 @@ public class SoftwareService {
     this.computerSetSoftwareRepository = computerSetSoftwareRepository;
   }
 
-  public PaginatedResult<SoftwareListOutputDTO> getAllSoftware() {
+  public PaginatedResult<SoftwareListOutputDTO> getAllSoftware(String search) {
     Iterable<Software> softwares = softwareRepository.findAllByValidToIsNull();
     List<SoftwareListOutputDTO> softwareListOutputDTO = new ArrayList<>();
     for (Software software : softwares) {
