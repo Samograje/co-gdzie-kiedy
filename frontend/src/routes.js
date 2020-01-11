@@ -10,6 +10,7 @@ import SoftwareDetailsContainer from "./components/software/SoftwareDetailsConta
 import ComputerSetHistoryContainer from "./components/computersets/ComputerSetHistoryContainer";
 import HardwareHistoryContainer from "./components/hardware/HardwareHistoryContainer";
 import SoftwareHistoryContainer from "./components/software/SoftwareHistoryContainer";
+import ScanScreenComponent from "./components/ui/qr/ScanScreenComponent";
 
 const routes = {
   Home: {
@@ -102,6 +103,12 @@ const routes = {
     path: '/software/:id/history/computer-sets-history',
     exact: false,
     title: 'Historia zestawów komputerowych',
+  },
+  ScanScreen: {
+    component: ScanScreenComponent,
+    path: '/ui/qr',
+    exact: false,
+    title: 'Skaner kodów QR',
   },
 };
 

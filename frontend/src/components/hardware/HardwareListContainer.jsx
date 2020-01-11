@@ -136,6 +136,7 @@ class HardwareListContainer extends Component {
       {
         label: 'Wyszukaj za pomocą kodu QR',
         onClick: () => {
+          this.props.push('ScanScreen')
           // TODO: wyszukiwanie po kodzie QR
         },
       },
