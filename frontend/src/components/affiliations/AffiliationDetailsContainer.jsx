@@ -138,6 +138,7 @@ class AffiliationDetailsContainer extends Component {
   render() {
     const {mode} = this.props;
     const {
+      data,
       error,
       errors,
       isLoading,
@@ -147,6 +148,7 @@ class AffiliationDetailsContainer extends Component {
 
     return (
       <AffiliationDetailsComponent
+        data={data}
         mode={mode}
         error={error}
         errors={errors}

@@ -13,6 +13,7 @@ import ErrorElement from '../ui/ErrorElement';
 
 const AffiliationDetailsComponent = (props) => {
   const {
+    data,
     mode,
     error,
     errors,
@@ -43,6 +44,7 @@ const AffiliationDetailsComponent = (props) => {
           placeholder="Wprowadź imię"
           onChangeText={(text) => onChange('firstName', text)}
           editable={!isSubmitting}
+          value={data.firstName}
         />
         {errors.firstName && (
           <Text style={styles.validationError}>{errors.firstName}</Text>
@@ -55,6 +57,7 @@ const AffiliationDetailsComponent = (props) => {
           placeholder="Wprowadź nazwisko"
           onChangeText={(text) => onChange('lastName', text)}
           editable={!isSubmitting}
+          value={data.lastName}
         />
         {errors.lastName && (
           <Text style={styles.validationError}>{errors.lastName}</Text>
@@ -67,6 +70,7 @@ const AffiliationDetailsComponent = (props) => {
           placeholder="Wprowadź lokalizację"
           onChangeText={(text) => onChange('location', text)}
           editable={!isSubmitting}
+          value={data.location}
         />
         {errors.location && (
           <Text style={styles.validationError}>{errors.location}</Text>
