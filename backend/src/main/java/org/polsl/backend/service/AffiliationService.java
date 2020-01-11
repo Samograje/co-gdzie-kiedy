@@ -85,19 +85,4 @@ public class AffiliationService {
     affiliation.setDeleted(true);
     affiliationRepository.save(affiliation);
   }
-
-  public PaginatedResult<AffiliationOutputDTO> getAffiliationsHistory() {
-    Iterable<Affiliation> affiliations = affiliationRepository.findAll();
-    List<AffiliationOutputDTO> dtos = new ArrayList<>();
-    for (Affiliation affiliation : affiliations) {
-      AffiliationOutputDTO dto = new AffiliationOutputDTO();
-      dto.setId(affiliation.getId());
-      dto.setName(generateName(affiliation));
-      dtos.add(dto);
-    }
-    PaginatedResult<AffiliationOutputDTO> response = new PaginatedResult<>();
-    response.setItems(dtos);
-    response.setTotalElements((long) dtos.size());
-    return response;
-  }
 }

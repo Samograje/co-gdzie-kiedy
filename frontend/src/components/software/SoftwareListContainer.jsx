@@ -115,12 +115,7 @@ class SoftwareListContainer extends Component {
         label: 'Usuń',
         onClick: (itemData) => {this.deleteCall(itemData.id)},
       },
-      {
-        label: 'HC',
-        onClick: (itemData) => this.props.push('SoftwareHistory', {
-          id: itemData.id,
-        }),
-      },
+      // TODO: akcje wyświetlania historii powiązań
     ];
 
     const groupActions = [

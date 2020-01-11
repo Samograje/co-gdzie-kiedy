@@ -40,17 +40,6 @@ public class AffiliationController {
   }
 
   /**
-   * Endpoint obsługujący uzyskiwanie listy przynależności.
-   *
-   * @return lista przynależności
-   */
-  @GetMapping("/history/")
-  public ResponseEntity<?> getAffiliationsHistory() {
-    return ResponseEntity.ok(affiliationService.getAffiliationsHistory());
-  }
-
-
-  /**
    * Endpoint obsługujący dodawanie nowej przynależności.
    *
    * @param request stuktura {@link AffiliationInputDTO} zawierająca dane nowej przynależności

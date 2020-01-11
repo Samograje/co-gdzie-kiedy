@@ -3,14 +3,10 @@ import AffiliationsListContainer from "./components/affiliations/AffiliationsLis
 import AffiliationDetailsContainer from "./components/affiliations/AffiliationDetailsContainer";
 import ComputerSetsListContainer from "./components/computersets/ComputerSetsListContainer";
 import ComputerSetDetailsContainer from "./components/computersets/ComputerSetDetailsContainer";
-import ComputerSetHistoryContainer from "./components/computersets/ComputerSetHistoryContainer";
 import HardwareListContainer from "./components/hardware/HardwareListContainer";
 import HardwareDetailsContainer from "./components/hardware/HardwareDetailsContainer";
 import SoftwareListContainer from "./components/software/SoftwareListContainer";
 import SoftwareDetailsContainer from "./components/software/SoftwareDetailsContainer";
-import HardwareHistoryContainer from "./components/hardware/HardwareHistoryContainer";
-import SoftwareHistoryContainer from "./components/software/SoftwareHistoryContainer";
-import AffiliationHistoryContainer from "./components/affiliations/AffiliationHistoryContainer";
 
 const routes = {
   Home: {
@@ -27,18 +23,12 @@ const routes = {
   },
   AffiliationDetails: {
     component: AffiliationDetailsContainer,
-    path: '/affiliations/:mode/:id?(\d+)',
-    exact: true,
+    path: '/affiliations/:mode/:id?',
+    exact: false,
     title: {
       create: 'Dodawanie osoby / miejsca',
       edit: 'Edycja osoby / miejsca',
     },
-  },
-  AffiliationsHistory: {
-    component: AffiliationHistoryContainer,
-    path: '/affiliations/history',
-    exact: true,
-    title: 'Historia osób / miejsc',
   },
   ComputerSetsList: {
     component: ComputerSetsListContainer,
@@ -48,21 +38,11 @@ const routes = {
   },
   ComputerSetDetails: {
     component: ComputerSetDetailsContainer,
-    path: '/computer-sets/:mode/:id?(\d+)',
-    exact: true,
+    path: '/computer-sets/:mode/:id?',
+    exact: false,
     title: {
       create: 'Dodawanie zestawu komputerowego',
       edit: 'Edycja zestawu komputerowego',
-    },
-  },
-  ComputerSetHistory: {
-    component: ComputerSetHistoryContainer,
-    path: '/computer-sets/:id(\d+)/history/:mode',
-    exact: false,
-    title: {
-      affiliations: 'Historia osób / miejsc zestawu komputerowego',
-      hardware: 'Historia sprzętów zestawu komputerowego',
-      software: 'Historia oprogramowania zestawu komputerowego'
     },
   },
   HardwareList: {
@@ -73,20 +53,11 @@ const routes = {
   },
   HardwareDetails: {
     component: HardwareDetailsContainer,
-    path: '/hardware/:mode/:id?(\d+)',
-    exact: true,
+    path: '/hardware/:mode/:id?',
+    exact: false,
     title: {
       create: 'Dodawanie sprzętu',
       edit: 'Edycja sprzętu',
-    },
-  },
-  HardwareHistory: {
-    component: HardwareHistoryContainer,
-    path: '/hardware/:id(\d+)/history/:mode',
-    exact: false,
-    title: {
-      affiliations: 'Historia osób / miejsc sprzętu',
-      'computer-sets': 'Historia zestawów komputerowych sprzętu',
     },
   },
   SoftwareList: {
@@ -97,20 +68,13 @@ const routes = {
   },
   SoftwareDetails: {
     component: SoftwareDetailsContainer,
-    path: '/software/:mode/:id?(\d+)',
-    exact: true,
+    path: '/software/:mode/:id?',
+    exact: false,
     title: {
       create: 'Dodawanie oprogramowania',
       edit: 'Edycja oprogramowania',
     },
   },
-  SoftwareHistory: {
-    component: SoftwareHistoryContainer,
-    path: '/software/:id(\d+)/history/computer-sets-history',
-    exact: false,
-    title: 'Historia zestawów komputerowych',
-  },
 };
-
 
 export default routes;

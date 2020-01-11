@@ -94,27 +94,7 @@ class ComputerSetsListContainer extends Component {
           // TODO: usuwanie zestawu komputerowego
         },
       },
-      {
-        label: 'HA',
-        onClick: (itemData) => this.props.push('ComputerSetHistory', {
-          mode: 'affiliations',
-          id: itemData.id,
-        }),
-      },
-      {
-        label: 'HH',
-        onClick: (itemData) => this.props.push('ComputerSetHistory', {
-          mode: 'hardware',
-          id: itemData.id,
-        }),
-      },
-      {
-        label: 'HS',
-        onClick: (itemData) => this.props.push('ComputerSetHistory', {
-          mode: 'software',
-          id: itemData.id,
-        }),
-      },
+      // TODO: akcje wyświetlania historii
     ];
 
     const groupActions = [

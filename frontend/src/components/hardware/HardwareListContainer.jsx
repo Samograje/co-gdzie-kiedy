@@ -96,20 +96,7 @@ class HardwareListContainer extends Component {
           // TODO: usuwanie hardware'u
         },
       },
-        {
-            label: 'HA',
-            onClick: (itemData) => this.props.push('HardwareHistory', {
-                mode: 'affiliations',
-                id: itemData.id,
-            }),
-        },
-        {
-            label: 'HC',
-            onClick: (itemData) => this.props.push('HardwareHistory', {
-                mode: 'computer-sets',
-                id: itemData.id,
-            }),
-        },
+      // TODO: akcje wyświetlania historii powiązań
     ];
 
     const groupActions = [
