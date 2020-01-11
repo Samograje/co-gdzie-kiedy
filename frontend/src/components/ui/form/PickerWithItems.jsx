@@ -8,15 +8,6 @@ const PickerWithItems = (props) => {
     options, // opcje do pickera - obiekt o kluczach id, name
   } = props;
 
-  const decideLabelText = (item) => {
-    if(item.name !== undefined)
-      return item.name;
-    else if(item.value !== undefined)
-      return item.value;
-    else
-      return "";
-  };
-
   if (!options || !options.length) {
     return (
       <Text>Brak opcji do wyboru</Text>
@@ -37,7 +28,7 @@ const PickerWithItems = (props) => {
       {options.map((item, key) => (
         <Picker.Item
           key={key}
-          label={decideLabelText(item)}
+          label={item.name}
           value={item.id}
         />
       ))}

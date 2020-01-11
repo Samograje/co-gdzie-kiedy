@@ -82,7 +82,10 @@ class HardwareDetailsContainer extends Component {
         .then((response) => {
           this.setState({
             loadingDictionary: false,
-            dataSourceDictionary: response
+            dataSourceDictionary: response.map((item) => ({
+              id: item.id,
+              name: item.value,
+            }))
           });
         })
         .catch(() => {
