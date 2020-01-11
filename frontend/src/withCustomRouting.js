@@ -8,6 +8,11 @@ const withCustomRouting = (InputComponent) => {
     return ({match, history}) => {
 
       const push = (screenName, options) => {
+        if (!routes[screenName]) {
+          console.error(`Screen ${screenName} is not defined in routes.js`);
+          return;
+        }
+
         let path = routes[screenName].path;
 
         // zastępowanie parametrów urlu wartościami
