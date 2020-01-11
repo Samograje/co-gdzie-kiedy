@@ -37,7 +37,7 @@ const routes = {
   AffiliationsHistory: {
     component: AffiliationHistoryContainer,
     path: '/affiliations/history',
-    exact: true,
+      exact: false,
     title: 'Historia osób / miejsc',
   },
   ComputerSetsList: {

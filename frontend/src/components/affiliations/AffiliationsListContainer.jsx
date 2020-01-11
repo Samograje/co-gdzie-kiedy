@@ -85,15 +85,9 @@ class AffiliationsListContainer extends Component {
           mode: 'create',
         }),
       },
-        /*{
-          label: 'H',
-          onClick: (itemData) => this.props.push('AffiliationHistory', {
-          }),
-        },*/
         {
             label: 'Historia',
-            onClick: () => this.props.push('AffiliationHistory', {
-            }),
+            onClick: () => this.props.push('AffiliationsHistory', {}),
         },
     ];
 
