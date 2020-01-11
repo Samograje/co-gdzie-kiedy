@@ -18,10 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -43,8 +40,20 @@ public class SoftwareService {
   }
 
   public PaginatedResult<SoftwareListOutputDTO> getAllSoftware(String search) {
+    Map<String, String>searchParameters = null;
+
+    if(search != null){
+      searchParameters = new HashMap<>();
+      List<String>searchList = Arrays.asList(search.split(","));
+      for(String parameter : searchList){
+        List<String>temp = Arrays.asList(parameter.split(":"));
+        searchParameters.put(temp.get(0), temp.get(1));
+      }
+    }
+
     Iterable<Software> softwares = softwareRepository.findAllByValidToIsNull();
     List<SoftwareListOutputDTO> softwareListOutputDTO = new ArrayList<>();
+
     for (Software software : softwares) {
       SoftwareListOutputDTO dto = new SoftwareListOutputDTO();
       dto.setId(software.getId());
