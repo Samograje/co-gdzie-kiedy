@@ -76,7 +76,6 @@ class AffiliationsListContainer extends Component {
           // TODO: usuwanie afiliacji
         },
       },
-      // TODO: akcje wyświetlania historii powiązań
     ];
 
     const groupActions = [
@@ -86,6 +85,10 @@ class AffiliationsListContainer extends Component {
           mode: 'create',
         }),
       },
+        {
+            label: 'Historia',
+            onClick: () => this.props.push('AffiliationsHistory', {}),
+        },
     ];
 
     return (
