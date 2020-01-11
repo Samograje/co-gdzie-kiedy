@@ -54,6 +54,31 @@ public class AffiliationControllerIntegrationTest {
   }
 
   @Test
+  public void givenInvalidId_whenGettingAffiliation_thenReturnStatus400() throws Exception {
+    mvc.perform(get("/api/affiliations/abcd"))
+        .andExpect(status().is(400))
+        .andExpect(jsonPath("$.success").value(false))
+        .andExpect(jsonPath("$.message").value("Podana wartość nie jest liczbą"));
+  }
+
+  @Test
+  public void givenNotExistingId_whenGettingAffiliation_thenReturnStatus404() throws Exception {
+    mvc.perform(get("/api/affiliations/0"))
+        .andExpect(status().is(404))
+        .andExpect(jsonPath("$.success").value(false))
+        .andExpect(jsonPath("$.message").value("Nie istnieje przynależność o id: '0'"));
+  }
+
+  @Test
+  public void givenCorrectRequest_whenGettingAffiliation_thenReturnStatus200AndData() throws Exception {
+    mvc.perform(get("/api/affiliations/1"))
+        .andExpect(status().is(200))
+        .andExpect(jsonPath("$.firstName").value("Szymon"))
+        .andExpect(jsonPath("$.lastName").value("Jęczyzel"))
+        .andExpect(jsonPath("$.location").value("Solaris"));
+  }
+
+  @Test
   public void givenEmptyRequest_whenAddingAffiliation_thenReturnStatus400() throws Exception {
     AffiliationDTO request = new AffiliationDTO();
     mvc.perform(post("/api/affiliations")
