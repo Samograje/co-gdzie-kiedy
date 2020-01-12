@@ -4,7 +4,7 @@ import {createStackNavigator} from "react-navigation-stack";
 import routes from "./src/routes";
 import withCustomRouting from "./src/withCustomRouting";
 import {mainColor} from "./src/constValues";
-import ScanScreenComponent from "./ScanScreenComponent";
+import ScanScreenComponent from "./src/components/ui/qr/ScanScreenComponent";
 
 // Punkt startowy dla aplikacji mobilnej
 
