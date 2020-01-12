@@ -9,64 +9,68 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 
 class ScanScreenComponent extends Component {
 
-  regexFunction = (text) => {
+  extractId = (text) => {
     const regex = /[0-9]+/;
     let found;
 
-    if ((found = regex.exec(text)) !== null) {
+    if ((found = regex.exec(text))) {
       return found;
     }
   };
 
   processTheQRCode = (qrCode) => {
-    if (qrCode.charAt(0) === 'H') {
-      this.props.push('HardwareDetails', {
-        mode: 'edit',
-        id: parseInt(this.regexFunction(qrCode)),
-      });
-    } else if (qrCode.charAt(0) === 'C') {
-      this.props.push('ComputerSetDetails', {
-        mode: 'edit',
-        id: parseInt(this.regexFunction(qrCode)),
-      });
-    } else if (qrCode.charAt(0) === 'S') {
-      this.props.push('SoftwareDetails', {
-        mode: 'edit',
-        id: parseInt(this.regexFunction(qrCode)),
-      });
-      //TODO: zabezpeiczenie na niewłaściwe kody qr
+    let screenName;
+    switch (qrCode.charAt(0)) {
+      case 'H':
+        screenName = 'HardwareDetails';
+        break;
+      case 'C':
+        screenName = 'ComputerSetDetails';
+        break;
+      case 'S':
+        screenName = 'SoftwareDetails';
+        break;
     }
+
+    //TODO: zabezpeiczenie na niewłaściwe kody qr
+    const regex = /[SHC][1-9][0-9]*\/20[0-9]{2}/;
+
+    this.props.push(screenName, {
+      mode: 'edit',
+      id: parseInt(this.extractId(qrCode)),
+    });
   };
 
   onSuccess = (e) => {
     Alert.alert(
-        'Wykryto kod',
-        e.data + ' kliknij OK, aby wyświetlić dane.',
-        [
-          {
-            text: 'Cancel',
-            onPress: () => console.log('Cancel Pressed'),
-            style: 'cancel',
-          },
-          {text: 'OK', onPress: () => this.processTheQRCode(e.data)},
-        ],
-        {cancelable: false},
+      'Wykryto kod',
+      e.data + ' kliknij OK, aby wyświetlić dane.',
+      [
+        {
+          text: 'Anuluj',
+          // TODO: skanowanie po naciśnięciu 'Anuluj'
+          // onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {text: 'OK', onPress: () => this.processTheQRCode(e.data)},
+      ],
+      {cancelable: false},
     );
   };
 
   render() {
     return (
-        <View style={styles.container}>
-          <QRCodeScanner
-              containerStyle={styles.scanner}
-              onRead={this.onSuccess}
-              bottomContent={
-                <Text style={styles.textInfo}>
-                  Nakieruj kamerę na kod QR
-                </Text>
-              }
-          />
-        </View>
+      <View style={styles.container}>
+        <QRCodeScanner
+          containerStyle={styles.scanner}
+          onRead={this.onSuccess}
+          bottomContent={
+            <Text style={styles.textInfo}>
+              Nakieruj kamerę na kod QR
+            </Text>
+          }
+        />
+      </View>
     );
   }
 }
