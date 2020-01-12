@@ -43,7 +43,10 @@ public class SoftwareService {
 
   public PaginatedResult<SoftwareListOutputDTO> getAllSoftware(String search) {
     Map<String, String>searchParameters = null;
+    Iterable<Software> softwares = softwareRepository.findAllByValidToIsNull();
+    List<SoftwareListOutputDTO> softwareListOutputDTO = new ArrayList<>();
 
+    //parse values for filtering from endpoint search parameter
     if(search != null){
       searchParameters = new HashMap<>();
       List<String>searchList = Arrays.asList(search.split(","));
@@ -52,9 +55,6 @@ public class SoftwareService {
         searchParameters.put(temp.get(0), temp.get(1));
       }
     }
-
-    Iterable<Software> softwares = softwareRepository.findAllByValidToIsNull();
-    List<SoftwareListOutputDTO> softwareListOutputDTO = new ArrayList<>();
 
     if(searchParameters != null){
       //Filtering
@@ -116,6 +116,7 @@ public class SoftwareService {
       }
     }
     else{
+      //No filters
       for (Software software : softwares) {
         SoftwareListOutputDTO dto = new SoftwareListOutputDTO();
         dto.setId(software.getId());
