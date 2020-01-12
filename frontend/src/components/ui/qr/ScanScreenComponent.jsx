@@ -1,5 +1,3 @@
-'use strict';
-
 import React, {Component} from 'react';
 import {
   StyleSheet,
@@ -11,23 +9,32 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 
 class ScanScreenComponent extends Component {
 
+  regexFunction = (text) => {
+    const regex = /[0-9]+/;
+    let found;
+
+    if ((found = regex.exec(text)) !== null) {
+      return found;
+    }
+  };
+
   processTheQRCode = (qrCode) => {
     if (qrCode.charAt(0) === 'H') {
       this.props.push('HardwareDetails', {
         mode: 'edit',
-        id: 3,
+        id: parseInt(this.regexFunction(qrCode)),
       });
     } else if (qrCode.charAt(0) === 'C') {
       this.props.push('ComputerSetDetails', {
         mode: 'edit',
-        id: 3,
+        id: parseInt(this.regexFunction(qrCode)),
       });
     } else if (qrCode.charAt(0) === 'S') {
       this.props.push('SoftwareDetails', {
         mode: 'edit',
-        id: 3,
+        id: parseInt(this.regexFunction(qrCode)),
       });
-      //TODO: hardcoded ID
+      //TODO: zabezpeiczenie na niewłaściwe kody qr
     }
   };
 
