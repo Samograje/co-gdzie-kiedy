@@ -20,8 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static org.hibernate.query.criteria.internal.ValueHandlerFactory.isNumeric;
-
 
 /**
  * Logika biznesowa oprogramowania.
