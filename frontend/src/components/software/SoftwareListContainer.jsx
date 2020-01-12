@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import SoftwareListComponent from './SoftwareListComponent';
 import request from "../../APIClient";
 import moment from "moment";
+import {Platform} from "react-native";
 
 class SoftwareListContainer extends Component {
   constructor(props) {
@@ -127,12 +128,14 @@ class SoftwareListContainer extends Component {
 
     const groupActions = [
       {
+        disabled: false,
         label: 'Dodaj oprogramowanie',
         onClick: () => this.props.push('SoftwareDetails', {
           mode: 'create',
         }),
       },
       {
+        disabled: Platform.OS !== 'android',
         label: 'Wyszukaj za pomocą kodu QR',
         onClick: () => {
           this.props.push('ScanScreen')

@@ -25,6 +25,7 @@ const ComputerSetsListComponent = (props) => {
             {groupActions.map((action, idx) => (
               <View style={styles.buttonContainer} key={idx}>
                 <Button
+                  disabled={action.disabled}
                   title={action.label}
                   onPress={action.onClick}
                   color={mainColor}

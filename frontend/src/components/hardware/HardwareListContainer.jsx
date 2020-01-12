@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Platform} from 'react-native';
 import HardwareListComponent from './HardwareListComponent';
 import request from '../../APIClient';
 
@@ -128,12 +129,14 @@ class HardwareListContainer extends Component {
 
     const groupActions = [
       {
+        disabled: false,
         label: 'Dodaj sprzęt',
         onClick: () => this.props.push('HardwareDetails', {
           mode: 'create',
         }),
       },
       {
+        disabled: Platform.OS !== 'android',
         label: 'Wyszukaj za pomocą kodu QR',
         onClick: () => {
           this.props.push('ScanScreen')
