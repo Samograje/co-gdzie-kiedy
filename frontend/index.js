@@ -4,6 +4,7 @@ import {createStackNavigator} from "react-navigation-stack";
 import routes from "./src/routes";
 import withCustomRouting from "./src/withCustomRouting";
 import {mainColor} from "./src/constValues";
+import ScanScreenComponent from "./ScanScreenComponent";
 
 // Punkt startowy dla aplikacji mobilnej
 
@@ -25,13 +26,16 @@ const getTitleFunc = (title) => {
 };
 
 const routeConfigs = {};
-
 Object.keys(routes).forEach((key) => {
-  routeConfigs[key] = ({
+  routeConfigs[key] = {
     screen: withCustomRouting(routes[key].component),
     navigationOptions: getTitleFunc(routes[key].title),
-  });
+  };
 });
+routeConfigs.ScanScreen = {
+  screen: withCustomRouting(ScanScreenComponent),
+  navigationOptions: getTitleFunc('Skaner kodów QR'),
+};
 
 const navigatorConfig = {
   initialRouteName: 'Home',
