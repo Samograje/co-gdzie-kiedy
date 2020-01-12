@@ -17,11 +17,11 @@ class HomepageContainer extends Component {
   }
 
   componentDidMount() {
-    this.isMounted = true;
+    this._isMounted = true;
     request('/api/statistics')
       .then((response) => response.json())
       .then((response) => {
-        if (!this.isMounted) {
+        if (!this._isMounted) {
           return;
         }
         this.setState({
@@ -31,7 +31,7 @@ class HomepageContainer extends Component {
         })
       })
       .catch(() => {
-        if (!this.isMounted) {
+        if (!this._isMounted) {
           return;
         }
         this.setState({
@@ -42,7 +42,7 @@ class HomepageContainer extends Component {
   }
 
   componentWillUnmount() {
-    this.isMounted = false;
+    this._isMounted = false;
   }
 
   handleLayout = ({nativeEvent}) => {

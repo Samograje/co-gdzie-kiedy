@@ -22,7 +22,7 @@ class HardwareDetailsContainer extends Component {
   }
 
   componentDidMount() {
-    this.isMounted = true;
+    this._isMounted = true;
     this.fetchDataHardwareDictionary();
     this.fetchDataAffiliations();
     this.fetchDataComputerSets();
@@ -32,7 +32,7 @@ class HardwareDetailsContainer extends Component {
   }
 
   componentWillUnmount() {
-    this.isMounted = false;
+    this._isMounted = false;
   }
 
   fetchDataAffiliations = (query) => {
@@ -45,7 +45,7 @@ class HardwareDetailsContainer extends Component {
     request('/api/affiliations', options)
         .then((response) => response.json())
         .then((response) => {
-          if (!this.isMounted) {
+          if (!this._isMounted) {
             return;
           }
           this.setState({
@@ -54,7 +54,7 @@ class HardwareDetailsContainer extends Component {
           });
         })
         .catch(() => {
-          if (!this.isMounted) {
+          if (!this._isMounted) {
             return;
           }
           this.setState({
@@ -74,7 +74,7 @@ class HardwareDetailsContainer extends Component {
     request('/api/computer-sets', options)
         .then((response) => response.json())
         .then((response) => {
-          if (!this.isMounted) {
+          if (!this._isMounted) {
             return;
           }
           this.setState({
@@ -83,7 +83,7 @@ class HardwareDetailsContainer extends Component {
           });
         })
         .catch(() => {
-          if (!this.isMounted) {
+          if (!this._isMounted) {
             return;
           }
           this.setState({
@@ -97,7 +97,7 @@ class HardwareDetailsContainer extends Component {
     request('/api/hardware-dictionaries')
         .then((response) => response.json())
         .then((response) => {
-          if (!this.isMounted) {
+          if (!this._isMounted) {
             return;
           }
           this.setState({
@@ -109,7 +109,7 @@ class HardwareDetailsContainer extends Component {
           });
         })
         .catch(() => {
-          if (!this.isMounted) {
+          if (!this._isMounted) {
             return;
           }
           this.setState({
@@ -134,14 +134,14 @@ class HardwareDetailsContainer extends Component {
       }
     }).then((response) => response.json())
         .then((responseJson) => {
-          if (!this.isMounted) {
+          if (!this._isMounted) {
             return;
           }
           console.log(responseJson);
           return responseJson;
         })
         .catch((error) => {
-          if (!this.isMounted) {
+          if (!this._isMounted) {
             return;
           }
           console.error(error);
@@ -152,7 +152,7 @@ class HardwareDetailsContainer extends Component {
     request(`/api/hardware/${this.props.id}`)
         .then(response => response.json())
         .then(responseJson => {
-          if (!this.isMounted) {
+          if (!this._isMounted) {
             return;
           }
           this.setState({

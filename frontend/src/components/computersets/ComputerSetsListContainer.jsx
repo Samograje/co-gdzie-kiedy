@@ -16,12 +16,12 @@ class ComputerSetsListContainer extends Component {
   }
 
   componentDidMount() {
-    this.isMounted = true;
+    this._isMounted = true;
     this.fetchData();
   }
 
   componentWillUnmount() {
-    this.isMounted = false;
+    this._isMounted = false;
   }
 
   fetchData = (options) => {
@@ -32,7 +32,7 @@ class ComputerSetsListContainer extends Component {
     request('/api/computer-sets', options)
       .then((response) => response.json())
       .then((response) => {
-        if (!this.isMounted) {
+        if (!this._isMounted) {
           return;
         }
         this.setState({
@@ -41,7 +41,7 @@ class ComputerSetsListContainer extends Component {
         });
       })
       .catch(() => {
-        if (!this.isMounted) {
+        if (!this._isMounted) {
           return;
         }
         this.setState({

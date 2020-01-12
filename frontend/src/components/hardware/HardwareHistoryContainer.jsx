@@ -14,19 +14,19 @@ class HardwareHistoryContainer extends Component {
     }
 
     componentDidMount() {
-        this.isMounted = true;
+        this._isMounted = true;
         this.fetchData();
     }
 
     componentWillUnmount() {
-        this.isMounted = false;
+        this._isMounted = false;
     }
 
     fetchData = () => {
         request(`/api/hardware/${this.props.id}/${this.props.mode}-history`)
             .then((response) => response.json())
             .then((response) => {
-                if (!this.isMounted) {
+                if (!this._isMounted) {
                     return;
                 }
                 this.setState({
@@ -35,7 +35,7 @@ class HardwareHistoryContainer extends Component {
                 });
             })
             .catch(() => {
-                if (!this.isMounted) {
+                if (!this._isMounted) {
                     return;
                 }
                 this.setState({
