@@ -14,9 +14,11 @@ import org.polsl.backend.repository.ComputerSetSoftwareRepository;
 import org.polsl.backend.repository.SoftwareRepository;
 import org.polsl.backend.type.InventoryNumberEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.polsl.backend.filtering.SearchSpecification;
+import org.polsl.backend.filtering.SearchCriteria;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -39,82 +41,15 @@ public class SoftwareService {
     this.computerSetSoftwareRepository = computerSetSoftwareRepository;
   }
 
-  public PaginatedResult<SoftwareListOutputDTO> getAllSoftware(String search) {
-    Map<String, String>searchParameters = null;
-    Iterable<Software> softwares = softwareRepository.findAllByValidToIsNull();
+  public PaginatedResult<SoftwareListOutputDTO> getAllSoftware(Specification<Software> spec) {
     List<SoftwareListOutputDTO> softwareListOutputDTO = new ArrayList<>();
-
-    //parse values for filtering from endpoint search parameter
-    if(search != null){
-      searchParameters = new HashMap<>();
-      List<String>searchList = Arrays.asList(search.split(","));
-      for(String parameter : searchList){
-        List<String>temp = Arrays.asList(parameter.split(":"));
-        searchParameters.put(temp.get(0), temp.get(1));
-      }
-    }
-
-    if(searchParameters != null){
-      //Filtering
-      for (Software software : softwares) {
-        SoftwareListOutputDTO dto = new SoftwareListOutputDTO();
-        dto.setId(software.getId());
-        //Name filtering
-        if(searchParameters.containsKey("name")){
-          if(software.getName().toLowerCase().contains(searchParameters.get("name").toLowerCase().trim())){
-            dto.setName(software.getName());
-          }
-          else{
-            continue;
-          }
-        }
-        else{
-          dto.setName(software.getName());
-        }
-        //inventoryNumber filtering
-        if(searchParameters.containsKey("inventoryNumber")){
-          if(software.getInventoryNumber().toLowerCase().contains(searchParameters.get("inventoryNumber").toLowerCase().trim())){
-            dto.setInventoryNumber(software.getInventoryNumber());
-          }
-          else{
-            continue;
-          }
-        }
-        else{
-          dto.setInventoryNumber(software.getInventoryNumber());
-        }
-
-        //key filtering
-        if(searchParameters.containsKey("key")){
-          if(software.getKey().toLowerCase().contains(searchParameters.get("key").toLowerCase().trim())){
-            dto.setKey(software.getKey());
-          }
-          else{
-            continue;
-          }
-        }
-        else{
-          dto.setKey(software.getKey());
-        }
-
-        //availableKeys filtering
-        if(searchParameters.containsKey("availableKeys")){
-            if (software.getAvailableKeys() >= Long.parseLong(searchParameters.get("availableKeys"))) {
-              dto.setAvailableKeys(software.getAvailableKeys());
-            } else {
-              continue;
-            }
-          }
-        else{
-          dto.setAvailableKeys(software.getAvailableKeys());
-        }
-
-        dto.setDuration(software.getDuration());
-        softwareListOutputDTO.add(dto);
-      }
+    Iterable<Software> softwares;
+    if(spec == null){
+      softwares = softwareRepository.findAllByValidToIsNull();
     }
     else{
-      //No filters
+      softwares = softwareRepository.findAll(spec);
+    }
       for (Software software : softwares) {
         SoftwareListOutputDTO dto = new SoftwareListOutputDTO();
         dto.setId(software.getId());
@@ -125,7 +60,6 @@ public class SoftwareService {
         dto.setDuration(software.getDuration());
         softwareListOutputDTO.add(dto);
       }
-    }
 
     PaginatedResult<SoftwareListOutputDTO> response = new PaginatedResult<>();
     response.setItems(softwareListOutputDTO);

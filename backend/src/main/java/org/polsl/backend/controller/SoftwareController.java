@@ -2,12 +2,17 @@ package org.polsl.backend.controller;
 
 import org.polsl.backend.dto.ApiBasicResponse;
 import org.polsl.backend.dto.software.SoftwareDTO;
+import org.polsl.backend.entity.Software;
+import org.polsl.backend.filtering.SpecificationsBuilder;
 import org.polsl.backend.service.SoftwareService;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
 import javax.validation.Valid;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Kontroler odpowiedzialny za zarządzanie oprogramowaniem.
@@ -28,7 +33,14 @@ public class SoftwareController {
    */
   @GetMapping
   public ResponseEntity<?> getAllSoftware(@RequestParam(value="search", required=false) String search) {
-    return ResponseEntity.ok(softwareService.getAllSoftware(search));
+    SpecificationsBuilder builder = new SpecificationsBuilder();
+    Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
+    Matcher matcher = pattern.matcher(search + ",");
+    while (matcher.find()) {
+      builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
+    }
+    Specification<Software> spec = builder.build();
+    return ResponseEntity.ok(softwareService.getAllSoftware(spec));
   }
 
   /**
