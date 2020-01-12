@@ -52,6 +52,9 @@ public class SoftwareService {
       softwares = softwareRepository.findAll(spec);
     }
       for (Software software : softwares) {
+        if(software.getValidTo() != null){
+          continue;
+        }
         SoftwareListOutputDTO dto = new SoftwareListOutputDTO();
         dto.setId(software.getId());
         dto.setName(software.getName());
