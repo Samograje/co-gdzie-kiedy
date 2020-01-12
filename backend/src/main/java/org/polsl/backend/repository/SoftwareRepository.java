@@ -2,7 +2,6 @@ package org.polsl.backend.repository;
 
 
 import org.polsl.backend.entity.Software;
-import org.polsl.backend.filtering.SearchSpecification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
