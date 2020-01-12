@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import static org.hibernate.query.criteria.internal.ValueHandlerFactory.isNumeric;
+
 
 /**
  * Logika biznesowa oprogramowania.
@@ -54,15 +56,76 @@ public class SoftwareService {
     Iterable<Software> softwares = softwareRepository.findAllByValidToIsNull();
     List<SoftwareListOutputDTO> softwareListOutputDTO = new ArrayList<>();
 
-    for (Software software : softwares) {
-      SoftwareListOutputDTO dto = new SoftwareListOutputDTO();
-      dto.setId(software.getId());
-      dto.setName(software.getName());
-      dto.setInventoryNumber(software.getInventoryNumber());
-      dto.setAvailableKeys(software.getAvailableKeys());
-      dto.setKey(software.getKey());
-      dto.setDuration(software.getDuration());
-      softwareListOutputDTO.add(dto);
+    if(searchParameters != null){
+      //Filtering
+      for (Software software : softwares) {
+        SoftwareListOutputDTO dto = new SoftwareListOutputDTO();
+        dto.setId(software.getId());
+        //Name filtering
+        if(searchParameters.containsKey("name")){
+          if(software.getName().toLowerCase().contains(searchParameters.get("name").toLowerCase().trim())){
+            dto.setName(software.getName());
+          }
+          else{
+            continue;
+          }
+        }
+        else{
+          dto.setName(software.getName());
+        }
+        //inventoryNumber filtering
+        if(searchParameters.containsKey("inventoryNumber")){
+          if(software.getInventoryNumber().toLowerCase().contains(searchParameters.get("inventoryNumber").toLowerCase().trim())){
+            dto.setInventoryNumber(software.getInventoryNumber());
+          }
+          else{
+            continue;
+          }
+        }
+        else{
+          dto.setInventoryNumber(software.getInventoryNumber());
+        }
+
+        //key filtering
+        if(searchParameters.containsKey("key")){
+          if(software.getKey().toLowerCase().contains(searchParameters.get("key").toLowerCase().trim())){
+            dto.setKey(software.getKey());
+          }
+          else{
+            continue;
+          }
+        }
+        else{
+          dto.setKey(software.getKey());
+        }
+
+        //availableKeys filtering
+        if(searchParameters.containsKey("availableKeys")){
+            if (software.getAvailableKeys() >= Long.parseLong(searchParameters.get("availableKeys"))) {
+              dto.setAvailableKeys(software.getAvailableKeys());
+            } else {
+              continue;
+            }
+          }
+        else{
+          dto.setAvailableKeys(software.getAvailableKeys());
+        }
+
+        dto.setDuration(software.getDuration());
+        softwareListOutputDTO.add(dto);
+      }
+    }
+    else{
+      for (Software software : softwares) {
+        SoftwareListOutputDTO dto = new SoftwareListOutputDTO();
+        dto.setId(software.getId());
+        dto.setName(software.getName());
+        dto.setInventoryNumber(software.getInventoryNumber());
+        dto.setAvailableKeys(software.getAvailableKeys());
+        dto.setKey(software.getKey());
+        dto.setDuration(software.getDuration());
+        softwareListOutputDTO.add(dto);
+      }
     }
 
     PaginatedResult<SoftwareListOutputDTO> response = new PaginatedResult<>();

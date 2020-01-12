@@ -26,6 +26,7 @@ class SoftwareListContainer extends Component {
     request('/api/software', options)
         .then((response) => response.json())
         .then((response) => {
+          console.log(response);
           for(let i = 0; i < response.items.length; i++)
           {
             let duration = response.items[i].duration;
@@ -102,7 +103,6 @@ class SoftwareListContainer extends Component {
       {
         name: 'duration',
         label: 'Ważna przez (msc)',
-        filter: true,
       },
     ];
 
