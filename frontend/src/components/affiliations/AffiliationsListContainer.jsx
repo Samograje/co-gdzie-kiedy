@@ -39,6 +39,31 @@ class AffiliationsListContainer extends Component {
       })
   };
 
+  deleteItem = (id) => {
+    request(`/api/affiliations/${id}`,{
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      }
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.success) {
+          this.fetchData();
+        } else {
+          this.setState({
+            error: true,
+          });
+        }
+      })
+      .catch(() => {
+        this.setState({
+          error: true,
+        });
+      });
+  };
+
   handleFilterChange = (fieldName, text) => {
     const newFilters = {
       ...this.state.filters,
@@ -72,9 +97,7 @@ class AffiliationsListContainer extends Component {
       },
       {
         label: 'Usuń',
-        onClick: (itemData) => {
-          // TODO: usuwanie afiliacji
-        },
+        onClick: (itemData) => this.deleteItem(itemData.id),
       },
       // TODO: akcje wyświetlania historii powiązań
     ];
