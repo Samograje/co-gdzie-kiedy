@@ -3,7 +3,7 @@ package org.polsl.backend;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.polsl.backend.dto.affiliation.AffiliationDTO;
+import org.polsl.backend.dto.affiliation.AffiliationInputDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -54,33 +54,8 @@ public class AffiliationControllerIntegrationTest {
   }
 
   @Test
-  public void givenInvalidId_whenGettingAffiliation_thenReturnStatus400() throws Exception {
-    mvc.perform(get("/api/affiliations/abcd"))
-        .andExpect(status().is(400))
-        .andExpect(jsonPath("$.success").value(false))
-        .andExpect(jsonPath("$.message").value("Podana wartość nie jest liczbą"));
-  }
-
-  @Test
-  public void givenNotExistingId_whenGettingAffiliation_thenReturnStatus404() throws Exception {
-    mvc.perform(get("/api/affiliations/0"))
-        .andExpect(status().is(404))
-        .andExpect(jsonPath("$.success").value(false))
-        .andExpect(jsonPath("$.message").value("Nie istnieje przynależność o id: '0'"));
-  }
-
-  @Test
-  public void givenCorrectRequest_whenGettingAffiliation_thenReturnStatus200AndData() throws Exception {
-    mvc.perform(get("/api/affiliations/1"))
-        .andExpect(status().is(200))
-        .andExpect(jsonPath("$.firstName").value("Szymon"))
-        .andExpect(jsonPath("$.lastName").value("Jęczyzel"))
-        .andExpect(jsonPath("$.location").value("Solaris"));
-  }
-
-  @Test
   public void givenEmptyRequest_whenAddingAffiliation_thenReturnStatus400() throws Exception {
-    AffiliationDTO request = new AffiliationDTO();
+    AffiliationInputDTO request = new AffiliationInputDTO();
     mvc.perform(post("/api/affiliations")
       .content(objectMapper.writeValueAsString(request))
       .contentType(MediaType.APPLICATION_JSON))
@@ -93,7 +68,7 @@ public class AffiliationControllerIntegrationTest {
 
   @Test
   public void givenCorrectRequest_whenAddingAffiliation_thenReturnStatus200AndData() throws Exception {
-    AffiliationDTO request = new AffiliationDTO();
+    AffiliationInputDTO request = new AffiliationInputDTO();
     request.setFirstName("Mike");
     request.setLastName("Ehrmantraut");
     request.setLocation("");
@@ -107,7 +82,7 @@ public class AffiliationControllerIntegrationTest {
 
   @Test
   public void givenEmptyRequest_whenEditingAffiliation_thenReturnStatus400() throws Exception {
-    AffiliationDTO request = new AffiliationDTO();
+    AffiliationInputDTO request = new AffiliationInputDTO();
     mvc.perform(put("/api/affiliations/1")
       .content(objectMapper.writeValueAsString(request))
       .contentType(MediaType.APPLICATION_JSON))
@@ -120,7 +95,7 @@ public class AffiliationControllerIntegrationTest {
 
   @Test
   public void givenInvalidId_whenEditingAffiliation_thenReturnStatus404() throws Exception {
-    AffiliationDTO request = new AffiliationDTO();
+    AffiliationInputDTO request = new AffiliationInputDTO();
     request.setFirstName("Mike");
     request.setLastName("Ehrmantraut");
     request.setLocation("");
@@ -141,7 +116,7 @@ public class AffiliationControllerIntegrationTest {
 
   @Test
   public void givenCorrectRequest_whenEditingAffiliation_thenReturnStatus200AndData() throws Exception {
-    AffiliationDTO request = new AffiliationDTO();
+    AffiliationInputDTO request = new AffiliationInputDTO();
     request.setFirstName("Mike");
     request.setLastName("Ehrmantraut");
     request.setLocation("");

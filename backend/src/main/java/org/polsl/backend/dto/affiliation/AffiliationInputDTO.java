@@ -2,7 +2,7 @@ package org.polsl.backend.dto.affiliation;
 
 import javax.validation.constraints.NotNull;
 
-public class AffiliationDTO {
+public class AffiliationInputDTO {
   @NotNull
   private String firstName;
 
