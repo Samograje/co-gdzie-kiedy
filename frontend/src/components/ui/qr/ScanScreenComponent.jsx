@@ -8,6 +8,12 @@ import {
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
 class ScanScreenComponent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isDialogOpened: false,
+    };
+  }
 
   extractId = (text) => {
     const regex = /[0-9]+/;
@@ -42,6 +48,9 @@ class ScanScreenComponent extends Component {
   };
 
   onSuccess = (e) => {
+    this.setState({
+      isDialogOpened: true,
+    });
     Alert.alert(
       'Wykryto kod',
       e.data + ' kliknij OK, aby wyświetlić dane.',
@@ -49,7 +58,9 @@ class ScanScreenComponent extends Component {
         {
           text: 'Anuluj',
           // TODO: skanowanie po naciśnięciu 'Anuluj'
-          // onPress: () => console.log('Cancel Pressed'),
+          onPress: () => this.setState({
+            isDialogOpened: false,
+          }),
           style: 'cancel',
         },
         {text: 'OK', onPress: () => this.processTheQRCode(e.data)},
@@ -62,8 +73,7 @@ class ScanScreenComponent extends Component {
     return (
       <View style={styles.container}>
         <QRCodeScanner
-          reactivate={true}
-          reactivateTimeout={10000}
+          reactivate={!this.state.isDialogOpened}
           showMarker={true}
           containerStyle={styles.scanner}
           onRead={this.onSuccess}
