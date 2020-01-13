@@ -21,9 +21,14 @@ class AffiliationDetailsContainer extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
     if (this.props.mode === 'edit') {
       this.loadInitialData();
     }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   loadInitialData = () => {
@@ -33,12 +38,18 @@ class AffiliationDetailsContainer extends Component {
     request(`/api/affiliations/${this.props.id}`)
       .then((response) => response.json())
       .then((response) => {
+        if (!this._isMounted) {
+          return;
+        }
         this.setState({
           data: response,
           isLoading: false,
         });
       })
       .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
         this.setState({
           isLoading: false,
           error: true,
@@ -113,6 +124,9 @@ class AffiliationDetailsContainer extends Component {
         if (response.success) {
           this.props.goBack();
         } else {
+          if (!this._isMounted) {
+            return;
+          }
           this.setState({
             error: true,
             isSubmitting: false,
@@ -120,6 +134,9 @@ class AffiliationDetailsContainer extends Component {
         }
       })
       .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
         this.setState({
           error: true,
           isSubmitting: false,
