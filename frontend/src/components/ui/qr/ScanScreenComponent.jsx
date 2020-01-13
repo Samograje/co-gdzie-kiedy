@@ -62,9 +62,6 @@ class ScanScreenComponent extends Component {
     return (
       <View style={styles.container}>
         <QRCodeScanner
-          reactivate={true}
-          reactivateTimeout={10000}
-          showMarker={true}
           containerStyle={styles.scanner}
           onRead={this.onSuccess}
           bottomContent={
