@@ -24,6 +24,12 @@ class ScanScreenComponent extends Component {
     }
   };
 
+  checkIfProperCode = (scan) => {
+    const regex = /[SHC][1-9][0-9]*\/20[0-9]{2}/;
+
+    return regex.test(scan)
+  };
+
   processTheQRCode = (qrCode) => {
     let screenName;
     switch (qrCode.charAt(0)) {
@@ -38,43 +44,72 @@ class ScanScreenComponent extends Component {
         break;
     }
 
-    //TODO: zabezpeiczenie na niewłaściwe kody qr
-    const regex = /[SHC][1-9][0-9]*\/20[0-9]{2}/;
-
     this.props.push(screenName, {
       mode: 'edit',
       id: parseInt(this.extractId(qrCode)),
     });
   };
 
-  onSuccess = (e) => {
-    this.setState({
-      isDialogOpened: true,
-    });
+  showInvalidCodeAlert = () => {
+    Alert.alert(
+      'Skan',
+      'Niepoprawny kod QR.',
+      [
+        {
+          text: 'OK', onPress: () => this.setState({
+            isDialogOpened: false,
+          })
+        },
+      ],
+      {cancelable: false},
+    );
+  };
+
+  showValidCodeAlert = (e) => {
     Alert.alert(
       'Wykryto kod',
       e.data + ' kliknij OK, aby wyświetlić dane.',
       [
         {
           text: 'Anuluj',
-          // TODO: skanowanie po naciśnięciu 'Anuluj'
           onPress: () => this.setState({
             isDialogOpened: false,
           }),
           style: 'cancel',
         },
-        {text: 'OK', onPress: () => this.processTheQRCode(e.data)},
+        {
+          text: 'OK', onPress: () => {
+            this.setState({
+              isDialogOpened: false,
+            });
+            this.processTheQRCode(e.data);
+          }
+        },
       ],
       {cancelable: false},
     );
+  };
+
+  onSuccess = (e) => {
+    if (!this.state.isDialogOpened) {
+      if (!this.checkIfProperCode(e.data)) {
+        this.showInvalidCodeAlert();
+      } else {
+        this.showValidCodeAlert(e);
+      }
+
+      this.setState({
+        isDialogOpened: true,
+      });
+    }
   };
 
   render() {
     return (
       <View style={styles.container}>
         <QRCodeScanner
-          reactivate={!this.state.isDialogOpened}
-          showMarker={true}
+          reactivate={true}
+          vibrate={!this.state.isDialogOpened}
           containerStyle={styles.scanner}
           onRead={this.onSuccess}
           bottomContent={

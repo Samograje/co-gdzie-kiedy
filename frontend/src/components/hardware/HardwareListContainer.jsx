@@ -41,19 +41,19 @@ class HardwareListContainer extends Component {
   };
 
   deleteCall = (id) => {
-    request(`/api/hardware/${id}`,{
+    request(`/api/hardware/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       }
     }).then((response) => response.json())
-        .then(() => {
-          this.fetchData();
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      .then(() => {
+        this.fetchData();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   handleFilterChange = (fieldName, text) => {
@@ -109,7 +109,9 @@ class HardwareListContainer extends Component {
       },
       {
         label: 'Usuń',
-        onClick: (itemData) => {this.deleteCall(itemData.id)},
+        onClick: (itemData) => {
+          this.deleteCall(itemData.id)
+        },
       },
       {
         label: 'HA',

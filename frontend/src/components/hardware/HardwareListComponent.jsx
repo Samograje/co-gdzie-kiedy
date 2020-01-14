@@ -18,40 +18,40 @@ const HardwareListComponent = (props) => {
   } = props;
 
   return (
-      <ScrollView>
-        <View style={styles.container}>
-          {groupActions && (
-              <View style={styles.groupActions}>
-                {groupActions.map((action, idx) => (
-                    <View style={styles.buttonContainer} key={idx}>
-                      <Button
-                          disabled={action.disabled}
-                          title={action.label}
-                          onPress={action.onClick}
-                          color={mainColor}
-                      />
-                    </View>
-                ))}
+    <ScrollView>
+      <View style={styles.container}>
+        {groupActions && (
+          <View style={styles.groupActions}>
+            {groupActions.map((action, idx) => (
+              <View style={styles.buttonContainer} key={idx}>
+                <Button
+                  disabled={action.disabled}
+                  title={action.label}
+                  onPress={action.onClick}
+                  color={mainColor}
+                />
               </View>
-          )}
-          {error && (
-              <ErrorElement
-                  message="Nie udało się pobrać danych z serwera"
-                  type="error"
-              />
-          )}
-          {!error && (
-              <ResponsiveTable
-                  items={items}
-                  totalElements={totalElements}
-                  loading={loading}
-                  onFilterChange={onFilterChange}
-                  columns={columns}
-                  itemActions={itemActions}
-              />
-          )}
-        </View>
-      </ScrollView>
+            ))}
+          </View>
+        )}
+        {error && (
+          <ErrorElement
+            message="Nie udało się pobrać danych z serwera"
+            type="error"
+          />
+        )}
+        {!error && (
+          <ResponsiveTable
+            items={items}
+            totalElements={totalElements}
+            loading={loading}
+            onFilterChange={onFilterChange}
+            columns={columns}
+            itemActions={itemActions}
+          />
+        )}
+      </View>
+    </ScrollView>
   );
 };
 

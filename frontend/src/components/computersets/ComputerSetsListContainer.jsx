@@ -26,19 +26,19 @@ class ComputerSetsListContainer extends Component {
       error: false,
     });
     request('/api/computer-sets', options)
-        .then((response) => response.json())
-        .then((response) => {
-          this.setState({
-            loading: false,
-            ...response,
-          });
-        })
-        .catch(() => {
-          this.setState({
-            loading: false,
-            error: true,
-          });
-        })
+      .then((response) => response.json())
+      .then((response) => {
+        this.setState({
+          loading: false,
+          ...response,
+        });
+      })
+      .catch(() => {
+        this.setState({
+          loading: false,
+          error: true,
+        });
+      })
   };
 
   handleFilterChange = (fieldName, text) => {
@@ -136,13 +136,13 @@ class ComputerSetsListContainer extends Component {
     ];
 
     return (
-        <ComputerSetsListComponent
-            onFilterChange={this.handleFilterChange}
-            columns={columns}
-            itemActions={itemActions}
-            groupActions={groupActions}
-            {...this.state}
-        />
+      <ComputerSetsListComponent
+        onFilterChange={this.handleFilterChange}
+        columns={columns}
+        itemActions={itemActions}
+        groupActions={groupActions}
+        {...this.state}
+      />
     );
   }
 }
