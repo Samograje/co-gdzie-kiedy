@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class Search<T> {
    public Specification<T> searchInitialization(String search){
-    SpecificationsBuilder<T> builder = new SpecificationsBuilder<T>();
+    SpecificationsBuilder<T> builder = new SpecificationsBuilder<>();
     Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
     Matcher matcher = pattern.matcher(search + ",");
     while (matcher.find()) {

@@ -2,6 +2,8 @@ package org.polsl.backend.controller;
 
 import org.polsl.backend.dto.ApiBasicResponse;
 import org.polsl.backend.dto.affiliation.AffiliationInputDTO;
+import org.polsl.backend.entity.Affiliation;
+import org.polsl.backend.filtering.Search;
 import org.polsl.backend.service.AffiliationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -35,8 +38,9 @@ public class AffiliationController {
    * @return lista przynależności
    */
   @GetMapping
-  public ResponseEntity<?> getAllAffiliations() {
-    return ResponseEntity.ok(affiliationService.getAllAffiliations());
+  public ResponseEntity<?> getAllAffiliations(@RequestParam(value="search", required=false) String search) {
+    Search<Affiliation> filtering = new Search<>();
+    return ResponseEntity.ok(affiliationService.getAllAffiliations(filtering.searchInitialization(search)));
   }
 
   /**

@@ -2,6 +2,9 @@ package org.polsl.backend.controller;
 
 import org.polsl.backend.dto.ApiBasicResponse;
 import org.polsl.backend.dto.computerset.ComputerSetDTO;
+import org.polsl.backend.entity.ComputerSet;
+import org.polsl.backend.entity.Software;
+import org.polsl.backend.filtering.Search;
 import org.polsl.backend.service.ComputerSetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -35,8 +39,9 @@ public class ComputerSetController {
    * @return lista zestawów komputerowych
    */
   @GetMapping
-  public ResponseEntity<?> getAllComputerSets() {
-    return ResponseEntity.ok(computerSetService.getAllComputerSets());
+  public ResponseEntity<?> getAllComputerSets(@RequestParam(value="search", required=false) String search) {
+    Search<ComputerSet> filtering = new Search<>();
+    return ResponseEntity.ok(computerSetService.getAllComputerSets(filtering.searchInitialization(search)));
   }
 
   /**
