@@ -98,7 +98,6 @@ class SoftwareListContainer extends Component {
       {
         name: 'availableKeys',
         label: 'Ilość dostępnych kluczy',
-        filter: true,
       },
       {
         name: 'duration',
