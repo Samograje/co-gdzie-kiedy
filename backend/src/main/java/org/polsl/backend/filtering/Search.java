@@ -1,8 +1,6 @@
 package org.polsl.backend.filtering;
 
-import org.polsl.backend.entity.Affiliation;
 import org.polsl.backend.entity.ComputerSet;
-import org.polsl.backend.entity.Hardware;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.regex.Matcher;
@@ -21,12 +19,6 @@ public class Search<T> {
     if(object instanceof ComputerSet){
       computerSetSearchValueToEntityValuesParser();
     }
-    else if(object instanceof Hardware){
-      hardwareSearchValueToEntityValuesParser();
-    }
-    else if ((object instanceof Affiliation)){
-      affiliationSearchValueToEntityValuesParser();
-    }
 
     SpecificationsBuilder<T> builder = new SpecificationsBuilder<>();
     Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
@@ -44,15 +36,5 @@ public class Search<T> {
     if(search.contains("computerSetInventoryNumber")) {
       search = search.replace("computerSetInventoryNumber", "inventoryNumber");
     }
-  }
-
-  private void hardwareSearchValueToEntityValuesParser(){
-    if(search == null)
-      return;
-  }
-
-  private void affiliationSearchValueToEntityValuesParser(){
-    if(search == null)
-      return;
   }
 }
