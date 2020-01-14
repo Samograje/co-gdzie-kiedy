@@ -63,8 +63,8 @@ public class ComputerSetService {
   }
 
   public PaginatedResult<ComputerSetListOutputDTO> getAllComputerSets(Specification<ComputerSet> computerSetSpecification) {
-//    Iterable<ComputerSet> computerSets = computerSetRepository.findAllByValidToIsNull();
-    Iterable<ComputerSet> computerSets = computerSetRepository.findAll(computerSetSpecification);
+    Iterable<ComputerSet> computerSets = computerSetRepository.findAllByValidToIsNull();
+//    Iterable<ComputerSet> computerSets = computerSetRepository.findAll(computerSetSpecification);
     List<ComputerSetListOutputDTO> dtos = new ArrayList<>();
     for (ComputerSet computerSet : computerSets) {
       ComputerSetListOutputDTO dto = new ComputerSetListOutputDTO();
