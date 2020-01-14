@@ -31,8 +31,8 @@ public class SoftwareController {
    */
   @GetMapping
   public ResponseEntity<?> getAllSoftware(@RequestParam(value="search", required=false) String search) {
-    Search<Software> filtering = new Search<>();
-    return ResponseEntity.ok(softwareService.getAllSoftware(filtering.searchInitialization(search)));
+    Search<Software> filtering = new Search<>(search);
+    return ResponseEntity.ok(softwareService.getAllSoftware(filtering.searchInitialization()));
   }
 
   /**

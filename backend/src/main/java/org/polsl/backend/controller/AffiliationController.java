@@ -39,8 +39,8 @@ public class AffiliationController {
    */
   @GetMapping
   public ResponseEntity<?> getAllAffiliations(@RequestParam(value="search", required=false) String search) {
-    Search<Affiliation> filtering = new Search<>();
-    return ResponseEntity.ok(affiliationService.getAllAffiliations(filtering.searchInitialization(search)));
+    Search<Affiliation> filtering = new Search<>(search);
+    return ResponseEntity.ok(affiliationService.getAllAffiliations(filtering.searchInitialization()));
   }
 
   /**
