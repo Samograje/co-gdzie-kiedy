@@ -109,6 +109,7 @@ class SoftwareListContainer extends Component {
       {
         name: 'key',
         label: 'Klucz produktu',
+        filter: true,
       },
       {
         name: 'availableKeys',

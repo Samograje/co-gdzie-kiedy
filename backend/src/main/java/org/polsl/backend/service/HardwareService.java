@@ -10,6 +10,7 @@ import org.polsl.backend.entity.ComputerSet;
 import org.polsl.backend.entity.ComputerSetHardware;
 import org.polsl.backend.entity.Hardware;
 import org.polsl.backend.entity.HardwareDictionary;
+import org.polsl.backend.entity.Software;
 import org.polsl.backend.exception.BadRequestException;
 import org.polsl.backend.exception.NotFoundException;
 import org.polsl.backend.repository.AffiliationHardwareRepository;
@@ -20,6 +21,7 @@ import org.polsl.backend.repository.HardwareDictionaryRepository;
 import org.polsl.backend.repository.HardwareRepository;
 import org.polsl.backend.type.InventoryNumberEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,7 +57,7 @@ public class HardwareService {
     this.affiliationHardwareRepository = affiliationHardwareRepository;
   }
 
-  public PaginatedResult<HardwareListOutputDTO> getHardwareList(boolean soloOnly) {
+  public PaginatedResult<HardwareListOutputDTO> getHardwareList(boolean soloOnly, Specification<Hardware> spec) {
     Iterable<Hardware> hardwareList;
 
     if (soloOnly) {

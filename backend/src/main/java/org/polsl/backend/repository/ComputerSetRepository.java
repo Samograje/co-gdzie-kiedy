@@ -2,13 +2,14 @@ package org.polsl.backend.repository;
 
 import org.polsl.backend.entity.ComputerSet;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
-import java.util.Set;
+
 
 @Repository
-public interface ComputerSetRepository extends JpaRepository<ComputerSet, Long> {
+public interface ComputerSetRepository extends JpaRepository<ComputerSet, Long>, JpaSpecificationExecutor<ComputerSet> {
   Optional<ComputerSet> findById(Long id);
 
   Optional<ComputerSet> findByIdAndValidToIsNull(Long id);
