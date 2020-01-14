@@ -27,6 +27,7 @@ public class Search<T> {
     else if ((object instanceof Affiliation)){
       affiliationSearchValueToEntityValuesParser();
     }
+
     SpecificationsBuilder<T> builder = new SpecificationsBuilder<>();
     Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
     Matcher matcher = pattern.matcher(search + ",");
@@ -38,14 +39,20 @@ public class Search<T> {
   }
 
   private void computerSetSearchValueToEntityValuesParser(){
-
+    if(search == null)
+      return;
+    if(search.contains("computerSetInventoryNumber")) {
+      search = search.replace("computerSetInventoryNumber", "inventoryNumber");
+    }
   }
 
   private void hardwareSearchValueToEntityValuesParser(){
-
+    if(search == null)
+      return;
   }
 
   private void affiliationSearchValueToEntityValuesParser(){
-
+    if(search == null)
+      return;
   }
 }

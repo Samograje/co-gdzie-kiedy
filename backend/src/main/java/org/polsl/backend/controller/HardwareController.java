@@ -40,7 +40,7 @@ public class HardwareController {
    */
   @GetMapping
   public ResponseEntity<?> getHardwareList(@RequestParam(name = "solo-only", required = false, defaultValue = "false") boolean soloOnly, @RequestParam(value="search", required=false) String search) {
-    Search<Hardware> filtering = new Search<>(search);
+    Search<Hardware> filtering = new Search<>(new Hardware(), search);
     return ResponseEntity.ok(hardwareService.getHardwareList(soloOnly, filtering.searchInitialization()));
   }
 
