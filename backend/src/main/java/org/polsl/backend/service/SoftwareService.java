@@ -44,26 +44,21 @@ public class SoftwareService {
 
   public PaginatedResult<SoftwareListOutputDTO> getAllSoftware(Specification<Software> spec) {
     List<SoftwareListOutputDTO> softwareListOutputDTO = new ArrayList<>();
-    Iterable<Software> softwares;
-    if(spec == null){
-      softwares = softwareRepository.findAllByValidToIsNull();
-    }
-    else{
-      softwares = softwareRepository.findAll(spec);
-    }
-      for (Software software : softwares) {
-        if(software.getValidTo() != null){
-          continue;
-        }
-        SoftwareListOutputDTO dto = new SoftwareListOutputDTO();
-        dto.setId(software.getId());
-        dto.setName(software.getName());
-        dto.setInventoryNumber(software.getInventoryNumber());
-        dto.setAvailableKeys(software.getAvailableKeys());
-        dto.setKey(software.getKey());
-        dto.setDuration(software.getDuration());
-        softwareListOutputDTO.add(dto);
+    Iterable<Software> softwareList;
+    softwareList = softwareRepository.findAll(spec);
+    for (Software software : softwareList) {
+      if(software.getValidTo() != null){
+        continue;
       }
+      SoftwareListOutputDTO dto = new SoftwareListOutputDTO();
+      dto.setId(software.getId());
+      dto.setName(software.getName());
+      dto.setInventoryNumber(software.getInventoryNumber());
+      dto.setAvailableKeys(software.getAvailableKeys());
+      dto.setKey(software.getKey());
+      dto.setDuration(software.getDuration());
+      softwareListOutputDTO.add(dto);
+    }
 
     PaginatedResult<SoftwareListOutputDTO> response = new PaginatedResult<>();
     response.setItems(softwareListOutputDTO);
