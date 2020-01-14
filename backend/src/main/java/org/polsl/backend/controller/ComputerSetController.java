@@ -40,7 +40,7 @@ public class ComputerSetController {
    */
   @GetMapping
   public ResponseEntity<?> getAllComputerSets(@RequestParam(value="search", required=false) String search) {
-    Search<ComputerSet> filtering = new Search<>(search);
+    Search<ComputerSet> filtering = new Search<>(new ComputerSet(), search);
     return ResponseEntity.ok(computerSetService.getAllComputerSets(filtering.searchInitialization()));
   }
 

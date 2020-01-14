@@ -1,16 +1,32 @@
 package org.polsl.backend.filtering;
 
+import org.polsl.backend.entity.Affiliation;
+import org.polsl.backend.entity.ComputerSet;
+import org.polsl.backend.entity.Hardware;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Search<T> {
+  private T object;
   private String search;
-  public Search(String search){
+
+  public Search(T object, String search){
+    this.object = object;
     this.search = search;
   }
+
   public Specification<T> searchInitialization(){
+    if(object instanceof ComputerSet){
+      computerSetSearchValueToEntityValuesParser();
+    }
+    else if(object instanceof Hardware){
+      hardwareSearchValueToEntityValuesParser();
+    }
+    else if ((object instanceof Affiliation)){
+      affiliationSearchValueToEntityValuesParser();
+    }
     SpecificationsBuilder<T> builder = new SpecificationsBuilder<>();
     Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
     Matcher matcher = pattern.matcher(search + ",");
@@ -19,5 +35,17 @@ public class Search<T> {
     }
     Specification<T> spec = builder.build();
     return spec;
+  }
+
+  private void computerSetSearchValueToEntityValuesParser(){
+
+  }
+
+  private void hardwareSearchValueToEntityValuesParser(){
+
+  }
+
+  private void affiliationSearchValueToEntityValuesParser(){
+
   }
 }
