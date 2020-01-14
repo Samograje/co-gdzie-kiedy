@@ -2,6 +2,7 @@ package org.polsl.backend.controller;
 
 import org.polsl.backend.dto.ApiBasicResponse;
 import org.polsl.backend.dto.software.SoftwareDTO;
+import org.polsl.backend.entity.Software;
 import org.polsl.backend.filtering.Search;
 import org.polsl.backend.service.SoftwareService;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,8 @@ public class SoftwareController {
    */
   @GetMapping
   public ResponseEntity<?> getAllSoftware(@RequestParam(value="search", required=false) String search) {
-    return ResponseEntity.ok(softwareService.getAllSoftware(Search.searchInitialization(search)));
+    Search<Software> filtering = new Search<>();
+    return ResponseEntity.ok(softwareService.getAllSoftware(filtering.searchInitialization(search)));
   }
 
   /**

@@ -1,25 +1,24 @@
 package org.polsl.backend.filtering;
 
-import org.polsl.backend.entity.Software;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SpecificationsBuilder {
+public class SpecificationsBuilder<T> {
   private final List<SearchCriteria> params;
 
   public SpecificationsBuilder() {
     params = new ArrayList<SearchCriteria>();
   }
 
-  public SpecificationsBuilder with(String key, String operation, Object value) {
+  public SpecificationsBuilder<T> with(String key, String operation, Object value) {
     params.add(new SearchCriteria(key, operation, value));
     return this;
   }
 
-  public Specification<Software> build() {
+  public Specification<T> build() {
     if (params.size() == 0) {
       return null;
     }
