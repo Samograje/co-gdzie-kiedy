@@ -57,21 +57,14 @@ public class HardwareService {
   }
 
   //region HTTP METHODS
-  public PaginatedResult<HardwareListOutputDTO> getHardwareList(boolean soloOnly, Specification<Hardware> spec) {
+  public PaginatedResult<HardwareListOutputDTO> getHardwareList(Specification<Hardware> spec) {
     Iterable<Hardware> hardwareList;
 
     Specification<Hardware> specificationWithValidTo = (
         (Specification<Hardware>) (root, query, criteriaBuilder) -> criteriaBuilder.isNull(root.get("validTo"))
     ).and(spec);
 
-    if (soloOnly) {
-      Specification<Hardware> specificationWithSoloOnly = (
-          (Specification<Hardware>) (root, query, criteriaBuilder) -> criteriaBuilder.isNull(root.get("computerSetHardwareSet"))
-      ).and(specificationWithValidTo);
-      hardwareList = hardwareRepository.findAll(specificationWithSoloOnly);
-    } else {
-      hardwareList = hardwareRepository.findAll(specificationWithValidTo);
-    }
+    hardwareList = hardwareRepository.findAll(specificationWithValidTo);
 
 
     List<HardwareListOutputDTO> dtos = new ArrayList<>();

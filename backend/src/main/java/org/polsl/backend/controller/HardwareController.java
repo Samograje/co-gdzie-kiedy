@@ -33,15 +33,14 @@ public class HardwareController {
     this.hardwareService = hardwareService;
   }
   /**
-   * Endpoint obsługujący uzyskiwanie listy wszystkich hardware'ów bądź niebędących składowymi żadnego zestawu komputerowego.
+   * Endpoint obsługujący uzyskiwanie listy wszystkich nieusuniętych hardware'ów
    *
-   * @param soloOnly boolean informujący o tym, czy wyświetlać hardware niebędący składowm żadnego zestawu komputerowego
-   * @return lista hardware'u według parametru
+   * @return lista hardware'u
    */
   @GetMapping
-  public ResponseEntity<?> getHardwareList(@RequestParam(name = "solo-only", required = false, defaultValue = "false") boolean soloOnly, @RequestParam(value="search", required=false) String search) {
+  public ResponseEntity<?> getHardwareList(@RequestParam(value="search", required=false) String search) {
     Search<Hardware> filtering = new Search<>(new Hardware(), search);
-    return ResponseEntity.ok(hardwareService.getHardwareList(soloOnly, filtering.searchInitialization()));
+    return ResponseEntity.ok(hardwareService.getHardwareList(filtering.searchInitialization()));
   }
 
   /**
