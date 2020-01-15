@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import SoftwareListComponent from './SoftwareListComponent';
 import request from "../../APIClient";
 import moment from "moment";
+import {Platform} from "react-native";
 
 class SoftwareListContainer extends Component {
   constructor(props) {
@@ -15,7 +16,12 @@ class SoftwareListContainer extends Component {
     };
   }
   componentDidMount() {
+    this._isMounted = true;
     this.fetchData();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   fetchData = (options) => {
@@ -26,6 +32,9 @@ class SoftwareListContainer extends Component {
     request('/api/software', options)
         .then((response) => response.json())
         .then((response) => {
+          if (!this._isMounted) {
+            return;
+          }
           for(let i = 0; i < response.items.length; i++)
           {
             let duration = response.items[i].duration;
@@ -41,6 +50,9 @@ class SoftwareListContainer extends Component {
           });
         })
         .catch(() => {
+          if (!this._isMounted) {
+            return;
+          }
           this.setState({
             loading: false,
             error: true,
@@ -70,9 +82,15 @@ class SoftwareListContainer extends Component {
       }
     }).then((response) => response.json())
         .then(() => {
+          if (!this._isMounted) {
+            return;
+          }
           this.fetchData();
         })
         .catch((error) => {
+          if (!this._isMounted) {
+            return;
+          }
           console.error(error);
         });
   };
@@ -92,6 +110,7 @@ class SoftwareListContainer extends Component {
       {
         name: 'key',
         label: 'Klucz produktu',
+        filter: true,
       },
       {
         name: 'availableKeys',
@@ -113,22 +132,31 @@ class SoftwareListContainer extends Component {
       },
       {
         label: 'Usuń',
-        onClick: (itemData) => {this.deleteCall(itemData.id)},
+        onClick: (itemData) => {
+          this.deleteCall(itemData.id)
+        },
       },
-      // TODO: akcje wyświetlania historii powiązań
+      {
+        label: 'HC',
+        onClick: (itemData) => this.props.push('SoftwareHistory', {
+          id: itemData.id,
+        }),
+      },
     ];
 
     const groupActions = [
       {
+        disabled: false,
         label: 'Dodaj oprogramowanie',
         onClick: () => this.props.push('SoftwareDetails', {
           mode: 'create',
         }),
       },
       {
+        disabled: Platform.OS !== 'android',
         label: 'Wyszukaj za pomocą kodu QR',
         onClick: () => {
-          // TODO: wyszukiwanie po kodzie QR
+          this.props.push('ScanScreen')
         },
       },
     ];

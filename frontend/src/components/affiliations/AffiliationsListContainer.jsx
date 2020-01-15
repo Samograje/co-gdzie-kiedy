@@ -15,7 +15,12 @@ class AffiliationsListContainer extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
     this.fetchData();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   fetchData = (options) => {
@@ -26,12 +31,18 @@ class AffiliationsListContainer extends Component {
     request('/api/affiliations', options)
       .then((response) => response.json())
       .then((response) => {
+        if (!this._isMounted) {
+          return;
+        }
         this.setState({
           loading: false,
           ...response,
         });
       })
       .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
         this.setState({
           loading: false,
           error: true,

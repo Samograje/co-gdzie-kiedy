@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ComputerSetsListComponent from './ComputerSetsListComponent';
 import request from '../../APIClient';
+import {Platform} from "react-native";
 
 class ComputerSetsListContainer extends Component {
 
@@ -16,7 +17,12 @@ class ComputerSetsListContainer extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
     this.fetchData();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   fetchData = (options) => {
@@ -27,12 +33,18 @@ class ComputerSetsListContainer extends Component {
     request('/api/computer-sets', options)
       .then((response) => response.json())
       .then((response) => {
+        if (!this._isMounted) {
+          return;
+        }
         this.setState({
           loading: false,
           ...response,
         });
       })
       .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
         this.setState({
           loading: false,
           error: true,
@@ -94,20 +106,42 @@ class ComputerSetsListContainer extends Component {
           // TODO: usuwanie zestawu komputerowego
         },
       },
-      // TODO: akcje wyświetlania historii
+      {
+        label: 'HA',
+        onClick: (itemData) => this.props.push('ComputerSetHistory', {
+          mode: 'affiliations',
+          id: itemData.id,
+        }),
+      },
+      {
+        label: 'HH',
+        onClick: (itemData) => this.props.push('ComputerSetHistory', {
+          mode: 'hardware',
+          id: itemData.id,
+        }),
+      },
+      {
+        label: 'HS',
+        onClick: (itemData) => this.props.push('ComputerSetHistory', {
+          mode: 'software',
+          id: itemData.id,
+        }),
+      },
     ];
 
     const groupActions = [
       {
+        disabled: false,
         label: 'Dodaj zestaw komputerowy',
         onClick: () => this.props.push('ComputerSetDetails', {
           mode: 'create',
         }),
       },
       {
+        disabled: Platform.OS !== 'android',
         label: 'Wyszukaj za pomocą kodu QR',
         onClick: () => {
-          // TODO: wyszukiwanie po kodzie QR
+          this.props.push('ScanScreen')
         },
       },
     ];

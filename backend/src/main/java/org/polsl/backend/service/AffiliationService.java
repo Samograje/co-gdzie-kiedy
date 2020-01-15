@@ -7,6 +7,7 @@ import org.polsl.backend.entity.Affiliation;
 import org.polsl.backend.exception.NotFoundException;
 import org.polsl.backend.repository.AffiliationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class AffiliationService {
     return stringBuilder.toString();
   }
 
-  public PaginatedResult<AffiliationListOutputDTO> getAffiliations() {
+  public PaginatedResult<AffiliationListOutputDTO> getAffiliations(Specification<Affiliation> affiliationSpecification) {
     Iterable<Affiliation> affiliations = affiliationRepository.findAllByIsDeletedIsFalse();
     List<AffiliationListOutputDTO> dtos = new ArrayList<>();
     for (Affiliation affiliation : affiliations) {

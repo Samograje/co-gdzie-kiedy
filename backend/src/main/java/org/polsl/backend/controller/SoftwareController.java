@@ -2,11 +2,15 @@ package org.polsl.backend.controller;
 
 import org.polsl.backend.dto.ApiBasicResponse;
 import org.polsl.backend.dto.software.SoftwareDTO;
+import org.polsl.backend.entity.Software;
+import org.polsl.backend.filtering.Search;
 import org.polsl.backend.service.SoftwareService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 import javax.validation.Valid;
+
 
 /**
  * Kontroler odpowiedzialny za zarządzanie oprogramowaniem.
@@ -26,8 +30,9 @@ public class SoftwareController {
    * @return lista oprogramowania
    */
   @GetMapping
-  public ResponseEntity<?> getAllSoftware() {
-    return ResponseEntity.ok(softwareService.getAllSoftware());
+  public ResponseEntity<?> getAllSoftware(@RequestParam(value="search", required=false) String search) {
+    Search<Software> filtering = new Search<>(new Software(), search);
+    return ResponseEntity.ok(softwareService.getAllSoftware(filtering.searchInitialization()));
   }
 
   /**
