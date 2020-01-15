@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ComputerSetsListComponent from './ComputerSetsListComponent';
 import request from '../../APIClient';
+import {Platform} from "react-native";
 
 class ComputerSetsListContainer extends Component {
 
@@ -130,15 +131,17 @@ class ComputerSetsListContainer extends Component {
 
     const groupActions = [
       {
+        disabled: false,
         label: 'Dodaj zestaw komputerowy',
         onClick: () => this.props.push('ComputerSetDetails', {
           mode: 'create',
         }),
       },
       {
+        disabled: Platform.OS !== 'android',
         label: 'Wyszukaj za pomocą kodu QR',
         onClick: () => {
-          // TODO: wyszukiwanie po kodzie QR
+          this.props.push('ScanScreen')
         },
       },
     ];
