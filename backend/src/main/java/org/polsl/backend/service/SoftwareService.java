@@ -42,14 +42,15 @@ public class SoftwareService {
     this.computerSetSoftwareRepository = computerSetSoftwareRepository;
   }
 
-  public PaginatedResult<SoftwareListOutputDTO> getAllSoftware(Specification<Software> spec) {
+  public PaginatedResult<SoftwareListOutputDTO> getAllSoftware(Specification<Software> softwareSpecification) {
     List<SoftwareListOutputDTO> softwareListOutputDTO = new ArrayList<>();
     Iterable<Software> softwareList;
-    softwareList = softwareRepository.findAll(spec);
+    Specification<Software> softwareSpecificationWithValidTo = (
+            (Specification<Software>) (root, query, criteriaBuilder) ->
+                    criteriaBuilder.isNull(root.get("validTo"))
+    ).and(softwareSpecification);
+    softwareList = softwareRepository.findAll(softwareSpecificationWithValidTo);
     for (Software software : softwareList) {
-      if(software.getValidTo() != null){
-        continue;
-      }
       SoftwareListOutputDTO dto = new SoftwareListOutputDTO();
       dto.setId(software.getId());
       dto.setName(software.getName());
@@ -57,6 +58,7 @@ public class SoftwareService {
       dto.setAvailableKeys(software.getAvailableKeys());
       dto.setKey(software.getKey());
       dto.setDuration(software.getDuration());
+      dto.setComputerSetInventoryNumbers(getValidComputerSetInventoryNumbers(software));
       softwareListOutputDTO.add(dto);
     }
 
@@ -190,5 +192,17 @@ public class SoftwareService {
 
     if(request.getDuration() <= 0)
       throw new BadRequestException("Wprowadzono nieaktywną licencję.");
+  }
+
+  private Set<String> getValidComputerSetInventoryNumbers(Software software)
+  {
+    Set<String> inventoryNumbers = new HashSet<>();
+    software.getComputerSetSoftwareSet().forEach(softwareComputerSet -> {
+      if(softwareComputerSet.getValidTo() == null){
+        inventoryNumbers.add(softwareComputerSet.getComputerSet().getInventoryNumber());
+      }
+    });
+
+    return inventoryNumbers;
   }
 }

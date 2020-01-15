@@ -120,6 +120,10 @@ class SoftwareListContainer extends Component {
         name: 'duration',
         label: 'Ważna przez (msc)',
       },
+      {
+        name: 'computerSetInventoryNumbers',
+        label: 'Powiązane zestawy komputerowe',
+      },
     ];
 
     const itemActions = [
