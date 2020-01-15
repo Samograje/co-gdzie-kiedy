@@ -1,8 +1,8 @@
 package org.polsl.backend.service;
 
 import org.polsl.backend.dto.PaginatedResult;
-import org.polsl.backend.dto.affiliation.AffiliationInputDTO;
-import org.polsl.backend.dto.affiliation.AffiliationOutputDTO;
+import org.polsl.backend.dto.affiliation.AffiliationDTO;
+import org.polsl.backend.dto.affiliation.AffiliationListOutputDTO;
 import org.polsl.backend.entity.Affiliation;
 import org.polsl.backend.exception.NotFoundException;
 import org.polsl.backend.repository.AffiliationRepository;
@@ -48,22 +48,33 @@ public class AffiliationService {
     return stringBuilder.toString();
   }
 
-  public PaginatedResult<AffiliationOutputDTO> getAllAffiliations(Specification<Affiliation> affiliationSpecification) {
+  public PaginatedResult<AffiliationListOutputDTO> getAffiliations(Specification<Affiliation> affiliationSpecification) {
     Iterable<Affiliation> affiliations = affiliationRepository.findAllByIsDeletedIsFalse();
-    List<AffiliationOutputDTO> dtos = new ArrayList<>();
+    List<AffiliationListOutputDTO> dtos = new ArrayList<>();
     for (Affiliation affiliation : affiliations) {
-      AffiliationOutputDTO dto = new AffiliationOutputDTO();
+      AffiliationListOutputDTO dto = new AffiliationListOutputDTO();
       dto.setId(affiliation.getId());
       dto.setName(generateName(affiliation));
       dtos.add(dto);
     }
-    PaginatedResult<AffiliationOutputDTO> response = new PaginatedResult<>();
+    PaginatedResult<AffiliationListOutputDTO> response = new PaginatedResult<>();
     response.setItems(dtos);
     response.setTotalElements((long) dtos.size());
     return response;
   }
 
-  public void createAffiliation(AffiliationInputDTO request) {
+  public AffiliationDTO getAffiliation(Long id) throws NotFoundException {
+    Affiliation affiliation = affiliationRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException("przynależność", "id", id));
+
+    AffiliationDTO response = new AffiliationDTO();
+    response.setFirstName(affiliation.getFirstName());
+    response.setLastName(affiliation.getLastName());
+    response.setLocation(affiliation.getLocation());
+    return response;
+  }
+
+  public void createAffiliation(AffiliationDTO request) {
     Affiliation affiliation = new Affiliation();
     affiliation.setFirstName(request.getFirstName());
     affiliation.setLastName(request.getLastName());
@@ -71,7 +82,7 @@ public class AffiliationService {
     affiliationRepository.save(affiliation);
   }
 
-  public void editAffiliation(Long id, AffiliationInputDTO request) throws NotFoundException {
+  public void editAffiliation(Long id, AffiliationDTO request) throws NotFoundException {
     Affiliation affiliation = affiliationRepository.findByIdAndIsDeletedIsFalse(id)
         .orElseThrow(() -> new NotFoundException("przynależność", "id", id));
     affiliation.setFirstName(request.getFirstName());
