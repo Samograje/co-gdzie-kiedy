@@ -75,6 +75,7 @@ class SoftwareDetailsContainer extends Component {
             key: response.key,
             availableKeys: response.availableKeys,
             duration: response.duration,
+            loading: false,
         });
         })
   };
@@ -107,6 +108,7 @@ class SoftwareDetailsContainer extends Component {
         keY={this.state.key}
         availableKeys={this.state.availableKeys}
         duration={this.state.duration}
+        loading={this.state.loading}
         validationEmptyStatus={this.state.name === '' || this.state.key === '' ||
                           this.state.availableKeys === '' || this.state.duration === ''}
         validationAvailableKeysIsNumberStatus={isNaN(this.state.availableKeys)}
