@@ -16,7 +16,12 @@ class HardwareListContainer extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
     this.fetchData();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   fetchData = (options) => {
@@ -27,12 +32,18 @@ class HardwareListContainer extends Component {
     request('/api/hardware', options)
       .then((response) => response.json())
       .then((response) => {
+        if (!this._isMounted) {
+          return;
+        }
         this.setState({
           loading: false,
           ...response,
         })
       })
       .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
         this.setState({
           loading: false,
           error: true,
@@ -41,19 +52,25 @@ class HardwareListContainer extends Component {
   };
 
   deleteCall = (id) => {
-    request(`/api/hardware/${id}`, {
+    request(`/api/hardware/${id}`,{
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       }
     }).then((response) => response.json())
-      .then(() => {
-        this.fetchData();
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+        .then(() => {
+          if (!this._isMounted) {
+            return;
+          }
+          this.fetchData();
+        })
+        .catch((error) => {
+          if (!this._isMounted) {
+            return;
+          }
+          console.error(error);
+        });
   };
 
   handleFilterChange = (fieldName, text) => {

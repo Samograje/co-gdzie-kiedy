@@ -15,9 +15,13 @@ class SoftwareListContainer extends Component {
       filters: {},
     };
   }
-
   componentDidMount() {
+    this._isMounted = true;
     this.fetchData();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   fetchData = (options) => {
@@ -28,10 +32,14 @@ class SoftwareListContainer extends Component {
     request('/api/software', options)
         .then((response) => response.json())
         .then((response) => {
-          for (let i = 0; i < response.items.length; i++) {
+          if (!this._isMounted) {
+            return;
+          }
+          for(let i = 0; i < response.items.length; i++)
+          {
             let duration = response.items[i].duration;
-            let months = moment(duration).month() + 12 * (moment(duration).year() - moment(0).year());
-            if (months <= 0)
+            let months = moment(duration).month() +  12 * (moment(duration).year() - moment(0).year());
+            if(months <= 0)
               response.items[i].duration = "Licencja utraciła ważność";
             else
               response.items[i].duration = months;
@@ -42,6 +50,9 @@ class SoftwareListContainer extends Component {
           });
         })
         .catch(() => {
+          if (!this._isMounted) {
+            return;
+          }
           this.setState({
             loading: false,
             error: true,
@@ -63,7 +74,7 @@ class SoftwareListContainer extends Component {
   };
 
   deleteCall = (id) => {
-    request(`/api/software/${id}`, {
+    request(`/api/software/${id}`,{
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -71,9 +82,15 @@ class SoftwareListContainer extends Component {
       }
     }).then((response) => response.json())
         .then(() => {
+          if (!this._isMounted) {
+            return;
+          }
           this.fetchData();
         })
         .catch((error) => {
+          if (!this._isMounted) {
+            return;
+          }
           console.error(error);
         });
   };
@@ -93,6 +110,7 @@ class SoftwareListContainer extends Component {
       {
         name: 'key',
         label: 'Klucz produktu',
+        filter: true,
       },
       {
         name: 'availableKeys',
@@ -144,17 +162,17 @@ class SoftwareListContainer extends Component {
     ];
 
     return (
-        <SoftwareListComponent
-            error={this.state.error}
-            loading={this.state.loading}
-            items={this.state.items}
-            totalElements={this.state.totalElements}
-            filters={this.state.filters}
-            onFilterChange={this.handleFilterChange}
-            columns={columns}
-            itemActions={itemActions}
-            groupActions={groupActions}
-        />
+      <SoftwareListComponent
+        error={this.state.error}
+        loading={this.state.loading}
+        items={this.state.items}
+        totalElements={this.state.totalElements}
+        filters={this.state.filters}
+        onFilterChange={this.handleFilterChange}
+        columns={columns}
+        itemActions={itemActions}
+        groupActions={groupActions}
+      />
     );
   }
 }

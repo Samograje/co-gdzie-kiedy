@@ -2,6 +2,9 @@ package org.polsl.backend.controller;
 
 import org.polsl.backend.dto.ApiBasicResponse;
 import org.polsl.backend.dto.hardware.HardwareDTO;
+import org.polsl.backend.entity.Affiliation;
+import org.polsl.backend.entity.Hardware;
+import org.polsl.backend.filtering.Search;
 import org.polsl.backend.service.HardwareService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -36,8 +39,9 @@ public class HardwareController {
    * @return lista hardware'u według parametru
    */
   @GetMapping
-  public ResponseEntity<?> getHardwareList(@RequestParam(name = "solo-only", required = false, defaultValue = "false") boolean soloOnly) {
-    return ResponseEntity.ok(hardwareService.getHardwareList(soloOnly));
+  public ResponseEntity<?> getHardwareList(@RequestParam(name = "solo-only", required = false, defaultValue = "false") boolean soloOnly, @RequestParam(value="search", required=false) String search) {
+    Search<Hardware> filtering = new Search<>(new Hardware(), search);
+    return ResponseEntity.ok(hardwareService.getHardwareList(soloOnly, filtering.searchInitialization()));
   }
 
   /**

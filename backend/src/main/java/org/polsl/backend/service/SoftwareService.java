@@ -14,9 +14,9 @@ import org.polsl.backend.repository.ComputerSetSoftwareRepository;
 import org.polsl.backend.repository.SoftwareRepository;
 import org.polsl.backend.type.InventoryNumberEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -42,10 +42,14 @@ public class SoftwareService {
     this.computerSetSoftwareRepository = computerSetSoftwareRepository;
   }
 
-  public PaginatedResult<SoftwareListOutputDTO> getAllSoftware() {
-    Iterable<Software> softwares = softwareRepository.findAllByValidToIsNull();
+  public PaginatedResult<SoftwareListOutputDTO> getAllSoftware(Specification<Software> spec) {
     List<SoftwareListOutputDTO> softwareListOutputDTO = new ArrayList<>();
-    for (Software software : softwares) {
+    Iterable<Software> softwareList;
+    softwareList = softwareRepository.findAll(spec);
+    for (Software software : softwareList) {
+      if(software.getValidTo() != null){
+        continue;
+      }
       SoftwareListOutputDTO dto = new SoftwareListOutputDTO();
       dto.setId(software.getId());
       dto.setName(software.getName());
