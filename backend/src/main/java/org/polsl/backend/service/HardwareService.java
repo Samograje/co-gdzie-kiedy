@@ -82,13 +82,8 @@ public class HardwareService {
       dto.setName(hardware.getName());
       dto.setType(hardware.getHardwareDictionary().getValue());
       dto.setInventoryNumber(hardware.getInventoryNumber());
-      AffiliationHardware hardwareAffiliation = affiliationHardwareRepository.findTheLatestRowForHardware(hardware.getId())
-          .orElseThrow(() -> new RuntimeException("Brak połączenia przynależności ze sprzętem o id: " + hardware.getId()));
-      dto.setAffiliationName(AffiliationService.generateName(hardwareAffiliation.getAffiliation()));
-
-      Optional<ComputerSetHardware> lastEntry = computerSetHardwareRepository.findTheLatestRowForHardware(hardware.getId());
-      lastEntry.ifPresent(computerSetHardware -> dto.setComputerSetInventoryNumber(computerSetHardware.getComputerSet().getInventoryNumber()));
-
+      dto.setAffiliationName(getValidAffiliationName(hardware));
+      dto.setComputerSetInventoryNumber(getComputerSetInventoryNumber(hardware));
       dtos.add(dto);
     }
 
@@ -261,7 +256,23 @@ public class HardwareService {
   //endregion
 
   //region METODY POMOCNICZE
-  //dfd
+  private String getValidAffiliationName(Hardware hardware) {
+    for (AffiliationHardware affiliationHardware : hardware.getAffiliationHardwareSet()) {
+      if (affiliationHardware.getValidTo() == null) {
+        return AffiliationService.generateName(affiliationHardware.getAffiliation());
+      }
+    }
+    return null;
+  }
+
+  private String getComputerSetInventoryNumber(Hardware hardware) {
+    for (ComputerSetHardware computerSetHardware : hardware.getComputerSetHardwareSet()) {
+      if (computerSetHardware.getValidTo() == null) {
+        return computerSetHardware.getComputerSet().getInventoryNumber();
+      }
+    }
+    return null;
+  }
   //endregion
 }
 
