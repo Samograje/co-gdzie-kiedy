@@ -3,6 +3,7 @@ import {Button, ScrollView, StyleSheet, View} from 'react-native';
 import ErrorElement from '../ui/ErrorElement';
 import ResponsiveTable from '../ui/responsivetable/ResponsiveTable';
 import {mainColor} from '../../constValues';
+import InfoDialog from "../ui/dialogs/InfoDialog";
 
 const SoftwareListComponent = (props) => {
   const {
@@ -18,6 +19,10 @@ const SoftwareListComponent = (props) => {
 
   return (
     <ScrollView>
+      <InfoDialog
+      headerText={"Operacja udana!"}
+      text={"Dodano nowe oprogramowanie."}
+      />
       <View style={styles.container}>
         {groupActions && (
           <View style={styles.groupActions}>
