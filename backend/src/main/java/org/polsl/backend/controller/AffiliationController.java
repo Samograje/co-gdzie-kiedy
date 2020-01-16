@@ -45,9 +45,10 @@ public class AffiliationController {
    * @return lista przynależności
    */
   @GetMapping
-  public ResponseEntity<?> getAffiliations(@RequestParam(value="search", required=false) String search) {
+  public ResponseEntity<?> getAffiliations(@RequestParam(value = "search", required = false) String search) {
     Search<Affiliation> filtering = new Search<>(new Affiliation(), search);
-    return ResponseEntity.ok(affiliationService.getAffiliations(filtering.searchInitialization()));  }
+    return ResponseEntity.ok(affiliationService.getAffiliations(filtering.searchInitialization()));
+  }
 
   /**
    * Endpoint obsługujący uzyskiwanie pojedynczej przynależności.
@@ -66,12 +67,12 @@ public class AffiliationController {
    * @return plik pdf z listą rekordów
    */
   @GetMapping("/export")
-  public ResponseEntity<?> printListToPdf(@RequestParam(value="search", required=false) String search) {
+  public ResponseEntity<?> printListToPdf(@RequestParam(value = "search", required = false) String search) {
     Search<Affiliation> filtering = new Search<>(new Affiliation(), search);
     PaginatedResult<AffiliationListOutputDTO> data = affiliationService.getAffiliations(filtering.searchInitialization());
-    InputStreamResource inputStreamResource = exportService.export("affiliation",data.getItems());
+    InputStreamResource inputStreamResource = exportService.export("affiliation", data.getItems());
 
-    return new ResponseEntity<>(inputStreamResource, HttpStatus.OK);
+    return new ResponseEntity<>(inputStreamResource, exportService.getHttpHeaders(), HttpStatus.OK);
   }
   //TODO: PDF
 

@@ -45,7 +45,7 @@ public class ComputerSetController {
    * @return lista zestawów komputerowych
    */
   @GetMapping
-  public ResponseEntity<?> getAllComputerSets(@RequestParam(value="search", required=false) String search) {
+  public ResponseEntity<?> getAllComputerSets(@RequestParam(value = "search", required = false) String search) {
     Search<ComputerSet> filtering = new Search<>(new ComputerSet(), search);
     return ResponseEntity.ok(computerSetService.getAllComputerSets(filtering.searchInitialization()));
   }
@@ -56,12 +56,12 @@ public class ComputerSetController {
    * @return plik pdf z listą rekordów
    */
   @GetMapping("/export")
-  public ResponseEntity<?> printListToPdf(@RequestParam(value="search", required=false) String search) {
+  public ResponseEntity<?> printListToPdf(@RequestParam(value = "search", required = false) String search) {
     Search<ComputerSet> filtering = new Search<>(new ComputerSet(), search);
     PaginatedResult<ComputerSetListOutputDTO> data = computerSetService.getAllComputerSets(filtering.searchInitialization());
-    InputStreamResource inputStreamResource = exportService.export("computerSet",data.getItems());
+    InputStreamResource inputStreamResource = exportService.export("computerSet", data.getItems());
 
-    return new ResponseEntity<>(inputStreamResource, HttpStatus.OK);
+    return new ResponseEntity<>(inputStreamResource, exportService.getHttpHeaders(), HttpStatus.OK);
   }
   //TODO: PDF
 
@@ -85,8 +85,8 @@ public class ComputerSetController {
    */
   @PutMapping("/{id}")
   public ResponseEntity<?> editComputerSet(
-          @PathVariable(value = "id") Long id,
-          @Valid @RequestBody ComputerSetDTO request
+      @PathVariable(value = "id") Long id,
+      @Valid @RequestBody ComputerSetDTO request
   ) {
     computerSetService.editComputerSet(id, request);
     return ResponseEntity.ok(new ApiBasicResponse(true, "Zaktualizowano parametry zestawu komputerowego"));

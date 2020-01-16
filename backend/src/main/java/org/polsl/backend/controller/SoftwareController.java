@@ -37,7 +37,7 @@ public class SoftwareController {
    * @return lista oprogramowania
    */
   @GetMapping
-  public ResponseEntity<?> getAllSoftware(@RequestParam(value="search", required=false) String search) {
+  public ResponseEntity<?> getAllSoftware(@RequestParam(value = "search", required = false) String search) {
     Search<Software> filtering = new Search<>(new Software(), search);
     return ResponseEntity.ok(softwareService.getAllSoftware(filtering.searchInitialization()));
   }
@@ -71,12 +71,12 @@ public class SoftwareController {
    * @return plik pdf z listą rekordów
    */
   @GetMapping("/export")
-  public ResponseEntity<?> printListToPdf(@RequestParam(value="search", required=false) String search) {
+  public ResponseEntity<?> printListToPdf(@RequestParam(value = "search", required = false) String search) {
     Search<Software> filtering = new Search<>(new Software(), search);
     PaginatedResult<SoftwareListOutputDTO> data = softwareService.getAllSoftware(filtering.searchInitialization());
-    InputStreamResource inputStreamResource = exportService.export("software",data.getItems());
+    InputStreamResource inputStreamResource = exportService.export("software", data.getItems());
 
-    return new ResponseEntity<>(inputStreamResource, HttpStatus.OK);
+    return new ResponseEntity<>(inputStreamResource, exportService.getHttpHeaders(), HttpStatus.OK);
   }
   //TODO: PDF
 
