@@ -84,18 +84,18 @@ const MobileTable = (props) => {
             <View style={styles.buttons}>
               {itemActions.map((action, idx) => (
                 <View style={styles.buttonContainer} key={idx}>
-                  <TouchableOpacity onPress={() => action.onClick(item)}>
-                    {action.icon && (
+                  {action.icon && (
+                    <TouchableOpacity onPress={() => action.onClick(item)}>
                       <Image source={require(`./../../../images/${action.icon}`)} style={styles.image}/>
-                    )}
-                    {!action.icon && (
-                      <Button
-                        title={action.label}
-                        onPress={() => action.onClick(item)}
-                        color={mainColor}
-                      />
-                    )}
-                  </TouchableOpacity>
+                    </TouchableOpacity>
+                  )}
+                  {!action.icon && (
+                    <Button
+                      title={action.label}
+                      onPress={() => action.onClick(item)}
+                      color={mainColor}
+                    />
+                  )}
                 </View>
               ))}
             </View>
