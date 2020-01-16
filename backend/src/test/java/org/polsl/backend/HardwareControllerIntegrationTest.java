@@ -44,24 +44,6 @@ public class HardwareControllerIntegrationTest {
   private ObjectMapper objectMapper;
 
   @Test
-  public void givenCorrectRequest_whenGettingSoloHardwareList_thenReturnStatus200AndData() throws Exception {
-    mvc.perform(get("/api/hardware?solo-only=true"))
-        .andExpect(status().is(200))
-        .andExpect(jsonPath("$.totalElements").value(2))
-        .andExpect(jsonPath("$.items", hasSize(2)))
-        .andExpect(jsonPath("$.items[0].id").value(2))
-        .andExpect(jsonPath("$.items[0].name").value("TP-Link"))
-        .andExpect(jsonPath("$.items[0].type").value("Karta sieciowa"))
-        .andExpect(jsonPath("$.items[0].inventoryNumber").value("H2/2019"))
-        .andExpect(jsonPath("$.items[0].affiliationName").value("Bartłomiej Szlachta - 130"))
-        .andExpect(jsonPath("$.items[1].id").value(4))
-        .andExpect(jsonPath("$.items[1].name").value("i3-5400"))
-        .andExpect(jsonPath("$.items[1].type").value("Procesor"))
-        .andExpect(jsonPath("$.items[1].inventoryNumber").value("H4/2019"))
-        .andExpect(jsonPath("$.items[1].affiliationName").value("Jan Kowalski"));
-  }
-
-  @Test
   public void givenCorrectRequest_whenGettingHardwareList_thenReturnStatus200AndData() throws Exception {
     mvc.perform(get("/api/hardware"))
         .andExpect(status().is(200))

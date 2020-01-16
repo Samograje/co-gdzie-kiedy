@@ -40,15 +40,14 @@ public class HardwareController {
   }
 
   /**
-   * Endpoint obsługujący uzyskiwanie listy wszystkich hardware'ów bądź niebędących składowymi żadnego zestawu komputerowego.
+   * Endpoint obsługujący uzyskiwanie listy wszystkich nieusuniętych hardware'ów
    *
-   * @param soloOnly boolean informujący o tym, czy wyświetlać hardware niebędący składowm żadnego zestawu komputerowego
-   * @return lista hardware'u według parametru
+   * @return lista hardware'u
    */
   @GetMapping
-  public ResponseEntity<?> getHardwareList(@RequestParam(name = "solo-only", required = false, defaultValue = "false") boolean soloOnly, @RequestParam(value = "search", required = false) String search) {
+  public ResponseEntity<?> getHardwareList(@RequestParam(value="search", required=false) String search) {
     Search<Hardware> filtering = new Search<>(new Hardware(), search);
-    return ResponseEntity.ok(hardwareService.getHardwareList(soloOnly, filtering.searchInitialization()));
+    return ResponseEntity.ok(hardwareService.getHardwareList(filtering.searchInitialization()));
   }
 
   /**
@@ -92,7 +91,7 @@ public class HardwareController {
   @GetMapping("/export")
   public ResponseEntity<?> printListToPdf(@RequestParam(value = "search", required = false) String search) {
     Search<Hardware> filtering = new Search<>(new Hardware(), search);
-    PaginatedResult<HardwareListOutputDTO> data = hardwareService.getHardwareList(false, filtering.searchInitialization());
+    PaginatedResult<HardwareListOutputDTO> data = hardwareService.getHardwareList(filtering.searchInitialization());
     InputStreamResource inputStreamResource = exportService.export("hardware", data.getItems());
 
     return new ResponseEntity<>(inputStreamResource, exportService.getHttpHeaders(), HttpStatus.OK);
