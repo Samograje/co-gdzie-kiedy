@@ -58,13 +58,11 @@ public class HardwareService {
 
   //region HTTP METHODS
   public PaginatedResult<HardwareListOutputDTO> getHardwareList(Specification<Hardware> spec) {
-    Iterable<Hardware> hardwareList;
-
     Specification<Hardware> specificationWithValidTo = (
         (Specification<Hardware>) (root, query, criteriaBuilder) -> criteriaBuilder.isNull(root.get("validTo"))
     ).and(spec);
 
-    hardwareList = hardwareRepository.findAll(specificationWithValidTo);
+    Iterable<Hardware> hardwareList = hardwareRepository.findAll(specificationWithValidTo);
 
 
     List<HardwareListOutputDTO> dtos = new ArrayList<>();
