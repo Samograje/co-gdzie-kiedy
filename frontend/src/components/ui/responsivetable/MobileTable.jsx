@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-  ActivityIndicator,
-  Button,
-  Image,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View
-} from 'react-native';
+import {ActivityIndicator, Button, Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {mainColor} from '../../../constValues';
 
 const MobileTable = (props) => {
@@ -116,6 +107,9 @@ const MobileTable = (props) => {
 const styles = StyleSheet.create({
   image: {
     padding: 30,
+    width: '20%',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   list: {
     borderWidth: 1,
