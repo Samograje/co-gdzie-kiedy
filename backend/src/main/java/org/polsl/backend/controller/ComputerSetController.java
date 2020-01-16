@@ -1,12 +1,16 @@
 package org.polsl.backend.controller;
 
 import org.polsl.backend.dto.ApiBasicResponse;
+import org.polsl.backend.dto.PaginatedResult;
 import org.polsl.backend.dto.computerset.ComputerSetDTO;
+import org.polsl.backend.dto.computerset.ComputerSetListOutputDTO;
 import org.polsl.backend.entity.ComputerSet;
-import org.polsl.backend.entity.Software;
 import org.polsl.backend.filtering.Search;
 import org.polsl.backend.service.ComputerSetService;
+import org.polsl.backend.service.ExportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,10 +31,12 @@ import javax.validation.Valid;
 @RequestMapping("api/computer-sets")
 public class ComputerSetController {
   private final ComputerSetService computerSetService;
+  private final ExportService exportService;
 
   @Autowired
-  public ComputerSetController(ComputerSetService computerSetService) {
+  public ComputerSetController(ComputerSetService computerSetService, ExportService exportService) {
     this.computerSetService = computerSetService;
+    this.exportService = exportService;
   }
 
   /**
@@ -50,8 +56,12 @@ public class ComputerSetController {
    * @return plik pdf z listą rekordów
    */
   @GetMapping("/export")
-  public ResponseEntity<?> getListToPdf() {
-    return ResponseEntity.ok(null);
+  public ResponseEntity<?> printListToPdf(@RequestParam(value="search", required=false) String search) {
+    Search<ComputerSet> filtering = new Search<>(new ComputerSet(), search);
+    PaginatedResult<ComputerSetListOutputDTO> data = computerSetService.getAllComputerSets(filtering.searchInitialization());
+    InputStreamResource inputStreamResource = exportService.export("computerSet",data.getItems());
+
+    return new ResponseEntity<>(inputStreamResource, HttpStatus.OK);
   }
   //TODO: PDF
 

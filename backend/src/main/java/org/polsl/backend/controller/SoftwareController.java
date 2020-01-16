@@ -1,10 +1,15 @@
 package org.polsl.backend.controller;
 
 import org.polsl.backend.dto.ApiBasicResponse;
+import org.polsl.backend.dto.PaginatedResult;
 import org.polsl.backend.dto.software.SoftwareDTO;
+import org.polsl.backend.dto.software.SoftwareListOutputDTO;
 import org.polsl.backend.entity.Software;
 import org.polsl.backend.filtering.Search;
+import org.polsl.backend.service.ExportService;
 import org.polsl.backend.service.SoftwareService;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,9 +24,11 @@ import javax.validation.Valid;
 @RequestMapping("api/software")
 public class SoftwareController {
   private final SoftwareService softwareService;
+  private final ExportService exportService;
 
-  public SoftwareController(SoftwareService softwareService) {
+  public SoftwareController(SoftwareService softwareService, ExportService exportService) {
     this.softwareService = softwareService;
+    this.exportService = exportService;
   }
 
   /**
@@ -64,8 +71,12 @@ public class SoftwareController {
    * @return plik pdf z listą rekordów
    */
   @GetMapping("/export")
-  public ResponseEntity<?> getListToPdf() {
-    return ResponseEntity.ok(null);
+  public ResponseEntity<?> printListToPdf(@RequestParam(value="search", required=false) String search) {
+    Search<Software> filtering = new Search<>(new Software(), search);
+    PaginatedResult<SoftwareListOutputDTO> data = softwareService.getAllSoftware(filtering.searchInitialization());
+    InputStreamResource inputStreamResource = exportService.export("software",data.getItems());
+
+    return new ResponseEntity<>(inputStreamResource, HttpStatus.OK);
   }
   //TODO: PDF
 

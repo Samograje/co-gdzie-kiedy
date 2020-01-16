@@ -1,11 +1,16 @@
 package org.polsl.backend.controller;
 
 import org.polsl.backend.dto.ApiBasicResponse;
+import org.polsl.backend.dto.PaginatedResult;
+import org.polsl.backend.dto.affiliation.AffiliationListOutputDTO;
 import org.polsl.backend.entity.Affiliation;
 import org.polsl.backend.filtering.Search;
 import org.polsl.backend.dto.affiliation.AffiliationDTO;
 import org.polsl.backend.service.AffiliationService;
+import org.polsl.backend.service.ExportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,10 +31,12 @@ import javax.validation.Valid;
 @RequestMapping("api/affiliations")
 public class AffiliationController {
   private final AffiliationService affiliationService;
+  private final ExportService exportService;
 
   @Autowired
-  public AffiliationController(AffiliationService affiliationService) {
+  public AffiliationController(AffiliationService affiliationService, ExportService exportService) {
     this.affiliationService = affiliationService;
+    this.exportService = exportService;
   }
 
   /**
@@ -59,8 +66,12 @@ public class AffiliationController {
    * @return plik pdf z listą rekordów
    */
   @GetMapping("/export")
-  public ResponseEntity<?> getListToPdf() {
-    return ResponseEntity.ok(null);
+  public ResponseEntity<?> printListToPdf(@RequestParam(value="search", required=false) String search) {
+    Search<Affiliation> filtering = new Search<>(new Affiliation(), search);
+    PaginatedResult<AffiliationListOutputDTO> data = affiliationService.getAffiliations(filtering.searchInitialization());
+    InputStreamResource inputStreamResource = exportService.export("affiliation",data.getItems());
+
+    return new ResponseEntity<>(inputStreamResource, HttpStatus.OK);
   }
   //TODO: PDF
 
