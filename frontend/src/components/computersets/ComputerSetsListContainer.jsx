@@ -95,6 +95,7 @@ class ComputerSetsListContainer extends Component {
     const itemActions = [
       {
         label: 'Edytuj',
+        icon: 'ic_action_edit.png',
         onClick: (itemData) => this.props.push('ComputerSetDetails', {
           mode: 'edit',
           id: itemData.id,

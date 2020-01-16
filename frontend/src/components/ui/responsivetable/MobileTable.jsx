@@ -1,5 +1,14 @@
 import React from 'react';
-import {ActivityIndicator, Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Button,
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
+} from 'react-native';
 import {mainColor} from '../../../constValues';
 
 const MobileTable = (props) => {
@@ -76,9 +85,16 @@ const MobileTable = (props) => {
               {itemActions.map((action, idx) => (
                 <View style={styles.buttonContainer} key={idx}>
                   <TouchableOpacity onPress={() => action.onClick(item)}>
-
-                    <Image source={require('./ic_action_edit.png')} style={styles.ImagesStyle}/>
-
+                    {action.icon && (
+                      <Image source={require(`./../../../images/${action.icon}`)} style={styles.image}/>
+                    )}
+                    {!action.icon && (
+                      <Button
+                        title={action.label}
+                        onPress={() => action.onClick(item)}
+                        color={mainColor}
+                      />
+                    )}
                   </TouchableOpacity>
                 </View>
               ))}
@@ -98,7 +114,7 @@ const MobileTable = (props) => {
 };
 
 const styles = StyleSheet.create({
-  ImagesStyle: {
+  image: {
     padding: 30,
   },
   list: {
