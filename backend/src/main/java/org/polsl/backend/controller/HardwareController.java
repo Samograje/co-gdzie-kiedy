@@ -78,6 +78,17 @@ public class HardwareController {
   }
 
   /**
+   * Endpoint obsługujący uzyskiwanie pliku Pdf z listą sprzętu.
+   *
+   * @return plik pdf z listą rekordów
+   */
+  @GetMapping("/export")
+  public ResponseEntity<?> getListToPdf() {
+    return ResponseEntity.ok(null);
+  }
+  //TODO: PDF
+
+  /**
    * Endpoint obsługujący dodawanie nowego sprzętu.
    *
    * @param request stuktura {@link HardwareDTO} zawierająca dane nowego sprzętu

@@ -59,6 +59,17 @@ public class SoftwareController {
   }
 
   /**
+   * Endpoint obsługujący uzyskiwanie pliku Pdf z listą oprogramowania.
+   *
+   * @return plik pdf z listą rekordów
+   */
+  @GetMapping("/export")
+  public ResponseEntity<?> getListToPdf() {
+    return ResponseEntity.ok(null);
+  }
+  //TODO: PDF
+
+  /**
    * Endpoint obsługujący dodawanie nowego oprogramowania.
    *
    * @param request struktura {@link SoftwareDTO} zawierająca dane nowego oprogramwoania

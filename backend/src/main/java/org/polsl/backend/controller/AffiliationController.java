@@ -54,6 +54,17 @@ public class AffiliationController {
   }
 
   /**
+   * Endpoint obsługujący uzyskiwanie pliku Pdf z listą przynależności.
+   *
+   * @return plik pdf z listą rekordów
+   */
+  @GetMapping("/export")
+  public ResponseEntity<?> getListToPdf() {
+    return ResponseEntity.ok(null);
+  }
+  //TODO: PDF
+
+  /**
    * Endpoint obsługujący dodawanie nowej przynależności.
    *
    * @param request stuktura {@link AffiliationDTO} zawierająca dane nowej przynależności

@@ -45,6 +45,17 @@ public class ComputerSetController {
   }
 
   /**
+   * Endpoint obsługujący uzyskiwanie pliku Pdf z listą zestawów komputerowych.
+   *
+   * @return plik pdf z listą rekordów
+   */
+  @GetMapping("/export")
+  public ResponseEntity<?> getListToPdf() {
+    return ResponseEntity.ok(null);
+  }
+  //TODO: PDF
+
+  /**
    * Endpoint obsługujący dodawanie nowego zestawu komputerowego.
    *
    * @param request stuktura {@link ComputerSetDTO} zawierająca dane nowego zestawu komputerowego
