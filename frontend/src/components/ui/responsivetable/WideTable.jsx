@@ -72,11 +72,16 @@ const WideTable = (props) => {
         <View style={styles.row} key={rowId}>
 
           {/* dane do komórek */}
-          {columns.map((column, key) => (
-            <View style={styles.cell} key={key}>
-              <Text style={styles.text}>{item[column.name]}</Text>
-            </View>
-          ))}
+          {columns.map((column, key) => {
+            const array = [].concat(item[column.name]); // opakowanie pojedynczej wartości w tablicę
+            return (
+              <View style={styles.cell} key={key}>
+                {array.map((text, key) => (
+                  <Text key={key} style={styles.text}>{text}</Text>
+                ))}
+              </View>
+            );
+          })}
 
           {/* komórka z akcjami */}
           {itemActions && (
@@ -143,6 +148,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   text: {
+    width: '100%',
     fontSize: 16,
     textAlign: 'center',
   },
