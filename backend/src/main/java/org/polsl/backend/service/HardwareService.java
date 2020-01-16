@@ -10,7 +10,6 @@ import org.polsl.backend.entity.ComputerSet;
 import org.polsl.backend.entity.ComputerSetHardware;
 import org.polsl.backend.entity.Hardware;
 import org.polsl.backend.entity.HardwareDictionary;
-import org.polsl.backend.entity.Software;
 import org.polsl.backend.exception.BadRequestException;
 import org.polsl.backend.exception.NotFoundException;
 import org.polsl.backend.repository.AffiliationHardwareRepository;
@@ -57,14 +56,16 @@ public class HardwareService {
     this.affiliationHardwareRepository = affiliationHardwareRepository;
   }
 
-  public PaginatedResult<HardwareListOutputDTO> getHardwareList(boolean soloOnly, Specification<Hardware> spec) {
+  //region HTTP METHODS
+  public PaginatedResult<HardwareListOutputDTO> getHardwareList(Specification<Hardware> spec) {
     Iterable<Hardware> hardwareList;
 
-    if (soloOnly) {
-      hardwareList = hardwareRepository.findAllByComputerSetHardwareSetIsNullAndValidToIsNull();
-    } else {
-      hardwareList = hardwareRepository.findAllByValidToIsNull();
-    }
+    Specification<Hardware> specificationWithValidTo = (
+        (Specification<Hardware>) (root, query, criteriaBuilder) -> criteriaBuilder.isNull(root.get("validTo"))
+    ).and(spec);
+
+    hardwareList = hardwareRepository.findAll(specificationWithValidTo);
+
 
     List<HardwareListOutputDTO> dtos = new ArrayList<>();
     for (Hardware hardware : hardwareList) {
@@ -73,13 +74,8 @@ public class HardwareService {
       dto.setName(hardware.getName());
       dto.setType(hardware.getHardwareDictionary().getValue());
       dto.setInventoryNumber(hardware.getInventoryNumber());
-      AffiliationHardware hardwareAffiliation = affiliationHardwareRepository.findTheLatestRowForHardware(hardware.getId())
-          .orElseThrow(() -> new RuntimeException("Brak połączenia przynależności ze sprzętem o id: " + hardware.getId()));
-      dto.setAffiliationName(AffiliationService.generateName(hardwareAffiliation.getAffiliation()));
-
-      Optional<ComputerSetHardware> lastEntry = computerSetHardwareRepository.findTheLatestRowForHardware(hardware.getId());
-      lastEntry.ifPresent(computerSetHardware -> dto.setComputerSetInventoryNumber(computerSetHardware.getComputerSet().getInventoryNumber()));
-
+      dto.setAffiliationName(getValidAffiliationName(hardware));
+      dto.setComputerSetInventoryNumber(getComputerSetInventoryNumber(hardware));
       dtos.add(dto);
     }
 
@@ -97,6 +93,7 @@ public class HardwareService {
     dto.setInventoryNumber(hardware.getInventoryNumber());
     dto.setDictionaryId(hardware.getHardwareDictionary().getId());
 
+    //WCZYTAJ NAJNOWSZĄ PRZYNALEŻNOSC DO KTÓREJ NALEZY SPRZET
     AffiliationHardware lastEntryAffiliation = affiliationHardwareRepository.findTheLatestRowForHardware(id)
         .orElseThrow(() -> new RuntimeException("Brak połączenia przynależności ze sprzętem o id: " + id));
     dto.setAffiliationId(lastEntryAffiliation.getAffiliation().getId());
@@ -159,6 +156,7 @@ public class HardwareService {
 
     Hardware hardware = new Hardware();
 
+    //WYGENERUJ NUMER INWENTARZOWY
     String newInvNumb = InventoryNumberGenerator
         .generateInventoryNumber(InventoryNumberEnum.HARDWARE, hardwareRepository.count());
     hardware.setInventoryNumber(newInvNumb);
@@ -169,6 +167,7 @@ public class HardwareService {
     hardware.setHardwareDictionary(hardwareDictionary);
     hardwareRepository.save(hardware);
 
+    //STWORZ POLACZENIE Z ZESTAWEM KOMPUTEROWYM
     if (request.getComputerSetId() != null) {
       ComputerSet computerSet = computerSetRepository.findByIdAndValidToIsNull(request.getComputerSetId())
           .orElseThrow(() -> new NotFoundException("zestaw komputerowy", "id", request.getComputerSetId()));
@@ -176,6 +175,7 @@ public class HardwareService {
       computerSetHardwareRepository.save(computerSetHardware);
     }
 
+    //STWORZ POLACZENIE Z PRZYNALEZNOSCIA
     Affiliation affiliation = affiliationRepository.findByIdAndIsDeletedIsFalse(request.getAffiliationId())
         .orElseThrow(() -> new NotFoundException("przynależność", "id", request.getAffiliationId()));
     AffiliationHardware affiliationHardware = new AffiliationHardware(affiliation, hardware);
@@ -186,6 +186,7 @@ public class HardwareService {
   public void editHardware(Long id, HardwareDTO request) throws NotFoundException {
     if (request.getInventoryNumber() != null) throw new BadRequestException("Zakaz edycji numeru inwentarzowego.");
 
+    //WCZYTAJ Z BAZY SPRZET, KTORY BEDZIE EDYTOWANY
     Hardware hardware = hardwareRepository.findById(id)
         .orElseThrow(() -> new NotFoundException("sprzęt", "id", id));
     hardware.setName(request.getName());
@@ -194,6 +195,7 @@ public class HardwareService {
     hardware.setHardwareDictionary(hardwareDictionary);
     hardwareRepository.save(hardware);
 
+    //SPRAWDZ CZY AKTUALNY STAN SPRZETU POWIAZANEGO Z DANYM ZESTAWEM KOMPUETROWYM MA BYC ZMIENIONY
     Optional<ComputerSetHardware> lastEntry = computerSetHardwareRepository.findTheLatestRowForHardware(id);
     if (lastEntry.isPresent() && !lastEntry.get().getComputerSet().getId().equals(request.getComputerSetId())) {
       ComputerSetHardware computerSetHardware = lastEntry.get();
@@ -209,6 +211,7 @@ public class HardwareService {
       computerSetHardwareRepository.save(computerSetHardware);
     }
 
+    //SPRAWCZY CZY AKTUALNY STAN PRZYNALEZNOSCI SPRZETU MA BYC ZMIENIONY
     AffiliationHardware lastEntryAffiliation = affiliationHardwareRepository.findTheLatestRowForHardware(id)
         .orElseThrow(() -> new RuntimeException("Brak połączenia przynależności ze sprzętem o id: " + id));
     if (!lastEntryAffiliation.getAffiliation().getId().equals(request.getAffiliationId())) {
@@ -228,6 +231,7 @@ public class HardwareService {
     hardware.setValidTo(LocalDateTime.now());
     hardwareRepository.save(hardware);
 
+    //ZAKONCZ POWIAZANIE Z ZESTAWEM KOMPUTEROWYM
     Optional<ComputerSetHardware> lastEntryComputerSet = computerSetHardwareRepository.findTheLatestRowForHardware(id);
     if (lastEntryComputerSet.isPresent()) {
       ComputerSetHardware computerSetHardware = lastEntryComputerSet.get();
@@ -235,9 +239,32 @@ public class HardwareService {
       computerSetHardwareRepository.save(computerSetHardware);
     }
 
+    //ZAKONCZ POWIAZANIE Z PRZYNALEZNOSCIA
     AffiliationHardware lastEntryAffiliation = affiliationHardwareRepository.findTheLatestRowForHardware(id)
         .orElseThrow(() -> new RuntimeException("Brak połączenia przynależności ze sprzętem o id: " + id));
     lastEntryAffiliation.setValidTo(LocalDateTime.now());
     affiliationHardwareRepository.save(lastEntryAffiliation);
   }
+  //endregion
+
+  //region METODY POMOCNICZE
+  private String getValidAffiliationName(Hardware hardware) {
+    for (AffiliationHardware affiliationHardware : hardware.getAffiliationHardwareSet()) {
+      if (affiliationHardware.getValidTo() == null) {
+        return AffiliationService.generateName(affiliationHardware.getAffiliation());
+      }
+    }
+    return null;
+  }
+
+  private String getComputerSetInventoryNumber(Hardware hardware) {
+    for (ComputerSetHardware computerSetHardware : hardware.getComputerSetHardwareSet()) {
+      if (computerSetHardware.getValidTo() == null) {
+        return computerSetHardware.getComputerSet().getInventoryNumber();
+      }
+    }
+    return null;
+  }
+  //endregion
 }
+
