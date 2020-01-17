@@ -3,7 +3,7 @@ import {Button, ScrollView, StyleSheet, View} from 'react-native';
 import ErrorElement from '../ui/ErrorElement';
 import ResponsiveTable from '../ui/responsivetable/ResponsiveTable';
 import {mainColor} from '../../constValues';
-import InfoDialog from "../ui/dialogs/InfoDialog";
+import DecisionDialog from "../ui/dialogs/DecisionDialog";
 
 const SoftwareListComponent = (props) => {
   const {
@@ -22,11 +22,13 @@ const SoftwareListComponent = (props) => {
 
   return (
     <ScrollView>
-      <InfoDialog
+      <DecisionDialog
         opened={dialogOpened}
         headerText="Uwaga!!"
         text="Czy na pewno chcesz usunąć oprogramowanie?"
+        onConfirmText="Tak"
         onConfirm={dialogHandleConfirm}
+        onRejectText="Nie"
         onReject={dialogHandleReject}
       />
       <View style={styles.container}>

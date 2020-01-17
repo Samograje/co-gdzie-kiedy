@@ -1,12 +1,14 @@
 import React from 'react';
 import {StyleSheet, Text, View, Button, Dimensions} from 'react-native';
 
-const InfoDialog = (props) => {
+const DecisionDialog = (props) => {
   const {
     opened,
     headerText,
     text,
+    onConfirmText,
     onConfirm,
+    onRejectText,
     onReject,
   } = props;
 
@@ -27,11 +29,11 @@ const InfoDialog = (props) => {
           </View>
           <View style={styles.fixToText}>
             <Button
-                title="Tak"
+                title={onConfirmText}
                 onPress={onConfirm}
             />
             <Button
-                title="Anuluj"
+                title={onRejectText}
                 onPress={onReject}
             />
           </View>
@@ -78,4 +80,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default InfoDialog;
+export default DecisionDialog;
