@@ -5,6 +5,7 @@ import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfPageEvent;
@@ -15,7 +16,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.Console;
 import java.lang.reflect.Field;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,7 +31,7 @@ public class ExportService {
     return headers;
   }
 
-  public InputStreamResource export(String type, List data) {
+  public InputStreamResource export(String title, List data) {
     try {
       if (data == null || data.isEmpty()) {
         return null;
@@ -37,11 +40,25 @@ public class ExportService {
       //TODO: for, getFields
       List<Field> fields = Arrays.asList(data.get(0).getClass().getDeclaredFields());
 
+
+      //ustaw domyślne
+      PdfPTable header = new PdfPTable(1);
+      header.setWidthPercentage(100);
+      header.getDefaultCell().setFixedHeight(40);
+      header.getDefaultCell().setBorder(Rectangle.BOTTOM);
+
+      //dodaj nagłówek
+      PdfPCell text = new PdfPCell();
+      text.setPaddingBottom(15);
+      text.setPaddingLeft(10);
+      text.setBorder(Rectangle.BOTTOM);
+      text.addElement(new Phrase(title));
+      header.addCell(text);
+
+
+      //dodaj nagłówki kolumn
       PdfPTable table = new PdfPTable(fields.size());
       table.setWidthPercentage(100);
-      //table.setWidths();
-
-      //PdfPCell cell;
 
       for (Field field : fields) {
         PdfPCell tableCell = new PdfPCell();
@@ -52,23 +69,40 @@ public class ExportService {
         table.addCell(tableCell);
       }
 
-//      for(Field field: fields){
-//        for(String columnField : field)
-//      }
+      //dodaj zawartość komórek
+      //TODO: jak zrzutować dane? :(
+      for (Field field : fields) {
+        PdfPCell valueCell = new PdfPCell();
+        valueCell.setPhrase(new Phrase(data.get(0).getClass().toString()));
+        valueCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        valueCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(valueCell);
+      }
 
+      //dodaj stopkę
+      PdfPTable footer = new PdfPTable(1);
+      footer.setWidthPercentage(100);
+      footer.getDefaultCell().setFixedHeight(40);
+      footer.getDefaultCell().setBorder(Rectangle.TOP);
+      footer.addCell(new Phrase("Co-gdzie-kiedy; data wygenerowania dokumentu: " + LocalDateTime.now()));
+
+
+      //utwórz dokument i zapisz dane
       Document document = new Document(PageSize.A4.rotate());
       ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-      //PdfWriter writer = PdfWriter.getInstance(document,out);
+      PdfWriter writer = PdfWriter.getInstance(document, out);
 
       document.open();
       document.addCreationDate();
-      document.addTitle(type);
+      document.addTitle(title);
+      document.add(header);
       document.add(table);
+      document.add(footer);
       document.close();
       return new InputStreamResource(new ByteArrayInputStream(out.toByteArray()));
     } catch (Exception e) {
-      e.printStackTrace();
+      System.out.println(e.toString());
     }
     return null;
   }
