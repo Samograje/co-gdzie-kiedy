@@ -24,8 +24,8 @@ const SoftwareListComponent = (props) => {
     <ScrollView>
       <InfoDialog
         opened={dialogOpened}
-        headerText="Operacja udana!"
-        text="Dodano nowe oprogramowanie."
+        headerText="Uwaga!!"
+        text="Czy na pewno chcesz usunąć oprogramowanie?"
         onConfirm={dialogHandleConfirm}
         onReject={dialogHandleReject}
       />

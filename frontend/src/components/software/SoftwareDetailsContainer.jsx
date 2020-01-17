@@ -12,7 +12,7 @@ class SoftwareDetailsContainer extends Component {
       availableKeys: '',
       duration: '',
       validationStatus: false,
-      loading: true,
+      loading: false,
       error: false,
     };
   }
@@ -61,6 +61,7 @@ class SoftwareDetailsContainer extends Component {
   };
 
   getDataForEditCall(){
+    this.setState({"loading": true});
     request(`/api/software/${this.props.id}`)
         .then(response => response.json())
         .then(response => {

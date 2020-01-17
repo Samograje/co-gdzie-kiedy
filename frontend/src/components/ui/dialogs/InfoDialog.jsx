@@ -11,25 +11,33 @@ const InfoDialog = (props) => {
   } = props;
 
   return (
-    <View style={styles.background}>
-      <View style={styles.modal}>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>
-            {headerText}
-          </Text>
-        </View>
-        <View style={styles.textContainer}>
-          <Text style={styles.text}>
-            {text}
-          </Text>
-        </View>
-        <View style={styles.fixToText}>
-          <Button
-              title="OK"
-          />
+  <>
+    {props.opened && (
+      <View style={styles.background}>
+
+        <View style={styles.modal}>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>
+              {headerText}
+            </Text>
+          </View>
+          <View style={styles.textContainer}>
+            <Text style={styles.text}>
+              {text}
+            </Text>
+          </View>
+          <View style={styles.fixToText}>
+            <Button
+                title="Tak"
+            />
+            <Button
+                title="Anuluj"
+            />
+          </View>
         </View>
       </View>
-    </View>
+    )}
+    </>
   )
 };
 
@@ -61,7 +69,6 @@ const styles = StyleSheet.create({
   },
   fixToText: {
     flexDirection: 'row',
-    justifyContent: 'center',
   },
   textContainer:{
     justifyContent: 'center',
