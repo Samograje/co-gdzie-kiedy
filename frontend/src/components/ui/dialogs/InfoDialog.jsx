@@ -12,9 +12,8 @@ const InfoDialog = (props) => {
 
   return (
   <>
-    {props.opened && (
+    {opened && (
       <View style={styles.background}>
-
         <View style={styles.modal}>
           <View style={styles.header}>
             <Text style={styles.headerText}>
@@ -29,9 +28,11 @@ const InfoDialog = (props) => {
           <View style={styles.fixToText}>
             <Button
                 title="Tak"
+                onPress={onConfirm}
             />
             <Button
                 title="Anuluj"
+                onPress={onReject}
             />
           </View>
         </View>

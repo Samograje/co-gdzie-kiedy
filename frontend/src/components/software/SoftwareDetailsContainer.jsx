@@ -63,22 +63,22 @@ class SoftwareDetailsContainer extends Component {
   getDataForEditCall(){
     this.setState({"loading": true});
     request(`/api/software/${this.props.id}`)
-        .then(response => response.json())
-        .then(response => {
-          if (!this._isMounted) {
-            return;
-          }
-          let duration = response.duration;
-          let months = moment(duration).month() +  12 * (moment(duration).year() - moment(0).year());
-          months <= 0 ? response.duration = "Licencja utraciła ważność" : response.duration = months;
-          this.setState({
-            name: response.name,
-            key: response.key,
-            availableKeys: response.availableKeys,
-            duration: response.duration,
-            loading: false,
-        });
-        })
+      .then(response => response.json())
+      .then(response => {
+        if (!this._isMounted) {
+          return;
+        }
+        let duration = response.duration;
+        let months = moment(duration).month() +  12 * (moment(duration).year() - moment(0).year());
+        months <= 0 ? response.duration = "Licencja utraciła ważność" : response.duration = months;
+        this.setState({
+          name: response.name,
+          key: response.key,
+          availableKeys: response.availableKeys,
+          duration: response.duration,
+          loading: false,
+      });
+      })
   };
 
   onSubmit = () => {

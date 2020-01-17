@@ -87,6 +87,7 @@ class SoftwareListContainer extends Component {
           if (!this._isMounted) {
             return;
           }
+          this.closeDialog();
           this.fetchData();
         })
         .catch((error) => {
