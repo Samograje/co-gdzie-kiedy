@@ -13,6 +13,8 @@ class SoftwareListContainer extends Component {
       items: [],
       totalElements: null,
       filters: {},
+      dialogOpened: false,
+      itemToDeleteId: null,
     };
   }
   componentDidMount() {
@@ -73,8 +75,8 @@ class SoftwareListContainer extends Component {
     });
   };
 
-  deleteCall = (id) => {
-    request(`/api/software/${id}`,{
+  deleteCall = () => {
+    request(`/api/software/${this.state.itemToDeleteId}`,{
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -94,6 +96,11 @@ class SoftwareListContainer extends Component {
           console.error(error);
         });
   };
+
+  closeDialog = () => this.setState({
+    dialogOpened: false,
+    itemToDeleteId: null,
+  });
 
   render() {
     const columns = [
@@ -136,9 +143,10 @@ class SoftwareListContainer extends Component {
       },
       {
         label: 'Usuń',
-        onClick: (itemData) => {
-          this.deleteCall(itemData.id)
-        },
+        onClick: (itemData) => this.setState({
+          dialogOpened: true,
+          itemToDeleteId: itemData.id,
+        }),
       },
       {
         label: 'HC',
@@ -176,6 +184,9 @@ class SoftwareListContainer extends Component {
         columns={columns}
         itemActions={itemActions}
         groupActions={groupActions}
+        dialogOpened={this.state.dialogOpened}
+        dialogHandleConfirm={this.deleteCall}
+        dialogHandleReject={this.closeDialog}
       />
     );
   }

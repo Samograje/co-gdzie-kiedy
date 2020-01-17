@@ -2,9 +2,12 @@ import React from 'react';
 import {StyleSheet, Text, View, Button, Dimensions} from 'react-native';
 
 const InfoDialog = (props) => {
-  const{
+  const {
+    opened,
     headerText,
     text,
+    onConfirm,
+    onReject,
   } = props;
 
   return (

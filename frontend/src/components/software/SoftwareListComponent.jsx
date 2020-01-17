@@ -15,13 +15,19 @@ const SoftwareListComponent = (props) => {
     columns,
     itemActions,
     groupActions,
+    dialogOpened,
+    dialogHandleConfirm,
+    dialogHandleReject,
   } = props;
 
   return (
     <ScrollView>
       <InfoDialog
-      headerText={"Operacja udana!"}
-      text={"Dodano nowe oprogramowanie."}
+        opened={dialogOpened}
+        headerText="Operacja udana!"
+        text="Dodano nowe oprogramowanie."
+        onConfirm={dialogHandleConfirm}
+        onReject={dialogHandleReject}
       />
       <View style={styles.container}>
         {groupActions && (
