@@ -1,9 +1,10 @@
 import React from 'react';
 import {Button, ScrollView, StyleSheet, View} from 'react-native';
 import ErrorElement from '../ui/ErrorElement';
+import DecisionDialog from '../ui/dialogs/DecisionDialog';
 import ResponsiveTable from '../ui/responsivetable/ResponsiveTable';
 import {mainColor} from '../../constValues';
-import DecisionDialog from "../ui/dialogs/DecisionDialog";
+
 const SoftwareListComponent = (props) => {
   const {
     loading,
@@ -18,53 +19,58 @@ const SoftwareListComponent = (props) => {
     dialogHandleConfirm,
     dialogHandleReject,
   } = props;
-  return (
-  <>
-    <DecisionDialog
-        opened={dialogOpened}
-        headerText="Uwaga!"
-        text="Czy na pewno chcesz usunąć oprogramowanie?"
-        onConfirmText="Tak"
-        onConfirm={dialogHandleConfirm}
-        onRejectText="Nie"
-        onReject={dialogHandleReject}
-    />
-    <ScrollView scrollEnabled={!dialogOpened}>
 
-      <View style={styles.container}>
-        {groupActions && (
-          <View style={styles.groupActions}>
-            {groupActions.map((action, idx) => (
-              <View style={styles.buttonContainer} key={idx}>
-                <Button
-                  disabled={action.disabled}
-                  title={action.label}
-                  onPress={action.onClick}
-                  color={mainColor}
-                />
-              </View>
-            ))}
-          </View>
-        )}
-        {error && (
-          <ErrorElement
-            message="Nie udało się pobrać danych z serwera"
-            type="error"
-          />
-        )}
-        {!error && (
-          <ResponsiveTable
-            items={items}
-            totalElements={totalElements}
-            loading={loading}
-            onFilterChange={onFilterChange}
-            columns={columns}
-            itemActions={itemActions}
-          />
-        )}
-      </View>
-    </ScrollView>
-  </>
+  return (
+    <>
+      {dialogOpened && (
+        <DecisionDialog
+          headerText="Uwaga!"
+          text="Czy na pewno chcesz usunąć oprogramowanie?"
+          onConfirmText="Tak"
+          onConfirm={dialogHandleConfirm}
+          onRejectText="Nie"
+          onReject={dialogHandleReject}
+        />
+      )}
+
+      <ScrollView scrollEnabled={!dialogOpened}>
+        <View
+          style={styles.container}
+          pointerEvents={dialogOpened ? 'none' : null}
+        >
+          {groupActions && (
+            <View style={styles.groupActions}>
+              {groupActions.map((action, idx) => (
+                <View style={styles.buttonContainer} key={idx}>
+                  <Button
+                    disabled={action.disabled}
+                    title={action.label}
+                    onPress={action.onClick}
+                    color={mainColor}
+                  />
+                </View>
+              ))}
+            </View>
+          )}
+          {error && (
+            <ErrorElement
+              message="Nie udało się pobrać danych z serwera"
+              type="error"
+            />
+          )}
+          {!error && (
+            <ResponsiveTable
+              items={items}
+              totalElements={totalElements}
+              loading={loading}
+              onFilterChange={onFilterChange}
+              columns={columns}
+              itemActions={itemActions}
+            />
+          )}
+        </View>
+      </ScrollView>
+    </>
   );
 };
 

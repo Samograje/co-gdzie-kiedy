@@ -1,10 +1,9 @@
 import React from 'react';
-import {StyleSheet, Text, View, Button} from 'react-native';
+import {Button, StyleSheet, Text, View} from 'react-native';
 import {mainColor} from '../../../constValues';
 
 const DecisionDialog = (props) => {
   const {
-    opened,
     headerText,
     text,
     onConfirmText,
@@ -12,40 +11,37 @@ const DecisionDialog = (props) => {
     onRejectText,
     onReject,
   } = props;
+
   return (
-  <>
-    {opened && (
-      <View style={styles.background}>
-        <View style={styles.modal}>
-          <View style={styles.headerContainer}>
-            <Text style={styles.headerText}>
-              {headerText}
-            </Text>
-          </View>
-          <View style={styles.textContainer}>
-            <Text style={styles.text}>
-              {text}
-            </Text>
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button
-                title={onConfirmText}
-                onPress={onConfirm}
-            />
-            <Button
-                title={onRejectText}
-                onPress={onReject}
-            />
-          </View>
+    <View style={styles.background}>
+      <View style={styles.modal}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerText}>
+            {headerText}
+          </Text>
+        </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>
+            {text}
+          </Text>
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button
+            title={onConfirmText}
+            onPress={onConfirm}
+          />
+          <Button
+            title={onRejectText}
+            onPress={onReject}
+          />
         </View>
       </View>
-    )}
-  </>
-  )
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
-  background:{
+  background: {
     zIndex: 1000,
     position: 'absolute',
     left: 0,
@@ -53,7 +49,7 @@ const styles = StyleSheet.create({
     top: 200,
     alignItems: 'center'
   },
-  modal:{
+  modal: {
     backgroundColor: "#f4f4f4",
     margin: "auto",
     flex: 1,
@@ -61,20 +57,20 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: mainColor,
   },
-  headerContainer:{
+  headerContainer: {
     backgroundColor: mainColor,
     alignContent: 'center',
     paddingTop: 5,
     paddingBottom: 5,
     alignItems: 'center'
   },
-  headerText:{
+  headerText: {
     fontSize: 25,
     fontWeight: '600',
     color: '#ffffff',
     alignSelf: 'center',
   },
-  text:{
+  text: {
     fontSize: 18,
   },
   buttonContainer: {
@@ -85,7 +81,7 @@ const styles = StyleSheet.create({
     paddingRight: '30%',
     paddingBottom: '1%',
   },
-  textContainer:{
+  textContainer: {
     justifyContent: 'center',
     padding: 15,
   }
