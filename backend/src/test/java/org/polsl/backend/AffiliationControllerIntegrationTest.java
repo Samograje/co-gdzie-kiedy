@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -29,7 +30,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "classpath:application-test.properties")
 @Transactional
 @SqlGroup({
-  @Sql(scripts = "/scripts/create-test-affiliation.sql")
+  @Sql(scripts = "/scripts/create-test-affiliation.sql"),
+  @Sql(scripts = "/scripts/create-test-hardware_dictionary.sql"),
+  @Sql(scripts = "/scripts/create-test-hardware.sql"),
+  @Sql(scripts = "/scripts/create-test-computer_sets.sql"),
+  @Sql(scripts = "/scripts/create-test-affiliation_hardware.sql"),
+  @Sql(scripts = "/scripts/create-test-affiliations_computer_sets.sql"),
 })
 public class AffiliationControllerIntegrationTest {
 
@@ -46,36 +52,53 @@ public class AffiliationControllerIntegrationTest {
       .andExpect(jsonPath("$.totalElements").value(3))
       .andExpect(jsonPath("$.items", hasSize(3)))
       .andExpect(jsonPath("$.items[0].id").value(1))
-      .andExpect(jsonPath("$.items[0].name").value("Szymon Jęczyzel - Solaris"))
+      .andExpect(jsonPath("$.items[0].firstName").value("Szymon"))
+      .andExpect(jsonPath("$.items[0].lastName").value("Jęczyzel"))
+      .andExpect(jsonPath("$.items[0].location").value("Solaris"))
+      .andExpect(jsonPath("$.items[0].computerSetsInventoryNumbers", hasSize(1)))
+      .andExpect(jsonPath("$.items[0].computerSetsInventoryNumbers", containsInAnyOrder("C1/2019")))
+      .andExpect(jsonPath("$.items[0].hardwareInventoryNumbers", hasSize(1)))
+      .andExpect(jsonPath("$.items[0].hardwareInventoryNumbers", containsInAnyOrder("H1/2019")))
       .andExpect(jsonPath("$.items[1].id").value(2))
-      .andExpect(jsonPath("$.items[1].name").value("Bartłomiej Szlachta - 130"))
+      .andExpect(jsonPath("$.items[1].firstName").value("Bartłomiej"))
+      .andExpect(jsonPath("$.items[1].lastName").value("Szlachta"))
+      .andExpect(jsonPath("$.items[1].location").value("130"))
+      .andExpect(jsonPath("$.items[1].computerSetsInventoryNumbers", hasSize(2)))
+      .andExpect(jsonPath("$.items[1].computerSetsInventoryNumbers", containsInAnyOrder("C3/2019", "C2/2019")))
+      .andExpect(jsonPath("$.items[1].hardwareInventoryNumbers", hasSize(2)))
+      .andExpect(jsonPath("$.items[1].hardwareInventoryNumbers", containsInAnyOrder("H3/2019", "H2/2019")))
       .andExpect(jsonPath("$.items[2].id").value(4))
-      .andExpect(jsonPath("$.items[2].name").value("Sala 510"));
+      .andExpect(jsonPath("$.items[2].firstName").value(""))
+      .andExpect(jsonPath("$.items[2].lastName").value(""))
+      .andExpect(jsonPath("$.items[2].location").value("Sala 510"))
+      .andExpect(jsonPath("$.items[2].computerSetsInventoryNumbers", hasSize(0)))
+      .andExpect(jsonPath("$.items[2].hardwareInventoryNumbers", hasSize(1)))
+      .andExpect(jsonPath("$.items[2].hardwareInventoryNumbers", containsInAnyOrder("H5/2019")));
   }
 
   @Test
   public void givenInvalidId_whenGettingAffiliation_thenReturnStatus400() throws Exception {
     mvc.perform(get("/api/affiliations/abcd"))
-        .andExpect(status().is(400))
-        .andExpect(jsonPath("$.success").value(false))
-        .andExpect(jsonPath("$.message").value("Podana wartość nie jest liczbą"));
+      .andExpect(status().is(400))
+      .andExpect(jsonPath("$.success").value(false))
+      .andExpect(jsonPath("$.message").value("Podana wartość nie jest liczbą"));
   }
 
   @Test
   public void givenNotExistingId_whenGettingAffiliation_thenReturnStatus404() throws Exception {
     mvc.perform(get("/api/affiliations/0"))
-        .andExpect(status().is(404))
-        .andExpect(jsonPath("$.success").value(false))
-        .andExpect(jsonPath("$.message").value("Nie istnieje przynależność o id: '0'"));
+      .andExpect(status().is(404))
+      .andExpect(jsonPath("$.success").value(false))
+      .andExpect(jsonPath("$.message").value("Nie istnieje przynależność o id: '0'"));
   }
 
   @Test
   public void givenCorrectRequest_whenGettingAffiliation_thenReturnStatus200AndData() throws Exception {
     mvc.perform(get("/api/affiliations/1"))
-        .andExpect(status().is(200))
-        .andExpect(jsonPath("$.firstName").value("Szymon"))
-        .andExpect(jsonPath("$.lastName").value("Jęczyzel"))
-        .andExpect(jsonPath("$.location").value("Solaris"));
+      .andExpect(status().is(200))
+      .andExpect(jsonPath("$.firstName").value("Szymon"))
+      .andExpect(jsonPath("$.lastName").value("Jęczyzel"))
+      .andExpect(jsonPath("$.location").value("Solaris"));
   }
 
   @Test
