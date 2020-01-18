@@ -1,5 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View, Button, Dimensions} from 'react-native';
+import {mainColor} from '../../../constValues';
+
 
 const DecisionDialog = (props) => {
   const {
@@ -17,7 +19,7 @@ const DecisionDialog = (props) => {
     {opened && (
       <View style={styles.background}>
         <View style={styles.modal}>
-          <View style={styles.header}>
+          <View style={styles.headerContainer}>
             <Text style={styles.headerText}>
               {headerText}
             </Text>
@@ -27,7 +29,7 @@ const DecisionDialog = (props) => {
               {text}
             </Text>
           </View>
-          <View style={styles.fixToText}>
+          <View style={styles.buttonContainer}>
             <Button
                 title={onConfirmText}
                 onPress={onConfirm}
@@ -57,26 +59,36 @@ const styles = StyleSheet.create({
     backgroundColor: "#f4f4f4",
     margin: "auto",
   },
-  header:{
+  headerContainer:{
     width: '100%',
     margin: 1,
-    backgroundColor: "#ff00ff",
+    backgroundColor: mainColor,
+    alignContent: 'center',
+    paddingTop: 5,
+    paddingBottom: 5,
   },
   headerText:{
     width: "100%",
     fontSize: 25,
     fontWeight: '600',
+    textAlign: 'center',
+    color: '#ffffff',
   },
   text:{
-
+    fontSize: 18,
   },
-  fixToText: {
+  buttonContainer: {
+    flex: 1,
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingLeft: '30%',
+    paddingRight: '30%',
   },
   textContainer:{
     justifyContent: 'center',
     paddingTop: 15,
     paddingBottom: 15,
+    textAlign: 'center',
   }
 });
 
