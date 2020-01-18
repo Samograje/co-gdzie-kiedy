@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, TextInput} from 'react-native';
+import {StyleSheet, Text, TextInput, View} from 'react-native';
 import PickerWithItems from "./PickerWithItems";
 
 const AutoComplete = (props) => {
@@ -17,7 +17,7 @@ const AutoComplete = (props) => {
   }
 
   return (
-    <>
+    <View style={styles.container}>
       <TextInput
         style={styles.textInput}
         placeholder="Wyszukaj"
@@ -28,11 +28,14 @@ const AutoComplete = (props) => {
         updateValue={updateValue}
         options={options}
       />
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   textInput: {
     marginBottom: 10,
     width: '100%',
