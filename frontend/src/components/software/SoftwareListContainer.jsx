@@ -15,7 +15,7 @@ class SoftwareListContainer extends Component {
       filters: {},
       dialogOpened: false,
       itemToDeleteId: null,
-      currentPositionScrollViewY: 50,
+      currentPositionScrollViewY: 0,
     };
   }
   componentDidMount() {

@@ -2,7 +2,6 @@ import React from 'react';
 import {StyleSheet, Text, View, Button, Dimensions} from 'react-native';
 import {mainColor} from '../../../constValues';
 
-
 const DecisionDialog = (props) => {
   const {
     opened,
@@ -14,11 +13,10 @@ const DecisionDialog = (props) => {
     onReject,
     currentPositionScrollViewY,
   } = props;
-
   return (
   <>
     {opened && (
-      <View style={styles.background}>
+      <View style={[styles.background, {top: currentPositionScrollViewY + 200}]}>
         <View style={styles.modal}>
           <View style={styles.headerContainer}>
             <Text style={styles.headerText}>
@@ -53,7 +51,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    top: 0,
     alignItems: 'center'
   },
   modal:{
