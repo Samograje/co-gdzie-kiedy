@@ -17,7 +17,6 @@ const SoftwareListComponent = (props) => {
     dialogOpened,
     dialogHandleConfirm,
     dialogHandleReject,
-    currentPositionScrollViewY,
   } = props;
   return (
   <>
@@ -30,9 +29,7 @@ const SoftwareListComponent = (props) => {
         onRejectText="Nie"
         onReject={dialogHandleReject}
     />
-    <ScrollView onScroll={props.handleScroll}
-                scrollEventThrottle={16}
-                scrollEnabled={!dialogOpened}>
+    <ScrollView scrollEnabled={!dialogOpened}>
 
       <View style={styles.container}>
         {groupActions && (
