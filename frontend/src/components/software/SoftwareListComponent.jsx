@@ -21,7 +21,9 @@ const SoftwareListComponent = (props) => {
   } = props;
   return (
 
-    <ScrollView onScroll={props.handleScroll} scrollEventThrottle={16}>
+    <ScrollView onScroll={props.handleScroll}
+                scrollEventThrottle={16}
+                scrollEnabled={!dialogOpened}>
       <DecisionDialog
           opened={dialogOpened}
           headerText="Uwaga!"
