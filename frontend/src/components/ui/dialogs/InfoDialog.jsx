@@ -3,16 +3,12 @@ import {StyleSheet, Text, View, Button, Dimensions} from 'react-native';
 import {mainColor} from '../../../constValues';
 
 
-const DecisionDialog = (props) => {
+const InfoDialog = (props) => {
   const {
     opened,
     headerText,
     text,
-    onConfirmText,
     onConfirm,
-    onRejectText,
-    onReject,
-    currentPositionScrollViewY,
   } = props;
 
   return (
@@ -32,18 +28,14 @@ const DecisionDialog = (props) => {
           </View>
           <View style={styles.buttonContainer}>
             <Button
-                title={onConfirmText}
+                title="Ok"
                 onPress={onConfirm}
-            />
-            <Button
-                title={onRejectText}
-                onPress={onReject}
             />
           </View>
         </View>
       </View>
     )}
-  </>
+    </>
   )
 };
 
@@ -53,23 +45,20 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    top: 0,
-    alignItems: 'center'
+    top: 200,
   },
   modal:{
+    minWidth: 400,
     backgroundColor: "#f4f4f4",
     margin: "auto",
-    flex: 1,
-    maxWidth: '80%',
-    borderWidth: 2,
-    borderColor: mainColor,
   },
   headerContainer:{
+    width: '100%',
+    margin: 1,
     backgroundColor: mainColor,
     alignContent: 'center',
     paddingTop: 5,
     paddingBottom: 5,
-    alignItems: 'center'
   },
   headerText:{
     width: "100%",
@@ -87,13 +76,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingLeft: '30%',
     paddingRight: '30%',
-    paddingBottom: '1%',
   },
   textContainer:{
     justifyContent: 'center',
-    padding: 15,
+    paddingTop: 15,
+    paddingBottom: 15,
     textAlign: 'center',
   }
 });
 
-export default DecisionDialog;
+export default InfoDialog;

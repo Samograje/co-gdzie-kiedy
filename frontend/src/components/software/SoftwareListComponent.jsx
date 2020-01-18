@@ -4,7 +4,6 @@ import ErrorElement from '../ui/ErrorElement';
 import ResponsiveTable from '../ui/responsivetable/ResponsiveTable';
 import {mainColor} from '../../constValues';
 import DecisionDialog from "../ui/dialogs/DecisionDialog";
-
 const SoftwareListComponent = (props) => {
   const {
     loading,
@@ -18,18 +17,20 @@ const SoftwareListComponent = (props) => {
     dialogOpened,
     dialogHandleConfirm,
     dialogHandleReject,
+    currentPositionScrollViewY,
   } = props;
-
   return (
-    <ScrollView>
+
+    <ScrollView onScroll={props.handleScroll} scrollEventThrottle={16}>
       <DecisionDialog
-        opened={dialogOpened}
-        headerText="Uwaga!!"
-        text="Czy na pewno chcesz usunąć oprogramowanie?"
-        onConfirmText="Tak"
-        onConfirm={dialogHandleConfirm}
-        onRejectText="Nie"
-        onReject={dialogHandleReject}
+          opened={dialogOpened}
+          headerText="Uwaga!"
+          text="Czy na pewno chcesz usunąć oprogramowanie?"
+          onConfirmText="Tak"
+          onConfirm={dialogHandleConfirm}
+          onRejectText="Nie"
+          onReject={dialogHandleReject}
+          currentPositionScrollViewY={currentPositionScrollViewY}
       />
       <View style={styles.container}>
         {groupActions && (

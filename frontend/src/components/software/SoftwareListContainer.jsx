@@ -15,6 +15,7 @@ class SoftwareListContainer extends Component {
       filters: {},
       dialogOpened: false,
       itemToDeleteId: null,
+      currentPositionScrollViewY: 50,
     };
   }
   componentDidMount() {
@@ -103,6 +104,8 @@ class SoftwareListContainer extends Component {
     itemToDeleteId: null,
   });
 
+  handleScroll = (event) => {this.setState({currentPositionScrollViewY: event.nativeEvent.contentOffset.y})};
+
   render() {
     const columns = [
       {
@@ -181,6 +184,7 @@ class SoftwareListContainer extends Component {
         items={this.state.items}
         totalElements={this.state.totalElements}
         filters={this.state.filters}
+        currentPositionScrollViewY={this.state.currentPositionScrollViewY}
         onFilterChange={this.handleFilterChange}
         columns={columns}
         itemActions={itemActions}
@@ -188,6 +192,7 @@ class SoftwareListContainer extends Component {
         dialogOpened={this.state.dialogOpened}
         dialogHandleConfirm={this.deleteCall}
         dialogHandleReject={this.closeDialog}
+        handleScroll={this.handleScroll}
       />
     );
   }
