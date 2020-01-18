@@ -69,11 +69,10 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   headerText:{
-    width: "100%",
     fontSize: 25,
     fontWeight: '600',
-    textAlign: 'center',
     color: '#ffffff',
+    alignSelf: 'center',
   },
   text:{
     fontSize: 18,
@@ -89,7 +88,6 @@ const styles = StyleSheet.create({
   textContainer:{
     justifyContent: 'center',
     padding: 15,
-    textAlign: 'center',
   }
 });
 
