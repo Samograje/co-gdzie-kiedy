@@ -11,12 +11,11 @@ const DecisionDialog = (props) => {
     onConfirm,
     onRejectText,
     onReject,
-    currentPositionScrollViewY,
   } = props;
   return (
   <>
     {opened && (
-      <View style={[styles.background, {top: currentPositionScrollViewY + 200}]}>
+      <View style={styles.background}>
         <View style={styles.modal}>
           <View style={styles.headerContainer}>
             <Text style={styles.headerText}>
@@ -51,6 +50,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
+    top: 200,
     alignItems: 'center'
   },
   modal:{

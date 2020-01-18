@@ -20,20 +20,20 @@ const SoftwareListComponent = (props) => {
     currentPositionScrollViewY,
   } = props;
   return (
-
+  <>
+    <DecisionDialog
+        opened={dialogOpened}
+        headerText="Uwaga!"
+        text="Czy na pewno chcesz usunąć oprogramowanie?"
+        onConfirmText="Tak"
+        onConfirm={dialogHandleConfirm}
+        onRejectText="Nie"
+        onReject={dialogHandleReject}
+    />
     <ScrollView onScroll={props.handleScroll}
                 scrollEventThrottle={16}
                 scrollEnabled={!dialogOpened}>
-      <DecisionDialog
-          opened={dialogOpened}
-          headerText="Uwaga!"
-          text="Czy na pewno chcesz usunąć oprogramowanie?"
-          onConfirmText="Tak"
-          onConfirm={dialogHandleConfirm}
-          onRejectText="Nie"
-          onReject={dialogHandleReject}
-          currentPositionScrollViewY={currentPositionScrollViewY}
-      />
+
       <View style={styles.container}>
         {groupActions && (
           <View style={styles.groupActions}>
@@ -67,6 +67,7 @@ const SoftwareListComponent = (props) => {
         )}
       </View>
     </ScrollView>
+  </>
   );
 };
 
