@@ -80,7 +80,7 @@ class ComputerSetsListContainer extends Component {
       {
         name: 'affiliationName',
         label: 'Przynależy do',
-        filter: true,
+        filter: false,
       },
       {
         name: 'softwareInventoryNumbers',
