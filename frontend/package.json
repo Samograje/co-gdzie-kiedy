@@ -5,6 +5,7 @@
   "scripts": {
     "start-web": "react-scripts start",
     "build-web": "react-scripts build",
+    "metro": "react-native start",
     "android-dev": "react-native run-android",
     "android-release": "react-native run-android --variant=release"
   },
