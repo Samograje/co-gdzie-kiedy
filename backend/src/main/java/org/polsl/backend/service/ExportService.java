@@ -19,8 +19,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.Console;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ExportService {
@@ -68,6 +71,22 @@ public class ExportService {
         tableCell.setPaddingTop(5);
         table.addCell(tableCell);
       }
+
+      List<Map<String, String>> mappedData = new ArrayList<>();
+
+      //TODO: ???
+//      for (Object item : data) {
+//        Map<String, String> itemData = new LinkedHashMap<>();
+//        for (Map.Entry<String, Field> stringMethodEntry : fields.entrySet()) {
+//          try {
+//            Object fieldValue = stringMethodEntry.getValue().invoke(item);
+//            itemData.put(stringMethodEntry.getKey(), fieldValue == null ? null : fieldValue.toString());
+//          } catch (IllegalAccessException | InvocationTargetException e) {
+//            return null;
+//          }
+//        }
+//        mappedData.add(itemData);
+//      }
 
       //dodaj zawartość komórek
       //TODO: jak zrzutować dane? :(
