@@ -16,12 +16,20 @@ class HardwareListContainer extends Component {
   }
 
   componentDidMount() {
+    if (Platform.OS === 'android'){
+      const { navigation } = this.props;
+      this.focusListener = this.props.addListener('didFocus', () => {});
+    }
+
     this._isMounted = true;
     this.fetchData();
   }
 
   componentWillUnmount() {
     this._isMounted = false;
+    if (Platform.OS === 'android'){
+      this.focusListener.remove();
+    }
   }
 
   fetchData = (options) => {

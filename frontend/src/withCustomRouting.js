@@ -62,6 +62,8 @@ const withCustomRouting = (InputComponent) => {
       <InputComponent
         push={navigation.navigate}
         goBack={navigation.goBack}
+        addListener={navigation.addListener}
+        remove={navigation.remove}
         {...navigation.state.params}
       />
     );
