@@ -12,6 +12,7 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.HyphenationAuto;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
@@ -100,6 +101,12 @@ public class ExportService {
 
     Document document = new Document(PageSize.A4.rotate());
     ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+    try {
+      PdfWriter writer = PdfWriter.getInstance(document, out);
+    } catch (DocumentException e) {
+      e.printStackTrace();
+    }
 
     document.open();
     try {
