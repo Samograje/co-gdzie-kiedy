@@ -1,63 +1,66 @@
 import React from 'react';
-import {Button, ScrollView, StyleSheet, Text, TextInput, View,} from 'react-native';
+import {ActivityIndicator, Button, ScrollView, StyleSheet, Text, TextInput, View,} from 'react-native';
+import MultiSelect from "../ui/form/MultiSelect";
+import AutoComplete from "../ui/form/AutoComplete";
 
 const ComputerSetDetailsComponent = (props) => {
-  let mode;
+  let modeInfo;
   if (props.mode === 'edit')
-    mode = "edycji";
+    modeInfo = "edycji";
   else if (props.mode === 'create')
-    mode = "dodawania";
-  else
-    return "";
+    modeInfo = "dodawania";
+
   return (
       <ScrollView>
         <View style={styles.addForm}>
-          <Text style={styles.header}>Formularz {mode} zestawu komputerowego.</Text>
+          <Text style={styles.header}>Formularz {modeInfo} zestawu komputerowego</Text>
           <Text>Pola z * są obowiązkowe.</Text>
-          <Text style={styles.labeltext}>* Nazwa zestawu komputerowego:</Text>
-          <TextInput style={styles.textinput}
-                     placeholder={"Wprowadź nazwe nowego oprogramowania"}
-                     value={props.name}
-                     onChangeText={(name) => props.setName(name)}
-          />
-          <Text style={styles.labeltext}>* Indentyfikator osoby / miejsca:</Text>
-          <TextInput style={styles.textinput}
-                     placeholder={"Wprowadź identyfikator"}
-                     onChangeText={(key) => props.setAffiliationId(key)}
-                     value={props.affiliationId}
-          />
 
+          {(props.loadingAffiliations || props.loadingHardware || props.loadingSoftware) && (
+              <View style={styles.indicator}>
+                <ActivityIndicator size="large"/>
+              </View>
+          )}
 
-          {/* <Text style={styles.labeltext}>* Ilość dostępnych kluczy:</Text>
-          <TextInput style={styles.textinput}
-                     placeholder={'Wprowadź ilość dostępnych kluczy'}
-                     onChangeText={(availableKeys) => props.setAvailableKeys(availableKeys)}
-                     value={props.availableKeys.toString()}
-          />
-          <Text
-              style={styles.validationError}>{props.validationAvailableKeysIsNumberStatus ? "Wartość musi być liczbą" : ""}</Text>
-          <Text
-              style={styles.validationError}>{!props.validationAvailableKeysIsBiggerThan0NumberStatus ? "Wartość musi być liczbą większą od 0" : ""}</Text>
-          <Text style={styles.labeltext}>* Czas trwania (w miesiącach):</Text>
-          <TextInput style={styles.textinput}
-                     placeholder={"Wprowadź okres trwania licencji, w miesiącach "}
-                     onChangeText={(duration) => props.setDuration(duration)}
-                     value={props.duration.toString()}
-                     disabled={props.validationDisableDuration}
-          />
-          <Text
-              style={styles.validationError}>{props.validationDurationIsNumberStatus ? "Wartość musi być liczbą" : ""}</Text>
-          <Text
-              style={styles.validationError}>{!props.validationDurationIsBiggerThan0NumberStatus ? "Wartość musi być liczbą większą od 0" : ""}</Text>*/}
+          {!(props.loadingAffiliations || props.loadingHardware || props.loadingSoftware) && (
+              <>
+                <View>
+                  <Text style={styles.labelText}>Nazwa zestawu komputerowego:</Text>
+                  <TextInput style={styles.textInput}
+                             placeholder={"Wprowadź nazwę zestawu"}
+                             value={props.name}
+                             onChangeText={(name) => props.setName(name)}
+                  />
+                </View>
+
+                <View>
+                  <Text style={styles.labelText}>Przynależność:</Text>
+                  <AutoComplete
+                      value={props.affiliationID}
+                      updateValue={props.setAffiliationID}
+                      options={props.dataSourceAffiliations.items}
+                      updateOptions={props.updateAffiliations}
+                  />
+                </View>
+
+                <View>
+                  <Text style={styles.labelText}>Sprzęty:</Text>
+                  <MultiSelect>
+                    values = {props.hardwareIDs},
+                    onAddValue = {props.setHardwareIDs},
+                    onRemoveValue = {},
+                    options={props.dataSourceHardware.items}
+                    onUpdateOptions = {props.updateHardware},
+                  </MultiSelect>
+                </View>
+
+              </>
+          )}
+
           <Button
               title="Zapisz"
               onPress={props.onSubmit}
-              /* disabled={props.validationEmptyStatus ||
-               props.validationAvailableKeysIsNumberStatus ||
-               !props.validationAvailableKeysIsBiggerThan0NumberStatus ||
-               props.validationDurationIsNumberStatus ||
-               !props.validationDurationIsBiggerThan0NumberStatus ||
-               props.validationDisableDuration}*/
+              disabled={props.isInvalid}
           />
           <Button
               title="Wróć"
@@ -74,7 +77,7 @@ const styles = StyleSheet.create({
     padding: 15,
     width: '75%',
   },
-  labeltext: {
+  labelText: {
     marginTop: 10,
     fontSize: 20,
     marginBottom: 5,
@@ -87,7 +90,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#199187',
     borderBottomWidth: 1,
   },
-  textinput: {
+  textInput: {
     marginBottom: 10,
     width: '100%',
     height: 35,
@@ -97,12 +100,15 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     fontWeight: '500',
   },
-
-  validationError: {
-    color: '#ff0000',
-    fontSize: 10,
-  }
+  oneLineElement: {
+    flexDirection: 'row',
+    marginBottom: 15,
+  },
+  indicator: {
+    flex: 1,
+    paddingTop: 20,
+    paddingBottom: 20,
+  },
 });
 
 export default ComputerSetDetailsComponent;
-

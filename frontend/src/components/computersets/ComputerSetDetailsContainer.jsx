@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ComputerSetDetailsComponent from './ComputerSetDetailsComponent';
-import moment from "moment";
 import request from "../../APIClient";
 
 class ComputerSetDetailsContainer extends Component {
@@ -8,32 +7,130 @@ class ComputerSetDetailsContainer extends Component {
         super(props);
         this.state = {
             name: '',
-            key: '',
-            availableKeys: '',
-            duration: '',
-            validationStatus: false,
-            loading: true,
+            affiliationID: '',
+            hardwareIDs: [],
+            softwareIDs: [],
+            loadingAffiliations: true,
+            loadingHardware: true,
+            loadingSoftware: true,
             error: false,
+            dataSourceAffiliations: {"items": []},
+            dataSourceHardware: {"items": []},
+            dataSourceSoftware: {"items": []},
+            isInvalid: true
         };
     }
 
     componentDidMount() {
+        this._isMounted = true;
+        this.fetchDataAffiliations();
+        this.fetchDataHardware();
+        this.fetchDataSoftware();
+
         if (this.props.mode === 'edit')
             this.getDataForEditCall();
     }
 
-    addOrEditCallCall = (method, path) => {
-        let currentDate = new Date();
-        let endDate = moment(currentDate).add(this.state.duration, 'month');
-        let duration = endDate - currentDate; //to poleci jsonem
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
 
+    fetchDataAffiliations = (query) => {
+        const options = {
+            filters: {
+                name: query,
+            },
+        };
+
+        request('/api/affiliations', options)
+            .then((response) => response.json())
+            .then((response) => {
+                if (!this._isMounted) {
+                    return;
+                }
+                this.setState({
+                    loadingAffiliations: false,
+                    dataSourceAffiliations: response,
+                });
+            })
+            .catch(() => {
+                if (!this._isMounted) {
+                    return;
+                }
+                this.setState({
+                    loadingAffiliations: false,
+                    error: true,
+                });
+            })
+    };
+
+    fetchDataHardware = (query) => {
+        const options = {
+            filters: {
+                name: query,
+            },
+        };
+
+        request('/api/hardware', options)
+            .then((response) => response.json())
+            .then((response) => {
+                if (!this._isMounted) {
+                    return;
+                }
+                this.setState({
+                    loadingHardware: false,
+                    dataSourceHardware: response,
+
+                });
+            })
+            .catch(() => {
+                if (!this._isMounted) {
+                    return;
+                }
+                this.setState({
+                    loadingHardware: false,
+                    error: true,
+                });
+            })
+    };
+
+    fetchDataSoftware = (query) => {
+        const options = {
+            filters: {
+                name: query,
+            },
+        };
+
+        request('/api/software', options)
+            .then((response) => response.json())
+            .then((response) => {
+                if (!this._isMounted) {
+                    return;
+                }
+                this.setState({
+                    loadingSoftware: false,
+                    dataSourceSoftware: response
+                });
+            })
+            .catch(() => {
+                if (!this._isMounted) {
+                    return;
+                }
+                this.setState({
+                    loadingSoftware: false,
+                    error: true,
+                });
+            })
+    };
+
+    addOrEditCallCall = (method, path) => {
         request(path, {
             method: method,
             body: JSON.stringify({
                 "name": this.state.name,
-                "key": this.state.key,
-                "availableKeys": this.state.availableKeys,
-                "duration": duration
+                "affiliationId": this.state.affiliationID,
+                "softwareIds": this.state.softwareIDs,
+                "hardwareIds": this.state.hardwareIDs,
             }),
             headers: {
                 'Content-Type': 'application/json',
@@ -41,73 +138,63 @@ class ComputerSetDetailsContainer extends Component {
             }
         }).then((response) => response.json())
             .then((responseJson) => {
+                if (!this._isMounted) {
+                    return;
+                }
                 console.log(responseJson);
                 return responseJson;
             })
             .catch((error) => {
+                if (!this._isMounted) {
+                    return;
+                }
                 console.error(error);
             });
     };
 
     getDataForEditCall() {
-        request(`/api/computer-sets/${this.props.id}`)
-            .then(response => response.json())
-            .then(response => {
-                let name = response.name;
-                let affiliationId = response.affiliationId;
-                let hardwareIds = response.hardwareIds;
-                let softwareIds = response.softwareIds;
-                this.setState({
-                    name: response.name,
-                    //TODO: Warning - zamiana na stringa, ale i tak będą nazwy, nie id
-                    affiliationId: response.affiliationId.toString(),
-                    hardwareIds: response.hardwareIds,
-                    softwareIds: response.softwareIds,
-                });
-            })
+
     };
 
     onSubmit = () => {
         if (this.props.mode === 'create')
-            this.addOrEditCallCall('POST', '/api/computer-sets');
+            this.addOrEditCallCall('POST', '/api/ComputerSet');
         else if (this.props.mode === 'edit')
-            this.addOrEditCallCall('PUT', `/api/computer-sets/${this.props.id}`);
+            this.addOrEditCallCall('PUT', `/api/ComputerSet/${this.props.id}`);
     };
     onReject = () => this.props.goBack();
-    setName = (value) => {
-        this.setState({name: value});
-    };
-    setAffiliationId = (value) => this.setState({affiliationId: value});
+    setName = (value) => this.setState({name: value});
+    setAffiliationID = (value) => this.setState({affiliationID: value});
+    setSoftwareIDs = (value) => this.setState({softwareIDs: value});
+    setHardwareIDs = (value) => this.setState({hardwareIDs: value});
 
-    /*setAvailableKeys = (value) => this.setState({availableKeys: value});
-    setDuration = (value) => this.setState({duration: value});;*/
-
-  render() {
-
-    return (
-        <ComputerSetDetailsComponent
-            setText={this.setText}
-            onSubmit={this.onSubmit}
-            onReject={this.onReject}
-            setName={this.setName}
-            setAffiliationId={this.setAffiliationId}
-            /*setAvailableKeys={this.setAvailableKeys}
-            setDuration={this.setDuration}*/
-            mode={this.props.mode}
-            name={this.state.name}
-            affiliationId={this.state.affiliationId}
-            /*availableKeys={this.state.availableKeys}
-            duration={this.state.duration}*/
-            validationEmptyStatus={this.state.name === '' || this.state.affiliationId === '' /*||
-            this.state.availableKeys === '' || this.state.duration === ''*/}
-            /*  validationAvailableKeysIsNumberStatus={isNaN(this.state.availableKeys)}
-              validationAvailableKeysIsBiggerThan0NumberStatus={this.state.availableKeys === '' ? true : Number.parseInt(this.state.availableKeys) > 0}
-              validationDurationIsNumberStatus={this.state.duration === 'Licencja utraciła ważność' ? false : isNaN(this.state.duration)}
-              validationDurationIsBiggerThan0NumberStatus={(this.state.duration === '' || this.state.duration === 'Licencja utraciła ważność') ? true : Number.parseInt(this.state.duration) > 0}
-              validationDisableDuration={this.state.duration === 'Licencja utraciła ważność'}*/
-        />
-    );
-  }
+    render() {
+        return (
+            <ComputerSetDetailsComponent
+                onSubmit={this.onSubmit}
+                onReject={this.onReject}
+                setName={this.setName}
+                setSoftwareIDs={this.setSoftwareIDs}
+                setAffiliationID={this.setAffiliationID}
+                setHardwareIDs={this.setHardwareIDs}
+                mode={this.props.mode}
+                name={this.state.name}
+                loadingSoftware={this.state.loadingSoftware}
+                loadingAffiliations={this.state.loadingAffiliations}
+                loadingHardware={this.state.loadingHardware}
+                softwareIDs={this.state.softwareIDs}
+                affiliationID={this.state.affiliationID}
+                hardwareIDs={this.state.hardwareIDs}
+                dataSourceAffiliations={this.state.dataSourceAffiliations}
+                dataSourceHardware={this.state.dataSourceHardware}
+                dataSourceSoftware={this.state.dataSourceSoftware}
+                isInvalid={this.state.name === '' || this.state.affiliationID === ''}
+                updateAffiliations={this.fetchDataAffiliations}
+                updateHardware={this.fetchDataHardware}
+                updateSoftware={this.fetchDataSoftware}
+            />
+        );
+    }
 }
 
 export default ComputerSetDetailsContainer;
