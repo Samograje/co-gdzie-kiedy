@@ -1,6 +1,6 @@
 package org.polsl.backend.dto.affiliation;
 
-public class AffiliationOutputDTO {
+public class AffiliationListOutputDTO {
   private Long id;
   private String name;
 

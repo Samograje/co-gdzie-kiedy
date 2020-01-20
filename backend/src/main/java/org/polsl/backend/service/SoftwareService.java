@@ -14,9 +14,9 @@ import org.polsl.backend.repository.ComputerSetSoftwareRepository;
 import org.polsl.backend.repository.SoftwareRepository;
 import org.polsl.backend.type.InventoryNumberEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -42,10 +42,15 @@ public class SoftwareService {
     this.computerSetSoftwareRepository = computerSetSoftwareRepository;
   }
 
-  public PaginatedResult<SoftwareListOutputDTO> getAllSoftware() {
-    Iterable<Software> softwares = softwareRepository.findAllByValidToIsNull();
+  public PaginatedResult<SoftwareListOutputDTO> getAllSoftware(Specification<Software> softwareSpecification) {
     List<SoftwareListOutputDTO> softwareListOutputDTO = new ArrayList<>();
-    for (Software software : softwares) {
+    Iterable<Software> softwareList;
+    Specification<Software> softwareSpecificationWithValidTo = (
+            (Specification<Software>) (root, query, criteriaBuilder) ->
+                    criteriaBuilder.isNull(root.get("validTo"))
+    ).and(softwareSpecification);
+    softwareList = softwareRepository.findAll(softwareSpecificationWithValidTo);
+    for (Software software : softwareList) {
       SoftwareListOutputDTO dto = new SoftwareListOutputDTO();
       dto.setId(software.getId());
       dto.setName(software.getName());
@@ -53,6 +58,7 @@ public class SoftwareService {
       dto.setAvailableKeys(software.getAvailableKeys());
       dto.setKey(software.getKey());
       dto.setDuration(software.getDuration());
+      dto.setComputerSetInventoryNumbers(getValidComputerSetInventoryNumbers(software));
       softwareListOutputDTO.add(dto);
     }
 
@@ -186,5 +192,17 @@ public class SoftwareService {
 
     if(request.getDuration() <= 0)
       throw new BadRequestException("Wprowadzono nieaktywną licencję.");
+  }
+
+  private Set<String> getValidComputerSetInventoryNumbers(Software software)
+  {
+    Set<String> inventoryNumbers = new HashSet<>();
+    software.getComputerSetSoftwareSet().forEach(softwareComputerSet -> {
+      if(softwareComputerSet.getValidTo() == null){
+        inventoryNumbers.add(softwareComputerSet.getComputerSet().getInventoryNumber());
+      }
+    });
+
+    return inventoryNumbers;
   }
 }

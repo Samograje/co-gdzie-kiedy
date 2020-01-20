@@ -18,8 +18,13 @@ class SoftwareDetailsContainer extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
     if(this.props.mode === 'edit')
       this.getDataForEditCall();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   addOrEditCallCall = (method, path) => {
@@ -41,10 +46,16 @@ class SoftwareDetailsContainer extends Component {
       }
     }).then((response) => response.json())
       .then((responseJson) => {
+        if (!this._isMounted) {
+          return;
+        }
         console.log(responseJson);
         return responseJson;
       })
       .catch((error) => {
+        if (!this._isMounted) {
+          return;
+        }
         console.error(error);
       });
   };
@@ -53,6 +64,9 @@ class SoftwareDetailsContainer extends Component {
     request(`/api/software/${this.props.id}`)
         .then(response => response.json())
         .then(response => {
+          if (!this._isMounted) {
+            return;
+          }
           let duration = response.duration;
           let months = moment(duration).month() +  12 * (moment(duration).year() - moment(0).year());
           months <= 0 ? response.duration = "Licencja utraciła ważność" : response.duration = months;
@@ -61,6 +75,7 @@ class SoftwareDetailsContainer extends Component {
             key: response.key,
             availableKeys: response.availableKeys,
             duration: response.duration,
+            loading: false,
         });
         })
   };
@@ -93,6 +108,7 @@ class SoftwareDetailsContainer extends Component {
         keY={this.state.key}
         availableKeys={this.state.availableKeys}
         duration={this.state.duration}
+        loading={this.state.loading}
         validationEmptyStatus={this.state.name === '' || this.state.key === '' ||
                           this.state.availableKeys === '' || this.state.duration === ''}
         validationAvailableKeysIsNumberStatus={isNaN(this.state.availableKeys)}

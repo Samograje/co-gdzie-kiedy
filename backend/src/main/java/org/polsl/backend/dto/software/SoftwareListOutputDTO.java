@@ -1,5 +1,7 @@
 package org.polsl.backend.dto.software;
 
+import java.util.Set;
+
 public class SoftwareListOutputDTO {
   private Long id;
   private String name;
@@ -7,6 +9,7 @@ public class SoftwareListOutputDTO {
   private String key;
   private Long availableKeys;
   private Long duration;
+  private Set<String> computerSetInventoryNumbers;
 
   public String getName() { return name; }
 
@@ -31,4 +34,10 @@ public class SoftwareListOutputDTO {
   public Long getDuration() { return duration; }
 
   public void setDuration(Long duration) { this.duration = duration; }
+
+  public Set<String> getComputerSetInventoryNumbers() { return computerSetInventoryNumbers; }
+
+  public void setComputerSetInventoryNumbers(Set<String> computerSetInventoryNumbers) {
+    this.computerSetInventoryNumbers = computerSetInventoryNumbers;
+  }
 }

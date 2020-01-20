@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Platform} from 'react-native';
 import HardwareListComponent from './HardwareListComponent';
 import request from '../../APIClient';
 
@@ -15,7 +16,12 @@ class HardwareListContainer extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
     this.fetchData();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   fetchData = (options) => {
@@ -26,17 +32,45 @@ class HardwareListContainer extends Component {
     request('/api/hardware', options)
       .then((response) => response.json())
       .then((response) => {
+        if (!this._isMounted) {
+          return;
+        }
         this.setState({
           loading: false,
           ...response,
         })
       })
       .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
         this.setState({
           loading: false,
           error: true,
         });
       })
+  };
+
+  deleteCall = (id) => {
+    request(`/api/hardware/${id}`,{
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      }
+    }).then((response) => response.json())
+        .then(() => {
+          if (!this._isMounted) {
+            return;
+          }
+          this.fetchData();
+        })
+        .catch((error) => {
+          if (!this._isMounted) {
+            return;
+          }
+          console.error(error);
+        });
   };
 
   handleFilterChange = (fieldName, text) => {
@@ -63,7 +97,7 @@ class HardwareListContainer extends Component {
       {
         name: 'type',
         label: 'Typ',
-        filter: true,
+        filter: false,
       },
       {
         name: 'inventoryNumber',
@@ -73,12 +107,12 @@ class HardwareListContainer extends Component {
       {
         name: 'affiliationName',
         label: 'Przynależy do',
-        filter: true,
+        filter: false,
       },
       {
         name: 'computerSetInventoryNumber',
         label: 'Numer inwentarzowy powiązanego zestawu komputerowego',
-        filter: true,
+        filter: false,
       },
     ];
 
@@ -93,23 +127,38 @@ class HardwareListContainer extends Component {
       {
         label: 'Usuń',
         onClick: (itemData) => {
-          // TODO: usuwanie hardware'u
+          this.deleteCall(itemData.id)
         },
       },
-      // TODO: akcje wyświetlania historii powiązań
+      {
+        label: 'HA',
+        onClick: (itemData) => this.props.push('HardwareHistory', {
+          mode: 'affiliations',
+          id: itemData.id,
+        }),
+      },
+      {
+        label: 'HC',
+        onClick: (itemData) => this.props.push('HardwareHistory', {
+          mode: 'computer-sets',
+          id: itemData.id,
+        }),
+      },
     ];
 
     const groupActions = [
       {
+        disabled: false,
         label: 'Dodaj sprzęt',
         onClick: () => this.props.push('HardwareDetails', {
           mode: 'create',
         }),
       },
       {
+        disabled: Platform.OS !== 'android',
         label: 'Wyszukaj za pomocą kodu QR',
         onClick: () => {
-          // TODO: wyszukiwanie po kodzie QR
+          this.props.push('ScanScreen')
         },
       },
     ];
