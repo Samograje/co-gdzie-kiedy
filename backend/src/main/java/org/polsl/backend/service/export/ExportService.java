@@ -103,7 +103,7 @@ public class ExportService {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
 
     try {
-      PdfWriter writer = PdfWriter.getInstance(document, out);
+      PdfWriter.getInstance(document, out);
     } catch (DocumentException e) {
       e.printStackTrace();
     }
