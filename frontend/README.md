@@ -14,12 +14,14 @@ Wykorzystywane technologie:
 ## Przygotowanie środowiska deweloperskiego
 
 Wymagane do uruchomienia strony internetowej oraz aplikacji mobilnej:
-1. Instalacja npm (składnika [node.js](https://nodejs.org/en/))
-2. Popranie plików bibliotek, wykonując polecenie `npm i` w katalogu `frontend`
+1. Instalacja [node.js](https://nodejs.org/en/) w wersji 10.16
+2. Pobranie plików bibliotek - polecenie `npm i` w katalogu `frontend`
 
 Dodatkowe czynności wymagane do uruchomienia aplikacji mobilnej:
 1. Wykonanie wszystkich czynności opisanych [na tej stronie](https://facebook.github.io/react-native/docs/getting-started) w zakładce 'React Native CLI Quickstart'
 2. Ponowne uruchomienie komputera
+
+Jeśli node.js jest w wersji nowszej niż 10.16, mogą pojawiać się problemy z uruchamianiem metro serwera. Instrukcje do naprawy tych błędów znajdują się na końcu tej dokumentacji.
 
 ## Uruchamianie
 
@@ -27,11 +29,16 @@ Aplikację można uruchomić na urządzeniu mobilnym lub w przeglądarce na komp
 
 ### Aplikacja mobilna
 
+Instrukcje przygotowania emulatora znajdują [na tej stronie](https://facebook.github.io/react-native/docs/getting-started) pod hasłem 'Preparing the Android device'
+
+Instrukcje przygotowania fizycznego urządzenia znajdują się [na tej stronie](https://facebook.github.io/react-native/docs/running-on-device)
+
+
 Polecenie:
 ```
 npm run android-dev
 ```
-Instaluje aplikację na podłączonym urządzeniu z systemem Android oraz uruchamia lokalny deweloperski serwer Metro. Aplikacja jest odświeżana przy każdej zmianie kodu źródłowego. Potrząśnięcie urządzeniem włącza opcje deweloperskie.
+Instaluje aplikację na dostępnym urządzeniu z systemem Android (fizyczne urządzenie lub emulator) oraz uruchamia lokalny deweloperski serwer Metro. Aplikacja jest odświeżana przy każdej zmianie kodu źródłowego. Potrząśnięcie urządzeniem włącza opcje deweloperskie.
 
 Na chwilę obecną nie ma informacji o sposobie uzyskania połączenia z api-serwerem oraz o sposobach debugowania aplikacji na urządzeniu.
 
@@ -65,3 +72,17 @@ Polecenie:
 npm run build-web
 ```
 Tworzy wersję produkcyjną w katalogu `/build`.
+
+
+## Inne informacje:
+
+Jeśli node.js jest w wersji nowszej niż 10.16, mogą pojawiać się problemy z uruchamianiem metro serwera. Wtedy można je rozwiązać następująco:
+- zmodyfikować plik `frontend\node_modules\metro-config\src\defaults\blacklist.js`:
+```
+var sharedBlacklist = [
+  /node_modules[\/\\]react[\/\\]dist[\/\\].*/,
+  /website\/node_modules\/.*/,
+  /heapCapture\/bundle\.js/,
+  /.*\/__tests__\/.*/
+];
+```

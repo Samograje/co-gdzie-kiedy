@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Logika biznesowa przynależności.
@@ -48,15 +50,16 @@ public class AffiliationService {
     return stringBuilder.toString();
   }
 
-  public PaginatedResult<AffiliationListOutputDTO> getAffiliations(Specification<Affiliation> affiliationSpecification) {
-    Iterable<Affiliation> affiliations = affiliationRepository.findAllByIsDeletedIsFalse();
+  public PaginatedResult<AffiliationListOutputDTO> getAffiliations(Specification<Affiliation> specification) {
+    final Specification<Affiliation> resultSpecification = (
+      (Specification<Affiliation>) (root, query, criteriaBuilder) -> criteriaBuilder.isFalse(root.get("isDeleted"))
+    ).and(specification);
+
+    Iterable<Affiliation> affiliations = affiliationRepository.findAll(resultSpecification);
+
     List<AffiliationListOutputDTO> dtos = new ArrayList<>();
-    for (Affiliation affiliation : affiliations) {
-      AffiliationListOutputDTO dto = new AffiliationListOutputDTO();
-      dto.setId(affiliation.getId());
-      dto.setName(generateName(affiliation));
-      dtos.add(dto);
-    }
+    affiliations.forEach(affiliation -> dtos.add(toListOutputDTO(affiliation)));
+
     PaginatedResult<AffiliationListOutputDTO> response = new PaginatedResult<>();
     response.setItems(dtos);
     response.setTotalElements((long) dtos.size());
@@ -65,7 +68,7 @@ public class AffiliationService {
 
   public AffiliationDTO getAffiliation(Long id) throws NotFoundException {
     Affiliation affiliation = affiliationRepository.findById(id)
-        .orElseThrow(() -> new NotFoundException("przynależność", "id", id));
+      .orElseThrow(() -> new NotFoundException("przynależność", "id", id));
 
     AffiliationDTO response = new AffiliationDTO();
     response.setFirstName(affiliation.getFirstName());
@@ -84,7 +87,7 @@ public class AffiliationService {
 
   public void editAffiliation(Long id, AffiliationDTO request) throws NotFoundException {
     Affiliation affiliation = affiliationRepository.findByIdAndIsDeletedIsFalse(id)
-        .orElseThrow(() -> new NotFoundException("przynależność", "id", id));
+      .orElseThrow(() -> new NotFoundException("przynależność", "id", id));
     affiliation.setFirstName(request.getFirstName());
     affiliation.setLastName(request.getLastName());
     affiliation.setLocation(request.getLocation());
@@ -93,8 +96,33 @@ public class AffiliationService {
 
   public void deleteAffiliation(Long id) throws NotFoundException {
     Affiliation affiliation = affiliationRepository.findByIdAndIsDeletedIsFalse(id)
-        .orElseThrow(() -> new NotFoundException("przynależność", "id", id));
+      .orElseThrow(() -> new NotFoundException("przynależność", "id", id));
     affiliation.setDeleted(true);
     affiliationRepository.save(affiliation);
+  }
+
+  private AffiliationListOutputDTO toListOutputDTO(Affiliation affiliation) {
+    AffiliationListOutputDTO dto = new AffiliationListOutputDTO();
+
+    dto.setId(affiliation.getId());
+    dto.setFirstName(affiliation.getFirstName());
+    dto.setLastName(affiliation.getLastName());
+    dto.setLocation(affiliation.getLocation());
+
+    Set<String> computerSetsInventoryNumbers = affiliation.getAffiliationComputerSetSet()
+      .stream()
+      .filter(affiliationComputerSet -> affiliationComputerSet.getValidTo() == null)
+      .map(affiliationComputerSet -> affiliationComputerSet.getComputerSet().getInventoryNumber())
+      .collect(Collectors.toSet());
+    dto.setComputerSetsInventoryNumbers(computerSetsInventoryNumbers);
+
+    Set<String> hardwareInventoryNumbers = affiliation.getAffiliationHardwareSet()
+      .stream()
+      .filter(affiliationHardware -> affiliationHardware.getValidTo() == null)
+      .map(affiliationHardware -> affiliationHardware.getHardware().getInventoryNumber())
+      .collect(Collectors.toSet());
+    dto.setHardwareInventoryNumbers(hardwareInventoryNumbers);
+
+    return dto;
   }
 }

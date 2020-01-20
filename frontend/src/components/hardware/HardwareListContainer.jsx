@@ -12,6 +12,8 @@ class HardwareListContainer extends Component {
       items: [],
       totalElements: null,
       filters: {},
+      dialogOpened: false,
+      itemToDeleteId: null,
     };
   }
 
@@ -52,7 +54,7 @@ class HardwareListContainer extends Component {
   };
 
   deleteCall = (id) => {
-    request(`/api/hardware/${id}`,{
+    request(`/api/hardware/${this.state.itemToDeleteId}`,{
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -63,6 +65,7 @@ class HardwareListContainer extends Component {
           if (!this._isMounted) {
             return;
           }
+          this.closeDialog();
           this.fetchData();
         })
         .catch((error) => {
@@ -72,6 +75,11 @@ class HardwareListContainer extends Component {
           console.error(error);
         });
   };
+
+  closeDialog = () => this.setState({
+    dialogOpened: false,
+    itemToDeleteId: null,
+  });
 
   handleFilterChange = (fieldName, text) => {
     const newFilters = {
@@ -126,9 +134,10 @@ class HardwareListContainer extends Component {
       },
       {
         label: 'Usuń',
-        onClick: (itemData) => {
-          this.deleteCall(itemData.id)
-        },
+        onClick: (itemData) => this.setState({
+          dialogOpened: true,
+          itemToDeleteId: itemData.id,
+        }),
       },
       {
         label: 'HA',
@@ -174,6 +183,9 @@ class HardwareListContainer extends Component {
         columns={columns}
         itemActions={itemActions}
         groupActions={groupActions}
+        dialogOpened={this.state.dialogOpened}
+        dialogHandleConfirm={this.deleteCall}
+        dialogHandleReject={this.closeDialog}
       />
     );
   }
