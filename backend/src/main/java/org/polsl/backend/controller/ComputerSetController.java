@@ -7,7 +7,7 @@ import org.polsl.backend.dto.computerset.ComputerSetListOutputDTO;
 import org.polsl.backend.entity.ComputerSet;
 import org.polsl.backend.filtering.Search;
 import org.polsl.backend.service.ComputerSetService;
-import org.polsl.backend.service.ExportService;
+import org.polsl.backend.service.export.ExportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;

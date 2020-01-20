@@ -6,7 +6,7 @@ import org.polsl.backend.dto.software.SoftwareDTO;
 import org.polsl.backend.dto.software.SoftwareListOutputDTO;
 import org.polsl.backend.entity.Software;
 import org.polsl.backend.filtering.Search;
-import org.polsl.backend.service.ExportService;
+import org.polsl.backend.service.export.ExportService;
 import org.polsl.backend.service.SoftwareService;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;

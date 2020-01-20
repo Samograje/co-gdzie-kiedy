@@ -6,8 +6,8 @@ import org.polsl.backend.dto.hardware.HardwareDTO;
 import org.polsl.backend.dto.hardware.HardwareListOutputDTO;
 import org.polsl.backend.entity.Hardware;
 import org.polsl.backend.filtering.Search;
-import org.polsl.backend.service.ExportService;
 import org.polsl.backend.service.HardwareService;
+import org.polsl.backend.service.export.ExportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
@@ -84,7 +84,7 @@ public class HardwareController {
   }
 
   /**
-   * Endpoint obsługujący uzyskiwanie pliku Pdf z listą sprzętu.
+   * Endpoint obsługujący uzyskiwanie pliku pdf z listą sprzętu.
    *
    * @return plik pdf z listą rekordów
    */
@@ -93,10 +93,8 @@ public class HardwareController {
     Search<Hardware> filtering = new Search<>(new Hardware(), search);
     PaginatedResult<HardwareListOutputDTO> data = hardwareService.getHardwareList(filtering.searchInitialization());
     InputStreamResource inputStreamResource = exportService.export("hardware", data.getItems());
-
     return new ResponseEntity<>(inputStreamResource, exportService.getHttpHeaders(), HttpStatus.OK);
   }
-  //TODO: PDF
 
   /**
    * Endpoint obsługujący dodawanie nowego sprzętu.
