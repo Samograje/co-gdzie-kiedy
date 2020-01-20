@@ -177,6 +177,7 @@ public class ExportService {
     // uzyskiwanie informacji o polach klasy
     Map<String, Field> fields = Arrays.stream(data.get(0).getClass().getDeclaredFields())
       .filter(field -> field.isAnnotationPresent(ExportColumn.class))
+      .peek(field -> field.setAccessible(true))
       .collect(LinkedHashMap::new, (map, item) -> map.put(item.getName(), item), Map::putAll);
 
     // uzyskiwanie danych z pól klasy
