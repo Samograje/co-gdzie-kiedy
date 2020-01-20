@@ -1,13 +1,25 @@
 package org.polsl.backend.dto.computerset;
 
+import org.polsl.backend.service.export.ExportColumn;
+
 import java.util.Set;
 
 public class ComputerSetListOutputDTO {
   private Long id;
+
+  @ExportColumn("Nazwa")
   private String name;
+
+  @ExportColumn("Numer inwentarzowy")
   private String computerSetInventoryNumber;
+
+  @ExportColumn("Przynależy do")
   private String affiliationName;
+
+  @ExportColumn("Numery inwentarzowe powiązanych oprogramowań")
   private Set<String> softwareInventoryNumbers;
+
+  @ExportColumn("Numery inwentarzowe powiązanych sprzętów")
   private Set<String> hardwareInventoryNumbers;
 
   public Long getId() {
