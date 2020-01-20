@@ -138,6 +138,11 @@ class ComputerSetsListContainer extends Component {
         }),
       },
       {
+        label: 'Eksportuj do pdf',
+        onClick: () => request('/api/computer-sets/export')
+          .then(response => response.blob()),
+      },
+      {
         disabled: Platform.OS !== 'android',
         label: 'Wyszukaj za pomocą kodu QR',
         onClick: () => {

@@ -155,6 +155,11 @@ class AffiliationsListContainer extends Component {
           mode: 'create',
         }),
       },
+      {
+        label: 'Eksportuj do pdf',
+        onClick: () => request('/api/affiliations/export')
+          .then(response => response.blob()),
+      },
     ];
 
     return (

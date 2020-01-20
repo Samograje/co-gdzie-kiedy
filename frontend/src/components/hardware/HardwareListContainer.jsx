@@ -164,6 +164,11 @@ class HardwareListContainer extends Component {
         }),
       },
       {
+        label: 'Eksportuj do pdf',
+        onClick: () => request('/api/hardware/export')
+          .then(response => response.blob()),
+      },
+      {
         disabled: Platform.OS !== 'android',
         label: 'Wyszukaj za pomocą kodu QR',
         onClick: () => {
