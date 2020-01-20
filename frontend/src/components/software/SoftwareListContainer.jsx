@@ -13,6 +13,8 @@ class SoftwareListContainer extends Component {
       items: [],
       totalElements: null,
       filters: {},
+      dialogOpened: false,
+      itemToDeleteId: null,
     };
   }
   componentDidMount() {
@@ -30,34 +32,34 @@ class SoftwareListContainer extends Component {
       error: false,
     });
     request('/api/software', options)
-        .then((response) => response.json())
-        .then((response) => {
-          if (!this._isMounted) {
-            return;
-          }
-          for(let i = 0; i < response.items.length; i++)
-          {
-            let duration = response.items[i].duration;
-            let months = moment(duration).month() +  12 * (moment(duration).year() - moment(0).year());
-            if(months <= 0)
-              response.items[i].duration = "Licencja utraciła ważność";
-            else
-              response.items[i].duration = months;
-          }
-          this.setState({
-            loading: false,
-            ...response,
-          });
-        })
-        .catch(() => {
-          if (!this._isMounted) {
-            return;
-          }
-          this.setState({
-            loading: false,
-            error: true,
-          });
-        })
+      .then((response) => response.json())
+      .then((response) => {
+        if (!this._isMounted) {
+          return;
+        }
+        for(let i = 0; i < response.items.length; i++)
+        {
+          let duration = response.items[i].duration;
+          let months = moment(duration).month() +  12 * (moment(duration).year() - moment(0).year());
+          if(months <= 0)
+            response.items[i].duration = "Licencja utraciła ważność";
+          else
+            response.items[i].duration = months;
+        }
+        this.setState({
+          loading: false,
+          ...response,
+        });
+      })
+      .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.setState({
+          loading: false,
+          error: true,
+        });
+      })
   };
 
   handleFilterChange = (fieldName, text) => {
@@ -73,27 +75,33 @@ class SoftwareListContainer extends Component {
     });
   };
 
-  deleteCall = (id) => {
-    request(`/api/software/${id}`,{
+  deleteCall = () => {
+    request(`/api/software/${this.state.itemToDeleteId}`,{
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       }
     }).then((response) => response.json())
-        .then(() => {
-          if (!this._isMounted) {
-            return;
-          }
-          this.fetchData();
-        })
-        .catch((error) => {
-          if (!this._isMounted) {
-            return;
-          }
-          console.error(error);
-        });
+      .then(() => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.closeDialog();
+        this.fetchData();
+      })
+      .catch((error) => {
+        if (!this._isMounted) {
+          return;
+        }
+        console.error(error);
+      });
   };
+
+  closeDialog = () => this.setState({
+    dialogOpened: false,
+    itemToDeleteId: null,
+  });
 
   render() {
     const columns = [
@@ -136,9 +144,10 @@ class SoftwareListContainer extends Component {
       },
       {
         label: 'Usuń',
-        onClick: (itemData) => {
-          this.deleteCall(itemData.id)
-        },
+        onClick: (itemData) => this.setState({
+          dialogOpened: true,
+          itemToDeleteId: itemData.id,
+        }),
       },
       {
         label: 'HC',
@@ -176,6 +185,9 @@ class SoftwareListContainer extends Component {
         columns={columns}
         itemActions={itemActions}
         groupActions={groupActions}
+        dialogOpened={this.state.dialogOpened}
+        dialogHandleConfirm={this.deleteCall}
+        dialogHandleReject={this.closeDialog}
       />
     );
   }
