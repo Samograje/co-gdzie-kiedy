@@ -16,18 +16,21 @@ class HardwareListContainer extends Component {
   }
 
   componentDidMount() {
-    if (Platform.OS === 'android'){
-      const { navigation } = this.props;
-      this.focusListener = this.props.addListener('didFocus', () => {});
-    }
-
     this._isMounted = true;
-    this.fetchData();
+
+    if (Platform.OS === 'android') {
+      const {navigation} = this.props;
+      this.focusListener = this.props.addListener('didFocus', () => {
+        this.fetchData();
+      });
+    } else {
+      this.fetchData();
+    }
   }
 
   componentWillUnmount() {
     this._isMounted = false;
-    if (Platform.OS === 'android'){
+    if (Platform.OS === 'android') {
       this.focusListener.remove();
     }
   }
@@ -60,25 +63,25 @@ class HardwareListContainer extends Component {
   };
 
   deleteCall = (id) => {
-    request(`/api/hardware/${id}`,{
+    request(`/api/hardware/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       }
     }).then((response) => response.json())
-        .then(() => {
-          if (!this._isMounted) {
-            return;
-          }
-          this.fetchData();
-        })
-        .catch((error) => {
-          if (!this._isMounted) {
-            return;
-          }
-          console.error(error);
-        });
+      .then(() => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.fetchData();
+      })
+      .catch((error) => {
+        if (!this._isMounted) {
+          return;
+        }
+        console.error(error);
+      });
   };
 
   handleFilterChange = (fieldName, text) => {

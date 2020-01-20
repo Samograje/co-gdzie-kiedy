@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import AffiliationsListComponent from './AffiliationsListComponent';
 import request from '../../APIClient';
+import {Platform} from "react-native";
 
 class AffiliationsListContainer extends Component {
   constructor(props) {
@@ -16,11 +17,23 @@ class AffiliationsListContainer extends Component {
 
   componentDidMount() {
     this._isMounted = true;
-    this.fetchData();
+
+    if (Platform.OS === 'android') {
+      const {navigation} = this.props;
+      this.focusListener = this.props.addListener('didFocus', () => {
+        this.fetchData();
+      });
+    } else {
+      this.fetchData();
+    }
   }
 
   componentWillUnmount() {
     this._isMounted = false;
+
+    if (Platform.OS === 'android') {
+      this.focusListener.remove();
+    }
   }
 
   fetchData = (options) => {

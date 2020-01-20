@@ -29,7 +29,6 @@ class SoftwareListContainer extends Component {
     } else {
       this.fetchData();
     }
-
   }
 
   componentWillUnmount() {
