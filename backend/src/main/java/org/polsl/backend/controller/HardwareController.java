@@ -92,7 +92,7 @@ public class HardwareController {
   public ResponseEntity<?> printListToPdf(@RequestParam(value = "search", required = false) String search) {
     Search<Hardware> filtering = new Search<>(new Hardware(), search);
     PaginatedResult<HardwareListOutputDTO> data = hardwareService.getHardwareList(filtering.searchInitialization());
-    InputStreamResource inputStreamResource = exportService.export("hardware", data.getItems());
+    InputStreamResource inputStreamResource = exportService.export("Sprzęty", data.getItems());
     return new ResponseEntity<>(inputStreamResource, exportService.getHttpHeaders(), HttpStatus.OK);
   }
 

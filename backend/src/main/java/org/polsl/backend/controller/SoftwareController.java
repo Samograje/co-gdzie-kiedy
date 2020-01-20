@@ -48,7 +48,6 @@ public class SoftwareController {
    * @param id ID wybranego oprogramowania
    * @return oprogramowanie o danym id
    */
-
   @GetMapping("/{id}")
   public ResponseEntity<?> getSoftware(@PathVariable(value = "id") Long id) {
     return ResponseEntity.ok(softwareService.getOneSoftware(id));
@@ -74,7 +73,7 @@ public class SoftwareController {
   public ResponseEntity<?> printListToPdf(@RequestParam(value = "search", required = false) String search) {
     Search<Software> filtering = new Search<>(new Software(), search);
     PaginatedResult<SoftwareListOutputDTO> data = softwareService.getAllSoftware(filtering.searchInitialization());
-    InputStreamResource inputStreamResource = exportService.export("software", data.getItems());
+    InputStreamResource inputStreamResource = exportService.export("Oprogramowanie", data.getItems());
 
     return new ResponseEntity<>(inputStreamResource, exportService.getHttpHeaders(), HttpStatus.OK);
   }

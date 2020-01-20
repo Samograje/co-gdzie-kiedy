@@ -59,7 +59,7 @@ public class ComputerSetController {
   public ResponseEntity<?> printListToPdf(@RequestParam(value = "search", required = false) String search) {
     Search<ComputerSet> filtering = new Search<>(new ComputerSet(), search);
     PaginatedResult<ComputerSetListOutputDTO> data = computerSetService.getAllComputerSets(filtering.searchInitialization());
-    InputStreamResource inputStreamResource = exportService.export("computerSet", data.getItems());
+    InputStreamResource inputStreamResource = exportService.export("Zestawy komputerowe", data.getItems());
 
     return new ResponseEntity<>(inputStreamResource, exportService.getHttpHeaders(), HttpStatus.OK);
   }

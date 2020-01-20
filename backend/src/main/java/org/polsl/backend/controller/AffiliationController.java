@@ -70,7 +70,7 @@ public class AffiliationController {
   public ResponseEntity<?> printListToPdf(@RequestParam(value = "search", required = false) String search) {
     Search<Affiliation> filtering = new Search<>(new Affiliation(), search);
     PaginatedResult<AffiliationListOutputDTO> data = affiliationService.getAffiliations(filtering.searchInitialization());
-    InputStreamResource inputStreamResource = exportService.export("affiliation", data.getItems());
+    InputStreamResource inputStreamResource = exportService.export("Osoby i miejsca", data.getItems());
 
     return new ResponseEntity<>(inputStreamResource, exportService.getHttpHeaders(), HttpStatus.OK);
   }
