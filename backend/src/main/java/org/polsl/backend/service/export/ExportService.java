@@ -87,12 +87,11 @@ public class ExportService {
     }
 
     // tabela
+    List<String> columnFields = columnSpecifications.stream()
+      .map(ColumnSpecification::getColumnField)
+      .collect(Collectors.toList());
     List<Map<String, String>> mappedData = getData(data);
     for (Map<String, String> mappedItem : mappedData) {
-      List<String> columnFields = columnSpecifications.stream()
-        .map(ColumnSpecification::getColumnField)
-        .collect(Collectors.toList());
-
       for (String columnField : columnFields) {
         PdfPCell tableCell = createTableCell(mappedItem.get(columnField), tableBodyFont, true);
         tableCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
