@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -141,46 +142,58 @@ public class ExportService {
     return new PdfPCell(new Phrase(value, font));
   }
 
-
+  /**
+   * Uzyskuje informacje o kolumnach tabeli do eksportu
+   *
+   * @param data lista z danymi do eksportu
+   * @return lista z informacjami o kolumnach
+   */
   private List<ColumnSpecification> getDataModel(List data) {
     if (data == null || data.isEmpty()) {
-      throw new RuntimeException();
+      return null;
     }
 
-    List<Method> methods = Arrays.asList(data.get(0).getClass().getDeclaredMethods());
-    return methods.stream()
-      .filter(m -> m.isAnnotationPresent(ExportColumn.class))
-      .map(m -> m.getAnnotation(ExportColumn.class))
-      .map(a -> new ColumnSpecification(a.field(), a.name()))
+    List<Field> fields = Arrays.asList(data.get(0).getClass().getDeclaredFields());
+    return fields.stream()
+      .filter(field -> field.isAnnotationPresent(ExportColumn.class))
+      .map(field -> {
+        String name = field.getAnnotation(ExportColumn.class).value();
+        return new ColumnSpecification(field.getName(), name);
+      })
       .collect(Collectors.toList());
   }
 
+  /**
+   * Mapuje listę danych na format łatwiejszy do odczytu
+   *
+   * @param data lista z danymi do eksportu
+   * @return lista danych w postaci listy map
+   */
   private List<Map<String, String>> getData(List data) {
     if (data == null || data.isEmpty()) {
-      throw new RuntimeException();
+      return null;
     }
 
-    List<Method> methods = Arrays.asList(data.get(0).getClass().getDeclaredMethods());
+    // uzyskiwanie informacji o polach klasy
+    Map<String, Field> fields = Arrays.stream(data.get(0).getClass().getDeclaredFields())
+      .filter(field -> field.isAnnotationPresent(ExportColumn.class))
+      .collect(LinkedHashMap::new, (map, item) -> map.put(item.getName(), item), Map::putAll);
 
-    Map<String, Method> fieldMethods = methods.stream()
-      .filter(m -> m.isAnnotationPresent(ExportColumn.class))
-      .collect(
-        LinkedHashMap::new,
-        (map, item) -> map.put(item.getAnnotation(ExportColumn.class).field(), item),
-        Map::putAll
-      );
-
+    // uzyskiwanie danych z pól klasy
     List<Map<String, String>> mappedData = new ArrayList<>();
     for (Object item : data) {
       Map<String, String> itemData = new LinkedHashMap<>();
-      for (Map.Entry<String, Method> stringMethodEntry : fieldMethods.entrySet()) {
+      for (Map.Entry<String, Field> fieldEntry : fields.entrySet()) {
+
+        // uzyskanie wartości pola
         Object fieldValue;
         try {
-          fieldValue = stringMethodEntry.getValue().invoke(item);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-          throw new RuntimeException();
+          fieldValue = fieldEntry.getValue().get(item);
+        } catch (IllegalAccessException e) {
+          return null;
         }
 
+        // przypadek, gdy wartością jest kolekcja
         if (fieldValue instanceof Iterable) {
           Iterable<?> items = (Iterable<?>) fieldValue;
           StringJoiner stringJoiner = new StringJoiner("\n");
@@ -188,10 +201,11 @@ public class ExportService {
           fieldValue = stringJoiner;
         }
 
+        // dodanie wartości do mapy
         if (fieldValue != null) {
           fieldValue = fieldValue.toString();
         }
-        itemData.put(stringMethodEntry.getKey(), (String) fieldValue);
+        itemData.put(fieldEntry.getKey(), (String) fieldValue);
       }
       mappedData.add(itemData);
     }
