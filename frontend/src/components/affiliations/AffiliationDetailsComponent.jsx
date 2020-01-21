@@ -3,7 +3,6 @@ import {
   ActivityIndicator,
   ScrollView,
   StyleSheet,
-  Text,
   View,
 } from 'react-native';
 import {mainColor} from '../../constValues';
@@ -11,6 +10,7 @@ import ErrorElement from '../ui/ErrorElement';
 import CgkFormFooter from '../ui/form/CgkFormFooter';
 import CgkLabelAndValidation from '../ui/form/CgkLabelAndValidation';
 import CgkTextInput from '../ui/form/CgkTextInput';
+import CgkFormHeader from '../ui/form/CgkFormHeader';
 
 const AffiliationDetailsComponent = (props) => {
   const {
@@ -26,14 +26,13 @@ const AffiliationDetailsComponent = (props) => {
     onChange,
   } = props;
 
-  const header = (
-    <View style={styles.header}>
-      <Text style={styles.headerText}>
-        {mode === 'create' && 'Dodawanie osoby / miejsca'}
-        {mode === 'edit' && 'Edycja osoby / miejsca'}
-      </Text>
-    </View>
-  );
+  let headerText;
+  if (mode === 'create') {
+    headerText = 'Dodawanie osoby / miejsca';
+  }
+  if (mode === 'edit') {
+    headerText = 'Edycja osoby / miejsca';
+  }
 
   const main = (
     <View style={styles.main}>
@@ -86,7 +85,7 @@ const AffiliationDetailsComponent = (props) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={isWide ? styles.contentWide : styles.contentMobile}>
-        {header}
+        <CgkFormHeader text={headerText}/>
         {!isLoading && main}
         {isLoading && spinner}
         {error && (
@@ -119,16 +118,6 @@ const styles = StyleSheet.create({
   contentMobile: {
     flex: 1,
     margin: 10,
-  },
-  header: {
-    margin: 5,
-    paddingBottom: 10,
-    marginBottom: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: mainColor,
-  },
-  headerText: {
-    fontSize: 24,
   },
   main: {
     marginBottom: 15,
