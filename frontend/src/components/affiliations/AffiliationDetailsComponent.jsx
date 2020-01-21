@@ -23,7 +23,6 @@ const AffiliationDetailsComponent = (props) => {
     onSubmit,
     onReject,
     onChange,
-    onLayout,
   } = props;
 
   const header = (
@@ -36,7 +35,7 @@ const AffiliationDetailsComponent = (props) => {
   );
 
   const main = (
-    <View style={[styles.main, isWide && styles.row]}>
+    <View style={styles.main}>
       <View style={styles.inputField}>
         <Text style={styles.label}>Imię</Text>
         <TextInput
@@ -76,7 +75,6 @@ const AffiliationDetailsComponent = (props) => {
           <Text style={styles.validationError}>{errors.location}</Text>
         )}
       </View>
-
     </View>
   );
 
@@ -109,8 +107,8 @@ const AffiliationDetailsComponent = (props) => {
   );
 
   return (
-    <ScrollView>
-      <View style={styles.container} onLayout={onLayout}>
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={isWide ? styles.contentWide : styles.contentMobile}>
         {header}
         {!isLoading && main}
         {isLoading && spinner}
@@ -129,7 +127,16 @@ const AffiliationDetailsComponent = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 5,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  contentWide: {
+    width: 400,
+    margin: 10,
+  },
+  contentMobile: {
+    flex: 1,
+    margin: 10,
   },
   header: {
     margin: 5,
