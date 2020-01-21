@@ -4,12 +4,12 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   View,
 } from 'react-native';
 import {mainColor} from '../../constValues';
 import ErrorElement from '../ui/ErrorElement';
 import FormFooter from '../ui/form/FormFooter';
+import FormField from '../ui/form/FormField';
 
 const AffiliationDetailsComponent = (props) => {
   const {
@@ -36,45 +36,30 @@ const AffiliationDetailsComponent = (props) => {
 
   const main = (
     <View style={styles.main}>
-      <View style={styles.inputField}>
-        <Text style={styles.label}>Imię</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Wprowadź imię"
-          onChangeText={(text) => onChange('firstName', text)}
-          editable={!isSubmitting}
-          value={data.firstName}
-        />
-        {errors.firstName && (
-          <Text style={styles.validationError}>{errors.firstName}</Text>
-        )}
-      </View>
-      <View style={styles.inputField}>
-        <Text style={styles.label}>Nazwisko</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Wprowadź nazwisko"
-          onChangeText={(text) => onChange('lastName', text)}
-          editable={!isSubmitting}
-          value={data.lastName}
-        />
-        {errors.lastName && (
-          <Text style={styles.validationError}>{errors.lastName}</Text>
-        )}
-      </View>
-      <View style={styles.inputField}>
-        <Text style={styles.label}>Lokalizacja</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Wprowadź lokalizację"
-          onChangeText={(text) => onChange('location', text)}
-          editable={!isSubmitting}
-          value={data.location}
-        />
-        {errors.location && (
-          <Text style={styles.validationError}>{errors.location}</Text>
-        )}
-      </View>
+      <FormField
+        label="Imię"
+        placeholder="Wprowadź imię"
+        disabled={isSubmitting}
+        text={data.firstName}
+        onChangeText={(text) => onChange('firstName', text)}
+        errors={errors.firstName}
+      />
+      <FormField
+        label="Nazwisko"
+        placeholder="Wprowadź nazwisko"
+        disabled={isSubmitting}
+        text={data.lastName}
+        onChangeText={(text) => onChange('lastName', text)}
+        errors={errors.lastName}
+      />
+      <FormField
+        label="Lokalizacja"
+        placeholder="Wprowadź lokalizację"
+        disabled={isSubmitting}
+        text={data.location}
+        onChangeText={(text) => onChange('location', text)}
+        errors={errors.location}
+      />
     </View>
   );
 
