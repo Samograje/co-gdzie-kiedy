@@ -1,16 +1,15 @@
 import React from 'react';
 import {
   ActivityIndicator,
-  Button,
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   View,
 } from 'react-native';
 import AutoComplete from '../ui/form/AutoComplete';
 import PickerWithItems from '../ui/form/PickerWithItems';
 import FormFooter from '../ui/form/FormFooter';
+import FormField from '../ui/form/FormField';
 
 const HardwareDetailsComponent = (props) => {
   let modeInfo;
@@ -33,14 +32,13 @@ const HardwareDetailsComponent = (props) => {
 
           {!(props.loadingAffiliations || props.loadingDictionary || props.loadingComputerSets) && (
               <>
-                <View>
-                  <Text style={styles.labelText}>* Nazwa sprzętu:</Text>
-                  <TextInput style={styles.textInput}
-                             placeholder={"Wprowadź nazwę sprzętu"}
-                             value={props.name}
-                             onChangeText={(name) => props.setName(name)}
-                  />
-                </View>
+
+                <FormField
+                  label="* Nazwa sprzętu:"
+                  placeholder="Wprowadź nazwę sprzętu"
+                  text={props.name}
+                  onChangeText={(name) => props.setName(name)}
+                />
 
                 <View>
                   <Text style={styles.labelText}>* Typ:</Text>
@@ -89,28 +87,12 @@ const styles = StyleSheet.create({
     padding: 15,
     width: '75%',
   },
-  labelText: {
-    marginTop: 10,
-    fontSize: 20,
-    marginBottom: 5,
-    fontWeight: '500',
-  },
   header: {
     fontSize: 24,
     paddingBottom: 10,
     marginBottom: 25,
     borderBottomColor: '#199187',
     borderBottomWidth: 1,
-  },
-  textInput: {
-    marginBottom: 10,
-    width: '100%',
-    height: 35,
-    borderColor: '#009000',
-    borderWidth: 1.2,
-    padding: 2,
-    borderRadius: 7,
-    fontWeight: '500',
   },
   oneLineElement: {
     flexDirection: 'row',

@@ -50,6 +50,31 @@ const styles = StyleSheet.create({
   validationError: {
     color: 'darkred',
   },
+
+  // TODO: usunąć poniższe stare style
+
+  // labeltext: {
+  //   marginTop: 10,
+  //   fontSize: 20,
+  //   marginBottom: 5,
+  //   fontWeight: '500',
+  // },
+
+  // textinput: {
+  //   marginBottom: 10,
+  //   width: '100%',
+  //   height: 35,
+  //   borderColor: '#009000',
+  //   borderWidth: 1.2,
+  //   padding: 2,
+  //   borderRadius: 7,
+  //   fontWeight: '500',
+  // },
+
+  // validationError: {
+  //   color: '#ff0000',
+  //   fontSize: 10,
+  // },
 });
 
 export default FormField;
