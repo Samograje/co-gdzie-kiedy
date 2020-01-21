@@ -8,6 +8,7 @@ import {
   View,
   TextInput,
 } from 'react-native';
+import FormFooter from '../ui/form/FormFooter';
 
 const SoftwareDetailsComponent = (props) => {
   let mode;
@@ -65,20 +66,17 @@ const SoftwareDetailsComponent = (props) => {
         </>
       )}
 
-
-        <Button
-          title="Zapisz"
-          onPress={props.onSubmit}
-          disabled={props.validationEmptyStatus ||
-          props.validationAvailableKeysIsNumberStatus ||
-          !props.validationAvailableKeysIsBiggerThan0NumberStatus ||
-          props.validationDurationIsNumberStatus ||
-          !props.validationDurationIsBiggerThan0NumberStatus ||
-          props.validationDisableDuration}
-        />
-        <Button
-          title="Wróć"
-          onPress={props.onReject}
+        <FormFooter
+          isSubmitDisabled={
+            props.validationEmptyStatus ||
+            props.validationAvailableKeysIsNumberStatus ||
+            !props.validationAvailableKeysIsBiggerThan0NumberStatus ||
+            props.validationDurationIsNumberStatus ||
+            !props.validationDurationIsBiggerThan0NumberStatus ||
+            props.validationDisableDuration
+          }
+          onSubmit={props.onSubmit}
+          onReject={props.onReject}
         />
       </View>
     </ScrollView>

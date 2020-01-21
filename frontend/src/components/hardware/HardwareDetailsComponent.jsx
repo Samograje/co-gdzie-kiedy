@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import AutoComplete from '../ui/form/AutoComplete';
 import PickerWithItems from '../ui/form/PickerWithItems';
+import FormFooter from '../ui/form/FormFooter';
 
 const HardwareDetailsComponent = (props) => {
   let modeInfo;
@@ -72,14 +73,10 @@ const HardwareDetailsComponent = (props) => {
               </>
           )}
 
-          <Button
-              title="Zapisz"
-              onPress={props.onSubmit}
-              disabled={props.isInvalid}
-          />
-          <Button
-              title="Wróć"
-              onPress={props.onReject}
+          <FormFooter
+            isSubmitDisabled={props.isInvalid}
+            onSubmit={props.onSubmit}
+            onReject={props.onReject}
           />
         </View>
       </ScrollView>
