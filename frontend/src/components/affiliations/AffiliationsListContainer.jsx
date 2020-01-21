@@ -101,7 +101,7 @@ class AffiliationsListContainer extends Component {
     const itemActions = [
       {
         label: 'Edytuj',
-          icon: 'ic_action_edit.png',
+        icon: require('./../../images/ic_action_edit.png'),
         onClick: (itemData) => this.props.push('AffiliationDetails', {
           mode: 'edit',
           id: itemData.id,
@@ -109,7 +109,7 @@ class AffiliationsListContainer extends Component {
       },
       {
         label: 'Usuń',
-          icon: 'ic_action_delete.png',
+        icon: require('./../../images/ic_action_delete.png'),
         onClick: (itemData) => this.deleteItem(itemData.id),
       },
       // TODO: akcje wyświetlania historii powiązań

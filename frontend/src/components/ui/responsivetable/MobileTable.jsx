@@ -88,7 +88,7 @@ const MobileTable = (props) => {
                   key={idx}
                 >
                   <Image
-                    source={require(`./../../../images/${action.icon}`)}
+                    source={action.icon}
                     resizeMode="contain"
                     style={styles.icon}
                   />
