@@ -7,7 +7,8 @@ import {
   View,
 } from 'react-native';
 import FormFooter from '../ui/form/FormFooter';
-import FormField from '../ui/form/FormField';
+import InputWithLabelAndValidation from '../ui/form/InputWithLabelAndValidation';
+import FormTextInput from '../ui/form/FormTextInput';
 
 const SoftwareDetailsComponent = (props) => {
   let mode;
@@ -30,39 +31,51 @@ const SoftwareDetailsComponent = (props) => {
         <>
           <Text>Pola z * są obowiązkowe.</Text>
 
-          <FormField
+          <InputWithLabelAndValidation
             label="* Nazwa oprogramowania:"
-            placeholder="Wprowadź nazwe nowego oprogramowania"
-            text={props.name}
-            onChangeText={(name) => props.setName(name)}
-          />
-          <FormField
+          >
+            <FormTextInput
+              placeholder="Wprowadź nazwe nowego oprogramowania"
+              text={props.name}
+              onChangeText={(name) => props.setName(name)}
+            />
+          </InputWithLabelAndValidation>
+          <InputWithLabelAndValidation
             label="* Klucz produktu:"
-            placeholder="Wprowadź klucz produktu"
-            text={props.keY}
-            onChangeText={(key) => props.setKey(key)}
-          />
-          <FormField
+          >
+            <FormTextInput
+              placeholder="Wprowadź klucz produktu"
+              text={props.keY}
+              onChangeText={(key) => props.setKey(key)}
+            />
+          </InputWithLabelAndValidation>
+          <InputWithLabelAndValidation
             label="* Ilość dostępnych kluczy:"
-            placeholder="Wprowadź ilość dostępnych kluczy"
-            text={props.availableKeys.toString()}
-            onChangeText={(availableKeys) => props.setAvailableKeys(availableKeys)}
             errors={[
               props.validationAvailableKeysIsNumberStatus ? "Wartość musi być liczbą" : "",
               !props.validationAvailableKeysIsBiggerThan0NumberStatus ? "Wartość musi być liczbą większą od 0" : ""
             ]}
-          />
-          <FormField
+          >
+            <FormTextInput
+              placeholder="Wprowadź ilość dostępnych kluczy"
+              text={props.availableKeys.toString()}
+              onChangeText={(availableKeys) => props.setAvailableKeys(availableKeys)}
+            />
+          </InputWithLabelAndValidation>
+          <InputWithLabelAndValidation
             label="* Czas trwania (w miesiącach):"
-            placeholder="Wprowadź okres trwania licencji, w miesiącach "
-            disabled={props.validationDisableDuration}
-            text={props.duration.toString()}
-            onChangeText={(duration) => props.setDuration(duration)}
             errors={[
               props.validationDurationIsNumberStatus ? "Wartość musi być liczbą" : "",
               !props.validationDurationIsBiggerThan0NumberStatus ? "Wartość musi być liczbą większą od 0" : ""
             ]}
-          />
+          >
+            <FormTextInput
+              placeholder="Wprowadź okres trwania licencji, w miesiącach "
+              disabled={props.validationDisableDuration}
+              text={props.duration.toString()}
+              onChangeText={(duration) => props.setDuration(duration)}
+            />
+          </InputWithLabelAndValidation>
         </>
       )}
 

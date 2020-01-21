@@ -9,7 +9,8 @@ import {
 import AutoComplete from '../ui/form/AutoComplete';
 import PickerWithItems from '../ui/form/PickerWithItems';
 import FormFooter from '../ui/form/FormFooter';
-import FormField from '../ui/form/FormField';
+import InputWithLabelAndValidation from '../ui/form/InputWithLabelAndValidation';
+import FormTextInput from '../ui/form/FormTextInput';
 
 const HardwareDetailsComponent = (props) => {
   let modeInfo;
@@ -33,12 +34,15 @@ const HardwareDetailsComponent = (props) => {
           {!(props.loadingAffiliations || props.loadingDictionary || props.loadingComputerSets) && (
               <>
 
-                <FormField
+                <InputWithLabelAndValidation
                   label="* Nazwa sprzętu:"
-                  placeholder="Wprowadź nazwę sprzętu"
-                  text={props.name}
-                  onChangeText={(name) => props.setName(name)}
-                />
+                >
+                  <FormTextInput
+                    placeholder="Wprowadź nazwę sprzętu"
+                    text={props.name}
+                    onChangeText={(name) => props.setName(name)}
+                  />
+                </InputWithLabelAndValidation>
 
                 <View>
                   <Text style={styles.labelText}>* Typ:</Text>

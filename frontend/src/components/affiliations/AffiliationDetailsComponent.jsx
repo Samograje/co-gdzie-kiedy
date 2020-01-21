@@ -9,7 +9,8 @@ import {
 import {mainColor} from '../../constValues';
 import ErrorElement from '../ui/ErrorElement';
 import FormFooter from '../ui/form/FormFooter';
-import FormField from '../ui/form/FormField';
+import InputWithLabelAndValidation from '../ui/form/InputWithLabelAndValidation';
+import FormTextInput from '../ui/form/FormTextInput';
 
 const AffiliationDetailsComponent = (props) => {
   const {
@@ -36,30 +37,42 @@ const AffiliationDetailsComponent = (props) => {
 
   const main = (
     <View style={styles.main}>
-      <FormField
+
+      <InputWithLabelAndValidation
         label="Imię"
-        placeholder="Wprowadź imię"
-        disabled={isSubmitting}
-        text={data.firstName}
-        onChangeText={(text) => onChange('firstName', text)}
         errors={errors.firstName}
-      />
-      <FormField
+      >
+        <FormTextInput
+          placeholder="Wprowadź imię"
+          disabled={isSubmitting}
+          text={data.firstName}
+          onChangeText={(text) => onChange('firstName', text)}
+        />
+      </InputWithLabelAndValidation>
+
+      <InputWithLabelAndValidation
         label="Nazwisko"
-        placeholder="Wprowadź nazwisko"
-        disabled={isSubmitting}
-        text={data.lastName}
-        onChangeText={(text) => onChange('lastName', text)}
         errors={errors.lastName}
-      />
-      <FormField
+      >
+        <FormTextInput
+          placeholder="Wprowadź nazwisko"
+          disabled={isSubmitting}
+          text={data.lastName}
+          onChangeText={(text) => onChange('lastName', text)}
+        />
+      </InputWithLabelAndValidation>
+
+      <InputWithLabelAndValidation
         label="Lokalizacja"
-        placeholder="Wprowadź lokalizację"
-        disabled={isSubmitting}
-        text={data.location}
-        onChangeText={(text) => onChange('location', text)}
         errors={errors.location}
-      />
+      >
+        <FormTextInput
+          placeholder="Wprowadź lokalizację"
+          disabled={isSubmitting}
+          text={data.location}
+          onChangeText={(text) => onChange('location', text)}
+        />
+      </InputWithLabelAndValidation>
     </View>
   );
 
