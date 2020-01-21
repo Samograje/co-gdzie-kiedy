@@ -122,27 +122,6 @@ const styles = StyleSheet.create({
   main: {
     marginBottom: 15,
   },
-  inputField: {
-    flex: 1,
-    margin: 5,
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: '500',
-    marginBottom: 2,
-  },
-  input: {
-    fontSize: 16,
-    padding: 2,
-    borderWidth: 1,
-    borderRadius: 2,
-  },
-  validationError: {
-    color: 'darkred',
-  },
-  row: {
-    flexDirection: 'row',
-  },
 });
 
 export default AffiliationDetailsComponent;

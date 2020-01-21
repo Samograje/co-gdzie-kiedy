@@ -92,10 +92,6 @@ const styles = StyleSheet.create({
     padding: 15,
     width: '75%',
   },
-  oneLineElement: {
-    flexDirection: 'row',
-    marginBottom: 15,
-  },
   indicator: {
     flex: 1,
     paddingTop: 20,
