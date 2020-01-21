@@ -1,16 +1,11 @@
 import React from 'react';
-import {
-  ActivityIndicator,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
-import {mainColor} from '../../constValues';
-import ErrorElement from '../ui/ErrorElement';
+import {ScrollView, StyleSheet, View} from 'react-native';
+import CgkActivityIndicator from '../ui/CgkActivityIndicator';
 import CgkFormFooter from '../ui/form/CgkFormFooter';
+import CgkFormHeader from '../ui/form/CgkFormHeader';
 import CgkLabelAndValidation from '../ui/form/CgkLabelAndValidation';
 import CgkTextInput from '../ui/form/CgkTextInput';
-import CgkFormHeader from '../ui/form/CgkFormHeader';
+import ErrorElement from '../ui/ErrorElement';
 
 const AffiliationDetailsComponent = (props) => {
   const {
@@ -75,19 +70,14 @@ const AffiliationDetailsComponent = (props) => {
     </View>
   );
 
-  const spinner = (
-    <ActivityIndicator
-      size="large"
-      color={mainColor}
-    />
-  );
-
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={isWide ? styles.contentWide : styles.contentMobile}>
         <CgkFormHeader text={headerText}/>
         {!isLoading && main}
-        {isLoading && spinner}
+        {isLoading && (
+          <CgkActivityIndicator/>
+        )}
         {error && (
           <ErrorElement
             message="Nie udało się pobrać danych z serwera"
@@ -100,7 +90,9 @@ const AffiliationDetailsComponent = (props) => {
           onSubmit={onSubmit}
           onReject={onReject}
         />
-        {isSubmitting && spinner}
+        {isSubmitting && (
+          <CgkActivityIndicator/>
+        )}
       </View>
     </ScrollView>
   );

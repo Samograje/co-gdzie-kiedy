@@ -1,17 +1,17 @@
 import React from 'react';
 import {
-  ActivityIndicator,
   ScrollView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
 import AutoComplete from '../ui/form/AutoComplete';
-import PickerWithItems from '../ui/form/PickerWithItems';
+import CgkActivityIndicator from '../ui/CgkActivityIndicator';
 import CgkFormFooter from '../ui/form/CgkFormFooter';
+import CgkFormHeader from '../ui/form/CgkFormHeader';
 import CgkLabelAndValidation from '../ui/form/CgkLabelAndValidation';
 import CgkTextInput from '../ui/form/CgkTextInput';
-import CgkFormHeader from '../ui/form/CgkFormHeader';
+import PickerWithItems from '../ui/form/PickerWithItems';
 
 const HardwareDetailsComponent = (props) => {
   let modeInfo;
@@ -28,7 +28,7 @@ const HardwareDetailsComponent = (props) => {
 
           {(props.loadingAffiliations || props.loadingDictionary || props.loadingComputerSets) && (
               <View style={styles.indicator}>
-                <ActivityIndicator size="large"/>
+                <CgkActivityIndicator/>
               </View>
           )}
 

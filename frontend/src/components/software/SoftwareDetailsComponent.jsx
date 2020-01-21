@@ -1,15 +1,15 @@
 import React from 'react';
 import {
-  ActivityIndicator,
   ScrollView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
+import CgkActivityIndicator from '../ui/CgkActivityIndicator';
 import CgkFormFooter from '../ui/form/CgkFormFooter';
+import CgkFormHeader from '../ui/form/CgkFormHeader';
 import CgkLabelAndValidation from '../ui/form/CgkLabelAndValidation';
 import CgkTextInput from '../ui/form/CgkTextInput';
-import CgkFormHeader from '../ui/form/CgkFormHeader';
 
 const SoftwareDetailsComponent = (props) => {
   let mode;
@@ -25,7 +25,7 @@ const SoftwareDetailsComponent = (props) => {
         <CgkFormHeader text={`Formularz ${mode} oprogramowania.`}/>
       {(props.loading) && (
         <View style={styles.indicator}>
-          <ActivityIndicator size="large"/>
+          <CgkActivityIndicator/>
         </View>
       )}
       {(!props.loading) && (
