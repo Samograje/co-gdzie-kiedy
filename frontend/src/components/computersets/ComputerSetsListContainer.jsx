@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
+import {Platform} from 'react-native';
 import ComputerSetsListComponent from './ComputerSetsListComponent';
 import request from '../../APIClient';
-import {Platform} from "react-native";
 
 class ComputerSetsListContainer extends Component {
 
@@ -63,6 +63,24 @@ class ComputerSetsListContainer extends Component {
     this.fetchData({
       filters: newFilters,
     });
+  };
+
+  getPdf = () => {
+    request('/api/computer-sets/export')
+      .then((response) => response.blob())
+      .then((blob) => {
+        const fileURL = URL.createObjectURL(blob);
+        window.open(fileURL);
+        // TODO: obsługa tego na komórze
+      })
+      .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.setState({
+          error: true,
+        });
+      });
   };
 
   render() {
@@ -137,19 +155,19 @@ class ComputerSetsListContainer extends Component {
           mode: 'create',
         }),
       },
-      {
-        label: 'Eksportuj do pdf',
-        onClick: () => request('/api/computer-sets/export')
-          .then(response => response.blob()),
-      },
-      {
-        disabled: Platform.OS !== 'android',
-        label: 'Wyszukaj za pomocą kodu QR',
-        onClick: () => {
-          this.props.push('ScanScreen')
-        },
-      },
     ];
+    if (Platform.OS === 'web') {
+      groupActions.push({
+        label: 'Eksportuj do pdf',
+        onClick: this.getPdf,
+      });
+    }
+    if (Platform.OS === 'android') {
+      groupActions.push({
+        label: 'Wyszukaj za pomocą kodu QR',
+        onClick: () => this.props.push('ScanScreen'),
+      });
+    }
 
     return (
       <ComputerSetsListComponent
