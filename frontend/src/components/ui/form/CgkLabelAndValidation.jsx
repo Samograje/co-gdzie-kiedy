@@ -5,7 +5,7 @@ import {
   View,
 } from 'react-native';
 
-const InputWithLabelAndValidation = (props) => {
+const CgkLabelAndValidation = (props) => {
   const {
     label, // string - nazwa pola do wyświetlenia nad polem tekstowym
     errors, // string lub tablica stingów - komunikat(y) błędów walidacji
@@ -52,4 +52,4 @@ const styles = StyleSheet.create({
   // },
 });
 
-export default InputWithLabelAndValidation;
+export default CgkLabelAndValidation;

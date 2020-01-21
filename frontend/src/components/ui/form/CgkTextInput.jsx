@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, TextInput} from 'react-native';
 
-const FormTextInput = (props) => {
+const CgkTextInput = (props) => {
   const {
     placeholder, // string - placeholder wyświetlany w polu tekstowym
     disabled, // bool informujący o tym, czy pole tekstowe ma być niedostępne
@@ -42,4 +42,4 @@ const styles = StyleSheet.create({
   // },
 });
 
-export default FormTextInput;
+export default CgkTextInput;

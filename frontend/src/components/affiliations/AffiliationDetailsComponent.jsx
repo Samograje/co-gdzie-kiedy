@@ -8,9 +8,9 @@ import {
 } from 'react-native';
 import {mainColor} from '../../constValues';
 import ErrorElement from '../ui/ErrorElement';
-import FormFooter from '../ui/form/FormFooter';
-import InputWithLabelAndValidation from '../ui/form/InputWithLabelAndValidation';
-import FormTextInput from '../ui/form/FormTextInput';
+import CgkFormFooter from '../ui/form/CgkFormFooter';
+import CgkLabelAndValidation from '../ui/form/CgkLabelAndValidation';
+import CgkTextInput from '../ui/form/CgkTextInput';
 
 const AffiliationDetailsComponent = (props) => {
   const {
@@ -38,41 +38,41 @@ const AffiliationDetailsComponent = (props) => {
   const main = (
     <View style={styles.main}>
 
-      <InputWithLabelAndValidation
+      <CgkLabelAndValidation
         label="Imię"
         errors={errors.firstName}
       >
-        <FormTextInput
+        <CgkTextInput
           placeholder="Wprowadź imię"
           disabled={isSubmitting}
           text={data.firstName}
           onChangeText={(text) => onChange('firstName', text)}
         />
-      </InputWithLabelAndValidation>
+      </CgkLabelAndValidation>
 
-      <InputWithLabelAndValidation
+      <CgkLabelAndValidation
         label="Nazwisko"
         errors={errors.lastName}
       >
-        <FormTextInput
+        <CgkTextInput
           placeholder="Wprowadź nazwisko"
           disabled={isSubmitting}
           text={data.lastName}
           onChangeText={(text) => onChange('lastName', text)}
         />
-      </InputWithLabelAndValidation>
+      </CgkLabelAndValidation>
 
-      <InputWithLabelAndValidation
+      <CgkLabelAndValidation
         label="Lokalizacja"
         errors={errors.location}
       >
-        <FormTextInput
+        <CgkTextInput
           placeholder="Wprowadź lokalizację"
           disabled={isSubmitting}
           text={data.location}
           onChangeText={(text) => onChange('location', text)}
         />
-      </InputWithLabelAndValidation>
+      </CgkLabelAndValidation>
     </View>
   );
 
@@ -95,7 +95,7 @@ const AffiliationDetailsComponent = (props) => {
             type="error"
           />
         )}
-        <FormFooter
+        <CgkFormFooter
           isSubmitDisabled={isLoading || isSubmitting}
           isRejectDisabled={isSubmitting}
           onSubmit={onSubmit}

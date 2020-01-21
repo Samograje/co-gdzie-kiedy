@@ -6,9 +6,9 @@ import {
   Text,
   View,
 } from 'react-native';
-import FormFooter from '../ui/form/FormFooter';
-import InputWithLabelAndValidation from '../ui/form/InputWithLabelAndValidation';
-import FormTextInput from '../ui/form/FormTextInput';
+import CgkFormFooter from '../ui/form/CgkFormFooter';
+import CgkLabelAndValidation from '../ui/form/CgkLabelAndValidation';
+import CgkTextInput from '../ui/form/CgkTextInput';
 
 const SoftwareDetailsComponent = (props) => {
   let mode;
@@ -31,55 +31,55 @@ const SoftwareDetailsComponent = (props) => {
         <>
           <Text>Pola z * są obowiązkowe.</Text>
 
-          <InputWithLabelAndValidation
+          <CgkLabelAndValidation
             label="* Nazwa oprogramowania:"
           >
-            <FormTextInput
+            <CgkTextInput
               placeholder="Wprowadź nazwe nowego oprogramowania"
               text={props.name}
               onChangeText={(name) => props.setName(name)}
             />
-          </InputWithLabelAndValidation>
-          <InputWithLabelAndValidation
+          </CgkLabelAndValidation>
+          <CgkLabelAndValidation
             label="* Klucz produktu:"
           >
-            <FormTextInput
+            <CgkTextInput
               placeholder="Wprowadź klucz produktu"
               text={props.keY}
               onChangeText={(key) => props.setKey(key)}
             />
-          </InputWithLabelAndValidation>
-          <InputWithLabelAndValidation
+          </CgkLabelAndValidation>
+          <CgkLabelAndValidation
             label="* Ilość dostępnych kluczy:"
             errors={[
               props.validationAvailableKeysIsNumberStatus ? "Wartość musi być liczbą" : "",
               !props.validationAvailableKeysIsBiggerThan0NumberStatus ? "Wartość musi być liczbą większą od 0" : ""
             ]}
           >
-            <FormTextInput
+            <CgkTextInput
               placeholder="Wprowadź ilość dostępnych kluczy"
               text={props.availableKeys.toString()}
               onChangeText={(availableKeys) => props.setAvailableKeys(availableKeys)}
             />
-          </InputWithLabelAndValidation>
-          <InputWithLabelAndValidation
+          </CgkLabelAndValidation>
+          <CgkLabelAndValidation
             label="* Czas trwania (w miesiącach):"
             errors={[
               props.validationDurationIsNumberStatus ? "Wartość musi być liczbą" : "",
               !props.validationDurationIsBiggerThan0NumberStatus ? "Wartość musi być liczbą większą od 0" : ""
             ]}
           >
-            <FormTextInput
+            <CgkTextInput
               placeholder="Wprowadź okres trwania licencji, w miesiącach "
               disabled={props.validationDisableDuration}
               text={props.duration.toString()}
               onChangeText={(duration) => props.setDuration(duration)}
             />
-          </InputWithLabelAndValidation>
+          </CgkLabelAndValidation>
         </>
       )}
 
-        <FormFooter
+        <CgkFormFooter
           isSubmitDisabled={
             props.validationEmptyStatus ||
             props.validationAvailableKeysIsNumberStatus ||

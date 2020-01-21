@@ -2,7 +2,7 @@ import React from 'react';
 import {Button, StyleSheet, View} from 'react-native';
 import {mainColor} from '../../../constValues';
 
-const FormFooter = (props) => {
+const CgkFormFooter = (props) => {
   const {
     isSubmitDisabled, // bool informujący o tym, czy przycisk 'Zapisz' ma być niedostępny
     isRejectDisabled, // bool informujący o tym, czy przycisk 'Wróć' ma buć niedostępny
@@ -41,4 +41,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FormFooter;
+export default CgkFormFooter;

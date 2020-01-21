@@ -8,9 +8,9 @@ import {
 } from 'react-native';
 import AutoComplete from '../ui/form/AutoComplete';
 import PickerWithItems from '../ui/form/PickerWithItems';
-import FormFooter from '../ui/form/FormFooter';
-import InputWithLabelAndValidation from '../ui/form/InputWithLabelAndValidation';
-import FormTextInput from '../ui/form/FormTextInput';
+import CgkFormFooter from '../ui/form/CgkFormFooter';
+import CgkLabelAndValidation from '../ui/form/CgkLabelAndValidation';
+import CgkTextInput from '../ui/form/CgkTextInput';
 
 const HardwareDetailsComponent = (props) => {
   let modeInfo;
@@ -34,15 +34,15 @@ const HardwareDetailsComponent = (props) => {
           {!(props.loadingAffiliations || props.loadingDictionary || props.loadingComputerSets) && (
               <>
 
-                <InputWithLabelAndValidation
+                <CgkLabelAndValidation
                   label="* Nazwa sprzętu:"
                 >
-                  <FormTextInput
+                  <CgkTextInput
                     placeholder="Wprowadź nazwę sprzętu"
                     text={props.name}
                     onChangeText={(name) => props.setName(name)}
                   />
-                </InputWithLabelAndValidation>
+                </CgkLabelAndValidation>
 
                 <View>
                   <Text style={styles.labelText}>* Typ:</Text>
@@ -75,7 +75,7 @@ const HardwareDetailsComponent = (props) => {
               </>
           )}
 
-          <FormFooter
+          <CgkFormFooter
             isSubmitDisabled={props.isInvalid}
             onSubmit={props.onSubmit}
             onReject={props.onReject}
