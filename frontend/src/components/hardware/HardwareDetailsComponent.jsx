@@ -35,9 +35,7 @@ const HardwareDetailsComponent = (props) => {
           {!(props.loadingAffiliations || props.loadingDictionary || props.loadingComputerSets) && (
               <>
 
-                <CgkLabelAndValidation
-                  label="* Nazwa sprzętu:"
-                >
+                <CgkLabelAndValidation label="* Nazwa sprzętu:">
                   <CgkTextInput
                     placeholder="Wprowadź nazwę sprzętu"
                     text={props.name}
@@ -45,34 +43,31 @@ const HardwareDetailsComponent = (props) => {
                   />
                 </CgkLabelAndValidation>
 
-                <View>
-                  <Text style={styles.labelText}>* Typ:</Text>
+                <CgkLabelAndValidation label="* Typ:">
                   <PickerWithItems
                     value={props.dictionaryID}
                     updateValue={props.setDictionaryID}
                     options={props.dataSourceDictionary}
                   />
-                </View>
+                </CgkLabelAndValidation>
 
-                <View>
-                  <Text style={styles.labelText}>* Przynależność:</Text>
+                <CgkLabelAndValidation label="* Przynależność:">
                   <AutoComplete
-                      value={props.affiliationID}
-                      updateValue={props.setAffiliationID}
-                      options={props.dataSourceAffiliations.items}
-                      updateOptions={props.updateAffiliations}
+                    value={props.affiliationID}
+                    updateValue={props.setAffiliationID}
+                    options={props.dataSourceAffiliations.items}
+                    updateOptions={props.updateAffiliations}
                   />
-                </View>
+                </CgkLabelAndValidation>
 
-                <View>
-                  <Text style={styles.labelText}>W zestawie komputerowym:</Text>
+                <CgkLabelAndValidation label="W zestawie komputerowym:">
                   <AutoComplete
-                      value={props.computerSetID}
-                      updateValue={props.setComputerSetID}
-                      options={props.dataSourceComputerSets.items}
-                      updateOptions={props.updateComputerSets}
+                    value={props.computerSetID}
+                    updateValue={props.setComputerSetID}
+                    options={props.dataSourceComputerSets.items}
+                    updateOptions={props.updateComputerSets}
                   />
-                </View>
+                </CgkLabelAndValidation>
               </>
           )}
 

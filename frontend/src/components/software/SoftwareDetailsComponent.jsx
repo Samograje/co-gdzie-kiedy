@@ -32,18 +32,15 @@ const SoftwareDetailsComponent = (props) => {
         <>
           <Text>Pola z * są obowiązkowe.</Text>
 
-          <CgkLabelAndValidation
-            label="* Nazwa oprogramowania:"
-          >
+          <CgkLabelAndValidation label="* Nazwa oprogramowania:">
             <CgkTextInput
               placeholder="Wprowadź nazwe nowego oprogramowania"
               text={props.name}
               onChangeText={(name) => props.setName(name)}
             />
           </CgkLabelAndValidation>
-          <CgkLabelAndValidation
-            label="* Klucz produktu:"
-          >
+
+          <CgkLabelAndValidation label="* Klucz produktu:">
             <CgkTextInput
               placeholder="Wprowadź klucz produktu"
               text={props.keY}
