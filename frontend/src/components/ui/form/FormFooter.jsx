@@ -24,7 +24,7 @@ const FormFooter = (props) => {
         <Button
           title="Wróć"
           onPress={onReject}
-          color="darkgrey"
+          color={mainColor}
           disabled={isRejectDisabled}
         />
       </View>
