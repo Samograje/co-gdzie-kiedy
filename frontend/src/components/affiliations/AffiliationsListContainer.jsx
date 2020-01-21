@@ -11,6 +11,8 @@ class AffiliationsListContainer extends Component {
       items: [],
       totalElements: null,
       filters: {},
+      isDialogOpened: false,
+      itemToDeleteId: null,
     };
   }
 
@@ -50,8 +52,9 @@ class AffiliationsListContainer extends Component {
       })
   };
 
-  deleteItem = (id) => {
-    request(`/api/affiliations/${id}`,{
+  deleteItem = () => {
+    this.closeDialog();
+    request(`/api/affiliations/${this.state.itemToDeleteId}`,{
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -60,15 +63,21 @@ class AffiliationsListContainer extends Component {
     })
       .then((response) => response.json())
       .then((response) => {
-        if (response.success) {
-          this.fetchData();
-        } else {
+        if (!this._isMounted) {
+          return;
+        }
+        if (!response.success) {
           this.setState({
             error: true,
           });
+          return;
         }
+        this.fetchData();
       })
       .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
         this.setState({
           error: true,
         });
@@ -88,13 +97,36 @@ class AffiliationsListContainer extends Component {
     });
   };
 
+  closeDialog = () => this.setState({
+    isDialogOpened: false,
+    itemToDeleteId: null,
+  });
+
   render() {
 
     const columns = [
       {
-        name: 'name',
-        label: 'Nazwa',
+        name: 'firstName',
+        label: 'Imię',
         filter: true,
+      },
+      {
+        name: 'lastName',
+        label: 'Nazwisko',
+        filter: true,
+      },
+      {
+        name: 'location',
+        label: 'Lokalizacja',
+        filter: true,
+      },
+      {
+        name: 'computerSetsInventoryNumbers',
+        label: 'Numery inwentarzowe powiązanych zestawów komputerowych',
+      },
+      {
+        name: 'hardwareInventoryNumbers',
+        label: 'Numery inwentarzowe powiązanych sprzętów',
       },
     ];
 
@@ -110,7 +142,10 @@ class AffiliationsListContainer extends Component {
       {
         label: 'Usuń',
         icon: require('./../../images/ic_action_delete.png'),
-        onClick: (itemData) => this.deleteItem(itemData.id),
+        onClick: (itemData) => this.setState({
+          isDialogOpened: true,
+          itemToDeleteId: itemData.id,
+        }),
       },
       // TODO: akcje wyświetlania historii powiązań
     ];
@@ -135,6 +170,9 @@ class AffiliationsListContainer extends Component {
         error={this.state.error}
         items={this.state.items}
         totalElements={this.state.totalElements}
+        isDialogOpened={this.state.isDialogOpened}
+        dialogHandleConfirm={this.deleteItem}
+        dialogHandleReject={this.closeDialog}
       />
     );
   }

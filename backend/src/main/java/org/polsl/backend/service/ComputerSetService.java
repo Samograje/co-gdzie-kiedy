@@ -62,9 +62,16 @@ public class ComputerSetService {
     this.softwareRepository = softwareRepository;
   }
 
-  public PaginatedResult<ComputerSetListOutputDTO> getAllComputerSets(Specification<ComputerSet> computerSetSpecification) {
-    Iterable<ComputerSet> computerSets = computerSetRepository.findAllByValidToIsNull();
-//    Iterable<ComputerSet> computerSets = computerSetRepository.findAll(computerSetSpecification);
+  public PaginatedResult<ComputerSetListOutputDTO> getAllComputerSets(Specification<ComputerSet> specification) {
+
+    Iterable<ComputerSet> computerSets;
+
+    Specification<ComputerSet> validTo = (
+            (Specification<ComputerSet>) (root, query, criteriaBuilder) ->
+                    criteriaBuilder.isNull(root.get("validTo"))
+    ).and(specification);
+    computerSets = computerSetRepository.findAll(validTo);
+
     List<ComputerSetListOutputDTO> dtos = new ArrayList<>();
     for (ComputerSet computerSet : computerSets) {
       ComputerSetListOutputDTO dto = new ComputerSetListOutputDTO();
