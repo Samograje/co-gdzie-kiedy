@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   ActivityIndicator,
-  Button,
   ScrollView,
   StyleSheet,
   Text,
@@ -10,6 +9,7 @@ import {
 } from 'react-native';
 import {mainColor} from '../../constValues';
 import ErrorElement from '../ui/ErrorElement';
+import FormFooter from '../ui/form/FormFooter';
 
 const AffiliationDetailsComponent = (props) => {
   const {
@@ -78,27 +78,6 @@ const AffiliationDetailsComponent = (props) => {
     </View>
   );
 
-  const footer = (
-    <View style={styles.footer}>
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Zapisz"
-          onPress={onSubmit}
-          color={mainColor}
-          disabled={isLoading || isSubmitting}
-        />
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Wróć"
-          onPress={onReject}
-          color="darkgrey"
-          disabled={isSubmitting}
-        />
-      </View>
-    </View>
-  );
-
   const spinner = (
     <ActivityIndicator
       size="large"
@@ -118,7 +97,12 @@ const AffiliationDetailsComponent = (props) => {
             type="error"
           />
         )}
-        {footer}
+        <FormFooter
+          isSubmitDisabled={isLoading || isSubmitting}
+          isRejectDisabled={isSubmitting}
+          onSubmit={onSubmit}
+          onReject={onReject}
+        />
         {isSubmitting && spinner}
       </View>
     </ScrollView>
@@ -168,12 +152,6 @@ const styles = StyleSheet.create({
   },
   validationError: {
     color: 'darkred',
-  },
-  footer: {
-    flexDirection: 'row',
-  },
-  buttonContainer: {
-    margin: 2,
   },
   row: {
     flexDirection: 'row',
