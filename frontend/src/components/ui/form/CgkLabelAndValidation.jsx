@@ -26,7 +26,7 @@ const CgkLabelAndValidation = (props) => {
 const styles = StyleSheet.create({
   inputField: {
     flex: 1,
-    margin: 5,
+    marginBottom: 10,
   },
   label: {
     fontSize: 16,
