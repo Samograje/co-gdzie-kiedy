@@ -2,15 +2,15 @@ package org.polsl.backend.controller;
 
 import org.polsl.backend.dto.ApiBasicResponse;
 import org.polsl.backend.dto.PaginatedResult;
+import org.polsl.backend.dto.affiliation.AffiliationDTO;
 import org.polsl.backend.dto.affiliation.AffiliationListOutputDTO;
 import org.polsl.backend.entity.Affiliation;
 import org.polsl.backend.filtering.Search;
-import org.polsl.backend.dto.affiliation.AffiliationDTO;
 import org.polsl.backend.service.AffiliationService;
 import org.polsl.backend.service.export.ExportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -71,10 +71,10 @@ public class AffiliationController {
     Search<Affiliation> filtering = new Search<>(new Affiliation(), search);
     PaginatedResult<AffiliationListOutputDTO> data = affiliationService.getAffiliations(filtering.searchInitialization());
     InputStreamResource inputStreamResource = exportService.export("Osoby i miejsca", data.getItems());
-
-    return new ResponseEntity<>(inputStreamResource, exportService.getHttpHeaders(), HttpStatus.OK);
+    return ResponseEntity.ok()
+      .contentType(MediaType.APPLICATION_PDF)
+      .body(inputStreamResource);
   }
-  //TODO: PDF
 
   /**
    * Endpoint obsługujący dodawanie nowej przynależności.

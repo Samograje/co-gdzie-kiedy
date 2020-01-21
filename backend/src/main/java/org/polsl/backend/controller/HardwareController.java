@@ -10,7 +10,7 @@ import org.polsl.backend.service.HardwareService;
 import org.polsl.backend.service.export.ExportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -93,7 +93,9 @@ public class HardwareController {
     Search<Hardware> filtering = new Search<>(new Hardware(), search);
     PaginatedResult<HardwareListOutputDTO> data = hardwareService.getHardwareList(filtering.searchInitialization());
     InputStreamResource inputStreamResource = exportService.export("Sprzęty", data.getItems());
-    return new ResponseEntity<>(inputStreamResource, exportService.getHttpHeaders(), HttpStatus.OK);
+    return ResponseEntity.ok()
+      .contentType(MediaType.APPLICATION_PDF)
+      .body(inputStreamResource);
   }
 
   /**

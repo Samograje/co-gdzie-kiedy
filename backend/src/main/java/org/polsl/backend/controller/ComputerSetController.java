@@ -10,7 +10,7 @@ import org.polsl.backend.service.ComputerSetService;
 import org.polsl.backend.service.export.ExportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,10 +60,10 @@ public class ComputerSetController {
     Search<ComputerSet> filtering = new Search<>(new ComputerSet(), search);
     PaginatedResult<ComputerSetListOutputDTO> data = computerSetService.getAllComputerSets(filtering.searchInitialization());
     InputStreamResource inputStreamResource = exportService.export("Zestawy komputerowe", data.getItems());
-
-    return new ResponseEntity<>(inputStreamResource, exportService.getHttpHeaders(), HttpStatus.OK);
+    return ResponseEntity.ok()
+      .contentType(MediaType.APPLICATION_PDF)
+      .body(inputStreamResource);
   }
-  //TODO: PDF
 
   /**
    * Endpoint obsługujący dodawanie nowego zestawu komputerowego.
