@@ -32,7 +32,6 @@ const FormFooter = (props) => {
   );
 };
 
-
 const styles = StyleSheet.create({
   footer: {
     flexDirection: 'row',
