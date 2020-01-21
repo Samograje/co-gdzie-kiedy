@@ -1,8 +1,9 @@
 import React from 'react';
-import {ActivityIndicator, ScrollView, StyleSheet, View} from 'react-native';
-import StatisticsElement from "./StatisticsElement";
-import LinkElement from "./LinkElement";
-import ErrorElement from "../ui/ErrorElement";
+import {ScrollView, StyleSheet, View} from 'react-native';
+import CgkActivityIndicator from '../ui/CgkActivityIndicator';
+import ErrorElement from '../ui/ErrorElement';
+import LinkElement from './LinkElement';
+import StatisticsElement from './StatisticsElement';
 
 const HomepageComponent = (props) => {
 
@@ -53,7 +54,7 @@ const HomepageComponent = (props) => {
         </View>
 
         {loading && (
-          <ActivityIndicator size="large"/>
+          <CgkActivityIndicator/>
         )}
         {error && (
           <ErrorElement
