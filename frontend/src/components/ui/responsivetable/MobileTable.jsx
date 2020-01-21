@@ -1,5 +1,13 @@
 import React from 'react';
-import {ActivityIndicator, Button, Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {mainColor} from '../../../constValues';
 
 const MobileTable = (props) => {
@@ -72,22 +80,19 @@ const MobileTable = (props) => {
 
           {/* przyciski akcji */}
           {itemActions && (
-            <View style={styles.buttons}>
+            <View style={styles.icons}>
               {itemActions.map((action, idx) => (
-                <View style={styles.buttonContainer} key={idx}>
-                  {action.icon && (
-                    <TouchableOpacity onPress={() => action.onClick(item)}>
-                      <Image source={require(`./../../../images/${action.icon}`)} style={styles.image}/>
-                    </TouchableOpacity>
-                  )}
-                  {!action.icon && (
-                    <Button
-                      title={action.label}
-                      onPress={() => action.onClick(item)}
-                      color={mainColor}
-                    />
-                  )}
-                </View>
+                <TouchableOpacity
+                  style={styles.opacity}
+                  onPress={() => action.onClick(item)}
+                  key={idx}
+                >
+                  <Image
+                    source={require(`./../../../images/${action.icon}`)}
+                    resizeMode="contain"
+                    style={styles.icon}
+                  />
+                </TouchableOpacity>
               ))}
             </View>
           )}
@@ -105,12 +110,6 @@ const MobileTable = (props) => {
 };
 
 const styles = StyleSheet.create({
-  image: {
-    padding: 30,
-    width: '20%',
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
   list: {
     borderWidth: 1,
     borderTopWidth: 0,
@@ -154,14 +153,18 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     flex: 1,
   },
-  buttons: {
+  icons: {
+    marginTop: 5,
+    marginBottom: 5,
     flexDirection: 'row',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
   },
-  buttonContainer: {
+  opacity: {
     flex: 1,
-    margin: 5,
+    alignItems: 'center',
+  },
+  icon: {
+    height: 50,
+    width: 50,
   },
   text: {
     fontSize: 16,
