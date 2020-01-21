@@ -27,6 +27,16 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 24,
   },
+
+  // TODO: usunąć poniższe stare style
+
+  // header: {
+  //   fontSize: 24,
+  //   paddingBottom: 10,
+  //   marginBottom: 25,
+  //   borderBottomColor: '#199187',
+  //   borderBottomWidth: 1,
+  // },
 });
 
 export default CgkFormHeader;

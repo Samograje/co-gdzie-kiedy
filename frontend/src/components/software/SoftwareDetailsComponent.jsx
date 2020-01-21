@@ -9,6 +9,7 @@ import {
 import CgkFormFooter from '../ui/form/CgkFormFooter';
 import CgkLabelAndValidation from '../ui/form/CgkLabelAndValidation';
 import CgkTextInput from '../ui/form/CgkTextInput';
+import CgkFormHeader from '../ui/form/CgkFormHeader';
 
 const SoftwareDetailsComponent = (props) => {
   let mode;
@@ -21,7 +22,7 @@ const SoftwareDetailsComponent = (props) => {
   return (
     <ScrollView>
       <View style={styles.addForm}>
-        <Text style={styles.header}>Formularz {mode} oprogramowania.</Text>
+        <CgkFormHeader text={`Formularz ${mode} oprogramowania.`}/>
       {(props.loading) && (
         <View style={styles.indicator}>
           <ActivityIndicator size="large"/>
@@ -101,13 +102,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     padding: 15,
     width: '75%',
-  },
-  header: {
-    fontSize: 24,
-    paddingBottom: 10,
-    marginBottom: 25,
-    borderBottomColor: '#199187',
-    borderBottomWidth: 1,
   },
   indicator: {
     flex: 1,

@@ -11,6 +11,7 @@ import PickerWithItems from '../ui/form/PickerWithItems';
 import CgkFormFooter from '../ui/form/CgkFormFooter';
 import CgkLabelAndValidation from '../ui/form/CgkLabelAndValidation';
 import CgkTextInput from '../ui/form/CgkTextInput';
+import CgkFormHeader from '../ui/form/CgkFormHeader';
 
 const HardwareDetailsComponent = (props) => {
   let modeInfo;
@@ -22,7 +23,7 @@ const HardwareDetailsComponent = (props) => {
   return (
       <ScrollView>
         <View style={styles.addForm}>
-          <Text style={styles.header}>Formularz {modeInfo} sprzętu.</Text>
+          <CgkFormHeader text={`Formularz ${modeInfo} sprzętu.`}/>
           <Text>Pola z * są obowiązkowe.</Text>
 
           {(props.loadingAffiliations || props.loadingDictionary || props.loadingComputerSets) && (
@@ -90,13 +91,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     padding: 15,
     width: '75%',
-  },
-  header: {
-    fontSize: 24,
-    paddingBottom: 10,
-    marginBottom: 25,
-    borderBottomColor: '#199187',
-    borderBottomWidth: 1,
   },
   oneLineElement: {
     flexDirection: 'row',
