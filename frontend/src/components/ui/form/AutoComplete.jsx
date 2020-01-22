@@ -1,12 +1,12 @@
 import React from 'react';
-import {StyleSheet, Text, TextInput} from 'react-native';
+import {StyleSheet, Text, TextInput, View} from 'react-native';
 import PickerWithItems from "./PickerWithItems";
 
 const AutoComplete = (props) => {
   const {
     value, // id opcji wybranej w pickerze
     updateValue, // funkcja aktualizująca wartość po wyborze z pickera
-    options, // opcje do pickera - obiekt o kluczach id, name
+    options, // opcje do pickera - tablica obiektów o kluczach id, name
     updateOptions, // funkcja aktualizująca opcje na podstawie tekstu z pola tekstowego
   } = props;
 
@@ -17,7 +17,7 @@ const AutoComplete = (props) => {
   }
 
   return (
-    <>
+    <View style={styles.container}>
       <TextInput
         style={styles.textInput}
         placeholder="Wyszukaj"
@@ -28,11 +28,14 @@ const AutoComplete = (props) => {
         updateValue={updateValue}
         options={options}
       />
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   textInput: {
     fontSize: 16,
     padding: 2,
