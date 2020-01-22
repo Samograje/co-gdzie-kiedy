@@ -16,7 +16,6 @@ class AffiliationDetailsContainer extends Component {
       errors: {},
       isLoading: false,
       isSubmitting: false,
-      isWide: Dimensions.get('window').width > 650,
     };
   }
 
@@ -146,13 +145,8 @@ class AffiliationDetailsContainer extends Component {
 
   onReject = () => this.props.goBack();
 
-  onLayout = () => {
-    this.setState({
-      isWide: Dimensions.get('window').width > 650,
-    });
-  };
-
   render() {
+    const isWide = Dimensions.get('window').width > 450;
     const {mode} = this.props;
     const {
       data,
@@ -160,7 +154,6 @@ class AffiliationDetailsContainer extends Component {
       errors,
       isLoading,
       isSubmitting,
-      isWide,
     } = this.state;
 
     return (
@@ -175,7 +168,6 @@ class AffiliationDetailsContainer extends Component {
         onSubmit={this.onSubmit}
         onReject={this.onReject}
         onChange={this.onChange}
-        onLayout={this.onLayout}
       />
     );
   }

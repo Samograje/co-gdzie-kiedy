@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  ActivityIndicator,
   Image,
   StyleSheet,
   Text,
@@ -8,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {mainColor} from '../../../constValues';
+import CgkActivityIndicator from '../CgkActivityIndicator';
 
 const MobileTable = (props) => {
   const {
@@ -52,10 +51,7 @@ const MobileTable = (props) => {
       {/* spinner ładowania danych */}
       {loading && (
         <View style={styles.loading}>
-          <ActivityIndicator
-            size="large"
-            color={mainColor}
-          />
+          <CgkActivityIndicator/>
         </View>
       )}
 
