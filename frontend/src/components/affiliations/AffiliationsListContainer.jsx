@@ -152,6 +152,7 @@ class AffiliationsListContainer extends Component {
     const itemActions = [
       {
         label: 'Edytuj',
+        icon: require('./../../images/ic_action_edit.png'),
         onClick: (itemData) => this.props.push('AffiliationDetails', {
           mode: 'edit',
           id: itemData.id,
@@ -159,6 +160,7 @@ class AffiliationsListContainer extends Component {
       },
       {
         label: 'Usuń',
+        icon: require('./../../images/ic_action_delete.png'),
         onClick: (itemData) => this.setState({
           isDialogOpened: true,
           itemToDeleteId: itemData.id,

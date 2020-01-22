@@ -113,6 +113,7 @@ class ComputerSetsListContainer extends Component {
     const itemActions = [
       {
         label: 'Edytuj',
+        icon: require('./../../images/ic_action_edit.png'),
         onClick: (itemData) => this.props.push('ComputerSetDetails', {
           mode: 'edit',
           id: itemData.id,
@@ -120,26 +121,30 @@ class ComputerSetsListContainer extends Component {
       },
       {
         label: 'Usuń',
+        icon: require('./../../images/ic_action_delete.png'),
         onClick: (itemData) => {
           // TODO: usuwanie zestawu komputerowego
         },
       },
       {
-        label: 'HA',
+        label: 'Historia osób / miejsc',
+        icon: require('./../../images/ic_action_person_pin.png'),
         onClick: (itemData) => this.props.push('ComputerSetHistory', {
           mode: 'affiliations',
           id: itemData.id,
         }),
       },
       {
-        label: 'HH',
+        label: 'Historia sprzętu',
+        icon: require('./../../images/ic_action_mouse.png'),
         onClick: (itemData) => this.props.push('ComputerSetHistory', {
           mode: 'hardware',
           id: itemData.id,
         }),
       },
       {
-        label: 'HS',
+        label: 'Historia oprogramowania',
+        icon: require('./../../images/ic_action_web.png'),
         onClick: (itemData) => this.props.push('ComputerSetHistory', {
           mode: 'software',
           id: itemData.id,

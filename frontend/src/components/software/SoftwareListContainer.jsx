@@ -155,6 +155,7 @@ class SoftwareListContainer extends Component {
     const itemActions = [
       {
         label: 'Edytuj',
+        icon: require('./../../images/ic_action_edit.png'),
         onClick: (itemData) => this.props.push('SoftwareDetails', {
           mode: 'edit',
           id: itemData.id,
@@ -162,13 +163,15 @@ class SoftwareListContainer extends Component {
       },
       {
         label: 'Usuń',
+        icon: require('./../../images/ic_action_delete.png'),
         onClick: (itemData) => this.setState({
           dialogOpened: true,
           itemToDeleteId: itemData.id,
         }),
       },
       {
-        label: 'HC',
+        label: 'Historia zestawów komputerowych',
+        icon: require('./../../images/ic_action_devices.png'),
         onClick: (itemData) => this.props.push('SoftwareHistory', {
           id: itemData.id,
         }),

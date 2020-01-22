@@ -145,6 +145,7 @@ class HardwareListContainer extends Component {
     const itemActions = [
       {
         label: 'Edytuj',
+        icon: require('./../../images/ic_action_edit.png'),
         onClick: (itemData) => this.props.push('HardwareDetails', {
           mode: 'edit',
           id: itemData.id,
@@ -152,20 +153,23 @@ class HardwareListContainer extends Component {
       },
       {
         label: 'Usuń',
+        icon: require('./../../images/ic_action_delete.png'),
         onClick: (itemData) => this.setState({
           dialogOpened: true,
           itemToDeleteId: itemData.id,
         }),
       },
       {
-        label: 'HA',
+        label: 'Historia osób / miejsc',
+        icon: require('./../../images/ic_action_person_pin.png'),
         onClick: (itemData) => this.props.push('HardwareHistory', {
           mode: 'affiliations',
           id: itemData.id,
         }),
       },
       {
-        label: 'HC',
+        label: 'Historia zestawów komputerowych',
+        icon: require('./../../images/ic_action_devices.png'),
         onClick: (itemData) => this.props.push('HardwareHistory', {
           mode: 'computer-sets',
           id: itemData.id,

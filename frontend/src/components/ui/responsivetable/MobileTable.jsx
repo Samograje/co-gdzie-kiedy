@@ -1,12 +1,12 @@
 import React from 'react';
 import {
-  Button,
+  Image,
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
-import {mainColor} from '../../../constValues';
 import CgkActivityIndicator from '../CgkActivityIndicator';
 
 const MobileTable = (props) => {
@@ -85,15 +85,19 @@ const MobileTable = (props) => {
 
           {/* przyciski akcji */}
           {itemActions && (
-            <View style={styles.buttons}>
+            <View style={styles.icons}>
               {itemActions.map((action, idx) => (
-                <View style={styles.buttonContainer} key={idx}>
-                  <Button
-                    title={action.label}
-                    onPress={() => action.onClick(item)}
-                    color={mainColor}
+                <TouchableOpacity
+                  style={styles.opacity}
+                  onPress={() => action.onClick(item)}
+                  key={idx}
+                >
+                  <Image
+                    source={action.icon}
+                    resizeMode="contain"
+                    style={styles.icon}
                   />
-                </View>
+                </TouchableOpacity>
               ))}
             </View>
           )}
@@ -162,14 +166,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'left',
   },
-  buttons: {
+  icons: {
+    marginTop: 5,
+    marginBottom: 5,
     flexDirection: 'row',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
   },
-  buttonContainer: {
+  opacity: {
     flex: 1,
-    margin: 5,
+    alignItems: 'center',
+  },
+  icon: {
+    height: 50,
+    width: 50,
   },
   text: {
     fontSize: 16,
