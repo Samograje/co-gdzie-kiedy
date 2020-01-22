@@ -22,7 +22,6 @@ class SoftwareListContainer extends Component {
     this._isMounted = true;
 
     if (Platform.OS === 'android') {
-      const {navigation} = this.props;
       this.focusListener = this.props.addListener('didFocus', () => {
         this.fetchData();
       });
