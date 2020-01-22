@@ -6,7 +6,15 @@ import org.polsl.backend.entity.Software;
 import org.polsl.backend.filtering.Search;
 import org.polsl.backend.service.SoftwareService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 
 import javax.validation.Valid;
@@ -64,7 +72,6 @@ public class SoftwareController {
    * @param request struktura {@link SoftwareDTO} zawierająca dane nowego oprogramwoania
    * @return informacja o poprawnym utworzeniu oprogramowaniu
    */
-  @CrossOrigin(origins = "http://localhost:3000")
   @PostMapping
   public ResponseEntity<?> createSoftware(@Valid @RequestBody SoftwareDTO request) {
     softwareService.createSoftware(request);
@@ -78,7 +85,6 @@ public class SoftwareController {
    * @return informacja o poprawnym zaktualizowaniu parametrów oprogramowania
    */
   @PutMapping("/{id}")
-  @CrossOrigin(origins = "http://localhost:3000")
   public ResponseEntity<?> editSoftware(
       @PathVariable(value = "id") Long id,
       @Valid @RequestBody SoftwareDTO request
@@ -93,7 +99,6 @@ public class SoftwareController {
    * @param id ID wybranego oprogramowania
    * @return informacja o poprawnym usunięciu oprogramowania
    */
-  @CrossOrigin(origins = "http://localhost:3000")
   @DeleteMapping("/{id}")
   public ResponseEntity<?> deleteSoftware(@PathVariable(value = "id") Long id) {
     softwareService.deleteSoftware(id);
