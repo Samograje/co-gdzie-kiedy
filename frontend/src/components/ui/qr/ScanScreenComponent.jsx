@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { NavigationEvents, NavigationScreenProps } from 'react-navigation';
+import {NavigationEvents, NavigationScreenProps} from 'react-navigation';
 
 import {
   StyleSheet,
@@ -19,23 +19,18 @@ class ScanScreenComponent extends Component {
   }
 
   onDidFocus = payload => {
-    this.setState({ isFocused: true });
+    this.setState({
+      isFocused: true,
+      reactivate: true,
+    });
   };
 
   onDidBlur = payload => {
-    this.setState({ isFocused: false });
-  };
-
-  componentDidMount() {
-    this.focusListener = this.props.addListener('didFocus', () => {
-      this.state.reactivate = true;
+    this.setState({
+      isFocused: false,
+      reactivate: false,
     });
-  }
-
-  componentWillUnmount() {
-    this.focusListener.remove();
-    this.state.reactivate = false;
-  }
+  };
 
   extractId = (text) => {
     const regex = /[0-9]+/;
@@ -127,7 +122,7 @@ class ScanScreenComponent extends Component {
   };
 
   render() {
-    const { isFocused } = this.state;
+    const {isFocused, reactivate} = this.state;
 
     return (
       <View style={styles.container}>
@@ -136,18 +131,18 @@ class ScanScreenComponent extends Component {
           onDidBlur={this.onDidBlur}
         />
         {isFocused && (
-        <QRCodeScanner
-          reactivate={this.state.reactivate}
-          reactivateTimeout={3000}
-          vibrate={!this.state.isDialogOpened}
-          containerStyle={styles.scanner}
-          onRead={this.onSuccess}
-          bottomContent={
-            <Text style={styles.textInfo}>
-              Nakieruj kamerę na kod QR
-            </Text>
-          }
-        />
+          <QRCodeScanner
+            reactivate={reactivate}
+            reactivateTimeout={3000}
+            vibrate={!this.state.isDialogOpened}
+            containerStyle={styles.scanner}
+            onRead={this.onSuccess}
+            bottomContent={
+              <Text style={styles.textInfo}>
+                Nakieruj kamerę na kod QR
+              </Text>
+            }
+          />
         )}
       </View>
     );
@@ -165,6 +160,7 @@ const styles = StyleSheet.create({
   },
   scanner: {
     marginTop: 10,
+    width: '100%',
   },
   container: {
     flex: 1,
