@@ -10,6 +10,7 @@ const AutoComplete = (props) => {
     updateOptions, // funkcja aktualizująca opcje na podstawie tekstu z pola tekstowego
   } = props;
 
+  const noItems = !options || options.length === 0;
 
   return (
     <View style={styles.container}>
@@ -18,11 +19,16 @@ const AutoComplete = (props) => {
         placeholder="Wyszukaj"
         onChangeText={updateOptions}
       />
-      <PickerWithItems
-        value={value}
-        updateValue={updateValue}
-        options={options}
-      />
+      {!noItems && (
+        <PickerWithItems
+          value={value}
+          updateValue={updateValue}
+          options={options}
+        />
+      )}
+      {noItems && (
+        <Text>Brak opcji do wyboru</Text>
+      )}
     </View>
   );
 };
