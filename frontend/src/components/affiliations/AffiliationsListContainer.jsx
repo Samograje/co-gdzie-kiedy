@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {Platform} from 'react-native';
 import AffiliationsListComponent from './AffiliationsListComponent';
 import request from '../../APIClient';
-import {Platform} from "react-native";
 
 class AffiliationsListContainer extends Component {
   constructor(props) {
