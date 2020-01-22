@@ -50,13 +50,7 @@ class HardwareDetailsContainer extends Component {
           }
           response.items = response.items.map((item) => ({
             id: item.id,
-            name: `
-            ${item.firstName}
-            ${item.firstName && item.lastName && ' '}
-            ${item.lastName}
-            ${item.location && (item.firstName || item.lastName) && ' - '}
-            ${item.location}
-            `
+            name: `${item.firstName}${item.firstName && item.lastName && ' '}${item.lastName}${item.location && (item.firstName || item.lastName) && ' - '}${item.location}`,
           }));
           this.setState({
             loadingAffiliations: false,
