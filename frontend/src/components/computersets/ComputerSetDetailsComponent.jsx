@@ -45,13 +45,14 @@ const ComputerSetDetailsComponent = (props) => {
 
                 <View>
                   <Text style={styles.labelText}>Sprzęty:</Text>
-                  <MultiSelect>
-                    values = {props.hardwareIDs},
-                    onAddValue = {props.setHardwareIDs},
-                    onRemoveValue = {},
+                  <MultiSelect
+                    values = {props.hardwareIDs}
+                    onAddValue = {props.setHardwareIDs}
+                    onRemoveValue = {props.hardwareIDs}
                     options={props.dataSourceHardware.items}
-                    onUpdateOptions = {props.updateHardware},
-                  </MultiSelect>
+                    onUpdateOptions = {props.updateHardware}
+                  />
+
                 </View>
 
               </>
