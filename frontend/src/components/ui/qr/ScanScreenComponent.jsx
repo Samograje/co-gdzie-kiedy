@@ -15,6 +15,7 @@ class ScanScreenComponent extends Component {
     this.state = {
       isDialogOpened: false,
       reactivate: false,
+      isFocused: false,
     };
   }
 
@@ -122,17 +123,15 @@ class ScanScreenComponent extends Component {
   };
 
   render() {
-    const {isFocused, reactivate} = this.state;
-
     return (
       <View style={styles.container}>
         <NavigationEvents
           onDidFocus={this.onDidFocus}
           onDidBlur={this.onDidBlur}
         />
-        {isFocused && (
+        {this.state.isFocused && (
           <QRCodeScanner
-            reactivate={reactivate}
+            reactivate={this.state.reactivate}
             reactivateTimeout={3000}
             vibrate={!this.state.isDialogOpened}
             containerStyle={styles.scanner}
@@ -155,7 +154,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginTop: 30,
     backgroundColor: 'white',
-    width: '100%',
     textAlign: 'center',
   },
   scanner: {
