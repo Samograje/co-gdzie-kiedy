@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import {NavigationEvents, NavigationScreenProps} from 'react-navigation';
+
 import {
   StyleSheet,
   View,
@@ -12,8 +14,24 @@ class ScanScreenComponent extends Component {
     super(props);
     this.state = {
       isDialogOpened: false,
+      reactivate: false,
+      isFocused: false,
     };
   }
+
+  onDidFocus = payload => {
+    this.setState({
+      isFocused: true,
+      reactivate: true,
+    });
+  };
+
+  onDidBlur = payload => {
+    this.setState({
+      isFocused: false,
+      reactivate: false,
+    });
+  };
 
   extractId = (text) => {
     const regex = /[0-9]+/;
@@ -107,17 +125,24 @@ class ScanScreenComponent extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <QRCodeScanner
-          reactivate={true}
-          vibrate={!this.state.isDialogOpened}
-          containerStyle={styles.scanner}
-          onRead={this.onSuccess}
-          bottomContent={
-            <Text style={styles.textInfo}>
-              Nakieruj kamerę na kod QR
-            </Text>
-          }
+        <NavigationEvents
+          onDidFocus={this.onDidFocus}
+          onDidBlur={this.onDidBlur}
         />
+        {this.state.isFocused && (
+          <QRCodeScanner
+            reactivate={this.state.reactivate}
+            reactivateTimeout={3000}
+            vibrate={!this.state.isDialogOpened}
+            containerStyle={styles.scanner}
+            onRead={this.onSuccess}
+            bottomContent={
+              <Text style={styles.textInfo}>
+                Nakieruj kamerę na kod QR
+              </Text>
+            }
+          />
+        )}
       </View>
     );
   }
@@ -129,11 +154,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginTop: 30,
     backgroundColor: 'white',
-    width: '100%',
     textAlign: 'center',
   },
   scanner: {
     marginTop: 10,
+    width: '100%',
   },
   container: {
     flex: 1,
