@@ -8,6 +8,12 @@ const PickerWithItems = (props) => {
     options, // opcje do pickera - tablica obiektów o kluczach id, name
   } = props;
 
+  if (!options || !options.length) {
+    return (
+      <Text>Brak opcji do wyboru</Text>
+    );
+  }
+
   return (
     <Picker
       style={styles.picker}
@@ -19,7 +25,7 @@ const PickerWithItems = (props) => {
         label="Brak"
         value={null}
       />
-      {options && options.length && options.map((item, key) => (
+      {options.map((item, key) => (
         <Picker.Item
           key={key}
           label={item.name}
