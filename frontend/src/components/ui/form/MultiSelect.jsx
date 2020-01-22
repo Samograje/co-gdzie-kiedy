@@ -5,10 +5,10 @@ import {mainColor} from '../../../constValues';
 
 const MultiSelect = (props) => {
   const {
-    values, // wybrane wartości - tablica obiektów {id, name}
-    onAddValue, // funkcja dodająca wartość po wyborze z pickera, argument to obiekt {id, name}
+    values, // tablica idków wybranych opcji
+    onAddValue, // funkcja dodająca wartość po wyborze z pickera, argument to id dodawanego obiektu
     onRemoveValue, // funkcja usuwająca wybraną wartość, argument to id usuwanego elementu
-    options, // opcje do pickera - obiekt {id, name}
+    options, // opcje do pickera - tablica obiektów o kluczach id, name
     onUpdateOptions, // funkcja aktualizująca opcje na podstawie tekstu z pola tekstowego, argument to wpisany tekst
   } = props;
 
@@ -23,10 +23,10 @@ const MultiSelect = (props) => {
         <View style={styles.values}>
           {values.map((value, key) => (
             <View style={styles.value} key={key}>
-              <Text style={styles.label}>{value.name}</Text>
+              <Text style={styles.label}>{options.filter((option) => option.id === value)[0].name}</Text>
               <TouchableOpacity
                 style={styles.deleteOpacity}
-                onPress={() => onRemoveValue(value.id)}
+                onPress={() => onRemoveValue(value)}
               >
                 <Text style={styles.deleteText}>X</Text>
               </TouchableOpacity>

@@ -5,7 +5,7 @@ const PickerWithItems = (props) => {
   const {
     value, // id opcji wybranej w pickerze
     updateValue, // funkcja aktualizująca wartość po wyborze z pickera
-    options, // opcje do pickera - obiekt o kluczach id, name
+    options, // opcje do pickera - tablica obiektów o kluczach id, name
   } = props;
 
   if (!options || !options.length) {
