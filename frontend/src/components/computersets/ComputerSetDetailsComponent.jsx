@@ -1,71 +1,79 @@
 import React from 'react';
-import {ActivityIndicator, Button, ScrollView, StyleSheet, Text, TextInput, View,} from 'react-native';
+import {ScrollView, StyleSheet, Text, View,} from 'react-native';
+import AutoComplete from '../ui/form/AutoComplete';
+import CgkActivityIndicator from '../ui/CgkActivityIndicator';
+import CgkFormFooter from '../ui/form/CgkFormFooter';
+import CgkFormHeader from '../ui/form/CgkFormHeader';
+import CgkLabelAndValidation from '../ui/form/CgkLabelAndValidation';
+import CgkTextInput from '../ui/form/CgkTextInput';
 import MultiSelect from "../ui/form/MultiSelect";
-import AutoComplete from "../ui/form/AutoComplete";
 
 const ComputerSetDetailsComponent = (props) => {
   let modeInfo;
   if (props.mode === 'edit')
     modeInfo = "edycji";
   else if (props.mode === 'create')
-    modeInfo = "dodawania";
+    modeInfo = "dodawania nowego";
 
   return (
       <ScrollView>
         <View style={styles.addForm}>
-          <Text style={styles.header}>Formularz {modeInfo} zestawu komputerowego</Text>
+          <CgkFormHeader text={`Formularz ${modeInfo} zestawu komputerowego.`}/>
           <Text>Pola z * są obowiązkowe.</Text>
 
           {(props.loadingAffiliations || props.loadingHardware || props.loadingSoftware) && (
               <View style={styles.indicator}>
-                <ActivityIndicator size="large"/>
+                <CgkActivityIndicator/>
               </View>
           )}
 
           {!(props.loadingAffiliations || props.loadingHardware || props.loadingSoftware) && (
               <>
-                <View>
-                  <Text style={styles.labelText}>Nazwa zestawu komputerowego:</Text>
-                  <TextInput style={styles.textInput}
-                             placeholder={"Wprowadź nazwę zestawu"}
-                             value={props.name}
-                             onChangeText={(name) => props.setName(name)}
-                  />
-                </View>
 
-                <View>
-                  <Text style={styles.labelText}>Przynależność:</Text>
+                <CgkLabelAndValidation label="* Nazwa zestawu komputerowego:">
+                  <CgkTextInput
+                      placeholder="Wprowadź nazwę zestawu komputerowego"
+                      text={props.name}
+                      onChangeText={(name) => props.setName(name)}
+                  />
+                </CgkLabelAndValidation>
+
+                <CgkLabelAndValidation label="* Przynależność:">
                   <AutoComplete
                       value={props.affiliationID}
                       updateValue={props.setAffiliationID}
                       options={props.dataSourceAffiliations.items}
                       updateOptions={props.updateAffiliations}
                   />
-                </View>
+                </CgkLabelAndValidation>
 
-                <View>
-                  <Text style={styles.labelText}>Sprzęty:</Text>
+                <CgkLabelAndValidation label="* Sprzęty:">
                   <MultiSelect
-                    values = {props.hardwareIDs}
-                    onAddValue = {props.setHardwareIDs}
-                    onRemoveValue = {props.hardwareIDs}
-                    options={props.dataSourceHardware.items}
-                    onUpdateOptions = {props.updateHardware}
+                      values={props.selectedHardware}
+                      onAddValue={props.onAddHardwareValues}
+                      onRemoveValue={props.onRemoveHardwareValues}
+                      options={props.dataSourceHardware.items}
+                      onUpdateOptions={props.updateHardware}
                   />
+                </CgkLabelAndValidation>
 
-                </View>
+                <CgkLabelAndValidation label="* Oprogramowanie:">
+                  <MultiSelect
+                      values={props.selectedSoftware}
+                      onAddValue={props.onAddSoftwareValues}
+                      onRemoveValue={props.onRemoveSoftwareValues}
+                      options={props.dataSourceSoftware.items}
+                      onUpdateOptions={props.updateSoftware}
+                  />
+                </CgkLabelAndValidation>
 
               </>
           )}
 
-          <Button
-              title="Zapisz"
-              onPress={props.onSubmit}
-              disabled={props.isInvalid}
-          />
-          <Button
-              title="Wróć"
-              onPress={props.onReject}
+          <CgkFormFooter
+              isSubmitDisabled={props.isInvalid}
+              onSubmit={props.onSubmit}
+              onReject={props.onReject}
           />
         </View>
       </ScrollView>
@@ -78,33 +86,6 @@ const styles = StyleSheet.create({
     padding: 15,
     width: '75%',
   },
-  labelText: {
-    marginTop: 10,
-    fontSize: 20,
-    marginBottom: 5,
-    fontWeight: '500',
-  },
-  header: {
-    fontSize: 24,
-    paddingBottom: 10,
-    marginBottom: 25,
-    borderBottomColor: '#199187',
-    borderBottomWidth: 1,
-  },
-  textInput: {
-    marginBottom: 10,
-    width: '100%',
-    height: 35,
-    borderColor: '#009000',
-    borderWidth: 1.2,
-    padding: 2,
-    borderRadius: 7,
-    fontWeight: '500',
-  },
-  oneLineElement: {
-    flexDirection: 'row',
-    marginBottom: 15,
-  },
   indicator: {
     flex: 1,
     paddingTop: 20,
@@ -113,3 +94,4 @@ const styles = StyleSheet.create({
 });
 
 export default ComputerSetDetailsComponent;
+

@@ -16,8 +16,10 @@ class ComputerSetDetailsContainer extends Component {
             error: false,
             dataSourceAffiliations: {"items": []},
             dataSourceHardware: {"items": []},
-            dataSourceSoftware: {"items": []},
-            isInvalid: true
+            dataSourceSoftware: [],
+            isInvalid: true,
+            selectedHardware: [],
+            selectedSoftware: [],
         };
     }
 
@@ -48,9 +50,19 @@ class ComputerSetDetailsContainer extends Component {
                 if (!this._isMounted) {
                     return;
                 }
+                response.items = response.items.map((item) => ({
+                    id: item.id,
+                    name: `
+            ${item.firstName}
+            ${item.firstName && item.lastName && ' '}
+            ${item.lastName}
+            ${item.location && (item.firstName || item.lastName) && ' - '}
+            ${item.location}
+            `
+                }));
                 this.setState({
                     loadingAffiliations: false,
-                    dataSourceAffiliations: response,
+                    dataSourceAffiliations: response
                 });
             })
             .catch(() => {
@@ -79,8 +91,7 @@ class ComputerSetDetailsContainer extends Component {
                 }
                 this.setState({
                     loadingHardware: false,
-                    dataSourceHardware: response,
-
+                    dataSourceHardware: response
                 });
             })
             .catch(() => {
@@ -129,8 +140,8 @@ class ComputerSetDetailsContainer extends Component {
             body: JSON.stringify({
                 "name": this.state.name,
                 "affiliationId": this.state.affiliationID,
-                "softwareIds": this.state.softwareIDs,
                 "hardwareIds": this.state.hardwareIDs,
+                "softwareIds": this.state.softwareIDs,
             }),
             headers: {
                 'Content-Type': 'application/json',
@@ -153,20 +164,58 @@ class ComputerSetDetailsContainer extends Component {
     };
 
     getDataForEditCall() {
-
+        request(`/api/computer-set/${this.props.id}`)
+            .then(response => response.json())
+            .then(responseJson => {
+                if (!this._isMounted) {
+                    return;
+                }
+                this.setState({
+                    name: responseJson.name,
+                    affiliationIds: responseJson.affiliationID,
+                    hardwareIds: responseJson.hardwareIDs,
+                    softwareIds: responseJson.softwareIDs,
+                })
+            })
     };
 
     onSubmit = () => {
         if (this.props.mode === 'create')
-            this.addOrEditCallCall('POST', '/api/ComputerSet');
+            this.addOrEditCallCall('POST', '/api/computer-set');
         else if (this.props.mode === 'edit')
-            this.addOrEditCallCall('PUT', `/api/ComputerSet/${this.props.id}`);
+            this.addOrEditCallCall('PUT', `/api/computer-set/${this.props.id}`);
     };
     onReject = () => this.props.goBack();
     setName = (value) => this.setState({name: value});
     setAffiliationID = (value) => this.setState({affiliationID: value});
-    setSoftwareIDs = (value) => this.setState({softwareIDs: value});
-    setHardwareIDs = (value) => this.setState({hardwareIDs: value});
+    setHardwareIDs = (values) => this.setState({hardwareIDs: values});
+    setSoftwareIDs = (values) => this.setState({SoftwareIDs: values});
+
+    onAddHardwareValues = (selectedItem) => {
+        let updatedSelectedHardware = this.state.selectedHardware.concat(selectedItem);
+        console.log(updatedSelectedHardware);
+        this.setState({selectedHardware: updatedSelectedHardware});
+    }
+
+
+    onAddSoftwareValues = (selectedItem) => {
+        let updatedSelectedSoftware = this.state.selectedSoftware.concat(selectedItem);
+        this.setState({selectedSoftware: updatedSelectedSoftware});
+    }
+
+    onRemoveHardwareValues = (selectedItem) => {
+        var array = [...this.state.selectedHardware];
+        var index = array.indexOf(selectedItem.findIndex)
+        console.log(array);
+        if (index !== -1) {
+            array.splice(index, 1);
+            this.setState({selectedSoftware: array});
+        }
+    }
+
+    onRemoveSoftwareValues = (selectedItem) => {
+
+    }
 
     render() {
         return (
@@ -174,17 +223,17 @@ class ComputerSetDetailsContainer extends Component {
                 onSubmit={this.onSubmit}
                 onReject={this.onReject}
                 setName={this.setName}
-                setSoftwareIDs={this.setSoftwareIDs}
                 setAffiliationID={this.setAffiliationID}
                 setHardwareIDs={this.setHardwareIDs}
+                setSoftwareIDs={this.setSoftwareIDs}
                 mode={this.props.mode}
                 name={this.state.name}
-                loadingSoftware={this.state.loadingSoftware}
                 loadingAffiliations={this.state.loadingAffiliations}
                 loadingHardware={this.state.loadingHardware}
-                softwareIDs={this.state.softwareIDs}
+                loadingSoftware={this.state.loadingSoftware}
                 affiliationID={this.state.affiliationID}
                 hardwareIDs={this.state.hardwareIDs}
+                softwareIDs={this.state.softwareIDs}
                 dataSourceAffiliations={this.state.dataSourceAffiliations}
                 dataSourceHardware={this.state.dataSourceHardware}
                 dataSourceSoftware={this.state.dataSourceSoftware}
@@ -192,6 +241,10 @@ class ComputerSetDetailsContainer extends Component {
                 updateAffiliations={this.fetchDataAffiliations}
                 updateHardware={this.fetchDataHardware}
                 updateSoftware={this.fetchDataSoftware}
+                onAddHardwareValues={this.onAddHardwareValues}
+                onRemoveHardwareValues={this.onRemoveHardwareValues}
+                onAddSoftwareValues={this.onAddSoftwareValues}
+                onRemoveSoftwareValues={this.onRemoveSoftwareValues}
             />
         );
     }
