@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import { NavigationEvents, NavigationScreenProps } from 'react-navigation';
+
 import {
   StyleSheet,
   View,
@@ -12,7 +14,27 @@ class ScanScreenComponent extends Component {
     super(props);
     this.state = {
       isDialogOpened: false,
+      reactivate: false,
     };
+  }
+
+  onDidFocus = payload => {
+    this.setState({ isFocused: true });
+  };
+
+  onDidBlur = payload => {
+    this.setState({ isFocused: false });
+  };
+
+  componentDidMount() {
+    this.focusListener = this.props.addListener('didFocus', () => {
+      this.state.reactivate = true;
+    });
+  }
+
+  componentWillUnmount() {
+    this.focusListener.remove();
+    this.state.reactivate = false;
   }
 
   extractId = (text) => {
@@ -105,10 +127,18 @@ class ScanScreenComponent extends Component {
   };
 
   render() {
+    const { isFocused } = this.state;
+
     return (
       <View style={styles.container}>
+        <NavigationEvents
+          onDidFocus={this.onDidFocus}
+          onDidBlur={this.onDidBlur}
+        />
+        {isFocused && (
         <QRCodeScanner
-          reactivate={true}
+          reactivate={this.state.reactivate}
+          reactivateTimeout={3000}
           vibrate={!this.state.isDialogOpened}
           containerStyle={styles.scanner}
           onRead={this.onSuccess}
@@ -118,6 +148,7 @@ class ScanScreenComponent extends Component {
             </Text>
           }
         />
+        )}
       </View>
     );
   }
