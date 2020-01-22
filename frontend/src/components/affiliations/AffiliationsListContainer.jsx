@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Platform} from 'react-native';
 import AffiliationsListComponent from './AffiliationsListComponent';
 import request from '../../APIClient';
 
@@ -54,7 +55,7 @@ class AffiliationsListContainer extends Component {
 
   deleteItem = () => {
     this.closeDialog();
-    request(`/api/affiliations/${this.state.itemToDeleteId}`,{
+    request(`/api/affiliations/${this.state.itemToDeleteId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -101,6 +102,24 @@ class AffiliationsListContainer extends Component {
     isDialogOpened: false,
     itemToDeleteId: null,
   });
+
+  getPdf = () => {
+    request('/api/affiliations/export')
+      .then((response) => response.blob())
+      .then((blob) => {
+        const fileURL = URL.createObjectURL(blob);
+        window.open(fileURL);
+        // TODO: obsługa tego na komórze
+      })
+      .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.setState({
+          error: true,
+        });
+      });
+  };
 
   render() {
 
@@ -156,6 +175,12 @@ class AffiliationsListContainer extends Component {
         }),
       },
     ];
+    if (Platform.OS === 'web') {
+      groupActions.push({
+        label: 'Eksportuj do pdf',
+        onClick: this.getPdf,
+      });
+    }
 
     return (
       <AffiliationsListComponent

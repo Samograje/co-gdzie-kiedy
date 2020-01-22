@@ -1,13 +1,25 @@
 package org.polsl.backend.dto.affiliation;
 
+import org.polsl.backend.service.export.ExportColumn;
+
 import java.util.Set;
 
 public class AffiliationListOutputDTO {
   private Long id;
+
+  @ExportColumn("Imię")
   private String firstName;
+
+  @ExportColumn("Nazwisko")
   private String lastName;
+
+  @ExportColumn("Lokalizacja")
   private String location;
+
+  @ExportColumn("Numery inwentarzowe powiązanych zestawów komputerowych")
   private Set<String> computerSetsInventoryNumbers;
+
+  @ExportColumn("Numery inwentarzowe powiązanych sprzętów")
   private Set<String> hardwareInventoryNumbers;
 
   public Long getId() {

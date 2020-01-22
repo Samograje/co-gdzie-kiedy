@@ -1,10 +1,15 @@
 package org.polsl.backend.controller;
 
 import org.polsl.backend.dto.ApiBasicResponse;
+import org.polsl.backend.dto.PaginatedResult;
 import org.polsl.backend.dto.software.SoftwareDTO;
+import org.polsl.backend.dto.software.SoftwareListOutputDTO;
 import org.polsl.backend.entity.Software;
 import org.polsl.backend.filtering.Search;
 import org.polsl.backend.service.SoftwareService;
+import org.polsl.backend.service.export.ExportService;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import javax.validation.Valid;
 
 
@@ -27,9 +31,11 @@ import javax.validation.Valid;
 @RequestMapping("api/software")
 public class SoftwareController {
   private final SoftwareService softwareService;
+  private final ExportService exportService;
 
-  public SoftwareController(SoftwareService softwareService) {
+  public SoftwareController(SoftwareService softwareService, ExportService exportService) {
     this.softwareService = softwareService;
+    this.exportService = exportService;
   }
 
   /**
@@ -38,7 +44,7 @@ public class SoftwareController {
    * @return lista oprogramowania
    */
   @GetMapping
-  public ResponseEntity<?> getAllSoftware(@RequestParam(value="search", required=false) String search) {
+  public ResponseEntity<?> getAllSoftware(@RequestParam(value = "search", required = false) String search) {
     Search<Software> filtering = new Search<>(new Software(), search);
     return ResponseEntity.ok(softwareService.getAllSoftware(filtering.searchInitialization()));
   }
@@ -49,7 +55,6 @@ public class SoftwareController {
    * @param id ID wybranego oprogramowania
    * @return oprogramowanie o danym id
    */
-
   @GetMapping("/{id}")
   public ResponseEntity<?> getSoftware(@PathVariable(value = "id") Long id) {
     return ResponseEntity.ok(softwareService.getOneSoftware(id));
@@ -64,6 +69,21 @@ public class SoftwareController {
   @GetMapping("/{id}/computer-sets-history")
   public ResponseEntity<?> getHardwareComputerSetsHistoryList(@PathVariable(value = "id") Long id) {
     return ResponseEntity.ok(softwareService.getSoftwareComputerSetsHistory(id));
+  }
+
+  /**
+   * Endpoint obsługujący uzyskiwanie pliku Pdf z listą oprogramowania.
+   *
+   * @return plik pdf z listą rekordów
+   */
+  @GetMapping("/export")
+  public ResponseEntity<?> printListToPdf(@RequestParam(value = "search", required = false) String search) {
+    Search<Software> filtering = new Search<>(new Software(), search);
+    PaginatedResult<SoftwareListOutputDTO> data = softwareService.getAllSoftware(filtering.searchInitialization());
+    InputStreamResource inputStreamResource = exportService.export("Oprogramowanie", data.getItems());
+    return ResponseEntity.ok()
+      .contentType(MediaType.APPLICATION_PDF)
+      .body(inputStreamResource);
   }
 
   /**

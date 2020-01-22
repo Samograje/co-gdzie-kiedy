@@ -23,6 +23,8 @@ Dodatkowe czynności wymagane do uruchomienia aplikacji mobilnej:
 
 Jeśli node.js jest w wersji nowszej niż 10.16, mogą pojawiać się problemy z uruchamianiem metro serwera. Instrukcje do naprawy tych błędów znajdują się na końcu tej dokumentacji.
 
+Aby na stronie internetowej działało wyświetlanie plików pdf, należy w przeglądarce zezwolić na uruchamianie wyskakujących okienek.
+
 ## Uruchamianie
 
 Aplikację można uruchomić na urządzeniu mobilnym lub w przeglądarce na komputerze. Obie wersje wysyłają żądania API, dlatego wymagają do działania uruchomionego API serwera pod adresem `http://localhost:8080`.

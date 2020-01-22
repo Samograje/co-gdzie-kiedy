@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
+import {Platform} from 'react-native';
+import moment from 'moment';
 import SoftwareListComponent from './SoftwareListComponent';
 import request from "../../APIClient";
-import moment from "moment";
-import {Platform} from "react-native";
 
 class SoftwareListContainer extends Component {
   constructor(props) {
@@ -103,6 +103,24 @@ class SoftwareListContainer extends Component {
     itemToDeleteId: null,
   });
 
+  getPdf = () => {
+    request('/api/software/export')
+      .then((response) => response.blob())
+      .then((blob) => {
+        const fileURL = URL.createObjectURL(blob);
+        window.open(fileURL);
+        // TODO: obsługa tego na komórze
+      })
+      .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.setState({
+          error: true,
+        });
+      });
+  };
+
   render() {
     const columns = [
       {
@@ -165,14 +183,19 @@ class SoftwareListContainer extends Component {
           mode: 'create',
         }),
       },
-      {
-        disabled: Platform.OS !== 'android',
-        label: 'Wyszukaj za pomocą kodu QR',
-        onClick: () => {
-          this.props.push('ScanScreen')
-        },
-      },
     ];
+    if (Platform.OS === 'web') {
+      groupActions.push({
+        label: 'Eksportuj do pdf',
+        onClick: this.getPdf,
+      });
+    }
+    if (Platform.OS === 'android') {
+      groupActions.push({
+        label: 'Wyszukaj za pomocą kodu QR',
+        onClick: () => this.props.push('ScanScreen'),
+      });
+    }
 
     return (
       <SoftwareListComponent
