@@ -10,11 +10,6 @@ const AutoComplete = (props) => {
     updateOptions, // funkcja aktualizująca opcje na podstawie tekstu z pola tekstowego
   } = props;
 
-  if (!options || !options.length) {
-    return (
-      <Text>Brak opcji do wyboru</Text>
-    );
-  }
 
   return (
     <View style={styles.container}>
