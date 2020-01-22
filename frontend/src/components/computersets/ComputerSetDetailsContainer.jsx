@@ -222,7 +222,7 @@ class ComputerSetDetailsContainer extends Component {
         const prevIds = [...this.state.hardwareIDs];
         prevIds.splice(index, 1);
         this.setState({
-            selectedId: prevIds,
+            hardwareIDs: prevIds,
         });
     };
 
@@ -242,14 +242,11 @@ class ComputerSetDetailsContainer extends Component {
     }
 
     onRemoveSoftwareValues = (selectedId) => {
-        console.log("halo");
         const index = this.state.softwareIDs.findIndex((id) => id === selectedId);
         const prevIds = [...this.state.softwareIDs];
-        console.log(prevIds);
         prevIds.splice(index, 1);
-        console.log(prevIds);
         this.setState({
-            selectedId: prevIds,
+            softwareIDs: prevIds,
         });
     };
 
