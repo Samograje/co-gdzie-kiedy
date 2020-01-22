@@ -18,8 +18,6 @@ class ComputerSetDetailsContainer extends Component {
             dataSourceHardware: {"items": []},
             dataSourceSoftware: [],
             isInvalid: true,
-            selectedHardware: [],
-            selectedSoftware: [],
         };
     }
 
@@ -191,31 +189,69 @@ class ComputerSetDetailsContainer extends Component {
     setHardwareIDs = (values) => this.setState({hardwareIDs: values});
     setSoftwareIDs = (values) => this.setState({SoftwareIDs: values});
 
-    onAddHardwareValues = (selectedItem) => {
-        let updatedSelectedHardware = this.state.selectedHardware.concat(selectedItem);
-        console.log(updatedSelectedHardware);
-        this.setState({selectedHardware: updatedSelectedHardware});
+    onAddValue = (chosenId) => {
+        if (!chosenId) {
+            return;
     }
-
-
-    onAddSoftwareValues = (selectedItem) => {
-        let updatedSelectedSoftware = this.state.selectedSoftware.concat(selectedItem);
-        this.setState({selectedSoftware: updatedSelectedSoftware});
+        if (this.state.chosenIds.includes(chosenId)) {
+            return;
     }
+        const prevIds = [...this.state.chosenIds];
+        prevIds.push(chosenId);
+        this.setState({
+            chosenIds: prevIds,
+        });
+    };
 
-    onRemoveHardwareValues = (selectedItem) => {
-        var array = [...this.state.selectedHardware];
-        var index = array.indexOf(selectedItem.findIndex)
-        console.log(array);
-        if (index !== -1) {
-            array.splice(index, 1);
-            this.setState({selectedSoftware: array});
+    onAddHardwareValues = (selectedId) => {
+        if (!selectedId) {
+            return;
         }
+        if (this.state.hardwareIDs.includes(selectedId)) {
+            return;
+        }
+        const prevIds = [...this.state.hardwareIDs];
+        prevIds.push(selectedId);
+        this.setState({
+            hardwareIDs: prevIds,
+        });
     }
 
-    onRemoveSoftwareValues = (selectedItem) => {
+    onRemoveHardwareValues = (selectedId) => {
+        const index = this.state.hardwareIDs.findIndex((id) => id === selectedId);
+        const prevIds = [...this.state.hardwareIDs];
+        prevIds.splice(index, 1);
+        this.setState({
+            selectedId: prevIds,
+        });
+    };
 
+
+    onAddSoftwareValues = (selectedId) => {
+        if (!selectedId) {
+            return;
+        }
+        if (this.state.softwareIDs.includes(selectedId)) {
+            return;
+        }
+        const prevIds = [...this.state.softwareIDs];
+        prevIds.push(selectedId);
+        this.setState({
+            softwareIDs: prevIds,
+        });
     }
+
+    onRemoveSoftwareValues = (selectedId) => {
+        console.log("halo");
+        const index = this.state.softwareIDs.findIndex((id) => id === selectedId);
+        const prevIds = [...this.state.softwareIDs];
+        console.log(prevIds);
+        prevIds.splice(index, 1);
+        console.log(prevIds);
+        this.setState({
+            selectedId: prevIds,
+        });
+    };
 
     render() {
         return (
