@@ -5,7 +5,7 @@ const PickerWithItems = (props) => {
   const {
     value, // id opcji wybranej w pickerze
     updateValue, // funkcja aktualizująca wartość po wyborze z pickera
-    options, // opcje do pickera - obiekt o kluczach id, name
+    options, // opcje do pickera - tablica obiektów o kluczach id, name
   } = props;
 
   if (!options || !options.length) {
@@ -17,7 +17,7 @@ const PickerWithItems = (props) => {
   return (
     <Picker
       style={styles.picker}
-      onValueChange={updateValue}
+      onValueChange={(value) => updateValue(value !== 'Brak' ? parseInt(value) : null)}
       selectedValue={value}
       mode="dropdown"
     >

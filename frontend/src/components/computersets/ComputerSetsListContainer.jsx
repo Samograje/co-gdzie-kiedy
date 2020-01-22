@@ -18,11 +18,22 @@ class ComputerSetsListContainer extends Component {
 
   componentDidMount() {
     this._isMounted = true;
-    this.fetchData();
+
+    if (Platform.OS === 'android') {
+      this.focusListener = this.props.addListener('didFocus', () => {
+        this.fetchData();
+      });
+    } else {
+      this.fetchData();
+    }
   }
 
   componentWillUnmount() {
     this._isMounted = false;
+
+    if (Platform.OS === 'android') {
+      this.focusListener.remove();
+    }
   }
 
   fetchData = (options) => {

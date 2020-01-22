@@ -5,10 +5,10 @@ import {mainColor} from '../../../constValues';
 
 const MultiSelect = (props) => {
   const {
-    values, // wybrane wartości - tablica obiektów {id, name}
-    onAddValue, // funkcja dodająca wartość po wyborze z pickera, argument to obiekt {id, name}
+    values, // tablica idków wybranych opcji
+    onAddValue, // funkcja dodająca wartość po wyborze z pickera, argument to id dodawanego obiektu
     onRemoveValue, // funkcja usuwająca wybraną wartość, argument to id usuwanego elementu
-    options, // opcje do pickera - obiekt {id, name}
+    options, // opcje do pickera - tablica obiektów o kluczach id, name
     onUpdateOptions, // funkcja aktualizująca opcje na podstawie tekstu z pola tekstowego, argument to wpisany tekst
   } = props;
 
@@ -19,19 +19,22 @@ const MultiSelect = (props) => {
         options={options}
         updateOptions={onUpdateOptions}
       />
-      {values && values.length && (
+      {values && values.length > 0 && (
         <View style={styles.values}>
-          {values.map((value, key) => (
-            <View style={styles.value} key={key}>
-              <Text style={styles.label}>{value.name}</Text>
-              <TouchableOpacity
-                style={styles.deleteOpacity}
-                onPress={() => onRemoveValue(value.id)}
-              >
-                <Text style={styles.deleteText}>X</Text>
-              </TouchableOpacity>
-            </View>
-          ))}
+          {values.map((value, key) => {
+            const label = options.filter((option) => option.id === value)[0].name;
+            return (
+              <View style={styles.value} key={key}>
+                <Text style={styles.label}>{label}</Text>
+                <TouchableOpacity
+                  style={styles.deleteOpacity}
+                  onPress={() => onRemoveValue(value)}
+                >
+                  <Text style={styles.deleteText}>X</Text>
+                </TouchableOpacity>
+              </View>
+            );
+          })}
         </View>
       )}
     </View>
