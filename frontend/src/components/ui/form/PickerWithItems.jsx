@@ -22,7 +22,7 @@ const PickerWithItems = (props) => {
       {options && options.length && options.map((item, key) => (
         <Picker.Item
           key={key}
-          label={item.name.replace(/^\s+|\s+$/g, "")}
+          label={item.name}
           value={item.id}
         />
       ))}
