@@ -34,15 +34,25 @@ const AutoComplete = (props) => {
 
 const styles = StyleSheet.create({
   textInput: {
-    marginBottom: 10,
-    width: '100%',
-    height: 35,
-    borderColor: '#009000',
-    borderWidth: 1.2,
+    fontSize: 16,
     padding: 2,
-    borderRadius: 7,
-    fontWeight: '500',
+    borderWidth: 1,
+    borderRadius: 2,
+    marginBottom: 5,
   },
+
+  // TODO: usunąć poniższe stare style
+
+  // textInput: {
+  //   marginBottom: 10,
+  //   width: '100%',
+  //   height: 35,
+  //   borderColor: '#009000',
+  //   borderWidth: 1.2,
+  //   padding: 2,
+  //   borderRadius: 7,
+  //   fontWeight: '500',
+  // },
 });
 
 export default AutoComplete;

@@ -1,9 +1,16 @@
 package org.polsl.backend.controller;
 
 import org.polsl.backend.dto.ApiBasicResponse;
-import org.polsl.backend.dto.affiliation.AffiliationInputDTO;
+import org.polsl.backend.dto.PaginatedResult;
+import org.polsl.backend.dto.affiliation.AffiliationDTO;
+import org.polsl.backend.dto.affiliation.AffiliationListOutputDTO;
+import org.polsl.backend.entity.Affiliation;
+import org.polsl.backend.filtering.Search;
 import org.polsl.backend.service.AffiliationService;
+import org.polsl.backend.service.export.ExportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,33 +31,65 @@ import javax.validation.Valid;
 @RequestMapping("api/affiliations")
 public class AffiliationController {
   private final AffiliationService affiliationService;
+  private final ExportService exportService;
 
   @Autowired
-  public AffiliationController(AffiliationService affiliationService) {
+  public AffiliationController(AffiliationService affiliationService, ExportService exportService) {
     this.affiliationService = affiliationService;
+    this.exportService = exportService;
   }
 
   /**
    * Endpoint obsługujący uzyskiwanie listy przynależności.
    *
+   * @param search      kryteria wyszukiwania
    * @param withHistory informacja o tym, czy należy wyświetlić również usunięte rekordy
    * @return lista przynależności
    */
   @GetMapping
-  public ResponseEntity<?> getAllAffiliations(
-      @RequestParam(name = "with-history", required = false, defaultValue = "false") boolean withHistory
+  public ResponseEntity<?> getAffiliations(
+    @RequestParam(value = "search", required = false) String search,
+    @RequestParam(name = "with-history", required = false, defaultValue = "false") boolean withHistory
   ) {
-    return ResponseEntity.ok(affiliationService.getAffiliations(withHistory));
+    Search<Affiliation> filtering = new Search<>(new Affiliation(), search);
+    return ResponseEntity.ok(affiliationService.getAffiliations(filtering.searchInitialization(), withHistory));
+  }
+
+  /**
+   * Endpoint obsługujący uzyskiwanie pojedynczej przynależności.
+   *
+   * @param id ID przynależności
+   * @return struktura {@link AffiliationDTO} zawierająca dane przynależności o podanym ID
+   */
+  @GetMapping("/{id}")
+  public ResponseEntity<?> getAffiliation(@PathVariable("id") Long id) {
+    return ResponseEntity.ok(affiliationService.getAffiliation(id));
+  }
+
+  /**
+   * Endpoint obsługujący uzyskiwanie pliku Pdf z listą przynależności.
+   *
+   * @return plik pdf z listą rekordów
+   */
+  @GetMapping("/export")
+  public ResponseEntity<?> printListToPdf(@RequestParam(value = "search", required = false) String search) {
+    Search<Affiliation> filtering = new Search<>(new Affiliation(), search);
+    PaginatedResult<AffiliationListOutputDTO> data = affiliationService
+      .getAffiliations(filtering.searchInitialization(), false);
+    InputStreamResource inputStreamResource = exportService.export("Osoby i miejsca", data.getItems());
+    return ResponseEntity.ok()
+      .contentType(MediaType.APPLICATION_PDF)
+      .body(inputStreamResource);
   }
 
   /**
    * Endpoint obsługujący dodawanie nowej przynależności.
    *
-   * @param request stuktura {@link AffiliationInputDTO} zawierająca dane nowej przynależności
+   * @param request stuktura {@link AffiliationDTO} zawierająca dane nowej przynależności
    * @return informacja o poprawnym utworzeniu przynależności
    */
   @PostMapping
-  public ResponseEntity<?> createAffiliation(@Valid @RequestBody AffiliationInputDTO request) {
+  public ResponseEntity<?> createAffiliation(@Valid @RequestBody AffiliationDTO request) {
     affiliationService.createAffiliation(request);
     return ResponseEntity.ok(new ApiBasicResponse(true, "Utworzono przynależność"));
   }
@@ -58,14 +97,11 @@ public class AffiliationController {
   /**
    * Endpoint obsługujący edycję parametrów przynależności.
    *
-   * @param request stuktura {@link AffiliationInputDTO} zawierająca nowe dane przynależności
+   * @param request stuktura {@link AffiliationDTO} zawierająca nowe dane przynależności
    * @return informacja o poprawnym zaktualizowaniu parametrów przynależności
    */
   @PutMapping("/{id}")
-  public ResponseEntity<?> editAffiliation(
-      @PathVariable(value = "id") Long id,
-      @Valid @RequestBody AffiliationInputDTO request
-  ) {
+  public ResponseEntity<?> editAffiliation(@PathVariable("id") Long id, @Valid @RequestBody AffiliationDTO request) {
     affiliationService.editAffiliation(id, request);
     return ResponseEntity.ok(new ApiBasicResponse(true, "Zaktualizowano parametry przynależności"));
   }
@@ -77,7 +113,7 @@ public class AffiliationController {
    * @return informacja o poprawnym usunięciu przynależności
    */
   @DeleteMapping("/{id}")
-  public ResponseEntity<?> deleteAffiliation(@PathVariable(value = "id") Long id) {
+  public ResponseEntity<?> deleteAffiliation(@PathVariable("id") Long id) {
     affiliationService.deleteAffiliation(id);
     return ResponseEntity.ok(new ApiBasicResponse(true, "Usunięto przynależność"));
   }

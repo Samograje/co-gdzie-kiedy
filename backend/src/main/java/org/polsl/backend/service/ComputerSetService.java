@@ -22,6 +22,7 @@ import org.polsl.backend.repository.HardwareRepository;
 import org.polsl.backend.repository.SoftwareRepository;
 import org.polsl.backend.type.InventoryNumberEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,8 +62,16 @@ public class ComputerSetService {
     this.softwareRepository = softwareRepository;
   }
 
-  public PaginatedResult<ComputerSetListOutputDTO> getAllComputerSets() {
-    Iterable<ComputerSet> computerSets = computerSetRepository.findAllByValidToIsNull();
+  public PaginatedResult<ComputerSetListOutputDTO> getAllComputerSets(Specification<ComputerSet> specification) {
+
+    Iterable<ComputerSet> computerSets;
+
+    Specification<ComputerSet> validTo = (
+            (Specification<ComputerSet>) (root, query, criteriaBuilder) ->
+                    criteriaBuilder.isNull(root.get("validTo"))
+    ).and(specification);
+    computerSets = computerSetRepository.findAll(validTo);
+
     List<ComputerSetListOutputDTO> dtos = new ArrayList<>();
     for (ComputerSet computerSet : computerSets) {
       ComputerSetListOutputDTO dto = new ComputerSetListOutputDTO();

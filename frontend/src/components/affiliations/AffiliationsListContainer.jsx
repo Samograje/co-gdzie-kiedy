@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Platform} from 'react-native';
 import AffiliationsListComponent from './AffiliationsListComponent';
 import request from '../../APIClient';
 
@@ -11,12 +12,19 @@ class AffiliationsListContainer extends Component {
       items: [],
       totalElements: null,
       filters: {},
+      isDialogOpened: false,
+      itemToDeleteId: null,
       withHistory: false,
     };
   }
 
   componentDidMount() {
+    this._isMounted = true;
     this.fetchData();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   fetchData = (options) => {
@@ -27,6 +35,9 @@ class AffiliationsListContainer extends Component {
     request('/api/affiliations', options)
       .then((response) => response.json())
       .then((response) => {
+        if (!this._isMounted) {
+          return;
+        }
         this.setState({
           loading: false,
           items: response.items.map((item) => ({
@@ -37,11 +48,46 @@ class AffiliationsListContainer extends Component {
         });
       })
       .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
         this.setState({
           loading: false,
           error: true,
         });
       })
+  };
+
+  deleteItem = () => {
+    this.closeDialog();
+    request(`/api/affiliations/${this.state.itemToDeleteId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      }
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        if (!this._isMounted) {
+          return;
+        }
+        if (!response.success) {
+          this.setState({
+            error: true,
+          });
+          return;
+        }
+        this.fetchData();
+      })
+      .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.setState({
+          error: true,
+        });
+      });
   };
 
   handleFilterChange = (fieldName, text) => {
@@ -58,17 +104,58 @@ class AffiliationsListContainer extends Component {
     });
   };
 
+  closeDialog = () => this.setState({
+    isDialogOpened: false,
+    itemToDeleteId: null,
+  });
+
+  getPdf = () => {
+    request('/api/affiliations/export')
+      .then((response) => response.blob())
+      .then((blob) => {
+        const fileURL = URL.createObjectURL(blob);
+        window.open(fileURL);
+        // TODO: obsługa tego na komórze
+      })
+      .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.setState({
+          error: true,
+        });
+      });
+  };
+
   render() {
     const columns = [
       {
-        name: 'name',
-        label: 'Nazwa',
+        name: 'firstName',
+        label: 'Imię',
         filter: true,
+      },
+      {
+        name: 'lastName',
+        label: 'Nazwisko',
+        filter: true,
+      },
+      {
+        name: 'location',
+        label: 'Lokalizacja',
+        filter: true,
+      },
+      {
+        name: 'computerSetsInventoryNumbers',
+        label: 'Numery inwentarzowe powiązanych zestawów komputerowych',
+      },
+      {
+        name: 'hardwareInventoryNumbers',
+        label: 'Numery inwentarzowe powiązanych sprzętów',
       },
     ];
     if (this.state.withHistory) {
       columns.push({
-        name: 'isDeleted',
+        name: 'isDeletedLabel',
         label: 'Usunięty',
       })
     }
@@ -76,18 +163,21 @@ class AffiliationsListContainer extends Component {
     const itemActions = [
       {
         label: 'Edytuj',
+        icon: require('./../../images/ic_action_edit.png'),
         onClick: (itemData) => this.props.push('AffiliationDetails', {
           mode: 'edit',
           id: itemData.id,
         }),
-        disabled: (itemData) => itemData.deleted,
+        checkIfDisabled: (itemData) => itemData.deleted,
       },
       {
         label: 'Usuń',
-        onClick: (itemData) => {
-          // TODO: usuwanie afiliacji
-        },
-        disabled: (itemData) => itemData.deleted,
+        icon: require('./../../images/ic_action_delete.png'),
+        onClick: (itemData) => this.setState({
+          isDialogOpened: true,
+          itemToDeleteId: itemData.id,
+        }),
+        checkIfDisabled: (itemData) => itemData.deleted,
       },
     ];
 
@@ -99,7 +189,7 @@ class AffiliationsListContainer extends Component {
         }),
       },
       {
-        label: this.state.withHistory ? 'Wyświetl tylko nieusunięte rekordy' : 'Wyświetl również usunięte rekordy',
+        label: this.state.withHistory ? 'Nie wyświetlaj archiwum' : 'Wyświetl archiwum',
         onClick: () => {
           const withHistory = !this.state.withHistory;
           this.fetchData({
@@ -112,6 +202,12 @@ class AffiliationsListContainer extends Component {
         },
       },
     ];
+    if (Platform.OS === 'web') {
+      groupActions.push({
+        label: 'Eksportuj do pdf',
+        onClick: this.getPdf,
+      });
+    }
 
     return (
       <AffiliationsListComponent
@@ -124,6 +220,9 @@ class AffiliationsListContainer extends Component {
         error={this.state.error}
         items={this.state.items}
         totalElements={this.state.totalElements}
+        isDialogOpened={this.state.isDialogOpened}
+        dialogHandleConfirm={this.deleteItem}
+        dialogHandleReject={this.closeDialog}
       />
     );
   }

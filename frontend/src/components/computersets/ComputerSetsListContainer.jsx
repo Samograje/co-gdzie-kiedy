@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Platform} from 'react-native';
 import ComputerSetsListComponent from './ComputerSetsListComponent';
 import request from '../../APIClient';
 
@@ -16,7 +17,12 @@ class ComputerSetsListContainer extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
     this.fetchData();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   fetchData = (options) => {
@@ -27,12 +33,18 @@ class ComputerSetsListContainer extends Component {
     request('/api/computer-sets', options)
       .then((response) => response.json())
       .then((response) => {
+        if (!this._isMounted) {
+          return;
+        }
         this.setState({
           loading: false,
           ...response,
         });
       })
       .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
         this.setState({
           loading: false,
           error: true,
@@ -53,6 +65,24 @@ class ComputerSetsListContainer extends Component {
     });
   };
 
+  getPdf = () => {
+    request('/api/computer-sets/export')
+      .then((response) => response.blob())
+      .then((blob) => {
+        const fileURL = URL.createObjectURL(blob);
+        window.open(fileURL);
+        // TODO: obsługa tego na komórze
+      })
+      .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.setState({
+          error: true,
+        });
+      });
+  };
+
   render() {
     const columns = [
       {
@@ -68,7 +98,7 @@ class ComputerSetsListContainer extends Component {
       {
         name: 'affiliationName',
         label: 'Przynależy do',
-        filter: true,
+        filter: false,
       },
       {
         name: 'softwareInventoryNumbers',
@@ -83,6 +113,7 @@ class ComputerSetsListContainer extends Component {
     const itemActions = [
       {
         label: 'Edytuj',
+        icon: require('./../../images/ic_action_edit.png'),
         onClick: (itemData) => this.props.push('ComputerSetDetails', {
           mode: 'edit',
           id: itemData.id,
@@ -90,26 +121,30 @@ class ComputerSetsListContainer extends Component {
       },
       {
         label: 'Usuń',
+        icon: require('./../../images/ic_action_delete.png'),
         onClick: (itemData) => {
           // TODO: usuwanie zestawu komputerowego
         },
       },
       {
-        label: 'HA',
+        label: 'Historia osób / miejsc',
+        icon: require('./../../images/ic_action_person_pin.png'),
         onClick: (itemData) => this.props.push('ComputerSetHistory', {
           mode: 'affiliations',
           id: itemData.id,
         }),
       },
       {
-        label: 'HH',
+        label: 'Historia sprzętu',
+        icon: require('./../../images/ic_action_mouse.png'),
         onClick: (itemData) => this.props.push('ComputerSetHistory', {
           mode: 'hardware',
           id: itemData.id,
         }),
       },
       {
-        label: 'HS',
+        label: 'Historia oprogramowania',
+        icon: require('./../../images/ic_action_web.png'),
         onClick: (itemData) => this.props.push('ComputerSetHistory', {
           mode: 'software',
           id: itemData.id,
@@ -119,18 +154,25 @@ class ComputerSetsListContainer extends Component {
 
     const groupActions = [
       {
+        disabled: false,
         label: 'Dodaj zestaw komputerowy',
         onClick: () => this.props.push('ComputerSetDetails', {
           mode: 'create',
         }),
       },
-      {
-        label: 'Wyszukaj za pomocą kodu QR',
-        onClick: () => {
-          // TODO: wyszukiwanie po kodzie QR
-        },
-      },
     ];
+    if (Platform.OS === 'web') {
+      groupActions.push({
+        label: 'Eksportuj do pdf',
+        onClick: this.getPdf,
+      });
+    }
+    if (Platform.OS === 'android') {
+      groupActions.push({
+        label: 'Wyszukaj za pomocą kodu QR',
+        onClick: () => this.props.push('ScanScreen'),
+      });
+    }
 
     return (
       <ComputerSetsListComponent

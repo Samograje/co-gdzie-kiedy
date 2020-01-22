@@ -1,9 +1,16 @@
 package org.polsl.backend.controller;
 
 import org.polsl.backend.dto.ApiBasicResponse;
+import org.polsl.backend.dto.PaginatedResult;
 import org.polsl.backend.dto.computerset.ComputerSetDTO;
+import org.polsl.backend.dto.computerset.ComputerSetListOutputDTO;
+import org.polsl.backend.entity.ComputerSet;
+import org.polsl.backend.filtering.Search;
 import org.polsl.backend.service.ComputerSetService;
+import org.polsl.backend.service.export.ExportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -23,10 +31,12 @@ import javax.validation.Valid;
 @RequestMapping("api/computer-sets")
 public class ComputerSetController {
   private final ComputerSetService computerSetService;
+  private final ExportService exportService;
 
   @Autowired
-  public ComputerSetController(ComputerSetService computerSetService) {
+  public ComputerSetController(ComputerSetService computerSetService, ExportService exportService) {
     this.computerSetService = computerSetService;
+    this.exportService = exportService;
   }
 
   /**
@@ -35,8 +45,24 @@ public class ComputerSetController {
    * @return lista zestawów komputerowych
    */
   @GetMapping
-  public ResponseEntity<?> getAllComputerSets() {
-    return ResponseEntity.ok(computerSetService.getAllComputerSets());
+  public ResponseEntity<?> getAllComputerSets(@RequestParam(value = "search", required = false) String search) {
+    Search<ComputerSet> filtering = new Search<>(new ComputerSet(), search);
+    return ResponseEntity.ok(computerSetService.getAllComputerSets(filtering.searchInitialization()));
+  }
+
+  /**
+   * Endpoint obsługujący uzyskiwanie pliku Pdf z listą zestawów komputerowych.
+   *
+   * @return plik pdf z listą rekordów
+   */
+  @GetMapping("/export")
+  public ResponseEntity<?> printListToPdf(@RequestParam(value = "search", required = false) String search) {
+    Search<ComputerSet> filtering = new Search<>(new ComputerSet(), search);
+    PaginatedResult<ComputerSetListOutputDTO> data = computerSetService.getAllComputerSets(filtering.searchInitialization());
+    InputStreamResource inputStreamResource = exportService.export("Zestawy komputerowe", data.getItems());
+    return ResponseEntity.ok()
+      .contentType(MediaType.APPLICATION_PDF)
+      .body(inputStreamResource);
   }
 
   /**
@@ -59,8 +85,8 @@ public class ComputerSetController {
    */
   @PutMapping("/{id}")
   public ResponseEntity<?> editComputerSet(
-          @PathVariable(value = "id") Long id,
-          @Valid @RequestBody ComputerSetDTO request
+      @PathVariable(value = "id") Long id,
+      @Valid @RequestBody ComputerSetDTO request
   ) {
     computerSetService.editComputerSet(id, request);
     return ResponseEntity.ok(new ApiBasicResponse(true, "Zaktualizowano parametry zestawu komputerowego"));

@@ -1,13 +1,13 @@
 import React from 'react';
 import {
-  ActivityIndicator,
-  Button,
+  Image,
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
-import {mainColor} from '../../../constValues';
+import CgkActivityIndicator from '../CgkActivityIndicator';
 
 const WideTable = (props) => {
   const {
@@ -53,10 +53,7 @@ const WideTable = (props) => {
       {/* spinner ładowania danych */}
       {loading && (
         <View style={styles.loading}>
-          <ActivityIndicator
-            size="large"
-            color={mainColor}
-          />
+          <CgkActivityIndicator/>
         </View>
       )}
 
@@ -72,24 +69,32 @@ const WideTable = (props) => {
         <View style={styles.row} key={rowId}>
 
           {/* dane do komórek */}
-          {columns.map((column, key) => (
-            <View style={styles.cell} key={key}>
-              <Text style={styles.text}>{item[column.name]}</Text>
-            </View>
-          ))}
+          {columns.map((column, key) => {
+            const array = [].concat(item[column.name]); // opakowanie pojedynczej wartości w tablicę
+            return (
+              <View style={styles.cell} key={key}>
+                {array.map((text, key) => (
+                  <Text key={key} style={styles.text}>{text}</Text>
+                ))}
+              </View>
+            );
+          })}
 
           {/* komórka z akcjami */}
           {itemActions && (
             <View style={styles.cell}>
-              {itemActions.map((action, idx) => (
-                <View style={styles.buttonContainer} key={idx}>
-                  <Button
-                    title={action.label}
-                    onPress={() => action.onClick(item)}
-                    color={mainColor}
-                    disabled={action.disabled && action.disabled(item)}
+              {itemActions.filter((action) => !action.checkIfDisabled(item)).map((action, idx) => (
+                <TouchableOpacity
+                  style={styles.opacity}
+                  onPress={() => action.onClick(item)}
+                  key={idx}
+                >
+                  <Image
+                    source={action.icon}
+                    resizeMode="contain"
+                    style={styles.icon}
                   />
-                </View>
+                </TouchableOpacity>
               ))}
             </View>
           )}
@@ -144,6 +149,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   text: {
+    width: '100%',
     fontSize: 16,
     textAlign: 'center',
   },
@@ -154,8 +160,12 @@ const styles = StyleSheet.create({
     padding: 2,
     margin: 2,
   },
-  buttonContainer: {
-    margin: 2,
+  opacity: {
+    alignItems: 'center',
+  },
+  icon: {
+    height: 30,
+    width: 30,
   },
   loading: {
     flex: 1,

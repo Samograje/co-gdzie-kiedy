@@ -22,12 +22,17 @@ class HardwareDetailsContainer extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
     this.fetchDataHardwareDictionary();
     this.fetchDataAffiliations();
     this.fetchDataComputerSets();
 
     if (this.props.mode === 'edit')
       this.getDataForEditCall();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   fetchDataAffiliations = (query) => {
@@ -40,12 +45,28 @@ class HardwareDetailsContainer extends Component {
     request('/api/affiliations', options)
         .then((response) => response.json())
         .then((response) => {
+          if (!this._isMounted) {
+            return;
+          }
+          response.items = response.items.map((item) => ({
+            id: item.id,
+            name: `
+            ${item.firstName}
+            ${item.firstName && item.lastName && ' '}
+            ${item.lastName}
+            ${item.location && (item.firstName || item.lastName) && ' - '}
+            ${item.location}
+            `
+          }));
           this.setState({
             loadingAffiliations: false,
             dataSourceAffiliations: response
           });
         })
         .catch(() => {
+          if (!this._isMounted) {
+            return;
+          }
           this.setState({
             loadingAffiliations: false,
             error: true,
@@ -63,12 +84,18 @@ class HardwareDetailsContainer extends Component {
     request('/api/computer-sets', options)
         .then((response) => response.json())
         .then((response) => {
+          if (!this._isMounted) {
+            return;
+          }
           this.setState({
             loadingComputerSets: false,
             dataSourceComputerSets: response
           });
         })
         .catch(() => {
+          if (!this._isMounted) {
+            return;
+          }
           this.setState({
             loadingComputerSets: false,
             error: true,
@@ -80,6 +107,9 @@ class HardwareDetailsContainer extends Component {
     request('/api/hardware-dictionaries')
         .then((response) => response.json())
         .then((response) => {
+          if (!this._isMounted) {
+            return;
+          }
           this.setState({
             loadingDictionary: false,
             dataSourceDictionary: response.map((item) => ({
@@ -89,6 +119,9 @@ class HardwareDetailsContainer extends Component {
           });
         })
         .catch(() => {
+          if (!this._isMounted) {
+            return;
+          }
           this.setState({
             loadingDictionary: false,
             error: true,
@@ -111,10 +144,16 @@ class HardwareDetailsContainer extends Component {
       }
     }).then((response) => response.json())
         .then((responseJson) => {
+          if (!this._isMounted) {
+            return;
+          }
           console.log(responseJson);
           return responseJson;
         })
         .catch((error) => {
+          if (!this._isMounted) {
+            return;
+          }
           console.error(error);
         });
   };
@@ -123,6 +162,9 @@ class HardwareDetailsContainer extends Component {
     request(`/api/hardware/${this.props.id}`)
         .then(response => response.json())
         .then(responseJson => {
+          if (!this._isMounted) {
+            return;
+          }
           this.setState({
             name: responseJson.name,
             dictionaryID: responseJson.dictionaryId,

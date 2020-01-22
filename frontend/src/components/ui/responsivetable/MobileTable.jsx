@@ -1,13 +1,13 @@
 import React from 'react';
 import {
-  ActivityIndicator,
-  Button,
+  Image,
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
-import {mainColor} from '../../../constValues';
+import CgkActivityIndicator from '../CgkActivityIndicator';
 
 const MobileTable = (props) => {
   const {
@@ -51,10 +51,7 @@ const MobileTable = (props) => {
       {/* spinner ładowania danych */}
       {loading && (
         <View style={styles.loading}>
-          <ActivityIndicator
-            size="large"
-            color={mainColor}
-          />
+          <CgkActivityIndicator/>
         </View>
       )}
 
@@ -70,24 +67,37 @@ const MobileTable = (props) => {
         <View style={styles.item} key={idx}>
 
           {/* wiersze z danymi */}
-          {columns.map((column, key) => (
-            <View style={styles.row} key={key}>
-              <Text style={[styles.text, styles.label]}>{column.label}</Text>
-              <Text style={[styles.text, styles.value]}>{item[column.name]}</Text>
-            </View>
-          ))}
+          {columns.map((column, key) => {
+            const array = [].concat(item[column.name]); // opakowanie pojedynczej wartości w tablicę
+            return (
+              <View style={styles.row} key={key}>
+                <View style={styles.label}>
+                  <Text style={styles.textLabel}>{column.label}</Text>
+                </View>
+                <View style={styles.value}>
+                  {array.map((text, key) => (
+                    <Text key={key} style={styles.textValue}>{text}</Text>
+                  ))}
+                </View>
+              </View>
+            );
+          })}
 
           {/* przyciski akcji */}
           {itemActions && (
-            <View style={styles.buttons}>
-              {itemActions.map((action, idx) => (
-                <View style={styles.buttonContainer} key={idx}>
-                  <Button
-                    title={action.label}
-                    onPress={() => action.onClick(item)}
-                    color={mainColor}
+            <View style={styles.icons}>
+              {itemActions.filter((action) => !action.checkIfDisabled(item)).map((action, idx) => (
+                <TouchableOpacity
+                  style={styles.opacity}
+                  onPress={() => action.onClick(item)}
+                  key={idx}
+                >
+                  <Image
+                    source={action.icon}
+                    resizeMode="contain"
+                    style={styles.icon}
                   />
-                </View>
+                </TouchableOpacity>
               ))}
             </View>
           )}
@@ -140,22 +150,34 @@ const styles = StyleSheet.create({
   },
   label: {
     flex: 1,
-    textAlign: 'right',
     marginRight: 5,
+    justifyContent: 'center',
+  },
+  textLabel: {
+    fontSize: 16,
     fontWeight: 'bold',
+    textAlign: 'right',
   },
   value: {
     marginLeft: 5,
     flex: 1,
   },
-  buttons: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
+  textValue: {
+    fontSize: 16,
+    textAlign: 'left',
   },
-  buttonContainer: {
+  icons: {
+    marginTop: 5,
+    marginBottom: 5,
+    flexDirection: 'row',
+  },
+  opacity: {
     flex: 1,
-    margin: 5,
+    alignItems: 'center',
+  },
+  icon: {
+    height: 50,
+    width: 50,
   },
   text: {
     fontSize: 16,

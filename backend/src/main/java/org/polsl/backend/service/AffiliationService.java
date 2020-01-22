@@ -1,16 +1,19 @@
 package org.polsl.backend.service;
 
 import org.polsl.backend.dto.PaginatedResult;
-import org.polsl.backend.dto.affiliation.AffiliationInputDTO;
-import org.polsl.backend.dto.affiliation.AffiliationOutputDTO;
+import org.polsl.backend.dto.affiliation.AffiliationDTO;
+import org.polsl.backend.dto.affiliation.AffiliationListOutputDTO;
 import org.polsl.backend.entity.Affiliation;
 import org.polsl.backend.exception.NotFoundException;
 import org.polsl.backend.repository.AffiliationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Logika biznesowa przynależności.
@@ -47,25 +50,36 @@ public class AffiliationService {
     return stringBuilder.toString();
   }
 
-  public PaginatedResult<AffiliationOutputDTO> getAffiliations(Boolean withDeleted) {
-    Iterable<Affiliation> affiliations = withDeleted
-        ? affiliationRepository.findAll()
-        : affiliationRepository.findAllByIsDeletedIsFalse();
-    List<AffiliationOutputDTO> dtos = new ArrayList<>();
-    for (Affiliation affiliation : affiliations) {
-      AffiliationOutputDTO dto = new AffiliationOutputDTO();
-      dto.setId(affiliation.getId());
-      dto.setName(generateName(affiliation));
-      dto.setDeleted(affiliation.getDeleted());
-      dtos.add(dto);
-    }
-    PaginatedResult<AffiliationOutputDTO> response = new PaginatedResult<>();
+  public PaginatedResult<AffiliationListOutputDTO> getAffiliations(Specification<Affiliation> specification,
+                                                                   boolean withDeleted) {
+    final Specification<Affiliation> resultSpecification = withDeleted
+      ? specification
+      : ((Specification<Affiliation>) (root, query, criteriaBuilder) -> criteriaBuilder.isFalse(root.get("isDeleted")))
+      .and(specification);
+
+    Iterable<Affiliation> affiliations = affiliationRepository.findAll(resultSpecification);
+
+    List<AffiliationListOutputDTO> dtos = new ArrayList<>();
+    affiliations.forEach(affiliation -> dtos.add(toListOutputDTO(affiliation)));
+
+    PaginatedResult<AffiliationListOutputDTO> response = new PaginatedResult<>();
     response.setItems(dtos);
     response.setTotalElements((long) dtos.size());
     return response;
   }
 
-  public void createAffiliation(AffiliationInputDTO request) {
+  public AffiliationDTO getAffiliation(Long id) throws NotFoundException {
+    Affiliation affiliation = affiliationRepository.findById(id)
+      .orElseThrow(() -> new NotFoundException("przynależność", "id", id));
+
+    AffiliationDTO response = new AffiliationDTO();
+    response.setFirstName(affiliation.getFirstName());
+    response.setLastName(affiliation.getLastName());
+    response.setLocation(affiliation.getLocation());
+    return response;
+  }
+
+  public void createAffiliation(AffiliationDTO request) {
     Affiliation affiliation = new Affiliation();
     affiliation.setFirstName(request.getFirstName());
     affiliation.setLastName(request.getLastName());
@@ -73,9 +87,9 @@ public class AffiliationService {
     affiliationRepository.save(affiliation);
   }
 
-  public void editAffiliation(Long id, AffiliationInputDTO request) throws NotFoundException {
+  public void editAffiliation(Long id, AffiliationDTO request) throws NotFoundException {
     Affiliation affiliation = affiliationRepository.findByIdAndIsDeletedIsFalse(id)
-        .orElseThrow(() -> new NotFoundException("przynależność", "id", id));
+      .orElseThrow(() -> new NotFoundException("przynależność", "id", id));
     affiliation.setFirstName(request.getFirstName());
     affiliation.setLastName(request.getLastName());
     affiliation.setLocation(request.getLocation());
@@ -84,8 +98,34 @@ public class AffiliationService {
 
   public void deleteAffiliation(Long id) throws NotFoundException {
     Affiliation affiliation = affiliationRepository.findByIdAndIsDeletedIsFalse(id)
-        .orElseThrow(() -> new NotFoundException("przynależność", "id", id));
+      .orElseThrow(() -> new NotFoundException("przynależność", "id", id));
     affiliation.setDeleted(true);
     affiliationRepository.save(affiliation);
+  }
+
+  private AffiliationListOutputDTO toListOutputDTO(Affiliation affiliation) {
+    AffiliationListOutputDTO dto = new AffiliationListOutputDTO();
+
+    dto.setId(affiliation.getId());
+    dto.setDeleted(affiliation.getDeleted());
+    dto.setFirstName(affiliation.getFirstName());
+    dto.setLastName(affiliation.getLastName());
+    dto.setLocation(affiliation.getLocation());
+
+    Set<String> computerSetsInventoryNumbers = affiliation.getAffiliationComputerSetSet()
+      .stream()
+      .filter(affiliationComputerSet -> affiliationComputerSet.getValidTo() == null)
+      .map(affiliationComputerSet -> affiliationComputerSet.getComputerSet().getInventoryNumber())
+      .collect(Collectors.toSet());
+    dto.setComputerSetsInventoryNumbers(computerSetsInventoryNumbers);
+
+    Set<String> hardwareInventoryNumbers = affiliation.getAffiliationHardwareSet()
+      .stream()
+      .filter(affiliationHardware -> affiliationHardware.getValidTo() == null)
+      .map(affiliationHardware -> affiliationHardware.getHardware().getInventoryNumber())
+      .collect(Collectors.toSet());
+    dto.setHardwareInventoryNumbers(hardwareInventoryNumbers);
+
+    return dto;
   }
 }

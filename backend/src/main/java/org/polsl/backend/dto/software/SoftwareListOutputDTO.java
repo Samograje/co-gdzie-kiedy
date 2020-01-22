@@ -1,12 +1,29 @@
 package org.polsl.backend.dto.software;
 
+import org.polsl.backend.service.export.ExportColumn;
+
+import java.util.Set;
+
 public class SoftwareListOutputDTO {
   private Long id;
+
+  @ExportColumn("Nazwa")
   private String name;
+
+  @ExportColumn("Numer inwentarzowy")
   private String inventoryNumber;
+
+  @ExportColumn("Klucz licencji")
   private String key;
+
+  @ExportColumn("Ilość dostępnych kluczy")
   private Long availableKeys;
+
+  @ExportColumn("Czas trwania")
   private Long duration;
+
+  @ExportColumn("Numery inwentarzowe powiązanych zestawów komputerowych")
+  private Set<String> computerSetInventoryNumbers;
 
   public String getName() { return name; }
 
@@ -31,4 +48,10 @@ public class SoftwareListOutputDTO {
   public Long getDuration() { return duration; }
 
   public void setDuration(Long duration) { this.duration = duration; }
+
+  public Set<String> getComputerSetInventoryNumbers() { return computerSetInventoryNumbers; }
+
+  public void setComputerSetInventoryNumbers(Set<String> computerSetInventoryNumbers) {
+    this.computerSetInventoryNumbers = computerSetInventoryNumbers;
+  }
 }

@@ -17,21 +17,32 @@ class HomepageContainer extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
     request('/api/statistics')
       .then((response) => response.json())
       .then((response) => {
+        if (!this._isMounted) {
+          return;
+        }
         this.setState({
           loading: false,
           error: false,
           ...response,
         })
       })
-      .catch((response) => {
+      .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
         this.setState({
           loading: false,
           error: true,
         });
       })
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   handleLayout = ({nativeEvent}) => {

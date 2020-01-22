@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
+import {Platform} from 'react-native';
+import moment from 'moment';
 import SoftwareListComponent from './SoftwareListComponent';
 import request from "../../APIClient";
-import moment from "moment";
 
 class SoftwareListContainer extends Component {
   constructor(props) {
@@ -12,10 +13,17 @@ class SoftwareListContainer extends Component {
       items: [],
       totalElements: null,
       filters: {},
+      dialogOpened: false,
+      itemToDeleteId: null,
     };
   }
   componentDidMount() {
+    this._isMounted = true;
     this.fetchData();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   fetchData = (options) => {
@@ -24,28 +32,34 @@ class SoftwareListContainer extends Component {
       error: false,
     });
     request('/api/software', options)
-        .then((response) => response.json())
-        .then((response) => {
-          for(let i = 0; i < response.items.length; i++)
-          {
-            let duration = response.items[i].duration;
-            let months = moment(duration).month() +  12 * (moment(duration).year() - moment(0).year());
-            if(months <= 0)
-              response.items[i].duration = "Licencja utraciła ważność";
-            else
-              response.items[i].duration = months;
-          }
-          this.setState({
-            loading: false,
-            ...response,
-          });
-        })
-        .catch(() => {
-          this.setState({
-            loading: false,
-            error: true,
-          });
-        })
+      .then((response) => response.json())
+      .then((response) => {
+        if (!this._isMounted) {
+          return;
+        }
+        for(let i = 0; i < response.items.length; i++)
+        {
+          let duration = response.items[i].duration;
+          let months = moment(duration).month() +  12 * (moment(duration).year() - moment(0).year());
+          if(months <= 0)
+            response.items[i].duration = "Licencja utraciła ważność";
+          else
+            response.items[i].duration = months;
+        }
+        this.setState({
+          loading: false,
+          ...response,
+        });
+      })
+      .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.setState({
+          loading: false,
+          error: true,
+        });
+      })
   };
 
   handleFilterChange = (fieldName, text) => {
@@ -61,20 +75,50 @@ class SoftwareListContainer extends Component {
     });
   };
 
-  deleteCall = (id) => {
-    request(`/api/software/${id}`,{
+  deleteCall = () => {
+    request(`/api/software/${this.state.itemToDeleteId}`,{
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       }
     }).then((response) => response.json())
-        .then(() => {
-          this.fetchData();
-        })
-        .catch((error) => {
-          console.error(error);
+      .then(() => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.closeDialog();
+        this.fetchData();
+      })
+      .catch((error) => {
+        if (!this._isMounted) {
+          return;
+        }
+        console.error(error);
+      });
+  };
+
+  closeDialog = () => this.setState({
+    dialogOpened: false,
+    itemToDeleteId: null,
+  });
+
+  getPdf = () => {
+    request('/api/software/export')
+      .then((response) => response.blob())
+      .then((blob) => {
+        const fileURL = URL.createObjectURL(blob);
+        window.open(fileURL);
+        // TODO: obsługa tego na komórze
+      })
+      .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.setState({
+          error: true,
         });
+      });
   };
 
   render() {
@@ -92,6 +136,7 @@ class SoftwareListContainer extends Component {
       {
         name: 'key',
         label: 'Klucz produktu',
+        filter: true,
       },
       {
         name: 'availableKeys',
@@ -101,11 +146,16 @@ class SoftwareListContainer extends Component {
         name: 'duration',
         label: 'Ważna przez (msc)',
       },
+      {
+        name: 'computerSetInventoryNumbers',
+        label: 'Powiązane zestawy komputerowe',
+      },
     ];
 
     const itemActions = [
       {
         label: 'Edytuj',
+        icon: require('./../../images/ic_action_edit.png'),
         onClick: (itemData) => this.props.push('SoftwareDetails', {
           mode: 'edit',
           id: itemData.id,
@@ -113,10 +163,15 @@ class SoftwareListContainer extends Component {
       },
       {
         label: 'Usuń',
-        onClick: (itemData) => {this.deleteCall(itemData.id)},
+        icon: require('./../../images/ic_action_delete.png'),
+        onClick: (itemData) => this.setState({
+          dialogOpened: true,
+          itemToDeleteId: itemData.id,
+        }),
       },
       {
-        label: 'HC',
+        label: 'Historia zestawów komputerowych',
+        icon: require('./../../images/ic_action_devices.png'),
         onClick: (itemData) => this.props.push('SoftwareHistory', {
           id: itemData.id,
         }),
@@ -125,18 +180,25 @@ class SoftwareListContainer extends Component {
 
     const groupActions = [
       {
+        disabled: false,
         label: 'Dodaj oprogramowanie',
         onClick: () => this.props.push('SoftwareDetails', {
           mode: 'create',
         }),
       },
-      {
-        label: 'Wyszukaj za pomocą kodu QR',
-        onClick: () => {
-          // TODO: wyszukiwanie po kodzie QR
-        },
-      },
     ];
+    if (Platform.OS === 'web') {
+      groupActions.push({
+        label: 'Eksportuj do pdf',
+        onClick: this.getPdf,
+      });
+    }
+    if (Platform.OS === 'android') {
+      groupActions.push({
+        label: 'Wyszukaj za pomocą kodu QR',
+        onClick: () => this.props.push('ScanScreen'),
+      });
+    }
 
     return (
       <SoftwareListComponent
@@ -149,6 +211,9 @@ class SoftwareListContainer extends Component {
         columns={columns}
         itemActions={itemActions}
         groupActions={groupActions}
+        dialogOpened={this.state.dialogOpened}
+        dialogHandleConfirm={this.deleteCall}
+        dialogHandleReject={this.closeDialog}
       />
     );
   }
