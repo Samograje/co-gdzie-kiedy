@@ -19,19 +19,22 @@ const MultiSelect = (props) => {
         options={options}
         updateOptions={onUpdateOptions}
       />
-      {values && values.length && (
+      {values && values.length > 0 && (
         <View style={styles.values}>
-          {values.map((value, key) => (
-            <View style={styles.value} key={key}>
-              <Text style={styles.label}>{options.filter((option) => option.id === value)[0].name}</Text>
-              <TouchableOpacity
-                style={styles.deleteOpacity}
-                onPress={() => onRemoveValue(value)}
-              >
-                <Text style={styles.deleteText}>X</Text>
-              </TouchableOpacity>
-            </View>
-          ))}
+          {values.map((value, key) => {
+            const label = options.filter((option) => option.id === value)[0].name;
+            return (
+              <View style={styles.value} key={key}>
+                <Text style={styles.label}>{label}</Text>
+                <TouchableOpacity
+                  style={styles.deleteOpacity}
+                  onPress={() => onRemoveValue(value)}
+                >
+                  <Text style={styles.deleteText}>X</Text>
+                </TouchableOpacity>
+              </View>
+            );
+          })}
         </View>
       )}
     </View>
