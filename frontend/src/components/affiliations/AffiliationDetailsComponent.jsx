@@ -1,14 +1,10 @@
 import React from 'react';
-import {
-  ActivityIndicator,
-  Button,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
-import {mainColor} from '../../constValues';
+import {ScrollView, StyleSheet, View} from 'react-native';
+import CgkActivityIndicator from '../ui/CgkActivityIndicator';
+import CgkFormFooter from '../ui/form/CgkFormFooter';
+import CgkFormHeader from '../ui/form/CgkFormHeader';
+import CgkLabelAndValidation from '../ui/form/CgkLabelAndValidation';
+import CgkTextInput from '../ui/form/CgkTextInput';
 import ErrorElement from '../ui/ErrorElement';
 
 const AffiliationDetailsComponent = (props) => {
@@ -23,105 +19,80 @@ const AffiliationDetailsComponent = (props) => {
     onSubmit,
     onReject,
     onChange,
-    onLayout,
   } = props;
 
-  const header = (
-    <View style={styles.header}>
-      <Text style={styles.headerText}>
-        {mode === 'create' && 'Dodawanie osoby / miejsca'}
-        {mode === 'edit' && 'Edycja osoby / miejsca'}
-      </Text>
-    </View>
-  );
+  let headerText;
+  if (mode === 'create') {
+    headerText = 'Dodawanie osoby / miejsca';
+  }
+  if (mode === 'edit') {
+    headerText = 'Edycja osoby / miejsca';
+  }
 
   const main = (
-    <View style={[styles.main, isWide && styles.row]}>
-      <View style={styles.inputField}>
-        <Text style={styles.label}>Imię</Text>
-        <TextInput
-          style={styles.input}
+    <View style={styles.main}>
+
+      <CgkLabelAndValidation
+        label="Imię"
+        errors={errors.firstName}
+      >
+        <CgkTextInput
           placeholder="Wprowadź imię"
-          onChangeText={(text) => onChange('firstName', text)}
-          editable={!isSubmitting}
-          value={data.firstName}
-        />
-        {errors.firstName && (
-          <Text style={styles.validationError}>{errors.firstName}</Text>
-        )}
-      </View>
-      <View style={styles.inputField}>
-        <Text style={styles.label}>Nazwisko</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Wprowadź nazwisko"
-          onChangeText={(text) => onChange('lastName', text)}
-          editable={!isSubmitting}
-          value={data.lastName}
-        />
-        {errors.lastName && (
-          <Text style={styles.validationError}>{errors.lastName}</Text>
-        )}
-      </View>
-      <View style={styles.inputField}>
-        <Text style={styles.label}>Lokalizacja</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Wprowadź lokalizację"
-          onChangeText={(text) => onChange('location', text)}
-          editable={!isSubmitting}
-          value={data.location}
-        />
-        {errors.location && (
-          <Text style={styles.validationError}>{errors.location}</Text>
-        )}
-      </View>
-
-    </View>
-  );
-
-  const footer = (
-    <View style={styles.footer}>
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Zapisz"
-          onPress={onSubmit}
-          color={mainColor}
-          disabled={isLoading || isSubmitting}
-        />
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Wróć"
-          onPress={onReject}
-          color="darkgrey"
           disabled={isSubmitting}
+          text={data.firstName}
+          onChangeText={(text) => onChange('firstName', text)}
         />
-      </View>
-    </View>
-  );
+      </CgkLabelAndValidation>
 
-  const spinner = (
-    <ActivityIndicator
-      size="large"
-      color={mainColor}
-    />
+      <CgkLabelAndValidation
+        label="Nazwisko"
+        errors={errors.lastName}
+      >
+        <CgkTextInput
+          placeholder="Wprowadź nazwisko"
+          disabled={isSubmitting}
+          text={data.lastName}
+          onChangeText={(text) => onChange('lastName', text)}
+        />
+      </CgkLabelAndValidation>
+
+      <CgkLabelAndValidation
+        label="Lokalizacja"
+        errors={errors.location}
+      >
+        <CgkTextInput
+          placeholder="Wprowadź lokalizację"
+          disabled={isSubmitting}
+          text={data.location}
+          onChangeText={(text) => onChange('location', text)}
+        />
+      </CgkLabelAndValidation>
+    </View>
   );
 
   return (
-    <ScrollView>
-      <View style={styles.container} onLayout={onLayout}>
-        {header}
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={isWide ? styles.contentWide : styles.contentMobile}>
+        <CgkFormHeader text={headerText}/>
         {!isLoading && main}
-        {isLoading && spinner}
+        {isLoading && (
+          <CgkActivityIndicator/>
+        )}
         {error && (
           <ErrorElement
             message="Nie udało się pobrać danych z serwera"
             type="error"
           />
         )}
-        {footer}
-        {isSubmitting && spinner}
+        <CgkFormFooter
+          isSubmitDisabled={isLoading || isSubmitting}
+          isRejectDisabled={isSubmitting}
+          onSubmit={onSubmit}
+          onReject={onReject}
+        />
+        {isSubmitting && (
+          <CgkActivityIndicator/>
+        )}
       </View>
     </ScrollView>
   );
@@ -129,47 +100,19 @@ const AffiliationDetailsComponent = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 5,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
-  header: {
-    margin: 5,
-    paddingBottom: 10,
-    marginBottom: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: mainColor,
+  contentWide: {
+    width: 400,
+    margin: 10,
   },
-  headerText: {
-    fontSize: 24,
+  contentMobile: {
+    flex: 1,
+    margin: 10,
   },
   main: {
     marginBottom: 15,
-  },
-  inputField: {
-    flex: 1,
-    margin: 5,
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: '500',
-    marginBottom: 2,
-  },
-  input: {
-    fontSize: 16,
-    padding: 2,
-    borderWidth: 1,
-    borderRadius: 2,
-  },
-  validationError: {
-    color: 'darkred',
-  },
-  footer: {
-    flexDirection: 'row',
-  },
-  buttonContainer: {
-    margin: 2,
-  },
-  row: {
-    flexDirection: 'row',
   },
 });
 
