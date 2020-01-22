@@ -1,8 +1,26 @@
 package org.polsl.backend.dto.affiliation;
 
+import org.polsl.backend.service.export.ExportColumn;
+
+import java.util.Set;
+
 public class AffiliationListOutputDTO {
   private Long id;
-  private String name;
+
+  @ExportColumn("Imię")
+  private String firstName;
+
+  @ExportColumn("Nazwisko")
+  private String lastName;
+
+  @ExportColumn("Lokalizacja")
+  private String location;
+
+  @ExportColumn("Numery inwentarzowe powiązanych zestawów komputerowych")
+  private Set<String> computerSetsInventoryNumbers;
+
+  @ExportColumn("Numery inwentarzowe powiązanych sprzętów")
+  private Set<String> hardwareInventoryNumbers;
 
   public Long getId() {
     return id;
@@ -12,11 +30,43 @@ public class AffiliationListOutputDTO {
     this.id = id;
   }
 
-  public String getName() {
-    return name;
+  public String getFirstName() {
+    return firstName;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public String getLastName() {
+    return lastName;
+  }
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
+  public String getLocation() {
+    return location;
+  }
+
+  public void setLocation(String location) {
+    this.location = location;
+  }
+
+  public Set<String> getComputerSetsInventoryNumbers() {
+    return computerSetsInventoryNumbers;
+  }
+
+  public void setComputerSetsInventoryNumbers(Set<String> computerSetsInventoryNumbers) {
+    this.computerSetsInventoryNumbers = computerSetsInventoryNumbers;
+  }
+
+  public Set<String> getHardwareInventoryNumbers() {
+    return hardwareInventoryNumbers;
+  }
+
+  public void setHardwareInventoryNumbers(Set<String> hardwareInventoryNumbers) {
+    this.hardwareInventoryNumbers = hardwareInventoryNumbers;
   }
 }

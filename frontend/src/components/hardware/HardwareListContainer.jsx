@@ -12,6 +12,8 @@ class HardwareListContainer extends Component {
       items: [],
       totalElements: null,
       filters: {},
+      dialogOpened: false,
+      itemToDeleteId: null,
     };
   }
 
@@ -51,8 +53,8 @@ class HardwareListContainer extends Component {
       })
   };
 
-  deleteCall = (id) => {
-    request(`/api/hardware/${id}`,{
+  deleteCall = () => {
+    request(`/api/hardware/${this.state.itemToDeleteId}`,{
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -63,6 +65,7 @@ class HardwareListContainer extends Component {
           if (!this._isMounted) {
             return;
           }
+          this.closeDialog();
           this.fetchData();
         })
         .catch((error) => {
@@ -72,6 +75,11 @@ class HardwareListContainer extends Component {
           console.error(error);
         });
   };
+
+  closeDialog = () => this.setState({
+    dialogOpened: false,
+    itemToDeleteId: null,
+  });
 
   handleFilterChange = (fieldName, text) => {
     const newFilters = {
@@ -84,6 +92,24 @@ class HardwareListContainer extends Component {
     this.fetchData({
       filters: newFilters,
     });
+  };
+
+  getPdf = () => {
+    request('/api/hardware/export')
+      .then((response) => response.blob())
+      .then((blob) => {
+        const fileURL = URL.createObjectURL(blob);
+        window.open(fileURL);
+        // TODO: obsługa tego na komórze
+      })
+      .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.setState({
+          error: true,
+        });
+      });
   };
 
   render() {
@@ -119,6 +145,7 @@ class HardwareListContainer extends Component {
     const itemActions = [
       {
         label: 'Edytuj',
+        icon: require('./../../images/ic_action_edit.png'),
         onClick: (itemData) => this.props.push('HardwareDetails', {
           mode: 'edit',
           id: itemData.id,
@@ -126,19 +153,23 @@ class HardwareListContainer extends Component {
       },
       {
         label: 'Usuń',
-        onClick: (itemData) => {
-          this.deleteCall(itemData.id)
-        },
+        icon: require('./../../images/ic_action_delete.png'),
+        onClick: (itemData) => this.setState({
+          dialogOpened: true,
+          itemToDeleteId: itemData.id,
+        }),
       },
       {
-        label: 'HA',
+        label: 'Historia osób / miejsc',
+        icon: require('./../../images/ic_action_person_pin.png'),
         onClick: (itemData) => this.props.push('HardwareHistory', {
           mode: 'affiliations',
           id: itemData.id,
         }),
       },
       {
-        label: 'HC',
+        label: 'Historia zestawów komputerowych',
+        icon: require('./../../images/ic_action_devices.png'),
         onClick: (itemData) => this.props.push('HardwareHistory', {
           mode: 'computer-sets',
           id: itemData.id,
@@ -154,14 +185,19 @@ class HardwareListContainer extends Component {
           mode: 'create',
         }),
       },
-      {
-        disabled: Platform.OS !== 'android',
-        label: 'Wyszukaj za pomocą kodu QR',
-        onClick: () => {
-          this.props.push('ScanScreen')
-        },
-      },
     ];
+    if (Platform.OS === 'web') {
+      groupActions.push({
+        label: 'Eksportuj do pdf',
+        onClick: this.getPdf,
+      });
+    }
+    if (Platform.OS === 'android') {
+      groupActions.push({
+        label: 'Wyszukaj za pomocą kodu QR',
+        onClick: () => this.props.push('ScanScreen'),
+      });
+    }
 
     return (
       <HardwareListComponent
@@ -174,6 +210,9 @@ class HardwareListContainer extends Component {
         columns={columns}
         itemActions={itemActions}
         groupActions={groupActions}
+        dialogOpened={this.state.dialogOpened}
+        dialogHandleConfirm={this.deleteCall}
+        dialogHandleReject={this.closeDialog}
       />
     );
   }

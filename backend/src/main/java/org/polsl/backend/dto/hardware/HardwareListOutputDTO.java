@@ -1,11 +1,23 @@
 package org.polsl.backend.dto.hardware;
 
+import org.polsl.backend.service.export.ExportColumn;
+
 public class HardwareListOutputDTO {
   private Long id;
+
+  @ExportColumn("Nazwa")
   private String name;
+
+  @ExportColumn("Typ")
   private String type;
+
+  @ExportColumn("Numer inwentarzowy")
   private String inventoryNumber;
+
+  @ExportColumn("Przynależy do")
   private String affiliationName;
+
+  @ExportColumn("Numer inwentarzowy powiązanego zestawu komputerowego")
   private String computerSetInventoryNumber;
 
   public HardwareListOutputDTO() {

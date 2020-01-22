@@ -1,12 +1,16 @@
 package org.polsl.backend.controller;
 
 import org.polsl.backend.dto.ApiBasicResponse;
+import org.polsl.backend.dto.PaginatedResult;
 import org.polsl.backend.dto.hardware.HardwareDTO;
-import org.polsl.backend.entity.Affiliation;
+import org.polsl.backend.dto.hardware.HardwareListOutputDTO;
 import org.polsl.backend.entity.Hardware;
 import org.polsl.backend.filtering.Search;
 import org.polsl.backend.service.HardwareService;
+import org.polsl.backend.service.export.ExportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,11 +31,14 @@ import javax.validation.Valid;
 @RequestMapping("api/hardware")
 public class HardwareController {
   private final HardwareService hardwareService;
+  private final ExportService exportService;
 
   @Autowired
-  public HardwareController(HardwareService hardwareService) {
+  public HardwareController(HardwareService hardwareService, ExportService exportService) {
     this.hardwareService = hardwareService;
+    this.exportService = exportService;
   }
+
   /**
    * Endpoint obsługujący uzyskiwanie listy wszystkich nieusuniętych hardware'ów
    *
@@ -74,6 +81,21 @@ public class HardwareController {
   @GetMapping("/{id}/computer-sets-history")
   public ResponseEntity<?> getHardwareComputerSetsHistoryList(@PathVariable(value = "id") Long id) {
     return ResponseEntity.ok(hardwareService.getHardwareComputerSetsHistory(id));
+  }
+
+  /**
+   * Endpoint obsługujący uzyskiwanie pliku pdf z listą sprzętu.
+   *
+   * @return plik pdf z listą rekordów
+   */
+  @GetMapping("/export")
+  public ResponseEntity<?> printListToPdf(@RequestParam(value = "search", required = false) String search) {
+    Search<Hardware> filtering = new Search<>(new Hardware(), search);
+    PaginatedResult<HardwareListOutputDTO> data = hardwareService.getHardwareList(filtering.searchInitialization());
+    InputStreamResource inputStreamResource = exportService.export("Sprzęty", data.getItems());
+    return ResponseEntity.ok()
+      .contentType(MediaType.APPLICATION_PDF)
+      .body(inputStreamResource);
   }
 
   /**

@@ -1,13 +1,25 @@
 package org.polsl.backend.controller;
 
 import org.polsl.backend.dto.ApiBasicResponse;
+import org.polsl.backend.dto.PaginatedResult;
 import org.polsl.backend.dto.software.SoftwareDTO;
+import org.polsl.backend.dto.software.SoftwareListOutputDTO;
 import org.polsl.backend.entity.Software;
 import org.polsl.backend.filtering.Search;
 import org.polsl.backend.service.SoftwareService;
+import org.polsl.backend.service.export.ExportService;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
@@ -19,9 +31,11 @@ import javax.validation.Valid;
 @RequestMapping("api/software")
 public class SoftwareController {
   private final SoftwareService softwareService;
+  private final ExportService exportService;
 
-  public SoftwareController(SoftwareService softwareService) {
+  public SoftwareController(SoftwareService softwareService, ExportService exportService) {
     this.softwareService = softwareService;
+    this.exportService = exportService;
   }
 
   /**
@@ -30,7 +44,7 @@ public class SoftwareController {
    * @return lista oprogramowania
    */
   @GetMapping
-  public ResponseEntity<?> getAllSoftware(@RequestParam(value="search", required=false) String search) {
+  public ResponseEntity<?> getAllSoftware(@RequestParam(value = "search", required = false) String search) {
     Search<Software> filtering = new Search<>(new Software(), search);
     return ResponseEntity.ok(softwareService.getAllSoftware(filtering.searchInitialization()));
   }
@@ -41,7 +55,6 @@ public class SoftwareController {
    * @param id ID wybranego oprogramowania
    * @return oprogramowanie o danym id
    */
-
   @GetMapping("/{id}")
   public ResponseEntity<?> getSoftware(@PathVariable(value = "id") Long id) {
     return ResponseEntity.ok(softwareService.getOneSoftware(id));
@@ -59,12 +72,26 @@ public class SoftwareController {
   }
 
   /**
+   * Endpoint obsługujący uzyskiwanie pliku Pdf z listą oprogramowania.
+   *
+   * @return plik pdf z listą rekordów
+   */
+  @GetMapping("/export")
+  public ResponseEntity<?> printListToPdf(@RequestParam(value = "search", required = false) String search) {
+    Search<Software> filtering = new Search<>(new Software(), search);
+    PaginatedResult<SoftwareListOutputDTO> data = softwareService.getAllSoftware(filtering.searchInitialization());
+    InputStreamResource inputStreamResource = exportService.export("Oprogramowanie", data.getItems());
+    return ResponseEntity.ok()
+      .contentType(MediaType.APPLICATION_PDF)
+      .body(inputStreamResource);
+  }
+
+  /**
    * Endpoint obsługujący dodawanie nowego oprogramowania.
    *
    * @param request struktura {@link SoftwareDTO} zawierająca dane nowego oprogramwoania
    * @return informacja o poprawnym utworzeniu oprogramowaniu
    */
-  @CrossOrigin(origins = "http://localhost:3000")
   @PostMapping
   public ResponseEntity<?> createSoftware(@Valid @RequestBody SoftwareDTO request) {
     softwareService.createSoftware(request);
@@ -78,7 +105,6 @@ public class SoftwareController {
    * @return informacja o poprawnym zaktualizowaniu parametrów oprogramowania
    */
   @PutMapping("/{id}")
-  @CrossOrigin(origins = "http://localhost:3000")
   public ResponseEntity<?> editSoftware(
       @PathVariable(value = "id") Long id,
       @Valid @RequestBody SoftwareDTO request
@@ -93,7 +119,6 @@ public class SoftwareController {
    * @param id ID wybranego oprogramowania
    * @return informacja o poprawnym usunięciu oprogramowania
    */
-  @CrossOrigin(origins = "http://localhost:3000")
   @DeleteMapping("/{id}")
   public ResponseEntity<?> deleteSoftware(@PathVariable(value = "id") Long id) {
     softwareService.deleteSoftware(id);

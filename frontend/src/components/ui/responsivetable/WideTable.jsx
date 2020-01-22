@@ -1,13 +1,13 @@
 import React from 'react';
 import {
-  ActivityIndicator,
-  Button,
+  Image,
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
-import {mainColor} from '../../../constValues';
+import CgkActivityIndicator from '../CgkActivityIndicator';
 
 const WideTable = (props) => {
   const {
@@ -53,10 +53,7 @@ const WideTable = (props) => {
       {/* spinner ładowania danych */}
       {loading && (
         <View style={styles.loading}>
-          <ActivityIndicator
-            size="large"
-            color={mainColor}
-          />
+          <CgkActivityIndicator/>
         </View>
       )}
 
@@ -87,13 +84,17 @@ const WideTable = (props) => {
           {itemActions && (
             <View style={styles.cell}>
               {itemActions.map((action, idx) => (
-                <View style={styles.buttonContainer} key={idx}>
-                  <Button
-                    title={action.label}
-                    onPress={() => action.onClick(item)}
-                    color={mainColor}
+                <TouchableOpacity
+                  style={styles.opacity}
+                  onPress={() => action.onClick(item)}
+                  key={idx}
+                >
+                  <Image
+                    source={action.icon}
+                    resizeMode="contain"
+                    style={styles.icon}
                   />
-                </View>
+                </TouchableOpacity>
               ))}
             </View>
           )}
@@ -159,8 +160,12 @@ const styles = StyleSheet.create({
     padding: 2,
     margin: 2,
   },
-  buttonContainer: {
-    margin: 2,
+  opacity: {
+    alignItems: 'center',
+  },
+  icon: {
+    height: 30,
+    width: 30,
   },
   loading: {
     flex: 1,

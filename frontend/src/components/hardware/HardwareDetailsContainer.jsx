@@ -48,6 +48,16 @@ class HardwareDetailsContainer extends Component {
           if (!this._isMounted) {
             return;
           }
+          response.items = response.items.map((item) => ({
+            id: item.id,
+            name: `
+            ${item.firstName}
+            ${item.firstName && item.lastName && ' '}
+            ${item.lastName}
+            ${item.location && (item.firstName || item.lastName) && ' - '}
+            ${item.location}
+            `
+          }));
           this.setState({
             loadingAffiliations: false,
             dataSourceAffiliations: response
