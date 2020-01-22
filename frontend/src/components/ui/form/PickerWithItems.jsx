@@ -17,7 +17,7 @@ const PickerWithItems = (props) => {
   return (
     <Picker
       style={styles.picker}
-      onValueChange={updateValue}
+      onValueChange={(value) => updateValue(value !== 'Brak' ? parseInt(value) : null)}
       selectedValue={value}
       mode="dropdown"
     >
