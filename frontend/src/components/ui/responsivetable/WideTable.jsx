@@ -78,8 +78,6 @@ const WideTable = (props) => {
 
             return (
               <View style={styles.cell} key={key}>
-
-                {/* elementy tablicy wartości */}
                 {array.map((text, key) => (
                   <Text key={key} style={styles.text}>{text}</Text>
                 ))}
