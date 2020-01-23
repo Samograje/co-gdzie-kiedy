@@ -12,8 +12,10 @@ import CgkFormHeader from '../ui/form/CgkFormHeader';
 import CgkLabelAndValidation from '../ui/form/CgkLabelAndValidation';
 import CgkTextInput from '../ui/form/CgkTextInput';
 import PickerWithItems from '../ui/form/PickerWithItems';
+import ErrorElement from '../ui/ErrorElement';
 
 const HardwareDetailsComponent = (props) => {
+
   let modeInfo;
   if (props.mode === 'edit')
     modeInfo = "edycji";
@@ -68,12 +70,21 @@ const HardwareDetailsComponent = (props) => {
             </CgkLabelAndValidation>
           </View>
         )}
-
+        {props.error && (
+          <ErrorElement
+            message="Nie udało się pobrać danych z serwera"
+            type="error"
+          />
+        )}
         <CgkFormFooter
           isSubmitDisabled={props.isInvalid}
+          isRejectDisabled={props.isSubmitting}
           onSubmit={props.onSubmit}
           onReject={props.onReject}
         />
+        {props.isSubmitting && (
+          <CgkActivityIndicator/>
+        )}
       </View>
     </ScrollView>
   );
