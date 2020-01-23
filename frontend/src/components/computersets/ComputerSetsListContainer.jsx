@@ -137,6 +137,7 @@ class ComputerSetsListContainer extends Component {
           mode: 'edit',
           id: itemData.id,
         }),
+        disabledIfDeleted: true,
       },
       {
         label: 'Usuń',
@@ -144,6 +145,7 @@ class ComputerSetsListContainer extends Component {
         onClick: (itemData) => {
           // TODO: usuwanie zestawu komputerowego
         },
+        disabledIfDeleted: true,
       },
       {
         label: 'Historia osób / miejsc',

@@ -179,6 +179,7 @@ class SoftwareListContainer extends Component {
           mode: 'edit',
           id: itemData.id,
         }),
+        disabledIfDeleted: true,
       },
       {
         label: 'Usuń',
@@ -187,6 +188,7 @@ class SoftwareListContainer extends Component {
           dialogOpened: true,
           itemToDeleteId: itemData.id,
         }),
+        disabledIfDeleted: true,
       },
       {
         label: 'Historia zestawów komputerowych',

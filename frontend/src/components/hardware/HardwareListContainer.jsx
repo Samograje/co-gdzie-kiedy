@@ -168,6 +168,7 @@ class HardwareListContainer extends Component {
           mode: 'edit',
           id: itemData.id,
         }),
+        disabledIfDeleted: true,
       },
       {
         label: 'Usuń',
@@ -176,6 +177,7 @@ class HardwareListContainer extends Component {
           dialogOpened: true,
           itemToDeleteId: itemData.id,
         }),
+        disabledIfDeleted: true,
       },
       {
         label: 'Historia osób / miejsc',
