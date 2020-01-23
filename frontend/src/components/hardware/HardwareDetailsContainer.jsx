@@ -17,7 +17,8 @@ class HardwareDetailsContainer extends Component {
       dataSourceAffiliations: {"items": []},
       dataSourceComputerSets: {"items": []},
       dataSourceDictionary: [],
-      isInvalid: true
+      isInvalid: true,
+      isSubmitting: false,
     };
   }
 
@@ -124,6 +125,9 @@ class HardwareDetailsContainer extends Component {
   };
 
   addOrEditCallCall = (method, path) => {
+    this.setState({
+      isSubmitting: true,
+    });
     request(path, {
       method: method,
       body: JSON.stringify({
@@ -137,19 +141,41 @@ class HardwareDetailsContainer extends Component {
         'Access-Control-Allow-Origin': '*',
       }
     }).then((response) => response.json())
-        .then((responseJson) => {
+      .then((response) => {
+        if (response.success) {
+          this.props.goBack();
+        } else {
           if (!this._isMounted) {
             return;
           }
-          console.log(responseJson);
-          return responseJson;
-        })
-        .catch((error) => {
-          if (!this._isMounted) {
-            return;
-          }
-          console.error(error);
+          this.setState({
+            error: true,
+            isSubmitting: false,
+          });
+        }
+      })
+      .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.setState({
+          error: true,
+          isSubmitting: false,
         });
+      });
+        // .then((responseJson) => {
+        //   if (!this._isMounted) {
+        //     return;
+        //   }
+        //   console.log(responseJson);
+        //   return responseJson;
+        // })
+        // .catch((error) => {
+        //   if (!this._isMounted) {
+        //     return;
+        //   }
+        //   console.error(error);
+        // });
   };
 
   getDataForEditCall() {
@@ -201,6 +227,8 @@ class HardwareDetailsContainer extends Component {
             dataSourceComputerSets={this.state.dataSourceComputerSets}
             dataSourceDictionary={this.state.dataSourceDictionary}
             isInvalid={this.state.name === '' || this.state.dictionaryID === '' || this.state.affiliationID === ''}
+            isSubmitting={this.state.isSubmitting}
+            error={this.state.error}
             updateAffiliations={this.fetchDataAffiliations}
             updateComputerSets={this.fetchDataComputerSets}
         />
