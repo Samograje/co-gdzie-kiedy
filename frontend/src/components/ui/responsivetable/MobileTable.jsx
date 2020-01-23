@@ -68,7 +68,14 @@ const MobileTable = (props) => {
 
           {/* wiersze z danymi */}
           {columns.map((column, key) => {
-            const array = [].concat(item[column.name]); // opakowanie pojedynczej wartości w tablicę
+            let value = item[column.name];
+
+            if (typeof value === 'boolean') { // ładne wyświetlanie wartości logicznych
+              value = value ? 'TAK' : 'NIE';
+            }
+
+            const array = [].concat(value); // opakowanie pojedynczej wartości w tablicę
+
             return (
               <View style={styles.row} key={key}>
                 <View style={styles.label}>

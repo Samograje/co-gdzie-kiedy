@@ -40,11 +40,7 @@ class AffiliationsListContainer extends Component {
         }
         this.setState({
           loading: false,
-          items: response.items.map((item) => ({
-            ...item,
-            isDeletedLabel: item.deleted ? 'TAK' : 'NIE',
-          })),
-          totalElements: response.totalElements,
+          ...response,
         });
       })
       .catch(() => {
@@ -155,7 +151,7 @@ class AffiliationsListContainer extends Component {
     ];
     if (this.state.withHistory) {
       columns.push({
-        name: 'isDeletedLabel',
+        name: 'deleted',
         label: 'Usunięty',
       })
     }

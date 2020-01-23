@@ -29,8 +29,6 @@ const request = (url, options) => {
 // dodaje parametry do urlu
 const prepareUrl = (url, {filters, withHistory}) => {
   let finalUrl = `${url}`;
-  console.log(filters);
-  console.log(withHistory);
 
   let filtersEnabled = false;
   if (filters) {

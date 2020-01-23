@@ -70,9 +70,18 @@ const WideTable = (props) => {
 
           {/* dane do komórek */}
           {columns.map((column, key) => {
-            const array = [].concat(item[column.name]); // opakowanie pojedynczej wartości w tablicę
+            let value = item[column.name];
+
+            if (typeof value === 'boolean') { // ładne wyświetlanie wartości logicznych
+              value = value ? 'TAK' : 'NIE';
+            }
+
+            const array = [].concat(value); // opakowanie pojedynczej wartości w tablicę
+
             return (
               <View style={styles.cell} key={key}>
+
+                {/* elementy tablicy wartości */}
                 {array.map((text, key) => (
                   <Text key={key} style={styles.text}>{text}</Text>
                 ))}
