@@ -39,6 +39,7 @@ const HardwareDetailsComponent = (props) => {
               <CgkTextInput
                 placeholder="Wprowadź nazwę sprzętu"
                 text={props.name}
+                disabled={props.isSubmitting}
                 onChangeText={(name) => props.setName(name)}
               />
             </CgkLabelAndValidation>
@@ -46,6 +47,7 @@ const HardwareDetailsComponent = (props) => {
             <CgkLabelAndValidation label="* Typ:">
               <PickerWithItems
                 value={props.dictionaryID}
+                editable={!props.isSubmitting}
                 updateValue={props.setDictionaryID}
                 options={props.dataSourceDictionary}
               />
@@ -54,6 +56,7 @@ const HardwareDetailsComponent = (props) => {
             <CgkLabelAndValidation label="* Przynależność:">
               <AutoComplete
                 value={props.affiliationID}
+                disabled={props.isSubmitting}
                 updateValue={props.setAffiliationID}
                 options={props.dataSourceAffiliations.items}
                 updateOptions={props.updateAffiliations}
@@ -63,6 +66,7 @@ const HardwareDetailsComponent = (props) => {
             <CgkLabelAndValidation label="W zestawie komputerowym:">
               <AutoComplete
                 value={props.computerSetID}
+                disabled={props.isSubmitting}
                 updateValue={props.setComputerSetID}
                 options={props.dataSourceComputerSets.items}
                 updateOptions={props.updateComputerSets}
