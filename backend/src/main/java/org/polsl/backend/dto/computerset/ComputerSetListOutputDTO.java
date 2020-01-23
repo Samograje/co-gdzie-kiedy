@@ -6,6 +6,7 @@ import java.util.Set;
 
 public class ComputerSetListOutputDTO {
   private Long id;
+  private Boolean deleted;
 
   @ExportColumn("Nazwa")
   private String name;
@@ -28,6 +29,14 @@ public class ComputerSetListOutputDTO {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public Boolean getDeleted() {
+    return deleted;
+  }
+
+  public void setDeleted(Boolean deleted) {
+    this.deleted = deleted;
   }
 
   public String getName() {

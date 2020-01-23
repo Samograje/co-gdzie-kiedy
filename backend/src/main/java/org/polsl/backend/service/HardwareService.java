@@ -57,18 +57,19 @@ public class HardwareService {
   }
 
   //region HTTP METHODS
-  public PaginatedResult<HardwareListOutputDTO> getHardwareList(Specification<Hardware> spec) {
-    Specification<Hardware> specificationWithValidTo = (
-        (Specification<Hardware>) (root, query, criteriaBuilder) -> criteriaBuilder.isNull(root.get("validTo"))
-    ).and(spec);
+  public PaginatedResult<HardwareListOutputDTO> getHardwareList(Specification<Hardware> spec, boolean withDeleted) {
+    final Specification<Hardware> resultSpecification = withDeleted
+      ? spec
+      : ((Specification<Hardware>) (root, query, criteriaBuilder) -> criteriaBuilder.isNull(root.get("validTo")))
+      .and(spec);
 
-    Iterable<Hardware> hardwareList = hardwareRepository.findAll(specificationWithValidTo);
-
+    Iterable<Hardware> hardwareList = hardwareRepository.findAll(resultSpecification);
 
     List<HardwareListOutputDTO> dtos = new ArrayList<>();
     for (Hardware hardware : hardwareList) {
       HardwareListOutputDTO dto = new HardwareListOutputDTO();
       dto.setId(hardware.getId());
+      dto.setDeleted(hardware.getValidTo() != null);
       dto.setName(hardware.getName());
       dto.setType(hardware.getHardwareDictionary().getValue());
       dto.setInventoryNumber(hardware.getInventoryNumber());

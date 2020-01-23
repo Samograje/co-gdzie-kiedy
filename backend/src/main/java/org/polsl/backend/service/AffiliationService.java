@@ -50,10 +50,12 @@ public class AffiliationService {
     return stringBuilder.toString();
   }
 
-  public PaginatedResult<AffiliationListOutputDTO> getAffiliations(Specification<Affiliation> specification) {
-    final Specification<Affiliation> resultSpecification = (
-      (Specification<Affiliation>) (root, query, criteriaBuilder) -> criteriaBuilder.isFalse(root.get("isDeleted"))
-    ).and(specification);
+  public PaginatedResult<AffiliationListOutputDTO> getAffiliations(Specification<Affiliation> specification,
+                                                                   boolean withDeleted) {
+    final Specification<Affiliation> resultSpecification = withDeleted
+      ? specification
+      : ((Specification<Affiliation>) (root, query, criteriaBuilder) -> criteriaBuilder.isFalse(root.get("isDeleted")))
+      .and(specification);
 
     Iterable<Affiliation> affiliations = affiliationRepository.findAll(resultSpecification);
 
@@ -105,6 +107,7 @@ public class AffiliationService {
     AffiliationListOutputDTO dto = new AffiliationListOutputDTO();
 
     dto.setId(affiliation.getId());
+    dto.setDeleted(affiliation.getDeleted());
     dto.setFirstName(affiliation.getFirstName());
     dto.setLastName(affiliation.getLastName());
     dto.setLocation(affiliation.getLocation());

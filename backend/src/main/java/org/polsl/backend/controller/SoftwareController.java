@@ -41,12 +41,17 @@ public class SoftwareController {
   /**
    * Endpoint obsługujący uzyskiwanie listy oprogramowania.
    *
+   * @param search      kryteria wyszukiwania
+   * @param withHistory informacja o tym, czy należy wyświetlić również usunięte rekordy
    * @return lista oprogramowania
    */
   @GetMapping
-  public ResponseEntity<?> getAllSoftware(@RequestParam(value = "search", required = false) String search) {
+  public ResponseEntity<?> getAllSoftware(
+    @RequestParam(value = "search", required = false) String search,
+    @RequestParam(name = "with-history", required = false, defaultValue = "false") boolean withHistory
+  ) {
     Search<Software> filtering = new Search<>(new Software(), search);
-    return ResponseEntity.ok(softwareService.getAllSoftware(filtering.searchInitialization()));
+    return ResponseEntity.ok(softwareService.getAllSoftware(filtering.searchInitialization(), withHistory));
   }
 
   /**
@@ -79,7 +84,8 @@ public class SoftwareController {
   @GetMapping("/export")
   public ResponseEntity<?> printListToPdf(@RequestParam(value = "search", required = false) String search) {
     Search<Software> filtering = new Search<>(new Software(), search);
-    PaginatedResult<SoftwareListOutputDTO> data = softwareService.getAllSoftware(filtering.searchInitialization());
+    PaginatedResult<SoftwareListOutputDTO> data = softwareService
+      .getAllSoftware(filtering.searchInitialization(), false);
     InputStreamResource inputStreamResource = exportService.export("Oprogramowanie", data.getItems());
     return ResponseEntity.ok()
       .contentType(MediaType.APPLICATION_PDF)

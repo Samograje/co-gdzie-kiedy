@@ -70,7 +70,12 @@ const WideTable = (props) => {
 
           {/* dane do komórek */}
           {columns.map((column, key) => {
-            const array = [].concat(item[column.name]); // opakowanie pojedynczej wartości w tablicę
+            let value = item[column.name];
+
+            // TODO: mapowanie wartości logicznych na stringi do wyświetlenia
+
+            const array = [].concat(value); // opakowanie pojedynczej wartości w tablicę
+
             return (
               <View style={styles.cell} key={key}>
                 {array.map((text, key) => (
