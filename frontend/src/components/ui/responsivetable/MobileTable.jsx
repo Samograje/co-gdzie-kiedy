@@ -91,7 +91,7 @@ const MobileTable = (props) => {
           {/* przyciski akcji */}
           {itemActions && (
             <View style={styles.icons}>
-              {itemActions.filter((action) => !action.disabledIfDeleted || !item.deleted).map((action, idx) => (
+              {itemActions.map((action, idx) => (
                 <TouchableOpacity
                   style={styles.opacity}
                   onPress={() => action.onClick(item)}
