@@ -83,7 +83,7 @@ const WideTable = (props) => {
           {/* komórka z akcjami */}
           {itemActions && (
             <View style={styles.cell}>
-              {itemActions.filter((action) => !action.checkIfDisabled(item)).map((action, idx) => (
+              {itemActions.filter((action) => !action.disabledIfDeleted || !item.deleted).map((action, idx) => (
                 <TouchableOpacity
                   style={styles.opacity}
                   onPress={() => action.onClick(item)}

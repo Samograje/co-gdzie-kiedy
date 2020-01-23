@@ -168,7 +168,7 @@ class AffiliationsListContainer extends Component {
           mode: 'edit',
           id: itemData.id,
         }),
-        checkIfDisabled: (itemData) => itemData.deleted,
+        disabledIfDeleted: true,
       },
       {
         label: 'Usuń',
@@ -177,7 +177,7 @@ class AffiliationsListContainer extends Component {
           isDialogOpened: true,
           itemToDeleteId: itemData.id,
         }),
-        checkIfDisabled: (itemData) => itemData.deleted,
+        disabledIfDeleted: true,
       },
     ];
 
