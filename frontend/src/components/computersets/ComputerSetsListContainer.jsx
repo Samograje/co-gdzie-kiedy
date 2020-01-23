@@ -74,6 +74,7 @@ class ComputerSetsListContainer extends Component {
     });
     this.fetchData({
       filters: newFilters,
+      withHistory: this.state.withHistory,
     });
   };
 
