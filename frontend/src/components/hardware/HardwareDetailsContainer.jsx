@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Dimensions} from 'react-native';
 import HardwareDetailsComponent from './HardwareDetailsComponent';
 import request from "../../APIClient";
 
@@ -181,6 +182,8 @@ class HardwareDetailsContainer extends Component {
   setComputerSetID = (value) => this.setState({computerSetID: value});
 
   render() {
+    const isWide = Dimensions.get('window').width > 450;
+
     return (
         <HardwareDetailsComponent
             onSubmit={this.onSubmit}
@@ -201,6 +204,7 @@ class HardwareDetailsContainer extends Component {
             dataSourceComputerSets={this.state.dataSourceComputerSets}
             dataSourceDictionary={this.state.dataSourceDictionary}
             isInvalid={this.state.name === '' || this.state.dictionaryID === '' || this.state.affiliationID === ''}
+            isWide={isWide}
             updateAffiliations={this.fetchDataAffiliations}
             updateComputerSets={this.fetchDataComputerSets}
         />
