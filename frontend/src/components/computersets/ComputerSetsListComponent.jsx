@@ -3,6 +3,7 @@ import {Button, ScrollView, StyleSheet, View} from 'react-native';
 import ResponsiveTable from '../ui/responsivetable/ResponsiveTable';
 import ErrorElement from '../ui/ErrorElement';
 import {mainColor} from '../../constValues';
+import DecisionDialog from "../ui/dialogs/DecisionDialog";
 
 const ComputerSetsListComponent = (props) => {
 
@@ -15,11 +16,27 @@ const ComputerSetsListComponent = (props) => {
     columns,
     itemActions,
     groupActions,
+    isDialogOpened,
+    dialogHandleConfirm,
+    dialogHandleReject,
   } = props;
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
+      <>
+        {isDialogOpened && (
+            <DecisionDialog
+                headerText="Uwaga!"
+                text="Czy na pewno chcesz usunąć ten zestaw komputerowy?"
+                onConfirmText="Tak"
+                onConfirm={dialogHandleConfirm}
+                onRejectText="Nie"
+                onReject={dialogHandleReject}
+            />
+        )}
+        <ScrollView scrollEnabled={!isDialogOpened}>
+          <View style={styles.container}
+                pointerEvents={isDialogOpened ? 'none' : null}
+          >
         {groupActions && (
           <View style={styles.groupActions}>
             {groupActions.map((action, idx) => (
@@ -52,6 +69,7 @@ const ComputerSetsListComponent = (props) => {
         )}
       </View>
     </ScrollView>
+      </>
   );
 };
 

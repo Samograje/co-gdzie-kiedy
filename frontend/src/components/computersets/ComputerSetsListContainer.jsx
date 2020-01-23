@@ -13,6 +13,8 @@ class ComputerSetsListContainer extends Component {
       items: [],
       totalElements: null,
       filters: {},
+      itemToDeleteId: null,
+      isDialogOpened: false,
     };
   }
 
@@ -94,6 +96,43 @@ class ComputerSetsListContainer extends Component {
       });
   };
 
+  deleteItem = () => {
+    this.closeDialog();
+    request(`/api/computer-sets/${this.state.itemToDeleteId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      }
+    })
+        .then((response) => response.json())
+        .then((response) => {
+          if (!this._isMounted) {
+            return;
+          }
+          if (!response.success) {
+            this.setState({
+              error: true,
+            });
+            return;
+          }
+          this.fetchData();
+        })
+        .catch(() => {
+          if (!this._isMounted) {
+            return;
+          }
+          this.setState({
+            error: true,
+          });
+        });
+  };
+
+  closeDialog = () => this.setState({
+    isDialogOpened: false,
+    itemToDeleteId: null,
+  });
+
   render() {
     const columns = [
       {
@@ -133,9 +172,10 @@ class ComputerSetsListContainer extends Component {
       {
         label: 'Usuń',
         icon: require('./../../images/ic_action_delete.png'),
-        onClick: (itemData) => {
-          // TODO: usuwanie zestawu komputerowego
-        },
+        onClick: (itemData) => this.setState({
+          isDialogOpened: true,
+          itemToDeleteId: itemData.id,
+        }),
       },
       {
         label: 'Historia osób / miejsc',
@@ -187,11 +227,14 @@ class ComputerSetsListContainer extends Component {
 
     return (
       <ComputerSetsListComponent
-        onFilterChange={this.handleFilterChange}
-        columns={columns}
-        itemActions={itemActions}
-        groupActions={groupActions}
-        {...this.state}
+          onFilterChange={this.handleFilterChange}
+          columns={columns}
+          itemActions={itemActions}
+          groupActions={groupActions}
+          dialogHandleConfirm={this.deleteItem}
+          dialogHandleReject={this.closeDialog}
+          isDialogOpened={this.state.isDialogOpened}
+          {...this.state}
       />
     );
   }

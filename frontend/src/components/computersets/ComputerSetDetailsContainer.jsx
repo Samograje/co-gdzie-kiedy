@@ -35,19 +35,21 @@ class ComputerSetDetailsContainer extends Component {
         this._isMounted = false;
     }
 
+    //TODO: filtrowanie
     fetchDataAffiliations = (query) => {
         const options = {
             filters: {
                 name: query,
             },
         };
-
+        console.log(query);
         request('/api/affiliations', options)
             .then((response) => response.json())
             .then((response) => {
                 if (!this._isMounted) {
                     return;
                 }
+                console.log(response);
                 response.items = response.items.map((item) => ({
                     id: item.id,
                     name: `
@@ -151,6 +153,10 @@ class ComputerSetDetailsContainer extends Component {
                     return;
                 }
                 console.log(responseJson);
+                // console.log(this.state.name);
+                // console.log(this.state.affiliationID);
+                // console.log(this.state.softwareIDs);
+                // console.log(this.state.hardwareIDs);
                 return responseJson;
             })
             .catch((error) => {
@@ -162,12 +168,14 @@ class ComputerSetDetailsContainer extends Component {
     };
 
     getDataForEditCall() {
-        request(`/api/computer-set/${this.props.id}`)
+        console.log("DUPA");
+        request(`/api/computer-sets/${this.props.id}`)
             .then(response => response.json())
             .then(responseJson => {
                 if (!this._isMounted) {
                     return;
                 }
+                console.log(responseJson);
                 this.setState({
                     name: responseJson.name,
                     affiliationIds: responseJson.affiliationID,
@@ -179,9 +187,9 @@ class ComputerSetDetailsContainer extends Component {
 
     onSubmit = () => {
         if (this.props.mode === 'create')
-            this.addOrEditCallCall('POST', '/api/computer-set');
+            this.addOrEditCallCall('POST', '/api/computer-sets');
         else if (this.props.mode === 'edit')
-            this.addOrEditCallCall('PUT', `/api/computer-set/${this.props.id}`);
+            this.addOrEditCallCall('PUT', `/api/computer-sets/${this.props.id}`);
     };
     onReject = () => this.props.goBack();
     setName = (value) => this.setState({name: value});
