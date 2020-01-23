@@ -1,9 +1,16 @@
 import React from 'react';
-import {Button, ScrollView, StyleSheet, View} from 'react-native';
+import {
+  Button,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import ErrorElement from '../ui/ErrorElement';
 import ResponsiveTable from '../ui/responsivetable/ResponsiveTable';
 import {mainColor} from '../../constValues';
 import DecisionDialog from "../ui/dialogs/DecisionDialog";
+import ScreenHeader from '../ui/ScreenHeader';
 
 const HardwareListComponent = (props) => {
 
@@ -39,6 +46,9 @@ const HardwareListComponent = (props) => {
           style={styles.container}
           pointerEvents={dialogOpened ? 'none' : null}
         >
+          {Platform.OS === 'web' && (
+            <ScreenHeader title="Lista sprzętów"/>
+          )}
           {groupActions && (
             <View style={styles.groupActions}>
               {groupActions.map((action, idx) => (
