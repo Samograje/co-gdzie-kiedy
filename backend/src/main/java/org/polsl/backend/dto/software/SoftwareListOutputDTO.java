@@ -26,9 +26,13 @@ public class SoftwareListOutputDTO {
   @ExportColumn("Numery inwentarzowe powiązanych zestawów komputerowych")
   private Set<String> computerSetInventoryNumbers;
 
-  public Long getId() { return id; }
+  public Long getId() {
+    return id;
+  }
 
-  public void setId(Long id) { this.id = id; }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
   public Boolean getDeleted() {
     return deleted;
@@ -38,27 +42,49 @@ public class SoftwareListOutputDTO {
     this.deleted = deleted;
   }
 
-  public String getName() { return name; }
+  public String getName() {
+    return name;
+  }
 
-  public void setName(String name) { this.name = name; }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-  public String getInventoryNumber() { return inventoryNumber; }
+  public String getInventoryNumber() {
+    return inventoryNumber;
+  }
 
-  public void setInventoryNumber(String inventoryNumber) { this.inventoryNumber = inventoryNumber; }
+  public void setInventoryNumber(String inventoryNumber) {
+    this.inventoryNumber = inventoryNumber;
+  }
 
-  public String getKey() { return key; }
+  public String getKey() {
+    return key;
+  }
 
-  public void setKey(String key) { this.key = key; }
+  public void setKey(String key) {
+    this.key = key;
+  }
 
-  public Long getAvailableKeys() { return availableKeys; }
+  public Long getAvailableKeys() {
+    return availableKeys;
+  }
 
-  public void setAvailableKeys(Long availableKeys) { this.availableKeys = availableKeys; }
+  public void setAvailableKeys(Long availableKeys) {
+    this.availableKeys = availableKeys;
+  }
 
-  public Long getDuration() { return duration; }
+  public Long getDuration() {
+    return duration;
+  }
 
-  public void setDuration(Long duration) { this.duration = duration; }
+  public void setDuration(Long duration) {
+    this.duration = duration;
+  }
 
-  public Set<String> getComputerSetInventoryNumbers() { return computerSetInventoryNumbers; }
+  public Set<String> getComputerSetInventoryNumbers() {
+    return computerSetInventoryNumbers;
+  }
 
   public void setComputerSetInventoryNumbers(Set<String> computerSetInventoryNumbers) {
     this.computerSetInventoryNumbers = computerSetInventoryNumbers;
