@@ -70,9 +70,7 @@ const MobileTable = (props) => {
           {columns.map((column, key) => {
             let value = item[column.name];
 
-            if (typeof value === 'boolean') { // ładne wyświetlanie wartości logicznych
-              value = value ? 'TAK' : 'NIE';
-            }
+            // TODO: mapowanie wartości logicznych na stringi do wyświetlenia
 
             const array = [].concat(value); // opakowanie pojedynczej wartości w tablicę
 

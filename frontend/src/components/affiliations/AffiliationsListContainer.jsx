@@ -14,7 +14,6 @@ class AffiliationsListContainer extends Component {
       filters: {},
       isDialogOpened: false,
       itemToDeleteId: null,
-      withHistory: false,
     };
   }
 
@@ -107,7 +106,6 @@ class AffiliationsListContainer extends Component {
     });
     this.fetchData({
       filters: newFilters,
-      withHistory: this.state.withHistory,
     });
   };
 
@@ -160,12 +158,6 @@ class AffiliationsListContainer extends Component {
         label: 'Numery inwentarzowe powiązanych sprzętów',
       },
     ];
-    if (this.state.withHistory) {
-      columns.push({
-        name: 'deleted',
-        label: 'Usunięty',
-      })
-    }
 
     const itemActions = [
       {
@@ -194,19 +186,6 @@ class AffiliationsListContainer extends Component {
         onClick: () => this.props.push('AffiliationDetails', {
           mode: 'create',
         }),
-      },
-      {
-        label: this.state.withHistory ? 'Nie wyświetlaj archiwum' : 'Wyświetl archiwum',
-        onClick: () => {
-          const withHistory = !this.state.withHistory;
-          this.fetchData({
-            filters: this.state.filters,
-            withHistory,
-          });
-          this.setState({
-            withHistory,
-          });
-        },
       },
     ];
     if (Platform.OS === 'web') {
