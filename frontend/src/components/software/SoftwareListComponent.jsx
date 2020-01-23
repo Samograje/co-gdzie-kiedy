@@ -1,9 +1,16 @@
 import React from 'react';
-import {Button, ScrollView, StyleSheet, View} from 'react-native';
+import {
+  Button,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import ErrorElement from '../ui/ErrorElement';
 import DecisionDialog from '../ui/dialogs/DecisionDialog';
 import ResponsiveTable from '../ui/responsivetable/ResponsiveTable';
 import {mainColor} from '../../constValues';
+import ScreenHeader from '../ui/ScreenHeader';
 
 const SoftwareListComponent = (props) => {
   const {
@@ -38,6 +45,9 @@ const SoftwareListComponent = (props) => {
           style={styles.container}
           pointerEvents={dialogOpened ? 'none' : null}
         >
+          {Platform.OS === 'web' && (
+            <ScreenHeader title="Lista oprogramowania"/>
+          )}
           {groupActions && (
             <View style={styles.groupActions}>
               {groupActions.map((action, idx) => (
