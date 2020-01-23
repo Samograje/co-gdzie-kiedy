@@ -23,23 +23,23 @@ const HardwareDetailsComponent = (props) => {
     modeInfo = "dodawania nowego";
 
   return (
-    <ScrollView>
-      <View style={styles.addForm}>
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={props.isWide ? styles.contentWide : styles.contentMobile}>
         <CgkFormHeader text={`Formularz ${modeInfo} sprzętu.`}/>
         <Text>Pola z * są obowiązkowe.</Text>
 
         {(props.loadingAffiliations || props.loadingDictionary || props.loadingComputerSets) && (
-          <View style={styles.indicator}>
-            <CgkActivityIndicator/>
-          </View>
+          <CgkActivityIndicator/>
         )}
 
         {!(props.loadingAffiliations || props.loadingDictionary || props.loadingComputerSets) && (
-          <>
+          <View style={styles.main}>
+
             <CgkLabelAndValidation label="* Nazwa sprzętu:">
               <CgkTextInput
                 placeholder="Wprowadź nazwę sprzętu"
                 text={props.name}
+                disabled={props.isSubmitting}
                 onChangeText={(name) => props.setName(name)}
               />
             </CgkLabelAndValidation>
@@ -47,6 +47,7 @@ const HardwareDetailsComponent = (props) => {
             <CgkLabelAndValidation label="* Typ:">
               <PickerWithItems
                 value={props.dictionaryID}
+                editable={!props.isSubmitting}
                 updateValue={props.setDictionaryID}
                 options={props.dataSourceDictionary}
               />
@@ -55,6 +56,7 @@ const HardwareDetailsComponent = (props) => {
             <CgkLabelAndValidation label="* Przynależność:">
               <AutoComplete
                 value={props.affiliationID}
+                disabled={props.isSubmitting}
                 updateValue={props.setAffiliationID}
                 options={props.dataSourceAffiliations.items}
                 updateOptions={props.updateAffiliations}
@@ -64,12 +66,13 @@ const HardwareDetailsComponent = (props) => {
             <CgkLabelAndValidation label="W zestawie komputerowym:">
               <AutoComplete
                 value={props.computerSetID}
+                disabled={props.isSubmitting}
                 updateValue={props.setComputerSetID}
                 options={props.dataSourceComputerSets.items}
                 updateOptions={props.updateComputerSets}
               />
             </CgkLabelAndValidation>
-          </>
+          </View>
         )}
         {props.error && (
           <ErrorElement
@@ -92,15 +95,20 @@ const HardwareDetailsComponent = (props) => {
 };
 
 const styles = StyleSheet.create({
-  addForm: {
-    alignSelf: 'center',
-    padding: 15,
-    width: '75%',
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
-  indicator: {
+  contentWide: {
+    width: 400,
+    margin: 10,
+  },
+  contentMobile: {
     flex: 1,
-    paddingTop: 20,
-    paddingBottom: 20,
+    margin: 10,
+  },
+  main: {
+    marginBottom: 15,
   },
 });
 
