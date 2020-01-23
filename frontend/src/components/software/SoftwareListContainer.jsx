@@ -18,13 +18,25 @@ class SoftwareListContainer extends Component {
       withHistory: false,
     };
   }
+
   componentDidMount() {
     this._isMounted = true;
-    this.fetchData();
+
+    if (Platform.OS === 'android') {
+      this.focusListener = this.props.addListener('didFocus', () => {
+        this.fetchData();
+      });
+    } else {
+      this.fetchData();
+    }
   }
 
   componentWillUnmount() {
     this._isMounted = false;
+
+    if (Platform.OS === 'android') {
+      this.focusListener.remove();
+    }
   }
 
   fetchData = (options) => {
@@ -38,11 +50,10 @@ class SoftwareListContainer extends Component {
         if (!this._isMounted) {
           return;
         }
-        for(let i = 0; i < response.items.length; i++)
-        {
+        for (let i = 0; i < response.items.length; i++) {
           let duration = response.items[i].duration;
-          let months = moment(duration).month() +  12 * (moment(duration).year() - moment(0).year());
-          if(months <= 0)
+          let months = moment(duration).month() + 12 * (moment(duration).year() - moment(0).year());
+          if (months <= 0)
             response.items[i].duration = "Licencja utraciła ważność";
           else
             response.items[i].duration = months;
@@ -77,7 +88,7 @@ class SoftwareListContainer extends Component {
   };
 
   deleteCall = () => {
-    request(`/api/software/${this.state.itemToDeleteId}`,{
+    request(`/api/software/${this.state.itemToDeleteId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

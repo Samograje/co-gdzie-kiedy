@@ -1,7 +1,8 @@
 import React from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {Platform, ScrollView, StyleSheet, View} from 'react-native';
 import ResponsiveTable from "../ui/responsivetable/ResponsiveTable";
 import ErrorElement from "../ui/ErrorElement";
+import ScreenHeader from '../ui/ScreenHeader';
 
 
 const ComputerSetHistoryComponent = (props) => {
@@ -20,6 +21,9 @@ const ComputerSetHistoryComponent = (props) => {
     return (
         <ScrollView>
             <View style={styles.container}>
+                {Platform.OS === 'web' && (
+                  <ScreenHeader title="Historia powiązań wybranego zestawu komputerowego"/>
+                )}
                 {error && (
                     <ErrorElement
                         message="Nie udało się pobrać danych z serwera"

@@ -1,38 +1,42 @@
 import React from 'react';
-import {StyleSheet, Text, TextInput} from 'react-native';
+import {StyleSheet, Text, TextInput, View} from 'react-native';
 import PickerWithItems from "./PickerWithItems";
 
 const AutoComplete = (props) => {
   const {
     value, // id opcji wybranej w pickerze
     updateValue, // funkcja aktualizująca wartość po wyborze z pickera
-    options, // opcje do pickera - obiekt o kluczach id, name
+    options, // opcje do pickera - tablica obiektów o kluczach id, name
     updateOptions, // funkcja aktualizująca opcje na podstawie tekstu z pola tekstowego
   } = props;
 
-  if (!options || !options.length) {
-    return (
-      <Text>Brak opcji do wyboru</Text>
-    );
-  }
+  const noItems = !options || options.length === 0;
 
   return (
-    <>
+    <View style={styles.container}>
       <TextInput
         style={styles.textInput}
         placeholder="Wyszukaj"
         onChangeText={updateOptions}
       />
-      <PickerWithItems
-        value={value}
-        updateValue={updateValue}
-        options={options}
-      />
-    </>
+      {!noItems && (
+        <PickerWithItems
+          value={value}
+          updateValue={updateValue}
+          options={options}
+        />
+      )}
+      {noItems && (
+        <Text>Brak opcji do wyboru</Text>
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   textInput: {
     fontSize: 16,
     padding: 2,

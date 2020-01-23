@@ -1,9 +1,16 @@
 import React from 'react';
-import {Button, ScrollView, StyleSheet, View} from 'react-native';
+import {
+  Button,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import ResponsiveTable from '../ui/responsivetable/ResponsiveTable';
 import ErrorElement from '../ui/ErrorElement';
 import {mainColor} from '../../constValues';
 import DecisionDialog from "../ui/dialogs/DecisionDialog";
+import ScreenHeader from '../ui/ScreenHeader';
 
 const AffiliationsListComponent = (props) => {
   const {
@@ -37,6 +44,9 @@ const AffiliationsListComponent = (props) => {
           style={styles.container}
           pointerEvents={isDialogOpened ? 'none' : null}
         >
+          {Platform.OS === 'web' && (
+            <ScreenHeader title="Lista osób / miejsc"/>
+          )}
           {groupActions && (
             <View style={styles.groupActions}>
               {groupActions.map((action, idx) => (
