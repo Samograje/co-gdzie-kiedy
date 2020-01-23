@@ -77,7 +77,7 @@ const HardwareDetailsComponent = (props) => {
           />
         )}
         <CgkFormFooter
-          isSubmitDisabled={props.isInvalid}
+          isSubmitDisabled={props.isInvalid || props.isSubmitting}
           isRejectDisabled={props.isSubmitting}
           onSubmit={props.onSubmit}
           onReject={props.onReject}
