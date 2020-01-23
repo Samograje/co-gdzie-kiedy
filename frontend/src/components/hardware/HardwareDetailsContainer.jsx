@@ -163,19 +163,6 @@ class HardwareDetailsContainer extends Component {
           isSubmitting: false,
         });
       });
-        // .then((responseJson) => {
-        //   if (!this._isMounted) {
-        //     return;
-        //   }
-        //   console.log(responseJson);
-        //   return responseJson;
-        // })
-        // .catch((error) => {
-        //   if (!this._isMounted) {
-        //     return;
-        //   }
-        //   console.error(error);
-        // });
   };
 
   getDataForEditCall() {
