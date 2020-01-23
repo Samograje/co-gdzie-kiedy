@@ -207,9 +207,6 @@ class HardwareDetailsContainer extends Component {
             setComputerSetID={this.setComputerSetID}
             mode={this.props.mode}
             name={this.state.name}
-            loadingDictionary={this.state.loadingDictionary}
-            loadingAffiliations={this.state.loadingAffiliations}
-            loadingComputerSets={this.state.loadingComputerSets}
             dictionaryID={this.state.dictionaryID}
             affiliationID={this.state.affiliationID}
             computerSetID={this.state.computerSetID}
@@ -218,6 +215,7 @@ class HardwareDetailsContainer extends Component {
             dataSourceDictionary={this.state.dataSourceDictionary}
             isInvalid={this.state.name === '' || this.state.dictionaryID === '' || this.state.affiliationID === ''}
             isSubmitting={this.state.isSubmitting}
+            isLoading={this.state.loadingDictionary || this.state.loadingAffiliations || this.state.loadingComputerSets}
             error={this.state.error}
             isWide={isWide}
             updateAffiliations={this.fetchDataAffiliations}
