@@ -4,6 +4,7 @@ import org.polsl.backend.service.export.ExportColumn;
 
 public class HardwareListOutputDTO {
   private Long id;
+  private Boolean deleted;
 
   @ExportColumn("Nazwa")
   private String name;
@@ -29,6 +30,14 @@ public class HardwareListOutputDTO {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public Boolean getDeleted() {
+    return deleted;
+  }
+
+  public void setDeleted(Boolean deleted) {
+    this.deleted = deleted;
   }
 
   public String getName() {

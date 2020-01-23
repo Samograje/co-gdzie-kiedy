@@ -42,12 +42,17 @@ public class ComputerSetController {
   /**
    * Endpoint obsługujący uzyskiwanie listy zestawów komputerowych.
    *
+   * @param search      kryteria wyszukiwania
+   * @param withHistory informacja o tym, czy należy wyświetlić również usunięte rekordy
    * @return lista zestawów komputerowych
    */
   @GetMapping
-  public ResponseEntity<?> getAllComputerSets(@RequestParam(value = "search", required = false) String search) {
+  public ResponseEntity<?> getAllComputerSets(
+    @RequestParam(value = "search", required = false) String search,
+    @RequestParam(name = "with-history", required = false, defaultValue = "false") boolean withHistory
+  ) {
     Search<ComputerSet> filtering = new Search<>(new ComputerSet(), search);
-    return ResponseEntity.ok(computerSetService.getAllComputerSets(filtering.searchInitialization()));
+    return ResponseEntity.ok(computerSetService.getAllComputerSets(filtering.searchInitialization(), withHistory));
   }
 
   /**
@@ -58,7 +63,8 @@ public class ComputerSetController {
   @GetMapping("/export")
   public ResponseEntity<?> printListToPdf(@RequestParam(value = "search", required = false) String search) {
     Search<ComputerSet> filtering = new Search<>(new ComputerSet(), search);
-    PaginatedResult<ComputerSetListOutputDTO> data = computerSetService.getAllComputerSets(filtering.searchInitialization());
+    PaginatedResult<ComputerSetListOutputDTO> data = computerSetService
+      .getAllComputerSets(filtering.searchInitialization(), false);
     InputStreamResource inputStreamResource = exportService.export("Zestawy komputerowe", data.getItems());
     return ResponseEntity.ok()
       .contentType(MediaType.APPLICATION_PDF)

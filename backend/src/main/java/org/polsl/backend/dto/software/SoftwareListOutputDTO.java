@@ -6,6 +6,7 @@ import java.util.Set;
 
 public class SoftwareListOutputDTO {
   private Long id;
+  private Boolean deleted;
 
   @ExportColumn("Nazwa")
   private String name;
@@ -25,13 +26,21 @@ public class SoftwareListOutputDTO {
   @ExportColumn("Numery inwentarzowe powiązanych zestawów komputerowych")
   private Set<String> computerSetInventoryNumbers;
 
-  public String getName() { return name; }
-
-  public void setName(String name) { this.name = name; }
-
   public Long getId() { return id; }
 
   public void setId(Long id) { this.id = id; }
+
+  public Boolean getDeleted() {
+    return deleted;
+  }
+
+  public void setDeleted(Boolean deleted) {
+    this.deleted = deleted;
+  }
+
+  public String getName() { return name; }
+
+  public void setName(String name) { this.name = name; }
 
   public String getInventoryNumber() { return inventoryNumber; }
 

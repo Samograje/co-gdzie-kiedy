@@ -42,17 +42,20 @@ public class SoftwareService {
     this.computerSetSoftwareRepository = computerSetSoftwareRepository;
   }
 
-  public PaginatedResult<SoftwareListOutputDTO> getAllSoftware(Specification<Software> softwareSpecification) {
+  public PaginatedResult<SoftwareListOutputDTO> getAllSoftware(Specification<Software> softwareSpecification,
+                                                               boolean withDeleted) {
+    final Specification<Software> resultSpecification = withDeleted
+      ? softwareSpecification
+      : ((Specification<Software>) (root, query, criteriaBuilder) -> criteriaBuilder.isNull(root.get("validTo")))
+      .and(softwareSpecification);
+
+    Iterable<Software> softwareList = softwareRepository.findAll(resultSpecification);
+
     List<SoftwareListOutputDTO> softwareListOutputDTO = new ArrayList<>();
-    Iterable<Software> softwareList;
-    Specification<Software> softwareSpecificationWithValidTo = (
-            (Specification<Software>) (root, query, criteriaBuilder) ->
-                    criteriaBuilder.isNull(root.get("validTo"))
-    ).and(softwareSpecification);
-    softwareList = softwareRepository.findAll(softwareSpecificationWithValidTo);
     for (Software software : softwareList) {
       SoftwareListOutputDTO dto = new SoftwareListOutputDTO();
       dto.setId(software.getId());
+      dto.setDeleted(software.getValidTo() != null);
       dto.setName(software.getName());
       dto.setInventoryNumber(software.getInventoryNumber());
       dto.setAvailableKeys(software.getAvailableKeys());
