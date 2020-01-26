@@ -40,8 +40,11 @@ class HardwareDetailsContainer extends Component {
   fetchDataAffiliations = (query) => {
     const options = {
       filters: {
-        name: query,
+        firstName: query,
+        lastName: query,
+        location: query,
       },
+      searchOperator: 'OR',
     };
 
     request('/api/affiliations', options)

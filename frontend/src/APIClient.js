@@ -18,16 +18,16 @@ const request = (url, options) => {
     return fetch(finalUrl);
   }
 
-  const {filters, ...otherOptions} = options;
+  const {filters, searchOperator, ...otherOptions} = options;
 
   // dodanie parametrów do urlu
-  finalUrl = prepareUrl(finalUrl, {filters});
+  finalUrl = prepareUrl(finalUrl, {filters, searchOperator});
 
   return fetch(finalUrl, otherOptions);
 };
 
 // dodaje parametry do urlu
-const prepareUrl = (url, {filters}) => {
+const prepareUrl = (url, {filters, searchOperator}) => {
   let finalUrl = `${url}`;
 
   let filtersEnabled = false;
@@ -49,6 +49,11 @@ const prepareUrl = (url, {filters}) => {
       }
     });
     finalUrl = finalUrl.substring(0, finalUrl.length - 1);
+
+    // dodanie parametru z operatorem wyszukiwania
+    if (searchOperator) {
+      finalUrl = `${finalUrl}&search-operator=${searchOperator}`
+    }
   }
 
   return finalUrl;
