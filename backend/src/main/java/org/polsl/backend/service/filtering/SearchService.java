@@ -15,13 +15,13 @@ public class SearchService {
   /**
    * Tworzy obiekt specyfikacji filtrowania na podstawie podanych parametrów.
    *
-   * @param searchQuery parametr zapytania url z danymi dot filtrowania
-   * @param searchType  typ łączenia warunków filtrowania
-   * @param typeClass   klasa implementująca {@link SearchSpecification} zawierająca mapowania nazw dto na nazwy pól encji
-   * @param <T>         klasa encji bazodanowej, której dotyczy wyszukiwanie
+   * @param searchQuery        parametr zapytania url z danymi dot filtrowania
+   * @param searchType         typ łączenia warunków filtrowania
+   * @param specificationClass klasa implementująca {@link SearchSpecification} zawierająca mapowania nazw dto na nazwy pól encji
+   * @param <T>                klasa encji bazodanowej, której dotyczy wyszukiwanie
    * @return obiekt {@link Specification} zawierający dane dotyczące filtrowania
    */
-  public static <T> Specification<T> getSpecification(String searchQuery, String searchType, Class typeClass) {
+  public static <T> Specification<T> getSpecification(String searchQuery, String searchType, Class specificationClass) {
 
     // uzyskanie parametrów wyszukiwania
     Pattern pattern = Pattern.compile("(\\w*)([:<>])([\\w/ ]*),");
@@ -45,7 +45,7 @@ public class SearchService {
 
     // budowanie specyfikacji
     return new SpecificationBuilder<T>()
-        .specificationClass(typeClass)
+        .specificationClass(specificationClass)
         .params(params)
         .searchType(type)
         .build();
