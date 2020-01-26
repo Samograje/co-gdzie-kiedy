@@ -16,22 +16,22 @@ import java.util.stream.Collectors;
 class SpecificationBuilder<T> {
   private Class specificationClass;
   private List<SearchCriteria> params;
-  private SearchOperator operator;
+  private SearchType searchType;
 
   SpecificationBuilder() {
     this.params = new ArrayList<>();
-    this.operator = SearchOperator.AND;
+    this.searchType = SearchType.AND;
   }
 
   /**
    * Ustawia klasę implementacją {@link SearchSpecification}, zawierającą mapowania nazw dto na nazwy pól encji.
    * Ustawienie tego pola jest wymagane.
    *
-   * @param typeClass klasa implementująca {@link SearchSpecification}, zawierająca mapowania nazw dto na nazwy pól encji
+   * @param specificationClass klasa implementująca {@link SearchSpecification}, zawierająca mapowania nazw dto na nazwy pól encji
    * @return obiekt buildera
    */
-  SpecificationBuilder<T> typeClass(Class typeClass) {
-    this.specificationClass = typeClass;
+  SpecificationBuilder<T> specificationClass(Class specificationClass) {
+    this.specificationClass = specificationClass;
     return this;
   }
 
@@ -47,13 +47,13 @@ class SpecificationBuilder<T> {
   }
 
   /**
-   * Ustawia inny niż domyślny operator wyszukiwania
+   * Ustawia inny niż domyślny typ wyszukiwania
    *
-   * @param operator nowy operator wyszukiwania
+   * @param type nowy typ wyszukiwania
    * @return obiekt buildera
    */
-  SpecificationBuilder<T> operator(SearchOperator operator) {
-    this.operator = operator;
+  SpecificationBuilder<T> searchType(SearchType type) {
+    this.searchType = type;
     return this;
   }
 
@@ -94,10 +94,10 @@ class SpecificationBuilder<T> {
     Specification<T> result = specs.get(0);
     for (int i = 1; i < params.size(); i++) {
       result = Specification.where(result);
-      if (operator == SearchOperator.AND) {
+      if (searchType == SearchType.AND) {
         result = result.and(specs.get(i));
       }
-      if (operator == SearchOperator.OR) {
+      if (searchType == SearchType.OR) {
         result = result.or(specs.get(i));
       }
     }

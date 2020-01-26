@@ -43,18 +43,18 @@ public class SoftwareController {
   /**
    * Endpoint obsługujący uzyskiwanie listy oprogramowania.
    *
-   * @param searchQuery    kryteria wyszukiwania
-   * @param searchOperator operator wyszukiwania
-   * @param withHistory    informacja o tym, czy należy wyświetlić również usunięte rekordy
+   * @param searchQuery kryteria wyszukiwania
+   * @param searchType  typ wyszukiwania
+   * @param withHistory informacja o tym, czy należy wyświetlić również usunięte rekordy
    * @return lista oprogramowania
    */
   @GetMapping
   public ResponseEntity<?> getAllSoftware(
       @RequestParam(value = "search", required = false) String searchQuery,
-      @RequestParam(value = "search-operator", required = false) String searchOperator,
+      @RequestParam(value = "search-type", required = false) String searchType,
       @RequestParam(name = "with-history", required = false, defaultValue = "false") boolean withHistory
   ) {
-    Specification<Software> specification = getSpecification(searchQuery, searchOperator, SoftwareSpecification.class);
+    Specification<Software> specification = getSpecification(searchQuery, searchType, SoftwareSpecification.class);
     return ResponseEntity.ok(softwareService.getAllSoftware(specification, withHistory));
   }
 

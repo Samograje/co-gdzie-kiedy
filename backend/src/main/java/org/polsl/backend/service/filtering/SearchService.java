@@ -15,13 +15,13 @@ public class SearchService {
   /**
    * Tworzy obiekt specyfikacji filtrowania na podstawie podanych parametrów.
    *
-   * @param searchQuery    parametr zapytania url z danymi dot filtrowania
-   * @param searchOperator operator łączenia warunków filtrowania
-   * @param typeClass      klasa implementująca {@link SearchSpecification} zawierająca mapowania nazw dto na nazwy pól encji
-   * @param <T>            klasa encji bazodanowej, której dotyczy wyszukiwanie
+   * @param searchQuery parametr zapytania url z danymi dot filtrowania
+   * @param searchType  typ łączenia warunków filtrowania
+   * @param typeClass   klasa implementująca {@link SearchSpecification} zawierająca mapowania nazw dto na nazwy pól encji
+   * @param <T>         klasa encji bazodanowej, której dotyczy wyszukiwanie
    * @return obiekt {@link Specification} zawierający dane dotyczące filtrowania
    */
-  public static <T> Specification<T> getSpecification(String searchQuery, String searchOperator, Class typeClass) {
+  public static <T> Specification<T> getSpecification(String searchQuery, String searchType, Class typeClass) {
 
     // uzyskanie parametrów wyszukiwania
     Pattern pattern = Pattern.compile("(\\w*)([:<>])([\\w/ ]*),");
@@ -31,23 +31,23 @@ public class SearchService {
       params.add(new SearchCriteria(matcher.group(1), matcher.group(2), matcher.group(3)));
     }
 
-    // uzyskanie operatora wyszukiwania
-    SearchOperator operator;
-    if (searchOperator != null) {
+    // uzyskanie typu wyszukiwania
+    SearchType type;
+    if (searchType != null) {
       try {
-        operator = SearchOperator.valueOf(searchOperator.toUpperCase());
+        type = SearchType.valueOf(searchType.toUpperCase());
       } catch (IllegalArgumentException e) {
-        throw new IllegalArgumentException("Podany operator wyszukiwania jest nieprawidłowy");
+        throw new IllegalArgumentException("Podany typ wyszukiwania jest nieprawidłowy");
       }
     } else {
-      operator = SearchOperator.AND;
+      type = SearchType.AND;
     }
 
     // budowanie specyfikacji
     return new SpecificationBuilder<T>()
-        .typeClass(typeClass)
+        .specificationClass(typeClass)
         .params(params)
-        .operator(operator)
+        .searchType(type)
         .build();
   }
 }

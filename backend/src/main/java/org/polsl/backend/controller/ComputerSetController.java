@@ -45,18 +45,18 @@ public class ComputerSetController {
   /**
    * Endpoint obsługujący uzyskiwanie listy zestawów komputerowych.
    *
-   * @param searchQuery    kryteria wyszukiwania
-   * @param searchOperator operator wyszukiwania
-   * @param withHistory    informacja o tym, czy należy wyświetlić również usunięte rekordy
+   * @param searchQuery kryteria wyszukiwania
+   * @param searchType  typ wyszukiwania
+   * @param withHistory informacja o tym, czy należy wyświetlić również usunięte rekordy
    * @return lista zestawów komputerowych
    */
   @GetMapping
   public ResponseEntity<?> getAllComputerSets(
       @RequestParam(value = "search", required = false) String searchQuery,
-      @RequestParam(value = "search-operator", required = false) String searchOperator,
+      @RequestParam(value = "search-type", required = false) String searchType,
       @RequestParam(name = "with-history", required = false, defaultValue = "false") boolean withHistory
   ) {
-    Specification<ComputerSet> specification = getSpecification(searchQuery, searchOperator, ComputerSetSpecification.class);
+    Specification<ComputerSet> specification = getSpecification(searchQuery, searchType, ComputerSetSpecification.class);
     return ResponseEntity.ok(computerSetService.getAllComputerSets(specification, withHistory));
   }
 

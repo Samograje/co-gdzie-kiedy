@@ -44,7 +44,7 @@ class HardwareDetailsContainer extends Component {
         lastName: query,
         location: query,
       },
-      searchOperator: 'OR',
+      searchType: 'OR',
     };
 
     request('/api/affiliations', options)

@@ -45,18 +45,18 @@ public class AffiliationController {
   /**
    * Endpoint obsługujący uzyskiwanie listy przynależności.
    *
-   * @param searchQuery    kryteria wyszukiwania
-   * @param searchOperator operator wyszukiwania
-   * @param withHistory    informacja o tym, czy należy wyświetlić również usunięte rekordy
+   * @param searchQuery kryteria wyszukiwania
+   * @param searchType  typ wyszukiwania
+   * @param withHistory informacja o tym, czy należy wyświetlić również usunięte rekordy
    * @return lista przynależności
    */
   @GetMapping
   public ResponseEntity<?> getAffiliations(
       @RequestParam(value = "search", required = false) String searchQuery,
-      @RequestParam(value = "search-operator", required = false) String searchOperator,
+      @RequestParam(value = "search-type", required = false) String searchType,
       @RequestParam(name = "with-history", required = false, defaultValue = "false") boolean withHistory
   ) {
-    Specification<Affiliation> specification = getSpecification(searchQuery, searchOperator, AffiliationSpecification.class);
+    Specification<Affiliation> specification = getSpecification(searchQuery, searchType, AffiliationSpecification.class);
     return ResponseEntity.ok(affiliationService.getAffiliations(specification, withHistory));
   }
 

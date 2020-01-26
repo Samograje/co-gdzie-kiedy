@@ -45,18 +45,18 @@ public class HardwareController {
   /**
    * Endpoint obsługujący uzyskiwanie listy wszystkich nieusuniętych hardware'ów
    *
-   * @param searchQuery    kryteria wyszukiwania
-   * @param searchOperator operator wyszukiwania
-   * @param withHistory    informacja o tym, czy należy wyświetlić również usunięte rekordy
+   * @param searchQuery kryteria wyszukiwania
+   * @param searchType  typ wyszukiwania
+   * @param withHistory informacja o tym, czy należy wyświetlić również usunięte rekordy
    * @return lista hardware'ów
    */
   @GetMapping
   public ResponseEntity<?> getHardwareList(
       @RequestParam(value = "search", required = false) String searchQuery,
-      @RequestParam(value = "search-operator", required = false) String searchOperator,
+      @RequestParam(value = "search-type", required = false) String searchType,
       @RequestParam(name = "with-history", required = false, defaultValue = "false") boolean withHistory
   ) {
-    Specification<Hardware> specification = getSpecification(searchQuery, searchOperator, HardwareSpecification.class);
+    Specification<Hardware> specification = getSpecification(searchQuery, searchType, HardwareSpecification.class);
     return ResponseEntity.ok(hardwareService.getHardwareList(specification, withHistory));
   }
 
