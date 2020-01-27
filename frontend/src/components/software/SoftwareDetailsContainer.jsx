@@ -20,7 +20,7 @@ class SoftwareDetailsContainer extends Component {
 
   componentDidMount() {
     this._isMounted = true;
-    if(this.props.mode === 'edit')
+      //if(this.props.mode === 'edit')
       this.getDataForEditCall();
   }
 
