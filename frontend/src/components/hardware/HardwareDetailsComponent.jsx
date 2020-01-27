@@ -13,6 +13,7 @@ import CgkLabelAndValidation from '../ui/form/CgkLabelAndValidation';
 import CgkTextInput from '../ui/form/CgkTextInput';
 import PickerWithItems from '../ui/form/PickerWithItems';
 import ErrorElement from '../ui/ErrorElement';
+import DecisionDialog from "../ui/dialogs/DecisionDialog";
 
 const HardwareDetailsComponent = (props) => {
 
@@ -24,6 +25,16 @@ const HardwareDetailsComponent = (props) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      {props.dialogOpened && (
+          <DecisionDialog
+              headerText="Uwaga!"
+              text="Zmiany nie zostaną zapisane, czy chcesz kontynuować?"
+              onConfirmText="Tak"
+              onConfirm={props.dialogHandleConfirm}
+              onRejectText="Nie"
+              onReject={props.dialogHandleReject}
+          />
+      )}
       <View style={props.isWide ? styles.contentWide : styles.contentMobile}>
         <CgkFormHeader text={`Formularz ${modeInfo} sprzętu.`}/>
         <Text>Pola z * są obowiązkowe.</Text>
