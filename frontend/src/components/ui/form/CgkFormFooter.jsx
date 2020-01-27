@@ -5,9 +5,11 @@ import {mainColor} from '../../../constValues';
 const CgkFormFooter = (props) => {
   const {
     isSubmitDisabled, // bool informujący o tym, czy przycisk 'Zapisz' ma być niedostępny
-    isRejectDisabled, // bool informujący o tym, czy przycisk 'Wróć' ma buć niedostępny
+    isRejectDisabled, // bool informujący o tym, czy przycisk 'Wróć' ma być niedostępny
+    isEditDisabled, // bool informujący o tym, czy przycisk 'Edytuj' ma być niedostępny
     onSubmit, // funkcja bez argumentów, wykonywana po naciśnięciu przycisku 'Zapisz'
     onReject, // funkcja bez argumentów, wykonywana po naciśnięciu przycisku 'Wróć'
+    onEdit, // funkcja bez argumentów, wykonywana po naciśnięciu przycisku 'Edytuj'
   } = props;
 
   return (
@@ -26,6 +28,14 @@ const CgkFormFooter = (props) => {
           onPress={onReject}
           color={mainColor}
           disabled={isRejectDisabled}
+        />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Edytuj"
+          onPress={onEdit}
+          color={mainColor}
+          disabled={isEditDisabled}
         />
       </View>
     </View>

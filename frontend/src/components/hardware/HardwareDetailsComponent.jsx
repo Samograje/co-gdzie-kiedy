@@ -17,9 +17,9 @@ import ErrorElement from '../ui/ErrorElement';
 const HardwareDetailsComponent = (props) => {
 
   let modeInfo;
-  if (props.mode === 'edit')
+  if (props.mode === 'edit') {
     modeInfo = "edycji";
-  else if (props.mode === 'create')
+  } else if (props.mode === 'create')
     modeInfo = "dodawania nowego";
 
   return (
@@ -39,7 +39,7 @@ const HardwareDetailsComponent = (props) => {
               <CgkTextInput
                 placeholder="Wprowadź nazwę sprzętu"
                 text={props.name}
-                disabled={props.isSubmitting}
+                disabled={props.isPreviewed || props.isSubmitting}
                 onChangeText={(name) => props.setName(name)}
               />
             </CgkLabelAndValidation>
@@ -47,7 +47,7 @@ const HardwareDetailsComponent = (props) => {
             <CgkLabelAndValidation label="* Typ:">
               <PickerWithItems
                 value={props.dictionaryID}
-                editable={!props.isSubmitting}
+                editable={!(props.isSubmitting || props.isPreviewed)}
                 updateValue={props.setDictionaryID}
                 options={props.dataSourceDictionary}
               />
@@ -56,7 +56,7 @@ const HardwareDetailsComponent = (props) => {
             <CgkLabelAndValidation label="* Przynależność:">
               <AutoComplete
                 value={props.affiliationID}
-                disabled={props.isSubmitting}
+                disabled={props.isPreviewed || props.isSubmitting}
                 updateValue={props.setAffiliationID}
                 options={props.dataSourceAffiliations.items}
                 updateOptions={props.updateAffiliations}
@@ -66,7 +66,7 @@ const HardwareDetailsComponent = (props) => {
             <CgkLabelAndValidation label="W zestawie komputerowym:">
               <AutoComplete
                 value={props.computerSetID}
-                disabled={props.isSubmitting}
+                disabled={props.isPreviewed || props.isSubmitting}
                 updateValue={props.setComputerSetID}
                 options={props.dataSourceComputerSets.items}
                 updateOptions={props.updateComputerSets}
@@ -81,10 +81,12 @@ const HardwareDetailsComponent = (props) => {
           />
         )}
         <CgkFormFooter
-          isSubmitDisabled={props.isInvalid || props.isSubmitting || props.isLoading}
+          isSubmitDisabled={props.isPreviewed || props.isInvalid || props.isSubmitting || props.isLoading}
           isRejectDisabled={props.isSubmitting}
+          isEditDisabled={!props.isPreviewed}
           onSubmit={props.onSubmit}
           onReject={props.onReject}
+          onEdit={props.onEdit}
         />
         {props.isSubmitting && (
           <CgkActivityIndicator/>
