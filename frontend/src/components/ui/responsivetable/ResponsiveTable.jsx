@@ -36,7 +36,7 @@ class ResponsiveTable extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 5,
+
   },
 });
 
