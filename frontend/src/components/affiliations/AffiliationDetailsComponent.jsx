@@ -87,8 +87,10 @@ const AffiliationDetailsComponent = (props) => {
         <CgkFormFooter
           isSubmitDisabled={isLoading || isSubmitting}
           isRejectDisabled={isSubmitting}
+          isDeleteDisabled={isLoading || isSubmitting || props.mode !== 'edit'}
           onSubmit={onSubmit}
           onReject={onReject}
+          onDelete={props.onDelete}
         />
         {isSubmitting && (
           <CgkActivityIndicator/>

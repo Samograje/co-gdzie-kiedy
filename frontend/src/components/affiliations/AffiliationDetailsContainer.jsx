@@ -143,6 +143,38 @@ class AffiliationDetailsContainer extends Component {
       });
   };
 
+  onDelete = () => {
+    this.setState({
+      isSubmitting: true,
+    });
+    request(`/api/affiliations/${this.props.id}`,{
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      }
+    }).then((response) => response.json())
+      .then((response) => {
+        if (response.success) {
+          this.props.goBack();
+        } else {
+          if (!this._isMounted) {
+            return;
+          }
+          this.setState({
+            error: true,
+            isSubmitting: false,
+          });
+        }
+      })
+      .catch((error) => {
+        if (!this._isMounted) {
+          return;
+        }
+        console.error(error);
+      });
+  };
+
   onReject = () => this.props.goBack();
 
   render() {
@@ -168,6 +200,7 @@ class AffiliationDetailsContainer extends Component {
         onSubmit={this.onSubmit}
         onReject={this.onReject}
         onChange={this.onChange}
+        onDelete={this.onDelete}
       />
     );
   }

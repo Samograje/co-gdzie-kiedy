@@ -86,8 +86,10 @@ const SoftwareDetailsComponent = (props) => {
             !props.validationDurationIsBiggerThan0NumberStatus ||
             props.validationDisableDuration
           }
+          isDeleteDisabled={props.isLoading || props.mode !== 'edit'}
           onSubmit={props.onSubmit}
           onReject={props.onReject}
+          onDelete={props.onDelete}
         />
       </View>
     </ScrollView>

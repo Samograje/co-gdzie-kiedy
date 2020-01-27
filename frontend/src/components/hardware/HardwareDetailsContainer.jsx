@@ -185,6 +185,38 @@ class HardwareDetailsContainer extends Component {
         })
   };
 
+  onDelete = () => {
+    this.setState({
+      isSubmitting: true,
+    });
+    request(`/api/hardware/${this.props.id}`,{
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      }
+    }).then((response) => response.json())
+      .then((response) => {
+        if (response.success) {
+          this.props.goBack();
+        } else {
+          if (!this._isMounted) {
+            return;
+          }
+          this.setState({
+            error: true,
+            isSubmitting: false,
+          });
+        }
+      })
+      .catch((error) => {
+        if (!this._isMounted) {
+          return;
+        }
+        console.error(error);
+      });
+  };
+
   onSubmit = () => {
     if (this.props.mode === 'create')
       this.addOrEditCallCall('POST', '/api/hardware');
@@ -204,6 +236,7 @@ class HardwareDetailsContainer extends Component {
         <HardwareDetailsComponent
             onSubmit={this.onSubmit}
             onReject={this.onReject}
+            onDelete={this.onDelete}
             setName={this.setName}
             setDictionaryID={this.setDictionaryID}
             setAffiliationID={this.setAffiliationID}

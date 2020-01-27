@@ -64,37 +64,37 @@ class AffiliationsListContainer extends Component {
       })
   };
 
-  deleteItem = () => {
-    this.closeDialog();
-    request(`/api/affiliations/${this.state.itemToDeleteId}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      }
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        if (!this._isMounted) {
-          return;
-        }
-        if (!response.success) {
-          this.setState({
-            error: true,
-          });
-          return;
-        }
-        this.fetchData();
-      })
-      .catch(() => {
-        if (!this._isMounted) {
-          return;
-        }
-        this.setState({
-          error: true,
-        });
-      });
-  };
+  // deleteItem = () => {
+  //   this.closeDialog();
+  //   request(`/api/affiliations/${this.state.itemToDeleteId}`, {
+  //     method: 'DELETE',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'Access-Control-Allow-Origin': '*',
+  //     }
+  //   })
+  //     .then((response) => response.json())
+  //     .then((response) => {
+  //       if (!this._isMounted) {
+  //         return;
+  //       }
+  //       if (!response.success) {
+  //         this.setState({
+  //           error: true,
+  //         });
+  //         return;
+  //       }
+  //       this.fetchData();
+  //     })
+  //     .catch(() => {
+  //       if (!this._isMounted) {
+  //         return;
+  //       }
+  //       this.setState({
+  //         error: true,
+  //       });
+  //     });
+  // };
 
   handleFilterChange = (fieldName, text) => {
     const newFilters = {
@@ -168,14 +168,14 @@ class AffiliationsListContainer extends Component {
           id: itemData.id,
         }),
       },
-      {
-        label: 'Usuń',
-        icon: require('./../../images/ic_action_delete.png'),
-        onClick: (itemData) => this.setState({
-          isDialogOpened: true,
-          itemToDeleteId: itemData.id,
-        }),
-      },
+      // {
+      //   label: 'Usuń',
+      //   icon: require('./../../images/ic_action_delete.png'),
+      //   onClick: (itemData) => this.setState({
+      //     isDialogOpened: true,
+      //     itemToDeleteId: itemData.id,
+      //   }),
+      // },
     ];
 
     const groupActions = [

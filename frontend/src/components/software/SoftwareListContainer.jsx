@@ -86,28 +86,28 @@ class SoftwareListContainer extends Component {
     });
   };
 
-  deleteCall = () => {
-    request(`/api/software/${this.state.itemToDeleteId}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      }
-    }).then((response) => response.json())
-      .then(() => {
-        if (!this._isMounted) {
-          return;
-        }
-        this.closeDialog();
-        this.fetchData();
-      })
-      .catch((error) => {
-        if (!this._isMounted) {
-          return;
-        }
-        console.error(error);
-      });
-  };
+  // deleteCall = () => {
+  //   request(`/api/software/${this.state.itemToDeleteId}`, {
+  //     method: 'DELETE',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'Access-Control-Allow-Origin': '*',
+  //     }
+  //   }).then((response) => response.json())
+  //     .then(() => {
+  //       if (!this._isMounted) {
+  //         return;
+  //       }
+  //       this.closeDialog();
+  //       this.fetchData();
+  //     })
+  //     .catch((error) => {
+  //       if (!this._isMounted) {
+  //         return;
+  //       }
+  //       console.error(error);
+  //     });
+  // };
 
   closeDialog = () => this.setState({
     dialogOpened: false,
@@ -172,14 +172,14 @@ class SoftwareListContainer extends Component {
           id: itemData.id,
         }),
       },
-      {
-        label: 'Usuń',
-        icon: require('./../../images/ic_action_delete.png'),
-        onClick: (itemData) => this.setState({
-          dialogOpened: true,
-          itemToDeleteId: itemData.id,
-        }),
-      },
+      // {
+      //   label: 'Usuń',
+      //   icon: require('./../../images/ic_action_delete.png'),
+      //   onClick: (itemData) => this.setState({
+      //     dialogOpened: true,
+      //     itemToDeleteId: itemData.id,
+      //   }),
+      // },
       {
         label: 'Historia zestawów komputerowych',
         icon: require('./../../images/ic_action_devices.png'),

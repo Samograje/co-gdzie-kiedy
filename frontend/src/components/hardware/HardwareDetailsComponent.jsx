@@ -83,8 +83,10 @@ const HardwareDetailsComponent = (props) => {
         <CgkFormFooter
           isSubmitDisabled={props.isInvalid || props.isSubmitting || props.isLoading}
           isRejectDisabled={props.isSubmitting}
+          isDeleteDisabled={props.isSubmitting || props.isLoading || props.mode !== 'edit'}
           onSubmit={props.onSubmit}
           onReject={props.onReject}
+          onDelete={props.onDelete}
         />
         {props.isSubmitting && (
           <CgkActivityIndicator/>

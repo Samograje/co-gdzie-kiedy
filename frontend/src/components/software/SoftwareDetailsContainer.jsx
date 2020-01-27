@@ -82,6 +82,38 @@ class SoftwareDetailsContainer extends Component {
       })
   };
 
+  onDelete = () => {
+    this.setState({
+      isSubmitting: true,
+    });
+    request(`/api/software/${this.props.id}`,{
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      }
+    }).then((response) => response.json())
+      .then((response) => {
+        if (response.success) {
+          this.props.goBack();
+        } else {
+          if (!this._isMounted) {
+            return;
+          }
+          this.setState({
+            error: true,
+            isSubmitting: false,
+          });
+        }
+      })
+      .catch((error) => {
+        if (!this._isMounted) {
+          return;
+        }
+        console.error(error);
+      });
+  };
+
   onSubmit = () => {
     if(this.props.mode === 'create')
       this.addOrEditCallCall('POST', '/api/software');
@@ -101,6 +133,7 @@ class SoftwareDetailsContainer extends Component {
         setText={this.setText}
         onSubmit={this.onSubmit}
         onReject={this.onReject}
+        onDelete={this.onDelete}
         setName={this.setName}
         setKey={this.setKey}
         setAvailableKeys={this.setAvailableKeys}

@@ -5,9 +5,11 @@ import {mainColor} from '../../../constValues';
 const CgkFormFooter = (props) => {
   const {
     isSubmitDisabled, // bool informujący o tym, czy przycisk 'Zapisz' ma być niedostępny
-    isRejectDisabled, // bool informujący o tym, czy przycisk 'Wróć' ma buć niedostępny
+    isRejectDisabled, // bool informujący o tym, czy przycisk 'Wróć' ma być niedostępny
+    isDeleteDisabled, // bool informujący o tym, czy przycisk 'Usuń' ma być niedostępny
     onSubmit, // funkcja bez argumentów, wykonywana po naciśnięciu przycisku 'Zapisz'
     onReject, // funkcja bez argumentów, wykonywana po naciśnięciu przycisku 'Wróć'
+    onDelete, // funkcja bez argumentów, wykonywana po naciśnięciu przycisku 'Usuń'
   } = props;
 
   return (
@@ -26,6 +28,14 @@ const CgkFormFooter = (props) => {
           onPress={onReject}
           color={mainColor}
           disabled={isRejectDisabled}
+        />
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Usuń"
+          onPress={onDelete}
+          color={mainColor}
+          disabled={isDeleteDisabled}
         />
       </View>
     </View>
