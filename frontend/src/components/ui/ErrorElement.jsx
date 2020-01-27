@@ -16,7 +16,7 @@ const ErrorElement = (props) => {
     <View style={styles.container}>
       <Text style={styles.text}>{message}</Text>
         <Button
-            onClick={OnFetchData}
+            onPress={OnFetchData}
             style={styles.b}
             title={"Odśwież"}
             color={mainColor}
