@@ -28,11 +28,11 @@ const HardwareDetailsComponent = (props) => {
         <CgkFormHeader text={`Formularz ${modeInfo} sprzętu.`}/>
         <Text>Pola z * są obowiązkowe.</Text>
 
-        {(props.loadingAffiliations || props.loadingDictionary || props.loadingComputerSets) && (
+        {props.isLoading && (
           <CgkActivityIndicator/>
         )}
 
-        {!(props.loadingAffiliations || props.loadingDictionary || props.loadingComputerSets) && (
+        {!props.isLoading && (
           <View style={styles.main}>
 
             <CgkLabelAndValidation label="* Nazwa sprzętu:">
@@ -81,7 +81,7 @@ const HardwareDetailsComponent = (props) => {
           />
         )}
         <CgkFormFooter
-          isSubmitDisabled={props.isInvalid || props.isSubmitting}
+          isSubmitDisabled={props.isInvalid || props.isSubmitting || props.isLoading}
           isRejectDisabled={props.isSubmitting}
           onSubmit={props.onSubmit}
           onReject={props.onReject}

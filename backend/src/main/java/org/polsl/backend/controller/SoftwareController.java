@@ -5,10 +5,11 @@ import org.polsl.backend.dto.PaginatedResult;
 import org.polsl.backend.dto.software.SoftwareDTO;
 import org.polsl.backend.dto.software.SoftwareListOutputDTO;
 import org.polsl.backend.entity.Software;
-import org.polsl.backend.filtering.Search;
 import org.polsl.backend.service.SoftwareService;
 import org.polsl.backend.service.export.ExportService;
+import org.polsl.backend.specification.SoftwareSpecification;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+import static org.polsl.backend.service.filtering.SearchService.getSpecification;
 
 /**
  * Kontroler odpowiedzialny za zarządzanie oprogramowaniem.
@@ -41,17 +43,19 @@ public class SoftwareController {
   /**
    * Endpoint obsługujący uzyskiwanie listy oprogramowania.
    *
-   * @param search      kryteria wyszukiwania
+   * @param searchQuery kryteria wyszukiwania
+   * @param searchType  typ wyszukiwania
    * @param withHistory informacja o tym, czy należy wyświetlić również usunięte rekordy
    * @return lista oprogramowania
    */
   @GetMapping
   public ResponseEntity<?> getAllSoftware(
-    @RequestParam(value = "search", required = false) String search,
-    @RequestParam(name = "with-history", required = false, defaultValue = "false") boolean withHistory
+      @RequestParam(value = "search", required = false) String searchQuery,
+      @RequestParam(value = "search-type", required = false) String searchType,
+      @RequestParam(name = "with-history", required = false, defaultValue = "false") boolean withHistory
   ) {
-    Search<Software> filtering = new Search<>(new Software(), search);
-    return ResponseEntity.ok(softwareService.getAllSoftware(filtering.searchInitialization(), withHistory));
+    Specification<Software> specification = getSpecification(searchQuery, searchType, SoftwareSpecification.class);
+    return ResponseEntity.ok(softwareService.getAllSoftware(specification, withHistory));
   }
 
   /**
@@ -83,13 +87,11 @@ public class SoftwareController {
    */
   @GetMapping("/export")
   public ResponseEntity<?> printListToPdf(@RequestParam(value = "search", required = false) String search) {
-    Search<Software> filtering = new Search<>(new Software(), search);
-    PaginatedResult<SoftwareListOutputDTO> data = softwareService
-      .getAllSoftware(filtering.searchInitialization(), false);
+    PaginatedResult<SoftwareListOutputDTO> data = softwareService.getAllSoftware(null, false);
     InputStreamResource inputStreamResource = exportService.export("Oprogramowanie", data.getItems());
     return ResponseEntity.ok()
-      .contentType(MediaType.APPLICATION_PDF)
-      .body(inputStreamResource);
+        .contentType(MediaType.APPLICATION_PDF)
+        .body(inputStreamResource);
   }
 
   /**

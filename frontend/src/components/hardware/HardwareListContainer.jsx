@@ -135,7 +135,7 @@ class HardwareListContainer extends Component {
       {
         name: 'type',
         label: 'Typ',
-        filter: false,
+        filter: true,
       },
       {
         name: 'inventoryNumber',
@@ -145,12 +145,10 @@ class HardwareListContainer extends Component {
       {
         name: 'affiliationName',
         label: 'Przynależy do',
-        filter: false,
       },
       {
         name: 'computerSetInventoryNumber',
         label: 'Numer inwentarzowy powiązanego zestawu komputerowego',
-        filter: false,
       },
     ];
     if (this.state.withHistory) {
