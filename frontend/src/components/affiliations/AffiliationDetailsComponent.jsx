@@ -38,7 +38,7 @@ const AffiliationDetailsComponent = (props) => {
       >
         <CgkTextInput
           placeholder="Wprowadź imię"
-          disabled={isSubmitting}
+          disabled={isSubmitting || props.isPreviewed}
           text={data.firstName}
           onChangeText={(text) => onChange('firstName', text)}
         />
@@ -50,7 +50,7 @@ const AffiliationDetailsComponent = (props) => {
       >
         <CgkTextInput
           placeholder="Wprowadź nazwisko"
-          disabled={isSubmitting}
+          disabled={isSubmitting || props.isPreviewed}
           text={data.lastName}
           onChangeText={(text) => onChange('lastName', text)}
         />
@@ -62,7 +62,7 @@ const AffiliationDetailsComponent = (props) => {
       >
         <CgkTextInput
           placeholder="Wprowadź lokalizację"
-          disabled={isSubmitting}
+          disabled={isSubmitting || props.isPreviewed}
           text={data.location}
           onChangeText={(text) => onChange('location', text)}
         />
@@ -85,10 +85,12 @@ const AffiliationDetailsComponent = (props) => {
           />
         )}
         <CgkFormFooter
-          isSubmitDisabled={isLoading || isSubmitting}
+          isSubmitDisabled={isLoading || isSubmitting || props.isPreviewed}
           isRejectDisabled={isSubmitting}
+          isEditDisabled={!props.isPreviewed}
           onSubmit={onSubmit}
           onReject={onReject}
+          onEdit={props.onEdit}
         />
         {isSubmitting && (
           <CgkActivityIndicator/>

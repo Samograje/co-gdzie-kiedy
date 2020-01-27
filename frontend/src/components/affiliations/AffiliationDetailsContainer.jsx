@@ -16,6 +16,7 @@ class AffiliationDetailsContainer extends Component {
       errors: {},
       isLoading: false,
       isSubmitting: false,
+      isPreviewed: false,
     };
   }
 
@@ -23,6 +24,9 @@ class AffiliationDetailsContainer extends Component {
     this._isMounted = true;
     if (this.props.mode === 'edit') {
       this.loadInitialData();
+      this.setState({
+        isPreviewed: true,
+      });
     }
   }
 
@@ -145,6 +149,10 @@ class AffiliationDetailsContainer extends Component {
 
   onReject = () => this.props.goBack();
 
+  onEdit = () => this.setState({
+    isPreviewed: false,
+  });
+
   render() {
     const isWide = Dimensions.get('window').width > 450;
     const {mode} = this.props;
@@ -165,9 +173,11 @@ class AffiliationDetailsContainer extends Component {
         isLoading={isLoading}
         isSubmitting={isSubmitting}
         isWide={isWide}
+        isPreviewed={this.state.isPreviewed}
         onSubmit={this.onSubmit}
         onReject={this.onReject}
         onChange={this.onChange}
+        onEdit={this.onEdit}
       />
     );
   }
