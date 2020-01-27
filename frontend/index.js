@@ -1,10 +1,12 @@
-import {AppRegistry} from 'react-native';
-import {createAppContainer} from "react-navigation";
-import {createStackNavigator} from "react-navigation-stack";
-import routes from "./src/routes";
-import withCustomRouting from "./src/withCustomRouting";
-import {mainColor} from "./src/constValues";
-import ScanScreenComponent from "./src/components/ui/qr/ScanScreenComponent";
+import React from 'react';
+import {AppRegistry, View} from 'react-native';
+import {createAppContainer} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
+import {GrowlProvider} from './src/components/ui/growl/GrowlProvider';
+import {mainColor} from './src/constValues';
+import routes from './src/routes';
+import ScanScreenComponent from './src/components/ui/qr/ScanScreenComponent';
+import withCustomRouting from './src/withCustomRouting';
 
 // Punkt startowy dla aplikacji mobilnej
 
@@ -53,6 +55,14 @@ const navigatorConfig = {
 
 const navigator = createStackNavigator(routeConfigs, navigatorConfig);
 
-const App = createAppContainer(navigator);
+const AppContainer = createAppContainer(navigator);
+
+const App = () => (
+  <View style={{flex: 1}}>
+    <GrowlProvider>
+      <AppContainer/>
+    </GrowlProvider>
+  </View>
+);
 
 AppRegistry.registerComponent('frontend', () => App);

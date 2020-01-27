@@ -6,24 +6,27 @@ import routes from "./routes";
 import withCustomRouting from "./withCustomRouting";
 import withTopbar from "./components/ui/Topbar";
 import './index.css';
+import {GrowlProvider} from './components/ui/growl/GrowlProvider';
 
 // Punkt startowy dla strony internetowej
 
 const App = () => {
   return (
     <View style={styles.container}>
-      <BrowserRouter>
-        <Switch>
-          {Object.values(routes).map((routeObject, idx) => (
-            <Route
-              key={idx}
-              exact={routeObject.exact}
-              path={routeObject.path}
-              render={withCustomRouting(withTopbar(routeObject.component))}
-            />
-          ))}
-        </Switch>
-      </BrowserRouter>
+      <GrowlProvider>
+        <BrowserRouter>
+          <Switch>
+            {Object.values(routes).map((routeObject, idx) => (
+              <Route
+                key={idx}
+                exact={routeObject.exact}
+                path={routeObject.path}
+                render={withCustomRouting(withTopbar(routeObject.component))}
+              />
+            ))}
+          </Switch>
+        </BrowserRouter>
+      </GrowlProvider>
     </View>
   );
 };

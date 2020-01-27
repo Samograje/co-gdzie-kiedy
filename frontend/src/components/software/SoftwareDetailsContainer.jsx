@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
+import {Dimensions} from 'react-native';
+import moment from 'moment';
 import SoftwareDetailsComponent from './SoftwareDetailsComponent';
-import moment from "moment";
-import request from "../../APIClient";
-import {Dimensions} from "react-native";
+import request from '../../APIClient';
+import {withGrowl} from '../ui/growl/GrowlProvider';
 
 class SoftwareDetailsContainer extends Component {
   constructor(props) {
@@ -45,19 +46,30 @@ class SoftwareDetailsContainer extends Component {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       }
-    }).then((response) => response.json())
-      .then((responseJson) => {
-        if (!this._isMounted) {
-          return;
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.success) {
+          this.props.showMessage('Sukces', 'Zapisano sprzęt');
+          this.props.goBack();
+        } else {
+          if (!this._isMounted) {
+            return;
+          }
+          this.setState({
+            error: true,
+            isSubmitting: false,
+          });
         }
-        console.log(responseJson);
-        return responseJson;
       })
-      .catch((error) => {
+      .catch(() => {
         if (!this._isMounted) {
           return;
         }
-        console.error(error);
+        this.setState({
+          error: true,
+          isSubmitting: false,
+        });
       });
   };
 
@@ -92,7 +104,7 @@ class SoftwareDetailsContainer extends Component {
   setName = (value) => {this.setState({name: value});};
   setKey = (value) => this.setState( {key: value});
   setAvailableKeys = (value) => this.setState({availableKeys: value});
-  setDuration = (value) => this.setState({duration: value});;
+  setDuration = (value) => this.setState({duration: value});
 
   render() {
     const isWide = Dimensions.get('window').width > 450;
@@ -124,4 +136,4 @@ class SoftwareDetailsContainer extends Component {
   }
 }
 
-export default SoftwareDetailsContainer;
+export default withGrowl(SoftwareDetailsContainer);

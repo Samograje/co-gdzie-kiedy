@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Dimensions} from 'react-native';
 import AffiliationDetailsComponent from './AffiliationDetailsComponent';
 import request from '../../APIClient';
+import {withGrowl} from '../ui/growl/GrowlProvider';
 
 class AffiliationDetailsContainer extends Component {
   constructor(props) {
@@ -121,6 +122,7 @@ class AffiliationDetailsContainer extends Component {
       .then((response) => response.json())
       .then((response) => {
         if (response.success) {
+          this.props.showMessage('Sukces', 'Zapisano osobę / miejsce');
           this.props.goBack();
         } else {
           if (!this._isMounted) {
@@ -173,4 +175,4 @@ class AffiliationDetailsContainer extends Component {
   }
 }
 
-export default AffiliationDetailsContainer;
+export default withGrowl(AffiliationDetailsContainer);
