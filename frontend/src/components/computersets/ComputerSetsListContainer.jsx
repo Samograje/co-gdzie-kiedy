@@ -130,13 +130,13 @@ class ComputerSetsListContainer extends Component {
           id: itemData.id,
         }),
       },
-      {
-        label: 'Usuń',
-        icon: require('./../../images/ic_action_delete.png'),
-        onClick: (itemData) => {
-          // TODO: usuwanie zestawu komputerowego
-        },
-      },
+      // {
+      //   label: 'Usuń',
+      //   icon: require('./../../images/ic_action_delete.png'),
+      //   onClick: (itemData) => {
+      //     // TODO: usuwanie zestawu komputerowego
+      //   },
+      // },
       {
         label: 'Historia osób / miejsc',
         icon: require('./../../images/ic_action_person_pin.png'),
