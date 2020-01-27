@@ -155,13 +155,14 @@ const styles = StyleSheet.create({
     marginTop: 30,
     backgroundColor: 'white',
     textAlign: 'center',
+    width: '100%',
   },
   scanner: {
     marginTop: 10,
   },
   container: {
     flex: 1,
-    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
