@@ -10,6 +10,7 @@ import CgkFormFooter from '../ui/form/CgkFormFooter';
 import CgkFormHeader from '../ui/form/CgkFormHeader';
 import CgkLabelAndValidation from '../ui/form/CgkLabelAndValidation';
 import CgkTextInput from '../ui/form/CgkTextInput';
+import SuccessElement from '../ui/SuccessElement';
 
 const SoftwareDetailsComponent = (props) => {
   let mode;
@@ -89,6 +90,9 @@ const SoftwareDetailsComponent = (props) => {
           onSubmit={props.onSubmit}
           onReject={props.onReject}
         />
+        {props.isGrowlVisible && (
+          <SuccessElement text="Zapisano sprzęt"/>
+        )}
       </View>
     </ScrollView>
   );

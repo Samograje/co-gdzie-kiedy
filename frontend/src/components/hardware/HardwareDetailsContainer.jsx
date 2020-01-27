@@ -20,6 +20,7 @@ class HardwareDetailsContainer extends Component {
       dataSourceDictionary: [],
       isInvalid: true,
       isSubmitting: false,
+      isGrowlVisible: false,
     };
   }
 
@@ -147,7 +148,10 @@ class HardwareDetailsContainer extends Component {
     }).then((response) => response.json())
       .then((response) => {
         if (response.success) {
-          this.props.goBack();
+          this.setState({
+            isGrowlVisible: true,
+          });
+          setTimeout(this.props.goBack, 2000);
         } else {
           if (!this._isMounted) {
             return;
@@ -219,6 +223,7 @@ class HardwareDetailsContainer extends Component {
             isInvalid={this.state.name === '' || this.state.dictionaryID === '' || this.state.affiliationID === ''}
             isSubmitting={this.state.isSubmitting}
             isLoading={this.state.loadingDictionary || this.state.loadingAffiliations || this.state.loadingComputerSets}
+            isGrowlVisible={this.state.isGrowlVisible}
             error={this.state.error}
             isWide={isWide}
             updateAffiliations={this.fetchDataAffiliations}

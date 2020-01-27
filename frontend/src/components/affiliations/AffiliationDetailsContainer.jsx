@@ -16,6 +16,7 @@ class AffiliationDetailsContainer extends Component {
       errors: {},
       isLoading: false,
       isSubmitting: false,
+      isGrowlVisible: false,
     };
   }
 
@@ -121,7 +122,10 @@ class AffiliationDetailsContainer extends Component {
       .then((response) => response.json())
       .then((response) => {
         if (response.success) {
-          this.props.goBack();
+          this.setState({
+            isGrowlVisible: true,
+          });
+          setTimeout(this.props.goBack, 2000);
         } else {
           if (!this._isMounted) {
             return;
@@ -154,6 +158,7 @@ class AffiliationDetailsContainer extends Component {
       errors,
       isLoading,
       isSubmitting,
+      isGrowlVisible,
     } = this.state;
 
     return (
@@ -164,6 +169,7 @@ class AffiliationDetailsContainer extends Component {
         errors={errors}
         isLoading={isLoading}
         isSubmitting={isSubmitting}
+        isGrowlVisible={isGrowlVisible}
         isWide={isWide}
         onSubmit={this.onSubmit}
         onReject={this.onReject}
