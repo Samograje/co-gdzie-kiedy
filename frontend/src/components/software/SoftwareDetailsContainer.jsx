@@ -15,13 +15,18 @@ class SoftwareDetailsContainer extends Component {
       validationStatus: false,
       loading: false,
       error: false,
+      isPreviewed: false,
     };
   }
 
   componentDidMount() {
     this._isMounted = true;
-    if(this.props.mode === 'edit')
+    if(this.props.mode === 'edit') {
       this.getDataForEditCall();
+      this.setState({
+        isPreviewed: true,
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -89,6 +94,9 @@ class SoftwareDetailsContainer extends Component {
       this.addOrEditCallCall('PUT', `/api/software/${this.props.id}`);
   };
   onReject = () => this.props.goBack();
+  onEdit = () => this.setState({
+    isPreviewed: false,
+  });
   setName = (value) => {this.setState({name: value});};
   setKey = (value) => this.setState( {key: value});
   setAvailableKeys = (value) => this.setState({availableKeys: value});
@@ -101,11 +109,13 @@ class SoftwareDetailsContainer extends Component {
         setText={this.setText}
         onSubmit={this.onSubmit}
         onReject={this.onReject}
+        onEdit={this.onEdit}
         setName={this.setName}
         setKey={this.setKey}
         setAvailableKeys={this.setAvailableKeys}
         setDuration={this.setDuration}
         isWide={isWide}
+        isPreviewed={this.state.isPreviewed}
         mode={this.props.mode}
         name={this.state.name}
         keY={this.state.key}

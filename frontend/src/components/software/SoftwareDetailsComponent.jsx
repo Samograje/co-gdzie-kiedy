@@ -36,6 +36,7 @@ const SoftwareDetailsComponent = (props) => {
             <CgkTextInput
               placeholder="Wprowadź nazwe nowego oprogramowania"
               text={props.name}
+              disabled={props.isPreviewed}
               onChangeText={(name) => props.setName(name)}
             />
           </CgkLabelAndValidation>
@@ -44,6 +45,7 @@ const SoftwareDetailsComponent = (props) => {
             <CgkTextInput
               placeholder="Wprowadź klucz produktu"
               text={props.keY}
+              disabled={props.isPreviewed}
               onChangeText={(key) => props.setKey(key)}
             />
           </CgkLabelAndValidation>
@@ -57,6 +59,7 @@ const SoftwareDetailsComponent = (props) => {
             <CgkTextInput
               placeholder="Wprowadź ilość dostępnych kluczy"
               text={props.availableKeys.toString()}
+              disabled={props.isPreviewed}
               onChangeText={(availableKeys) => props.setAvailableKeys(availableKeys)}
             />
           </CgkLabelAndValidation>
@@ -69,7 +72,7 @@ const SoftwareDetailsComponent = (props) => {
           >
             <CgkTextInput
               placeholder="Wprowadź okres trwania licencji, w miesiącach "
-              disabled={props.validationDisableDuration}
+              disabled={props.validationDisableDuration || props.isPreviewed}
               text={props.duration.toString()}
               onChangeText={(duration) => props.setDuration(duration)}
             />
@@ -84,10 +87,13 @@ const SoftwareDetailsComponent = (props) => {
             !props.validationAvailableKeysIsBiggerThan0NumberStatus ||
             props.validationDurationIsNumberStatus ||
             !props.validationDurationIsBiggerThan0NumberStatus ||
-            props.validationDisableDuration
+            props.validationDisableDuration ||
+              props.isPreviewed
           }
+          isEditDisabled={!props.isPreviewed}
           onSubmit={props.onSubmit}
           onReject={props.onReject}
+          onEdit={props.onEdit}
         />
       </View>
     </ScrollView>
