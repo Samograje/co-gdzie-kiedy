@@ -158,10 +158,10 @@ const styles = StyleSheet.create({
   },
   scanner: {
     marginTop: 10,
-    width: '100%',
   },
   container: {
     flex: 1,
+    justifyContent: 'center',
   },
 });
 
