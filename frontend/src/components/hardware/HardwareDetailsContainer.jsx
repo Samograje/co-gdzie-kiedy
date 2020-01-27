@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import {Dimensions} from 'react-native';
 import HardwareDetailsComponent from './HardwareDetailsComponent';
-import request from '../../APIClient';
-import {withGrowl} from '../ui/growl/GrowlProvider';
+import request from "../../APIClient";
 
 class HardwareDetailsContainer extends Component {
   constructor(props) {
@@ -148,7 +147,6 @@ class HardwareDetailsContainer extends Component {
     }).then((response) => response.json())
       .then((response) => {
         if (response.success) {
-          this.props.showMessage('Sukces', 'Zapisano sprzęt');
           this.props.goBack();
         } else {
           if (!this._isMounted) {
@@ -230,4 +228,4 @@ class HardwareDetailsContainer extends Component {
   }
 }
 
-export default withGrowl(HardwareDetailsContainer);
+export default HardwareDetailsContainer;
