@@ -20,8 +20,9 @@ class SoftwareDetailsContainer extends Component {
 
   componentDidMount() {
     this._isMounted = true;
-      //if(this.props.mode === 'edit')
+    if (this.props.mode === 'edit' || this.props.mode === 'copy') {
       this.getDataForEditCall();
+    }
   }
 
   componentWillUnmount() {
@@ -83,7 +84,7 @@ class SoftwareDetailsContainer extends Component {
   };
 
   onSubmit = () => {
-    if(this.props.mode === 'create')
+    if (this.props.mode === 'create' || this.props.mode === 'copy')
       this.addOrEditCallCall('POST', '/api/software');
     else if (this.props.mode === 'edit')
       this.addOrEditCallCall('PUT', `/api/software/${this.props.id}`);

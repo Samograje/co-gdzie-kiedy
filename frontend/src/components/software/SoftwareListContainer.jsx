@@ -168,7 +168,7 @@ class SoftwareListContainer extends Component {
           label: 'Kopiuj',
           icon: require('./../../images/ic_action_content_copy.png'),
         onClick: (itemData) => this.props.push('SoftwareDetails', {
-          mode: 'create',
+          mode: 'copy',
           id: itemData.id,
         }),
       },
