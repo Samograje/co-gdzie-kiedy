@@ -15,6 +15,7 @@ class SoftwareDetailsContainer extends Component {
       validationStatus: false,
       loading: false,
       error: false,
+      dialogOpened: false,
     };
   }
 
@@ -88,12 +89,13 @@ class SoftwareDetailsContainer extends Component {
     else if (this.props.mode === 'edit')
       this.addOrEditCallCall('PUT', `/api/software/${this.props.id}`);
   };
-  onReject = () => this.props.goBack();
+  onReject = () => this.setState({dialogOpened: true});
   setName = (value) => {this.setState({name: value});};
   setKey = (value) => this.setState( {key: value});
   setAvailableKeys = (value) => this.setState({availableKeys: value});
-  setDuration = (value) => this.setState({duration: value});;
-
+  setDuration = (value) => this.setState({duration: value});
+  closeDialog = () => this.setState({dialogOpened: false,});
+  confirmDialog = () => this.props.goBack();
   render() {
     const isWide = Dimensions.get('window').width > 450;
     return (
@@ -112,6 +114,9 @@ class SoftwareDetailsContainer extends Component {
         availableKeys={this.state.availableKeys}
         duration={this.state.duration}
         loading={this.state.loading}
+        dialogOpened={this.state.dialogOpened}
+        dialogHandleReject={this.closeDialog}
+        dialogHandleConfirm={this.confirmDialog}
         validationEmptyStatus={this.state.name === '' || this.state.key === '' ||
                           this.state.availableKeys === '' || this.state.duration === ''}
         validationAvailableKeysIsNumberStatus={isNaN(this.state.availableKeys)}
