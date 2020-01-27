@@ -1,14 +1,7 @@
 import React from 'react';
-import {
-  Button,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import {Platform, ScrollView, StyleSheet, View,} from 'react-native';
 import ErrorElement from '../ui/ErrorElement';
 import ResponsiveTable from '../ui/responsivetable/ResponsiveTable';
-import {mainColor} from '../../constValues';
 import DecisionDialog from "../ui/dialogs/DecisionDialog";
 import ScreenHeader from '../ui/ScreenHeader';
 
@@ -47,9 +40,9 @@ const HardwareListComponent = (props) => {
           pointerEvents={dialogOpened ? 'none' : null}
         >
           {Platform.OS === 'web' && (
-            <ScreenHeader title="Lista sprzętów"/>
+              <ScreenHeader title="Lista sprzętów" gActions={groupActions}/>
           )}
-          {groupActions && (
+          {/* {groupActions && (
             <View style={styles.groupActions}>
               {groupActions.map((action, idx) => (
                 <View style={styles.buttonContainer} key={idx}>
@@ -62,7 +55,7 @@ const HardwareListComponent = (props) => {
                 </View>
               ))}
             </View>
-          )}
+          )}*/}
           {error && (
             <ErrorElement
               message="Nie udało się pobrać danych z serwera"

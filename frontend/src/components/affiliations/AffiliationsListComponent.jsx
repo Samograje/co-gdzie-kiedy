@@ -1,14 +1,7 @@
 import React from 'react';
-import {
-  Button,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import {Platform, ScrollView, StyleSheet, View,} from 'react-native';
 import ResponsiveTable from '../ui/responsivetable/ResponsiveTable';
 import ErrorElement from '../ui/ErrorElement';
-import {mainColor} from '../../constValues';
 import DecisionDialog from "../ui/dialogs/DecisionDialog";
 import ScreenHeader from '../ui/ScreenHeader';
 
@@ -45,9 +38,9 @@ const AffiliationsListComponent = (props) => {
           pointerEvents={isDialogOpened ? 'none' : null}
         >
           {Platform.OS === 'web' && (
-            <ScreenHeader title="Lista osób / miejsc"/>
+              <ScreenHeader title="Lista osób / miejsc" gActions={groupActions}/>
           )}
-          {groupActions && (
+            {/*{groupActions && (
             <View style={styles.groupActions}>
               {groupActions.map((action, idx) => (
                 <View style={styles.buttonContainer} key={idx}>
@@ -59,7 +52,7 @@ const AffiliationsListComponent = (props) => {
                 </View>
               ))}
             </View>
-          )}
+          )}*/}
           {error && (
             <ErrorElement
               message="Nie udało się pobrać danych z serwera"

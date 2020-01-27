@@ -1,14 +1,7 @@
 import React from 'react';
-import {
-  Button,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import {Platform, ScrollView, StyleSheet, View,} from 'react-native';
 import ResponsiveTable from '../ui/responsivetable/ResponsiveTable';
 import ErrorElement from '../ui/ErrorElement';
-import {mainColor} from '../../constValues';
 import ScreenHeader from '../ui/ScreenHeader';
 
 const ComputerSetsListComponent = (props) => {
@@ -28,9 +21,9 @@ const ComputerSetsListComponent = (props) => {
     <ScrollView>
       <View style={styles.container}>
         {Platform.OS === 'web' && (
-          <ScreenHeader title="Lista zestawów komputerowych"/>
+            <ScreenHeader title="Lista zestawów komputerowych" gActions={groupActions}/>
         )}
-        {groupActions && (
+        {/* {groupActions && (
           <View style={styles.groupActions}>
             {groupActions.map((action, idx) => (
               <View style={styles.buttonContainer} key={idx}>
@@ -43,7 +36,7 @@ const ComputerSetsListComponent = (props) => {
               </View>
             ))}
           </View>
-        )}
+        )}*/}
         {error && (
           <ErrorElement
             message="Nie udało się pobrać danych z serwera"

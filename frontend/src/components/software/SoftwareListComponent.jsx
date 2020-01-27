@@ -1,15 +1,8 @@
 import React from 'react';
-import {
-  Button,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import {Platform, ScrollView, StyleSheet, View,} from 'react-native';
 import ErrorElement from '../ui/ErrorElement';
 import DecisionDialog from '../ui/dialogs/DecisionDialog';
 import ResponsiveTable from '../ui/responsivetable/ResponsiveTable';
-import {mainColor} from '../../constValues';
 import ScreenHeader from '../ui/ScreenHeader';
 
 const SoftwareListComponent = (props) => {
@@ -46,9 +39,9 @@ const SoftwareListComponent = (props) => {
           pointerEvents={dialogOpened ? 'none' : null}
         >
           {Platform.OS === 'web' && (
-            <ScreenHeader title="Lista oprogramowania"/>
+              <ScreenHeader title="Lista oprogramowania" gActions={groupActions}/>
           )}
-          {groupActions && (
+          {/*{groupActions && (
             <View style={styles.groupActions}>
               {groupActions.map((action, idx) => (
                 <View style={styles.buttonContainer} key={idx}>
@@ -61,7 +54,7 @@ const SoftwareListComponent = (props) => {
                 </View>
               ))}
             </View>
-          )}
+          )}*/}
           {error && (
             <ErrorElement
               message="Nie udało się pobrać danych z serwera"

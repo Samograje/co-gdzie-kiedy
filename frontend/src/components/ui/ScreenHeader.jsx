@@ -1,13 +1,28 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Button, StyleSheet, Text, View} from 'react-native';
+import {mainColor} from "../../constValues";
 
 const ScreenHeader = (props) => {
-  const {title} = props;
+  const {
+    title,
+    gActions,
+  } = props;
 
   return (
     <View style={styles.card}>
       <Text style={styles.text}>{title}</Text>
+      {gActions.map((action, idx) => (
+          <View style={styles.buttonContainer} key={idx}>
+            <Button
+                disabled={action.disabled}
+                title={action.label}
+                onPress={action.onClick}
+                color={mainColor}
+            />
+          </View>
+      ))}
     </View>
+
   );
 };
 
