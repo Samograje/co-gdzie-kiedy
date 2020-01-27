@@ -98,6 +98,12 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'center',
+    backgroundColor: '#f4f4f4',
+    width: '35%',
+    alignSelf: 'center',
+    marginTop: '1%',
+    borderRadius: 10,
+    border: 'solid',
   },
   contentWide: {
     width: 400,
