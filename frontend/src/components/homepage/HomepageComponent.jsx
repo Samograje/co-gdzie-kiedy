@@ -20,6 +20,7 @@ const HomepageComponent = (props) => {
     goToHardware,
     goToSoftware,
     handleLayout,
+      onFetchData,
   } = props;
 
   const layoutStyle = isWide ? styles.wide : styles.small;
@@ -58,8 +59,9 @@ const HomepageComponent = (props) => {
         )}
         {error && (
           <ErrorElement
-            message="Nie udało się pobrać danych z serwera"
-            type="error"
+              message="Nie udało się pobrać danych z serwera"
+              OnFetchData={onFetchData}
+              type="error"
           />
         )}
         {!loading && !error && (
