@@ -112,13 +112,6 @@ class SoftwareDetailsContainer extends Component {
         availableKeys={this.state.availableKeys}
         duration={this.state.duration}
         loading={this.state.loading}
-        validationEmptyStatus={this.state.name === '' || this.state.key === '' ||
-                          this.state.availableKeys === '' || this.state.duration === ''}
-        validationAvailableKeysIsNumberStatus={isNaN(this.state.availableKeys)}
-        validationAvailableKeysIsBiggerThan0NumberStatus={this.state.availableKeys === '' ? true : Number.parseInt(this.state.availableKeys) > 0}
-        validationDurationIsNumberStatus={this.state.duration === 'Licencja utraciła ważność' ? false : isNaN(this.state.duration)}
-        validationDurationIsBiggerThan0NumberStatus={(this.state.duration === '' || this.state.duration === 'Licencja utraciła ważność') ? true : Number.parseInt(this.state.duration) > 0}
-        validationDisableDuration={this.state.duration === 'Licencja utraciła ważność'}
       />
     );
   }

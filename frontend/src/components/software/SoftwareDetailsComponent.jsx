@@ -49,10 +49,6 @@ const SoftwareDetailsComponent = (props) => {
           </CgkLabelAndValidation>
           <CgkLabelAndValidation
             label="* Ilość dostępnych kluczy:"
-            errors={[
-              props.validationAvailableKeysIsNumberStatus ? "Wartość musi być liczbą" : "",
-              !props.validationAvailableKeysIsBiggerThan0NumberStatus ? "Wartość musi być liczbą większą od 0" : ""
-            ]}
           >
             <CgkTextInput
               placeholder="Wprowadź ilość dostępnych kluczy"
@@ -62,10 +58,6 @@ const SoftwareDetailsComponent = (props) => {
           </CgkLabelAndValidation>
           <CgkLabelAndValidation
             label="* Czas trwania (w miesiącach):"
-            errors={[
-              props.validationDurationIsNumberStatus ? "Wartość musi być liczbą" : "",
-              !props.validationDurationIsBiggerThan0NumberStatus ? "Wartość musi być liczbą większą od 0" : ""
-            ]}
           >
             <CgkTextInput
               placeholder="Wprowadź okres trwania licencji, w miesiącach "
@@ -78,14 +70,6 @@ const SoftwareDetailsComponent = (props) => {
       )}
 
         <CgkFormFooter
-          isSubmitDisabled={
-            props.validationEmptyStatus ||
-            props.validationAvailableKeysIsNumberStatus ||
-            !props.validationAvailableKeysIsBiggerThan0NumberStatus ||
-            props.validationDurationIsNumberStatus ||
-            !props.validationDurationIsBiggerThan0NumberStatus ||
-            props.validationDisableDuration
-          }
           onSubmit={props.onSubmit}
           onReject={props.onReject}
         />
