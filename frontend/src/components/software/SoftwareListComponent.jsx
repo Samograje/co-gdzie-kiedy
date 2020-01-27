@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Button,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import {Button, Platform, ScrollView, StyleSheet, View,} from 'react-native';
 import ErrorElement from '../ui/ErrorElement';
 import DecisionDialog from '../ui/dialogs/DecisionDialog';
 import ResponsiveTable from '../ui/responsivetable/ResponsiveTable';
@@ -93,9 +87,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   groupActions: {
-    flex: 1,
+    /*flex: 1,
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexWrap: 'wrap',*/
+    alignSelf: 'stretch',
   },
   buttonContainer: {
     margin: 5,
