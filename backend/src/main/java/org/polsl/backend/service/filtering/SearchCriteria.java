@@ -1,15 +1,14 @@
-package org.polsl.backend.filtering;
+package org.polsl.backend.service.filtering;
 
 public class SearchCriteria {
   private String key; //field name, for example name, key, ...
   private String operation; //=, >, <
   private Object value; //value for key(field name)
 
-  public SearchCriteria(String key, String operation, Object value){
+  public SearchCriteria(String key, String operation, Object value) {
     this.key = key;
     this.operation = operation;
     this.value = value;
-
   }
 
   public String getKey() {
