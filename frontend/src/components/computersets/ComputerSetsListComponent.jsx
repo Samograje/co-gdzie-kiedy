@@ -26,6 +26,12 @@ const ComputerSetsListComponent = (props) => {
 
   return (
     <ScrollView>
+      {error && (
+          <ErrorElement
+              message="Nie udało się pobrać danych z serwera"
+              type="error"
+          />
+      )}
       <View style={styles.container}>
         {Platform.OS === 'web' && (
           <ScreenHeader title="Lista zestawów komputerowych"/>
@@ -44,13 +50,7 @@ const ComputerSetsListComponent = (props) => {
             ))}
           </View>
         )}
-        {error && (
-          <ErrorElement
-            message="Nie udało się pobrać danych z serwera"
-            type="error"
-          />
-        )}
-        {!error && (
+        {(
           <ResponsiveTable
             items={items}
             totalElements={totalElements}
