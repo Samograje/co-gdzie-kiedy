@@ -165,21 +165,29 @@ class SoftwareListContainer extends Component {
 
     const itemActions = [
       {
-        label: 'Edytuj',
-        icon: require('./../../images/ic_action_edit.png'),
+          label: 'Kopiuj',
+          icon: require('./../../images/ic_action_content_copy.png'),
         onClick: (itemData) => this.props.push('SoftwareDetails', {
           mode: 'edit',
           id: itemData.id,
         }),
       },
       {
-        label: 'Usuń',
-        icon: require('./../../images/ic_action_delete.png'),
-        onClick: (itemData) => this.setState({
-          dialogOpened: true,
-          itemToDeleteId: itemData.id,
-        }),
+          label: 'Edytuj',
+          icon: require('./../../images/ic_action_edit.png'),
+          onClick: (itemData) => this.props.push('SoftwareDetails', {
+              mode: 'edit',
+              id: itemData.id,
+          }),
       },
+        {
+            label: 'Usuń',
+            icon: require('./../../images/ic_action_delete.png'),
+            onClick: (itemData) => this.setState({
+                dialogOpened: true,
+                itemToDeleteId: itemData.id,
+            }),
+        },
       {
         label: 'Historia zestawów komputerowych',
         icon: require('./../../images/ic_action_devices.png'),
