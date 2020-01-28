@@ -1,9 +1,16 @@
 import React from 'react';
-import {Button, ScrollView, StyleSheet, View} from 'react-native';
+import {
+  Button,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import ResponsiveTable from '../ui/responsivetable/ResponsiveTable';
 import ErrorElement from '../ui/ErrorElement';
 import {mainColor} from '../../constValues';
 import DecisionDialog from "../ui/dialogs/DecisionDialog";
+import ScreenHeader from '../ui/ScreenHeader';
 
 const ComputerSetsListComponent = (props) => {
 
@@ -37,6 +44,11 @@ const ComputerSetsListComponent = (props) => {
           <View style={styles.container}
                 pointerEvents={isDialogOpened ? 'none' : null}
           >
+    <ScrollView>
+      <View style={styles.container}>
+        {Platform.OS === 'web' && (
+          <ScreenHeader title="Lista zestawów komputerowych"/>
+        )}
         {groupActions && (
           <View style={styles.groupActions}>
             {groupActions.map((action, idx) => (

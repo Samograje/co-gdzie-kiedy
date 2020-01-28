@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import SoftwareDetailsComponent from './SoftwareDetailsComponent';
 import moment from "moment";
 import request from "../../APIClient";
+import {Dimensions} from "react-native";
 
 class SoftwareDetailsContainer extends Component {
   constructor(props) {
@@ -94,7 +95,7 @@ class SoftwareDetailsContainer extends Component {
   setDuration = (value) => this.setState({duration: value});;
 
   render() {
-
+    const isWide = Dimensions.get('window').width > 450;
     return (
       <SoftwareDetailsComponent
         setText={this.setText}
@@ -104,6 +105,7 @@ class SoftwareDetailsContainer extends Component {
         setKey={this.setKey}
         setAvailableKeys={this.setAvailableKeys}
         setDuration={this.setDuration}
+        isWide={isWide}
         mode={this.props.mode}
         name={this.state.name}
         keY={this.state.key}

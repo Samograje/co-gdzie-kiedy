@@ -133,7 +133,6 @@ class AffiliationsListContainer extends Component {
   };
 
   render() {
-
     const columns = [
       {
         name: 'firstName',
@@ -177,7 +176,6 @@ class AffiliationsListContainer extends Component {
           itemToDeleteId: itemData.id,
         }),
       },
-      // TODO: akcje wyświetlania historii powiązań
     ];
 
     const groupActions = [

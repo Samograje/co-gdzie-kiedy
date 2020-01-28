@@ -6,28 +6,32 @@ const AutoComplete = (props) => {
   const {
     value, // id opcji wybranej w pickerze
     updateValue, // funkcja aktualizująca wartość po wyborze z pickera
+    disabled, // bool informujący o tym, czy autocomplete ma być niedostępny
     options, // opcje do pickera - tablica obiektów o kluczach id, name
     updateOptions, // funkcja aktualizująca opcje na podstawie tekstu z pola tekstowego
   } = props;
 
-  if (!options || !options.length) {
-    return (
-      <Text>Brak opcji do wyboru</Text>
-    );
-  }
+  const noItems = !options || options.length === 0;
 
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.textInput}
         placeholder="Wyszukaj"
+        editable={!disabled}
         onChangeText={updateOptions}
       />
-      <PickerWithItems
-        value={value}
-        updateValue={updateValue}
-        options={options}
-      />
+      {!noItems && (
+        <PickerWithItems
+          value={value}
+          editable={!disabled}
+          updateValue={updateValue}
+          options={options}
+        />
+      )}
+      {noItems && (
+        <Text>Brak opcji do wyboru</Text>
+      )}
     </View>
   );
 };

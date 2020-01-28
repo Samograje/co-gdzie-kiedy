@@ -6,6 +6,7 @@ import java.util.Set;
 
 public class AffiliationListOutputDTO {
   private Long id;
+  private Boolean deleted;
 
   @ExportColumn("Imię")
   private String firstName;
@@ -28,6 +29,14 @@ public class AffiliationListOutputDTO {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public Boolean getDeleted() {
+    return deleted;
+  }
+
+  public void setDeleted(Boolean deleted) {
+    this.deleted = deleted;
   }
 
   public String getFirstName() {

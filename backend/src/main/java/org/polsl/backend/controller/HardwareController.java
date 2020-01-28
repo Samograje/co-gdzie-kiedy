@@ -5,11 +5,12 @@ import org.polsl.backend.dto.PaginatedResult;
 import org.polsl.backend.dto.hardware.HardwareDTO;
 import org.polsl.backend.dto.hardware.HardwareListOutputDTO;
 import org.polsl.backend.entity.Hardware;
-import org.polsl.backend.filtering.Search;
 import org.polsl.backend.service.HardwareService;
 import org.polsl.backend.service.export.ExportService;
+import org.polsl.backend.specification.HardwareSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+
+import static org.polsl.backend.service.filtering.SearchService.getSpecification;
 
 /**
  * Kontroler odpowiedzialny za zarządzanie hardware'm.
@@ -42,12 +45,19 @@ public class HardwareController {
   /**
    * Endpoint obsługujący uzyskiwanie listy wszystkich nieusuniętych hardware'ów
    *
-   * @return lista hardware'u
+   * @param searchQuery kryteria wyszukiwania
+   * @param searchType  typ wyszukiwania
+   * @param withHistory informacja o tym, czy należy wyświetlić również usunięte rekordy
+   * @return lista hardware'ów
    */
   @GetMapping
-  public ResponseEntity<?> getHardwareList(@RequestParam(value="search", required=false) String search) {
-    Search<Hardware> filtering = new Search<>(new Hardware(), search);
-    return ResponseEntity.ok(hardwareService.getHardwareList(filtering.searchInitialization()));
+  public ResponseEntity<?> getHardwareList(
+      @RequestParam(value = "search", required = false) String searchQuery,
+      @RequestParam(value = "search-type", required = false) String searchType,
+      @RequestParam(name = "with-history", required = false, defaultValue = "false") boolean withHistory
+  ) {
+    Specification<Hardware> specification = getSpecification(searchQuery, searchType, HardwareSpecification.class);
+    return ResponseEntity.ok(hardwareService.getHardwareList(specification, withHistory));
   }
 
   /**
@@ -89,13 +99,12 @@ public class HardwareController {
    * @return plik pdf z listą rekordów
    */
   @GetMapping("/export")
-  public ResponseEntity<?> printListToPdf(@RequestParam(value = "search", required = false) String search) {
-    Search<Hardware> filtering = new Search<>(new Hardware(), search);
-    PaginatedResult<HardwareListOutputDTO> data = hardwareService.getHardwareList(filtering.searchInitialization());
+  public ResponseEntity<?> printListToPdf() {
+    PaginatedResult<HardwareListOutputDTO> data = hardwareService.getHardwareList(null, false);
     InputStreamResource inputStreamResource = exportService.export("Sprzęty", data.getItems());
     return ResponseEntity.ok()
-      .contentType(MediaType.APPLICATION_PDF)
-      .body(inputStreamResource);
+        .contentType(MediaType.APPLICATION_PDF)
+        .body(inputStreamResource);
   }
 
   /**

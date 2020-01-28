@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Dimensions} from 'react-native';
 import HardwareDetailsComponent from './HardwareDetailsComponent';
 import request from "../../APIClient";
 
@@ -17,7 +18,8 @@ class HardwareDetailsContainer extends Component {
       dataSourceAffiliations: {"items": []},
       dataSourceComputerSets: {"items": []},
       dataSourceDictionary: [],
-      isInvalid: true
+      isInvalid: true,
+      isSubmitting: false,
     };
   }
 
@@ -38,40 +40,37 @@ class HardwareDetailsContainer extends Component {
   fetchDataAffiliations = (query) => {
     const options = {
       filters: {
-        name: query,
+        firstName: query,
+        lastName: query,
+        location: query,
       },
+      searchType: 'OR',
     };
 
     request('/api/affiliations', options)
-        .then((response) => response.json())
-        .then((response) => {
-          if (!this._isMounted) {
-            return;
-          }
-          response.items = response.items.map((item) => ({
-            id: item.id,
-            name: `
-            ${item.firstName}
-            ${item.firstName && item.lastName && ' '}
-            ${item.lastName}
-            ${item.location && (item.firstName || item.lastName) && ' - '}
-            ${item.location}
-            `
-          }));
-          this.setState({
-            loadingAffiliations: false,
-            dataSourceAffiliations: response
-          });
-        })
-        .catch(() => {
-          if (!this._isMounted) {
-            return;
-          }
-          this.setState({
-            loadingAffiliations: false,
-            error: true,
-          });
-        })
+      .then((response) => response.json())
+      .then((response) => {
+        if (!this._isMounted) {
+          return;
+        }
+        response.items = response.items.map((item) => ({
+          id: item.id,
+          name: `${item.firstName}${item.firstName && item.lastName && ' '}${item.lastName}${item.location && (item.firstName || item.lastName) && ' - '}${item.location}`,
+        }));
+        this.setState({
+          loadingAffiliations: false,
+          dataSourceAffiliations: response
+        });
+      })
+      .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.setState({
+          loadingAffiliations: false,
+          error: true,
+        });
+      })
   };
 
   fetchDataComputerSets = (query) => {
@@ -82,54 +81,57 @@ class HardwareDetailsContainer extends Component {
     };
 
     request('/api/computer-sets', options)
-        .then((response) => response.json())
-        .then((response) => {
-          if (!this._isMounted) {
-            return;
-          }
-          this.setState({
-            loadingComputerSets: false,
-            dataSourceComputerSets: response
-          });
-        })
-        .catch(() => {
-          if (!this._isMounted) {
-            return;
-          }
-          this.setState({
-            loadingComputerSets: false,
-            error: true,
-          });
-        })
+      .then((response) => response.json())
+      .then((response) => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.setState({
+          loadingComputerSets: false,
+          dataSourceComputerSets: response
+        });
+      })
+      .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.setState({
+          loadingComputerSets: false,
+          error: true,
+        });
+      })
   };
 
   fetchDataHardwareDictionary = () => {
     request('/api/hardware-dictionaries')
-        .then((response) => response.json())
-        .then((response) => {
-          if (!this._isMounted) {
-            return;
-          }
-          this.setState({
-            loadingDictionary: false,
-            dataSourceDictionary: response.map((item) => ({
-              id: item.id,
-              name: item.value,
-            }))
-          });
-        })
-        .catch(() => {
-          if (!this._isMounted) {
-            return;
-          }
-          this.setState({
-            loadingDictionary: false,
-            error: true,
-          });
-        })
+      .then((response) => response.json())
+      .then((response) => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.setState({
+          loadingDictionary: false,
+          dataSourceDictionary: response.map((item) => ({
+            id: item.id,
+            name: item.value,
+          }))
+        });
+      })
+      .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.setState({
+          loadingDictionary: false,
+          error: true,
+        });
+      })
   };
 
   addOrEditCallCall = (method, path) => {
+    this.setState({
+      isSubmitting: true,
+    });
     request(path, {
       method: method,
       body: JSON.stringify({
@@ -143,35 +145,44 @@ class HardwareDetailsContainer extends Component {
         'Access-Control-Allow-Origin': '*',
       }
     }).then((response) => response.json())
-        .then((responseJson) => {
-          if (!this._isMounted) {
-            return;
-          }
-          console.log(responseJson);
-          return responseJson;
-        })
-        .catch((error) => {
-          if (!this._isMounted) {
-            return;
-          }
-          console.error(error);
-        });
-  };
-
-  getDataForEditCall() {
-    request(`/api/hardware/${this.props.id}`)
-        .then(response => response.json())
-        .then(responseJson => {
+      .then((response) => {
+        if (response.success) {
+          this.props.goBack();
+        } else {
           if (!this._isMounted) {
             return;
           }
           this.setState({
-            name: responseJson.name,
-            dictionaryID: responseJson.dictionaryId,
-            affiliationID: responseJson.affiliationId,
-            computerSetID: responseJson.computerSetId
-          })
+            error: true,
+            isSubmitting: false,
+          });
+        }
+      })
+      .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.setState({
+          error: true,
+          isSubmitting: false,
+        });
+      });
+  };
+
+  getDataForEditCall() {
+    request(`/api/hardware/${this.props.id}`)
+      .then(response => response.json())
+      .then(responseJson => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.setState({
+          name: responseJson.name,
+          dictionaryID: responseJson.dictionaryId,
+          affiliationID: responseJson.affiliationId,
+          computerSetID: responseJson.computerSetId
         })
+      })
   };
 
   onSubmit = () => {
@@ -187,29 +198,32 @@ class HardwareDetailsContainer extends Component {
   setComputerSetID = (value) => this.setState({computerSetID: value});
 
   render() {
+    const isWide = Dimensions.get('window').width > 450;
+
     return (
-        <HardwareDetailsComponent
-            onSubmit={this.onSubmit}
-            onReject={this.onReject}
-            setName={this.setName}
-            setDictionaryID={this.setDictionaryID}
-            setAffiliationID={this.setAffiliationID}
-            setComputerSetID={this.setComputerSetID}
-            mode={this.props.mode}
-            name={this.state.name}
-            loadingDictionary={this.state.loadingDictionary}
-            loadingAffiliations={this.state.loadingAffiliations}
-            loadingComputerSets={this.state.loadingComputerSets}
-            dictionaryID={this.state.dictionaryID}
-            affiliationID={this.state.affiliationID}
-            computerSetID={this.state.computerSetID}
-            dataSourceAffiliations={this.state.dataSourceAffiliations}
-            dataSourceComputerSets={this.state.dataSourceComputerSets}
-            dataSourceDictionary={this.state.dataSourceDictionary}
-            isInvalid={this.state.name === '' || this.state.dictionaryID === '' || this.state.affiliationID === ''}
-            updateAffiliations={this.fetchDataAffiliations}
-            updateComputerSets={this.fetchDataComputerSets}
-        />
+      <HardwareDetailsComponent
+        onSubmit={this.onSubmit}
+        onReject={this.onReject}
+        setName={this.setName}
+        setDictionaryID={this.setDictionaryID}
+        setAffiliationID={this.setAffiliationID}
+        setComputerSetID={this.setComputerSetID}
+        mode={this.props.mode}
+        name={this.state.name}
+        dictionaryID={this.state.dictionaryID}
+        affiliationID={this.state.affiliationID}
+        computerSetID={this.state.computerSetID}
+        dataSourceAffiliations={this.state.dataSourceAffiliations}
+        dataSourceComputerSets={this.state.dataSourceComputerSets}
+        dataSourceDictionary={this.state.dataSourceDictionary}
+        isInvalid={this.state.name === '' || this.state.dictionaryID === '' || this.state.affiliationID === ''}
+        isSubmitting={this.state.isSubmitting}
+        isLoading={this.state.loadingDictionary || this.state.loadingAffiliations || this.state.loadingComputerSets}
+        error={this.state.error}
+        isWide={isWide}
+        updateAffiliations={this.fetchDataAffiliations}
+        updateComputerSets={this.fetchDataComputerSets}
+      />
     );
   }
 }

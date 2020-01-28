@@ -62,20 +62,20 @@ public class ComputerSetService {
     this.softwareRepository = softwareRepository;
   }
 
-  public PaginatedResult<ComputerSetListOutputDTO> getAllComputerSets(Specification<ComputerSet> specification) {
+  public PaginatedResult<ComputerSetListOutputDTO> getAllComputerSets(Specification<ComputerSet> specification,
+                                                                      boolean withDeleted) {
+    final Specification<ComputerSet> resultSpecification = withDeleted
+      ? specification
+      : ((Specification<ComputerSet>) (root, query, criteriaBuilder) -> criteriaBuilder.isNull(root.get("validTo")))
+      .and(specification);
 
-    Iterable<ComputerSet> computerSets;
-
-    Specification<ComputerSet> validTo = (
-            (Specification<ComputerSet>) (root, query, criteriaBuilder) ->
-                    criteriaBuilder.isNull(root.get("validTo"))
-    ).and(specification);
-    computerSets = computerSetRepository.findAll(validTo);
+    Iterable<ComputerSet> computerSets = computerSetRepository.findAll(resultSpecification);
 
     List<ComputerSetListOutputDTO> dtos = new ArrayList<>();
     for (ComputerSet computerSet : computerSets) {
       ComputerSetListOutputDTO dto = new ComputerSetListOutputDTO();
       dto.setId(computerSet.getId());
+      dto.setDeleted(computerSet.getValidTo() != null);
       dto.setName(computerSet.getName());
       dto.setComputerSetInventoryNumber(computerSet.getInventoryNumber());
       dto.setAffiliationName(getValidAffiliationName(computerSet));

@@ -5,6 +5,7 @@ const PickerWithItems = (props) => {
   const {
     value, // id opcji wybranej w pickerze
     updateValue, // funkcja aktualizująca wartość po wyborze z pickera
+    editable, // bool informujący czy picker ma być edytowalny
     options, // opcje do pickera - tablica obiektów o kluczach id, name
   } = props;
 
@@ -17,6 +18,7 @@ const PickerWithItems = (props) => {
   return (
     <Picker
       style={styles.picker}
+      enabled={editable}
       onValueChange={(value) => updateValue(value !== 'Brak' ? parseInt(value) : null)}
       selectedValue={value}
       mode="dropdown"

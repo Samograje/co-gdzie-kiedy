@@ -5,11 +5,12 @@ import org.polsl.backend.dto.PaginatedResult;
 import org.polsl.backend.dto.computerset.ComputerSetDTO;
 import org.polsl.backend.dto.computerset.ComputerSetListOutputDTO;
 import org.polsl.backend.entity.ComputerSet;
-import org.polsl.backend.filtering.Search;
 import org.polsl.backend.service.ComputerSetService;
 import org.polsl.backend.service.export.ExportService;
+import org.polsl.backend.specification.ComputerSetSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+
+import static org.polsl.backend.service.filtering.SearchService.getSpecification;
 
 /**
  * Kontroler odpowiedzialny za zarządzanie zestawami komputerowymi.
@@ -42,12 +45,19 @@ public class ComputerSetController {
   /**
    * Endpoint obsługujący uzyskiwanie listy zestawów komputerowych.
    *
+   * @param searchQuery kryteria wyszukiwania
+   * @param searchType  typ wyszukiwania
+   * @param withHistory informacja o tym, czy należy wyświetlić również usunięte rekordy
    * @return lista zestawów komputerowych
    */
   @GetMapping
-  public ResponseEntity<?> getAllComputerSets(@RequestParam(value = "search", required = false) String search) {
-    Search<ComputerSet> filtering = new Search<>(new ComputerSet(), search);
-    return ResponseEntity.ok(computerSetService.getAllComputerSets(filtering.searchInitialization()));
+  public ResponseEntity<?> getAllComputerSets(
+      @RequestParam(value = "search", required = false) String searchQuery,
+      @RequestParam(value = "search-type", required = false) String searchType,
+      @RequestParam(name = "with-history", required = false, defaultValue = "false") boolean withHistory
+  ) {
+    Specification<ComputerSet> specification = getSpecification(searchQuery, searchType, ComputerSetSpecification.class);
+    return ResponseEntity.ok(computerSetService.getAllComputerSets(specification, withHistory));
   }
 
   /**
@@ -56,13 +66,12 @@ public class ComputerSetController {
    * @return plik pdf z listą rekordów
    */
   @GetMapping("/export")
-  public ResponseEntity<?> printListToPdf(@RequestParam(value = "search", required = false) String search) {
-    Search<ComputerSet> filtering = new Search<>(new ComputerSet(), search);
-    PaginatedResult<ComputerSetListOutputDTO> data = computerSetService.getAllComputerSets(filtering.searchInitialization());
+  public ResponseEntity<?> printListToPdf() {
+    PaginatedResult<ComputerSetListOutputDTO> data = computerSetService.getAllComputerSets(null, false);
     InputStreamResource inputStreamResource = exportService.export("Zestawy komputerowe", data.getItems());
     return ResponseEntity.ok()
-      .contentType(MediaType.APPLICATION_PDF)
-      .body(inputStreamResource);
+        .contentType(MediaType.APPLICATION_PDF)
+        .body(inputStreamResource);
   }
 
   /**

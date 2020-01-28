@@ -5,11 +5,12 @@ import org.polsl.backend.dto.PaginatedResult;
 import org.polsl.backend.dto.affiliation.AffiliationDTO;
 import org.polsl.backend.dto.affiliation.AffiliationListOutputDTO;
 import org.polsl.backend.entity.Affiliation;
-import org.polsl.backend.filtering.Search;
 import org.polsl.backend.service.AffiliationService;
 import org.polsl.backend.service.export.ExportService;
+import org.polsl.backend.specification.AffiliationSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+
+import static org.polsl.backend.service.filtering.SearchService.getSpecification;
 
 /**
  * Kontroler odpowiedzialny za zarządzanie przynależnościami.
@@ -42,12 +45,19 @@ public class AffiliationController {
   /**
    * Endpoint obsługujący uzyskiwanie listy przynależności.
    *
+   * @param searchQuery kryteria wyszukiwania
+   * @param searchType  typ wyszukiwania
+   * @param withHistory informacja o tym, czy należy wyświetlić również usunięte rekordy
    * @return lista przynależności
    */
   @GetMapping
-  public ResponseEntity<?> getAffiliations(@RequestParam(value = "search", required = false) String search) {
-    Search<Affiliation> filtering = new Search<>(new Affiliation(), search);
-    return ResponseEntity.ok(affiliationService.getAffiliations(filtering.searchInitialization()));
+  public ResponseEntity<?> getAffiliations(
+      @RequestParam(value = "search", required = false) String searchQuery,
+      @RequestParam(value = "search-type", required = false) String searchType,
+      @RequestParam(name = "with-history", required = false, defaultValue = "false") boolean withHistory
+  ) {
+    Specification<Affiliation> specification = getSpecification(searchQuery, searchType, AffiliationSpecification.class);
+    return ResponseEntity.ok(affiliationService.getAffiliations(specification, withHistory));
   }
 
   /**
@@ -62,18 +72,17 @@ public class AffiliationController {
   }
 
   /**
-   * Endpoint obsługujący uzyskiwanie pliku Pdf z listą przynależności.
+   * Endpoint obsługujący uzyskiwanie pliku PDF z listą przynależności.
    *
-   * @return plik pdf z listą rekordów
+   * @return plik PDF z listą rekordów
    */
   @GetMapping("/export")
-  public ResponseEntity<?> printListToPdf(@RequestParam(value = "search", required = false) String search) {
-    Search<Affiliation> filtering = new Search<>(new Affiliation(), search);
-    PaginatedResult<AffiliationListOutputDTO> data = affiliationService.getAffiliations(filtering.searchInitialization());
+  public ResponseEntity<?> printListToPdf() {
+    PaginatedResult<AffiliationListOutputDTO> data = affiliationService.getAffiliations(null, false);
     InputStreamResource inputStreamResource = exportService.export("Osoby i miejsca", data.getItems());
     return ResponseEntity.ok()
-      .contentType(MediaType.APPLICATION_PDF)
-      .body(inputStreamResource);
+        .contentType(MediaType.APPLICATION_PDF)
+        .body(inputStreamResource);
   }
 
   /**

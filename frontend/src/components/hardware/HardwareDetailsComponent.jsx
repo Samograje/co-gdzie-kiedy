@@ -12,8 +12,10 @@ import CgkFormHeader from '../ui/form/CgkFormHeader';
 import CgkLabelAndValidation from '../ui/form/CgkLabelAndValidation';
 import CgkTextInput from '../ui/form/CgkTextInput';
 import PickerWithItems from '../ui/form/PickerWithItems';
+import ErrorElement from '../ui/ErrorElement';
 
 const HardwareDetailsComponent = (props) => {
+
   let modeInfo;
   if (props.mode === 'edit')
     modeInfo = "edycji";
@@ -21,76 +23,92 @@ const HardwareDetailsComponent = (props) => {
     modeInfo = "dodawania nowego";
 
   return (
-      <ScrollView>
-        <View style={styles.addForm}>
-          <CgkFormHeader text={`Formularz ${modeInfo} sprzętu.`}/>
-          <Text>Pola z * są obowiązkowe.</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={props.isWide ? styles.contentWide : styles.contentMobile}>
+        <CgkFormHeader text={`Formularz ${modeInfo} sprzętu.`}/>
+        <Text>Pola z * są obowiązkowe.</Text>
 
-          {(props.loadingAffiliations || props.loadingDictionary || props.loadingComputerSets) && (
-              <View style={styles.indicator}>
-                <CgkActivityIndicator/>
-              </View>
-          )}
+        {props.isLoading && (
+          <CgkActivityIndicator/>
+        )}
 
-          {!(props.loadingAffiliations || props.loadingDictionary || props.loadingComputerSets) && (
-              <>
+        {!props.isLoading && (
+          <View style={styles.main}>
 
-                <CgkLabelAndValidation label="* Nazwa sprzętu:">
-                  <CgkTextInput
-                    placeholder="Wprowadź nazwę sprzętu"
-                    text={props.name}
-                    onChangeText={(name) => props.setName(name)}
-                  />
-                </CgkLabelAndValidation>
+            <CgkLabelAndValidation label="* Nazwa sprzętu:">
+              <CgkTextInput
+                placeholder="Wprowadź nazwę sprzętu"
+                text={props.name}
+                disabled={props.isSubmitting}
+                onChangeText={(name) => props.setName(name)}
+              />
+            </CgkLabelAndValidation>
 
-                <CgkLabelAndValidation label="* Typ:">
-                  <PickerWithItems
-                    value={props.dictionaryID}
-                    updateValue={props.setDictionaryID}
-                    options={props.dataSourceDictionary}
-                  />
-                </CgkLabelAndValidation>
+            <CgkLabelAndValidation label="* Typ:">
+              <PickerWithItems
+                value={props.dictionaryID}
+                editable={!props.isSubmitting}
+                updateValue={props.setDictionaryID}
+                options={props.dataSourceDictionary}
+              />
+            </CgkLabelAndValidation>
 
-                <CgkLabelAndValidation label="* Przynależność:">
-                  <AutoComplete
-                    value={props.affiliationID}
-                    updateValue={props.setAffiliationID}
-                    options={props.dataSourceAffiliations.items}
-                    updateOptions={props.updateAffiliations}
-                  />
-                </CgkLabelAndValidation>
+            <CgkLabelAndValidation label="* Przynależność:">
+              <AutoComplete
+                value={props.affiliationID}
+                disabled={props.isSubmitting}
+                updateValue={props.setAffiliationID}
+                options={props.dataSourceAffiliations.items}
+                updateOptions={props.updateAffiliations}
+              />
+            </CgkLabelAndValidation>
 
-                <CgkLabelAndValidation label="W zestawie komputerowym:">
-                  <AutoComplete
-                    value={props.computerSetID}
-                    updateValue={props.setComputerSetID}
-                    options={props.dataSourceComputerSets.items}
-                    updateOptions={props.updateComputerSets}
-                  />
-                </CgkLabelAndValidation>
-              </>
-          )}
-
-          <CgkFormFooter
-            isSubmitDisabled={props.isInvalid}
-            onSubmit={props.onSubmit}
-            onReject={props.onReject}
+            <CgkLabelAndValidation label="W zestawie komputerowym:">
+              <AutoComplete
+                value={props.computerSetID}
+                disabled={props.isSubmitting}
+                updateValue={props.setComputerSetID}
+                options={props.dataSourceComputerSets.items}
+                updateOptions={props.updateComputerSets}
+              />
+            </CgkLabelAndValidation>
+          </View>
+        )}
+        {props.error && (
+          <ErrorElement
+            message="Nie udało się pobrać danych z serwera"
+            type="error"
           />
-        </View>
-      </ScrollView>
+        )}
+        <CgkFormFooter
+          isSubmitDisabled={props.isInvalid || props.isSubmitting || props.isLoading}
+          isRejectDisabled={props.isSubmitting}
+          onSubmit={props.onSubmit}
+          onReject={props.onReject}
+        />
+        {props.isSubmitting && (
+          <CgkActivityIndicator/>
+        )}
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  addForm: {
-    alignSelf: 'center',
-    padding: 15,
-    width: '75%',
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
-  indicator: {
+  contentWide: {
+    width: 400,
+    margin: 10,
+  },
+  contentMobile: {
     flex: 1,
-    paddingTop: 20,
-    paddingBottom: 20,
+    margin: 10,
+  },
+  main: {
+    marginBottom: 15,
   },
 });
 

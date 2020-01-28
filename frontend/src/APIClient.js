@@ -18,28 +18,44 @@ const request = (url, options) => {
     return fetch(finalUrl);
   }
 
-  const {filters, ...otherOptions} = options;
+  const {filters, searchType, ...otherOptions} = options;
 
   // dodanie parametrów do urlu
-  if (filters) {
-    finalUrl = prepareUrl(finalUrl, {filters});
-  }
+  finalUrl = prepareUrl(finalUrl, {filters, searchType});
 
   return fetch(finalUrl, otherOptions);
 };
 
 // dodaje parametry do urlu
-const prepareUrl = (url, {filters}) => {
+const prepareUrl = (url, {filters, searchType}) => {
   let finalUrl = `${url}`;
-  if (filters && Object.values(filters).filter((filter) => filter).length > 0) {
-    finalUrl =`${url}?search=`;
+
+  let filtersEnabled = false;
+  if (filters) {
+    filtersEnabled = Object.values(filters).filter((filter) => filter).length > 0;
   }
-  Object.keys(filters).forEach((key) => {
-    const value = filters[key];
-    if (value) {
-      finalUrl = `${finalUrl}${key}:${value},`;
+
+  if (filtersEnabled) {
+    finalUrl = `${finalUrl}?`;
+  }
+
+  // dodanie parametru z filtrami
+  if (filters && filtersEnabled) {
+    finalUrl =`${finalUrl}search=`;
+    Object.keys(filters).forEach((key) => {
+      const value = filters[key];
+      if (value) {
+        finalUrl = `${finalUrl}${key}:${value},`;
+      }
+    });
+    finalUrl = finalUrl.substring(0, finalUrl.length - 1);
+
+    // dodanie parametru z typem wyszukiwania
+    if (searchType) {
+      finalUrl = `${finalUrl}&search-type=${searchType}`
     }
-  });
+  }
+
   return finalUrl;
 };
 

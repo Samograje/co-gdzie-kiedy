@@ -6,6 +6,7 @@ import java.util.Set;
 
 public class SoftwareListOutputDTO {
   private Long id;
+  private Boolean deleted;
 
   @ExportColumn("Nazwa")
   private String name;
@@ -25,31 +26,65 @@ public class SoftwareListOutputDTO {
   @ExportColumn("Numery inwentarzowe powiązanych zestawów komputerowych")
   private Set<String> computerSetInventoryNumbers;
 
-  public String getName() { return name; }
+  public Long getId() {
+    return id;
+  }
 
-  public void setName(String name) { this.name = name; }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-  public Long getId() { return id; }
+  public Boolean getDeleted() {
+    return deleted;
+  }
 
-  public void setId(Long id) { this.id = id; }
+  public void setDeleted(Boolean deleted) {
+    this.deleted = deleted;
+  }
 
-  public String getInventoryNumber() { return inventoryNumber; }
+  public String getName() {
+    return name;
+  }
 
-  public void setInventoryNumber(String inventoryNumber) { this.inventoryNumber = inventoryNumber; }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-  public String getKey() { return key; }
+  public String getInventoryNumber() {
+    return inventoryNumber;
+  }
 
-  public void setKey(String key) { this.key = key; }
+  public void setInventoryNumber(String inventoryNumber) {
+    this.inventoryNumber = inventoryNumber;
+  }
 
-  public Long getAvailableKeys() { return availableKeys; }
+  public String getKey() {
+    return key;
+  }
 
-  public void setAvailableKeys(Long availableKeys) { this.availableKeys = availableKeys; }
+  public void setKey(String key) {
+    this.key = key;
+  }
 
-  public Long getDuration() { return duration; }
+  public Long getAvailableKeys() {
+    return availableKeys;
+  }
 
-  public void setDuration(Long duration) { this.duration = duration; }
+  public void setAvailableKeys(Long availableKeys) {
+    this.availableKeys = availableKeys;
+  }
 
-  public Set<String> getComputerSetInventoryNumbers() { return computerSetInventoryNumbers; }
+  public Long getDuration() {
+    return duration;
+  }
+
+  public void setDuration(Long duration) {
+    this.duration = duration;
+  }
+
+  public Set<String> getComputerSetInventoryNumbers() {
+    return computerSetInventoryNumbers;
+  }
 
   public void setComputerSetInventoryNumbers(Set<String> computerSetInventoryNumbers) {
     this.computerSetInventoryNumbers = computerSetInventoryNumbers;
