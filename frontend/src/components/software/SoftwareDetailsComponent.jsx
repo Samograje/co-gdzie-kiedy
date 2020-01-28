@@ -25,7 +25,7 @@ const SoftwareDetailsComponent = (props) => {
     <ScrollView>
       <View style={props.isWide ? styles.contentWide : styles.contentMobile}>
         <CgkFormHeader text={`Formularz ${mode} oprogramowania.`}/>
-      {(props.loading) && (
+      {(props.loading || props.loadingComputerSets) && (
           <CgkActivityIndicator/>
       )}
       {!(props.loading || props.loadingComputerSets) && (
