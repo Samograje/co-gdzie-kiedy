@@ -167,14 +167,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'left',
   },
-  buttons: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
-  },
+  buttons: {},
   buttonContainer: {
-    flex: 1,
-    margin: 5,
+    margin: 1,
   },
   text: {
     fontSize: 16,
