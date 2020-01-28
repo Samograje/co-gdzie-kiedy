@@ -22,7 +22,7 @@ const ComputerSetDetailsComponent = (props) => {
     modeInfo = "dodawania nowego";
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView>
       <View style={isWide ? styles.contentWide : styles.contentMobile}>
           <CgkFormHeader text={`Formularz ${modeInfo} zestawu komputerowego.`}/>
           <Text>Pola z * są obowiązkowe.</Text>
@@ -90,11 +90,8 @@ const ComputerSetDetailsComponent = (props) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
   contentWide: {
+    alignSelf: 'center',
     width: 400,
     margin: 10,
   },
