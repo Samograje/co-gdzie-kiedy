@@ -85,7 +85,7 @@ const ComputerSetDetailsComponent = (props) => {
         />
 
         {isGrowlVisible && (
-          <SuccessElement text="Zapisano osobę / miejsce"/>
+          <SuccessElement text="Zapisano zestaw komputerowy"/>
         )}
         {isSubmitting && (
           <CgkActivityIndicator/>

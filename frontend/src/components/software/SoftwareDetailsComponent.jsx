@@ -91,7 +91,7 @@ const SoftwareDetailsComponent = (props) => {
           onReject={props.onReject}
         />
         {props.isGrowlVisible && (
-          <SuccessElement text="Zapisano sprzęt"/>
+          <SuccessElement text="Zapisano oprogramowanie"/>
         )}
       </View>
     </ScrollView>
