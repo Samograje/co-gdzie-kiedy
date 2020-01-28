@@ -178,15 +178,12 @@ class ComputerSetDetailsContainer extends Component {
         if (!this._isMounted) {
           return;
         }
-        console.log(responseJson);
         this.setState({
           name: responseJson.name,
           affiliationID: responseJson.affiliationId,
           hardwareIDs: responseJson.hardwareIds,
           softwareIDs: responseJson.softwareIds,
-        })
-        console.log(this.state.hardwareIDs);
-        console.log(this.state.softwareIDs);
+        });
       })
   };
 
@@ -202,20 +199,6 @@ class ComputerSetDetailsContainer extends Component {
   setHardwareIDs = (values) => this.setState({hardwareIDs: values});
   setSoftwareIDs = (values) => this.setState({SoftwareIDs: values});
 
-  onAddValue = (chosenId) => {
-    if (!chosenId) {
-      return;
-    }
-    if (this.state.chosenIds.includes(chosenId)) {
-      return;
-    }
-    const prevIds = [...this.state.chosenIds];
-    prevIds.push(chosenId);
-    this.setState({
-      chosenIds: prevIds,
-    });
-  };
-
   onAddHardwareValues = (selectedId) => {
     if (!selectedId) {
       return;
@@ -228,7 +211,7 @@ class ComputerSetDetailsContainer extends Component {
     this.setState({
       hardwareIDs: prevIds,
     });
-  }
+  };
 
   onRemoveHardwareValues = (selectedId) => {
     const index = this.state.hardwareIDs.findIndex((id) => id === selectedId);
@@ -251,7 +234,7 @@ class ComputerSetDetailsContainer extends Component {
     this.setState({
       softwareIDs: prevIds,
     });
-  }
+  };
 
   onRemoveSoftwareValues = (selectedId) => {
     const index = this.state.softwareIDs.findIndex((id) => id === selectedId);
