@@ -9,6 +9,12 @@ import CgkTextInput from '../ui/form/CgkTextInput';
 import MultiSelect from "../ui/form/MultiSelect";
 
 const ComputerSetDetailsComponent = (props) => {
+
+  const {
+    isLoading,
+    isWide,
+  } = props;
+
   let modeInfo;
   if (props.mode === 'edit')
     modeInfo = "edycji";
@@ -16,11 +22,14 @@ const ComputerSetDetailsComponent = (props) => {
     modeInfo = "dodawania nowego";
 
   return (
-      <ScrollView>
-        <View style={styles.addForm}>
+    <ScrollView>
+      <View style={isWide ? styles.contentWide : styles.contentMobile}>
           <CgkFormHeader text={`Formularz ${modeInfo} zestawu komputerowego.`}/>
           <Text>Pola z * są obowiązkowe.</Text>
-
+          {!isLoading}
+          {isLoading && (
+            <CgkActivityIndicator/>
+          )}
           {(props.loadingAffiliations || props.loadingHardware || props.loadingSoftware) && (
               <View style={styles.indicator}>
                 <CgkActivityIndicator/>
@@ -81,10 +90,14 @@ const ComputerSetDetailsComponent = (props) => {
 };
 
 const styles = StyleSheet.create({
-  addForm: {
+  contentWide: {
     alignSelf: 'center',
-    padding: 15,
-    width: '75%',
+    width: 400,
+    margin: 10,
+  },
+  contentMobile: {
+    flex: 1,
+    margin: 10,
   },
   indicator: {
     flex: 1,
