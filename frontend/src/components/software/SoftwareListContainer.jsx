@@ -222,10 +222,17 @@ class SoftwareListContainer extends Component {
       },
     ];
     if (Platform.OS === 'web') {
-      groupActions.push({
-        label: 'Eksportuj do pdf',
-        onClick: this.getPdf,
-      });
+      const newColumns = [
+        {
+          label: 'Eksportuj do pdf',
+          onClick: this.getPdf,
+        },
+        {
+          label: 'Wróć',
+          onClick: () => this.props.goBack(),
+        },
+      ];
+      groupActions.push(...newColumns);
     }
     if (Platform.OS === 'android') {
       groupActions.push({
