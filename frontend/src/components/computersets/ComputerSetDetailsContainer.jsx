@@ -3,292 +3,296 @@ import ComputerSetDetailsComponent from './ComputerSetDetailsComponent';
 import request from "../../APIClient";
 
 class ComputerSetDetailsContainer extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            name: '',
-            affiliationID: '',
-            hardwareIDs: [],
-            softwareIDs: [],
-            loadingAffiliations: true,
-            loadingHardware: true,
-            loadingSoftware: true,
-            error: false,
-            dataSourceAffiliations: {"items": []},
-            dataSourceHardware: {"items": []},
-            dataSourceSoftware: [],
-            isInvalid: true,
-        };
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: '',
+      affiliationID: '',
+      hardwareIDs: [],
+      softwareIDs: [],
+      loadingAffiliations: true,
+      loadingHardware: true,
+      loadingSoftware: true,
+      error: false,
+      dataSourceAffiliations: {"items": []},
+      dataSourceHardware: {"items": []},
+      dataSourceSoftware: [],
+      isInvalid: true,
+      isSubmitting: false,
+    };
+  }
 
-    componentDidMount() {
-        this._isMounted = true;
-        this.fetchDataAffiliations();
-        this.fetchDataHardware();
-        this.fetchDataSoftware();
+  componentDidMount() {
+    this._isMounted = true;
+    this.fetchDataAffiliations();
+    this.fetchDataHardware();
+    this.fetchDataSoftware();
 
-        if (this.props.mode === 'edit')
-            this.getDataForEditCall();
-    }
+    if (this.props.mode === 'edit')
+      this.getDataForEditCall();
+  }
 
-    componentWillUnmount() {
-        this._isMounted = false;
-    }
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
-    //TODO: filtrowanie
-    fetchDataAffiliations = (query) => {
-        const options = {
-            filters: {
-                name: query,
-            },
-        };
-        console.log(query);
-        request('/api/affiliations', options)
-            .then((response) => response.json())
-            .then((response) => {
-                if (!this._isMounted) {
-                    return;
-                }
-                console.log(response);
-                response.items = response.items.map((item) => ({
-                    id: item.id,
-                    name: `
-            ${item.firstName}
-            ${item.firstName && item.lastName && ' '}
-            ${item.lastName}
-            ${item.location && (item.firstName || item.lastName) && ' - '}
-            ${item.location}
-            `
-                }));
-                this.setState({
-                    loadingAffiliations: false,
-                    dataSourceAffiliations: response
-                });
-            })
-            .catch(() => {
-                if (!this._isMounted) {
-                    return;
-                }
-                this.setState({
-                    loadingAffiliations: false,
-                    error: true,
-                });
-            })
+  fetchDataAffiliations = (query) => {
+    const options = {
+      filters: {
+        firstName: query,
+        lastName: query,
+        location: query,
+      },
+      searchType: 'OR',
     };
 
-    fetchDataHardware = (query) => {
-        const options = {
-            filters: {
-                name: query,
-            },
-        };
-
-        request('/api/hardware', options)
-            .then((response) => response.json())
-            .then((response) => {
-                if (!this._isMounted) {
-                    return;
-                }
-                this.setState({
-                    loadingHardware: false,
-                    dataSourceHardware: response
-                });
-            })
-            .catch(() => {
-                if (!this._isMounted) {
-                    return;
-                }
-                this.setState({
-                    loadingHardware: false,
-                    error: true,
-                });
-            })
-    };
-
-    fetchDataSoftware = (query) => {
-        const options = {
-            filters: {
-                name: query,
-            },
-        };
-
-        request('/api/software', options)
-            .then((response) => response.json())
-            .then((response) => {
-                if (!this._isMounted) {
-                    return;
-                }
-                this.setState({
-                    loadingSoftware: false,
-                    dataSourceSoftware: response
-                });
-            })
-            .catch(() => {
-                if (!this._isMounted) {
-                    return;
-                }
-                this.setState({
-                    loadingSoftware: false,
-                    error: true,
-                });
-            })
-    };
-
-    addOrEditCallCall = (method, path) => {
-        request(path, {
-            method: method,
-            body: JSON.stringify({
-                "name": this.state.name,
-                "affiliationId": this.state.affiliationID,
-                "hardwareIds": this.state.hardwareIDs,
-                "softwareIds": this.state.softwareIDs,
-            }),
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-            }
-        }).then((response) => response.json())
-            .then((responseJson) => {
-                if (!this._isMounted) {
-                    return;
-                }
-                console.log(responseJson);
-                // console.log(this.state.name);
-                // console.log(this.state.affiliationID);
-                // console.log(this.state.softwareIDs);
-                // console.log(this.state.hardwareIDs);
-                return responseJson;
-            })
-            .catch((error) => {
-                if (!this._isMounted) {
-                    return;
-                }
-                console.error(error);
-            });
-    };
-
-    getDataForEditCall() {
-        console.log("DUPA");
-        request(`/api/computer-sets/${this.props.id}`)
-            .then(response => response.json())
-            .then(responseJson => {
-                if (!this._isMounted) {
-                    return;
-                }
-                console.log(responseJson);
-                this.setState({
-                    name: responseJson.name,
-                    affiliationIds: responseJson.affiliationID,
-                    hardwareIds: responseJson.hardwareIDs,
-                    softwareIds: responseJson.softwareIDs,
-                })
-            })
-    };
-
-    onSubmit = () => {
-        if (this.props.mode === 'create')
-            this.addOrEditCallCall('POST', '/api/computer-sets');
-        else if (this.props.mode === 'edit')
-            this.addOrEditCallCall('PUT', `/api/computer-sets/${this.props.id}`);
-    };
-    onReject = () => this.props.goBack();
-    setName = (value) => this.setState({name: value});
-    setAffiliationID = (value) => this.setState({affiliationID: value});
-    setHardwareIDs = (values) => this.setState({hardwareIDs: values});
-    setSoftwareIDs = (values) => this.setState({SoftwareIDs: values});
-
-    onAddValue = (chosenId) => {
-        if (!chosenId) {
-            return;
-    }
-        if (this.state.chosenIds.includes(chosenId)) {
-            return;
-    }
-        const prevIds = [...this.state.chosenIds];
-        prevIds.push(chosenId);
-        this.setState({
-            chosenIds: prevIds,
-        });
-    };
-
-    onAddHardwareValues = (selectedId) => {
-        if (!selectedId) {
-            return;
+    request('/api/affiliations', options)
+      .then((response) => response.json())
+      .then((response) => {
+        if (!this._isMounted) {
+          return;
         }
-        if (this.state.hardwareIDs.includes(selectedId)) {
-            return;
+        response.items = response.items.map((item) => ({
+          id: item.id,
+          name: `${item.firstName}${item.firstName && item.lastName && ' '}${item.lastName}${item.location && (item.firstName || item.lastName) && ' - '}${item.location}`,
+        }));
+        this.setState({
+          loadingAffiliations: false,
+          dataSourceAffiliations: response
+        });
+      })
+      .catch(() => {
+        if (!this._isMounted) {
+          return;
         }
-        const prevIds = [...this.state.hardwareIDs];
-        prevIds.push(selectedId);
         this.setState({
-            hardwareIDs: prevIds,
+          loadingAffiliations: false,
+          error: true,
         });
-    }
+      })
+  };
 
-    onRemoveHardwareValues = (selectedId) => {
-        const index = this.state.hardwareIDs.findIndex((id) => id === selectedId);
-        const prevIds = [...this.state.hardwareIDs];
-        prevIds.splice(index, 1);
-        this.setState({
-            hardwareIDs: prevIds,
-        });
+  fetchDataHardware = (query) => {
+    const options = {
+      filters: {
+        name: query,
+      },
     };
 
-
-    onAddSoftwareValues = (selectedId) => {
-        if (!selectedId) {
-            return;
+    request('/api/hardware', options)
+      .then((response) => response.json())
+      .then((response) => {
+        if (!this._isMounted) {
+          return;
         }
-        if (this.state.softwareIDs.includes(selectedId)) {
-            return;
+        this.setState({
+          loadingHardware: false,
+          dataSourceHardware: response
+        });
+      })
+      .catch(() => {
+        if (!this._isMounted) {
+          return;
         }
-        const prevIds = [...this.state.softwareIDs];
-        prevIds.push(selectedId);
         this.setState({
-            softwareIDs: prevIds,
+          loadingHardware: false,
+          error: true,
         });
-    }
+      })
+  };
 
-    onRemoveSoftwareValues = (selectedId) => {
-        const index = this.state.softwareIDs.findIndex((id) => id === selectedId);
-        const prevIds = [...this.state.softwareIDs];
-        prevIds.splice(index, 1);
-        this.setState({
-            softwareIDs: prevIds,
-        });
+  fetchDataSoftware = (query) => {
+    const options = {
+      filters: {
+        name: query,
+      },
     };
 
-    render() {
-        return (
-            <ComputerSetDetailsComponent
-                onSubmit={this.onSubmit}
-                onReject={this.onReject}
-                setName={this.setName}
-                setAffiliationID={this.setAffiliationID}
-                setHardwareIDs={this.setHardwareIDs}
-                setSoftwareIDs={this.setSoftwareIDs}
-                mode={this.props.mode}
-                name={this.state.name}
-                loadingAffiliations={this.state.loadingAffiliations}
-                loadingHardware={this.state.loadingHardware}
-                loadingSoftware={this.state.loadingSoftware}
-                affiliationID={this.state.affiliationID}
-                hardwareIDs={this.state.hardwareIDs}
-                softwareIDs={this.state.softwareIDs}
-                dataSourceAffiliations={this.state.dataSourceAffiliations}
-                dataSourceHardware={this.state.dataSourceHardware}
-                dataSourceSoftware={this.state.dataSourceSoftware}
-                isInvalid={this.state.name === '' || this.state.affiliationID === ''}
-                updateAffiliations={this.fetchDataAffiliations}
-                updateHardware={this.fetchDataHardware}
-                updateSoftware={this.fetchDataSoftware}
-                onAddHardwareValues={this.onAddHardwareValues}
-                onRemoveHardwareValues={this.onRemoveHardwareValues}
-                onAddSoftwareValues={this.onAddSoftwareValues}
-                onRemoveSoftwareValues={this.onRemoveSoftwareValues}
-            />
-        );
+    request('/api/software', options)
+      .then((response) => response.json())
+      .then((response) => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.setState({
+          loadingSoftware: false,
+          dataSourceSoftware: response
+        });
+      })
+      .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.setState({
+          loadingSoftware: false,
+          error: true,
+        });
+      })
+  };
+
+  addOrEditCallCall = (method, path) => {
+    this.setState({
+      isSubmitting: true,
+    });
+    request(path, {
+      method: method,
+      body: JSON.stringify({
+        "name": this.state.name,
+        "affiliationId": this.state.affiliationID,
+        "hardwareIds": this.state.hardwareIDs,
+        "softwareIds": this.state.softwareIDs,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      }
+    }).then((response) => response.json())
+      .then((response) => {
+        if (response.success) {
+          this.props.goBack();
+        } else {
+          if (!this._isMounted) {
+            return;
+          }
+          this.setState({
+            error: true,
+            isSubmitting: false,
+          });
+        }
+      })
+      .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.setState({
+          error: true,
+          isSubmitting: false,
+        });
+      });
+  };
+
+  getDataForEditCall() {
+    request(`/api/computer-sets/${this.props.id}`)
+      .then(response => response.json())
+      .then(responseJson => {
+        if (!this._isMounted) {
+          return;
+        }
+        console.log(responseJson);
+        this.setState({
+          name: responseJson.name,
+          affiliationID: responseJson.affiliationId,
+          hardwareIDs: responseJson.hardwareIds,
+          softwareIDs: responseJson.softwareIds,
+        })
+        console.log(this.state.hardwareIDs);
+        console.log(this.state.softwareIDs);
+      })
+  };
+
+  onSubmit = () => {
+    if (this.props.mode === 'create')
+      this.addOrEditCallCall('POST', '/api/computer-sets');
+    else if (this.props.mode === 'edit')
+      this.addOrEditCallCall('PUT', `/api/computer-sets/${this.props.id}`);
+  };
+  onReject = () => this.props.goBack();
+  setName = (value) => this.setState({name: value});
+  setAffiliationID = (value) => this.setState({affiliationID: value});
+  setHardwareIDs = (values) => this.setState({hardwareIDs: values});
+  setSoftwareIDs = (values) => this.setState({SoftwareIDs: values});
+
+  onAddValue = (chosenId) => {
+    if (!chosenId) {
+      return;
     }
+    if (this.state.chosenIds.includes(chosenId)) {
+      return;
+    }
+    const prevIds = [...this.state.chosenIds];
+    prevIds.push(chosenId);
+    this.setState({
+      chosenIds: prevIds,
+    });
+  };
+
+  onAddHardwareValues = (selectedId) => {
+    if (!selectedId) {
+      return;
+    }
+    if (this.state.hardwareIDs.includes(selectedId)) {
+      return;
+    }
+    const prevIds = [...this.state.hardwareIDs];
+    prevIds.push(selectedId);
+    this.setState({
+      hardwareIDs: prevIds,
+    });
+  }
+
+  onRemoveHardwareValues = (selectedId) => {
+    const index = this.state.hardwareIDs.findIndex((id) => id === selectedId);
+    const prevIds = [...this.state.hardwareIDs];
+    prevIds.splice(index, 1);
+    this.setState({
+      hardwareIDs: prevIds,
+    });
+  };
+
+  onAddSoftwareValues = (selectedId) => {
+    if (!selectedId) {
+      return;
+    }
+    if (this.state.softwareIDs.includes(selectedId)) {
+      return;
+    }
+    const prevIds = [...this.state.softwareIDs];
+    prevIds.push(selectedId);
+    this.setState({
+      softwareIDs: prevIds,
+    });
+  }
+
+  onRemoveSoftwareValues = (selectedId) => {
+    const index = this.state.softwareIDs.findIndex((id) => id === selectedId);
+    const prevIds = [...this.state.softwareIDs];
+    prevIds.splice(index, 1);
+    this.setState({
+      softwareIDs: prevIds,
+    });
+  };
+
+  render() {
+    return (
+      <ComputerSetDetailsComponent
+        onSubmit={this.onSubmit}
+        onReject={this.onReject}
+        setName={this.setName}
+        setAffiliationID={this.setAffiliationID}
+        setHardwareIDs={this.setHardwareIDs}
+        setSoftwareIDs={this.setSoftwareIDs}
+        mode={this.props.mode}
+        name={this.state.name}
+        loadingAffiliations={this.state.loadingAffiliations}
+        loadingHardware={this.state.loadingHardware}
+        loadingSoftware={this.state.loadingSoftware}
+        affiliationID={this.state.affiliationID}
+        hardwareIDs={this.state.hardwareIDs}
+        softwareIDs={this.state.softwareIDs}
+        dataSourceAffiliations={this.state.dataSourceAffiliations}
+        dataSourceHardware={this.state.dataSourceHardware}
+        dataSourceSoftware={this.state.dataSourceSoftware}
+        isInvalid={this.state.name === '' || this.state.affiliationID === ''}
+        updateAffiliations={this.fetchDataAffiliations}
+        updateHardware={this.fetchDataHardware}
+        updateSoftware={this.fetchDataSoftware}
+        onAddHardwareValues={this.onAddHardwareValues}
+        onRemoveHardwareValues={this.onRemoveHardwareValues}
+        onAddSoftwareValues={this.onAddSoftwareValues}
+        onRemoveSoftwareValues={this.onRemoveSoftwareValues}
+      />
+    );
+  }
 }
 
 export default ComputerSetDetailsContainer;
