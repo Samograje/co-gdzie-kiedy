@@ -15,6 +15,7 @@ class SoftwareListContainer extends Component {
       filters: {},
       dialogOpened: false,
       itemToDeleteId: null,
+      withHistory: false,
     };
   }
 
@@ -83,6 +84,7 @@ class SoftwareListContainer extends Component {
     });
     this.fetchData({
       filters: newFilters,
+      withHistory: this.state.withHistory,
     });
   };
 
@@ -162,6 +164,12 @@ class SoftwareListContainer extends Component {
         label: 'Powiązane zestawy komputerowe',
       },
     ];
+    if (this.state.withHistory) {
+      columns.push({
+        name: 'deleted',
+        label: 'Usunięty',
+      })
+    }
 
     const itemActions = [
       {
@@ -171,6 +179,7 @@ class SoftwareListContainer extends Component {
           mode: 'edit',
           id: itemData.id,
         }),
+        disabledIfDeleted: true,
       },
       {
         label: 'Usuń',
@@ -179,6 +188,7 @@ class SoftwareListContainer extends Component {
           dialogOpened: true,
           itemToDeleteId: itemData.id,
         }),
+        disabledIfDeleted: true,
       },
       {
         label: 'Historia zestawów komputerowych',
@@ -196,6 +206,19 @@ class SoftwareListContainer extends Component {
         onClick: () => this.props.push('SoftwareDetails', {
           mode: 'create',
         }),
+      },
+      {
+        label: this.state.withHistory ? 'Nie wyświetlaj archiwum' : 'Wyświetl archiwum',
+        onClick: () => {
+          const withHistory = !this.state.withHistory;
+          this.fetchData({
+            filters: this.state.filters,
+            withHistory,
+          });
+          this.setState({
+            withHistory,
+          });
+        },
       },
     ];
     if (Platform.OS === 'web') {

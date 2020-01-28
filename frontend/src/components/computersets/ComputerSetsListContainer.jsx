@@ -15,6 +15,7 @@ class ComputerSetsListContainer extends Component {
       filters: {},
       itemToDeleteId: null,
       dialogOpened: false,
+      withHistory: false,
     };
   }
 
@@ -74,6 +75,7 @@ class ComputerSetsListContainer extends Component {
     });
     this.fetchData({
       filters: newFilters,
+      withHistory: this.state.withHistory,
     });
   };
 
@@ -150,6 +152,12 @@ class ComputerSetsListContainer extends Component {
         label: 'Numery inwentarzowe sprzętów',
       },
     ];
+    if (this.state.withHistory) {
+      columns.push({
+        name: 'deleted',
+        label: 'Usunięty',
+      })
+    }
 
     const itemActions = [
       {
@@ -159,6 +167,7 @@ class ComputerSetsListContainer extends Component {
           mode: 'edit',
           id: itemData.id,
         }),
+        disabledIfDeleted: true,
       },
       {
         label: 'Usuń',
@@ -167,6 +176,7 @@ class ComputerSetsListContainer extends Component {
           dialogOpened: true,
           itemToDeleteId: itemData.id,
         }),
+        disabledIfDeleted: true,
       },
       {
         label: 'Historia osób / miejsc',
@@ -201,6 +211,19 @@ class ComputerSetsListContainer extends Component {
         onClick: () => this.props.push('ComputerSetDetails', {
           mode: 'create',
         }),
+      },
+      {
+        label: this.state.withHistory ? 'Nie wyświetlaj archiwum' : 'Wyświetl archiwum',
+        onClick: () => {
+          const withHistory = !this.state.withHistory;
+          this.fetchData({
+            filters: this.state.filters,
+            withHistory,
+          });
+          this.setState({
+            withHistory,
+          });
+        },
       },
     ];
     if (Platform.OS === 'web') {

@@ -13,12 +13,16 @@ const SuccessElement = (props) => {
 };
 
 const styles = StyleSheet.create({
+
   text: {
     fontSize: 20,
     backgroundColor: mainColor,
     padding: 5,
     borderRadius: 2,
     margin: 2,
+    color: 'white',
+    textAlign: 'center',
+    width: '100%',
   },
 });
 
