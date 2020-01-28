@@ -122,7 +122,9 @@ class AffiliationDetailsContainer extends Component {
       });
   };
 
-  onReject = () => this.props.goBack();
+  onReject = () => this.setState({dialogOpened: true});
+  closeDialog = () => this.setState({dialogOpened: false});
+  confirmDialog = () => this.props.goBack();
 
   render() {
     const isWide = Dimensions.get('window').width > 450;
@@ -149,6 +151,9 @@ class AffiliationDetailsContainer extends Component {
         onSubmit={this.sendData}
         onReject={this.onReject}
         onChange={this.onChange}
+        dialogOpened={this.state.dialogOpened}
+        dialogHandleReject={this.closeDialog}
+        dialogHandleConfirm={this.confirmDialog}
       />
     );
   }

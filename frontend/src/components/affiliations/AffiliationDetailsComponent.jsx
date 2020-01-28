@@ -12,6 +12,7 @@ import CgkLabelAndValidation from '../ui/form/CgkLabelAndValidation';
 import CgkTextInput from '../ui/form/CgkTextInput';
 import ErrorElement from '../ui/ErrorElement';
 import SuccessElement from '../ui/SuccessElement';
+import DecisionDialog from "../ui/dialogs/DecisionDialog";
 
 const AffiliationDetailsComponent = (props) => {
   const {
@@ -26,6 +27,9 @@ const AffiliationDetailsComponent = (props) => {
     onSubmit,
     onReject,
     onChange,
+    dialogOpened,
+    dialogHandleConfirm,
+    dialogHandleReject,
   } = props;
 
   let headerText;
@@ -37,6 +41,17 @@ const AffiliationDetailsComponent = (props) => {
   }
 
   const main = (
+  <>
+    {dialogOpened && (
+      <DecisionDialog
+          headerText="Uwaga!"
+          text="Zmiany nie zostaną zapisane, czy chcesz kontynuować?"
+          onConfirmText="Tak"
+          onConfirm={dialogHandleConfirm}
+          onRejectText="Nie"
+          onReject={dialogHandleReject}
+      />
+    )}
     <View style={styles.main}>
       <Text>Należy wpisać wartość w co najmniej jedno pole tekstowe</Text>
 
@@ -67,6 +82,7 @@ const AffiliationDetailsComponent = (props) => {
         />
       </CgkLabelAndValidation>
     </View>
+  </>
   );
 
   return (
