@@ -13,6 +13,7 @@ import CgkLabelAndValidation from '../ui/form/CgkLabelAndValidation';
 import CgkTextInput from '../ui/form/CgkTextInput';
 import PickerWithItems from '../ui/form/PickerWithItems';
 import ErrorElement from '../ui/ErrorElement';
+import SuccessElement from '../ui/SuccessElement';
 
 const HardwareDetailsComponent = (props) => {
 
@@ -88,6 +89,9 @@ const HardwareDetailsComponent = (props) => {
         />
         {props.isSubmitting && (
           <CgkActivityIndicator/>
+        )}
+        {props.isGrowlVisible && (
+          <SuccessElement text="Zapisano sprzęt"/>
         )}
       </View>
     </ScrollView>

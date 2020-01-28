@@ -15,6 +15,7 @@ class SoftwareDetailsContainer extends Component {
       validationStatus: false,
       loading: false,
       error: false,
+      isGrowlVisible: false,
     };
   }
 
@@ -45,19 +46,35 @@ class SoftwareDetailsContainer extends Component {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       }
-    }).then((response) => response.json())
-      .then((responseJson) => {
+    })
+      .then((response) => response.json())
+      .then((response) => {
         if (!this._isMounted) {
           return;
         }
-        console.log(responseJson);
-        return responseJson;
+        if (response.success) {
+          this.setState({
+            isGrowlVisible: true,
+          });
+          setTimeout(this.props.goBack, 2000);
+        } else {
+          if (!this._isMounted) {
+            return;
+          }
+          this.setState({
+            error: true,
+            isSubmitting: false,
+          });
+        }
       })
-      .catch((error) => {
+      .catch(() => {
         if (!this._isMounted) {
           return;
         }
-        console.error(error);
+        this.setState({
+          error: true,
+          isSubmitting: false,
+        });
       });
   };
 
@@ -112,6 +129,7 @@ class SoftwareDetailsContainer extends Component {
         availableKeys={this.state.availableKeys}
         duration={this.state.duration}
         loading={this.state.loading}
+        isGrowlVisible={this.state.isGrowlVisible}
         validationEmptyStatus={this.state.name === '' || this.state.key === '' ||
                           this.state.availableKeys === '' || this.state.duration === ''}
         validationAvailableKeysIsNumberStatus={isNaN(this.state.availableKeys)}

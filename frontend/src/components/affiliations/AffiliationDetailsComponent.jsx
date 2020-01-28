@@ -11,6 +11,7 @@ import CgkFormHeader from '../ui/form/CgkFormHeader';
 import CgkLabelAndValidation from '../ui/form/CgkLabelAndValidation';
 import CgkTextInput from '../ui/form/CgkTextInput';
 import ErrorElement from '../ui/ErrorElement';
+import SuccessElement from '../ui/SuccessElement';
 
 const AffiliationDetailsComponent = (props) => {
   const {
@@ -20,6 +21,7 @@ const AffiliationDetailsComponent = (props) => {
     validationError,
     isLoading,
     isSubmitting,
+    isGrowlVisible,
     isWide,
     onSubmit,
     onReject,
@@ -87,6 +89,9 @@ const AffiliationDetailsComponent = (props) => {
           onSubmit={onSubmit}
           onReject={onReject}
         />
+        {isGrowlVisible && (
+          <SuccessElement text="Zapisano osobę / miejsce"/>
+        )}
         {isSubmitting && (
           <CgkActivityIndicator/>
         )}
