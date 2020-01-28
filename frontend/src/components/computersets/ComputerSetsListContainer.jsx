@@ -161,6 +161,14 @@ class ComputerSetsListContainer extends Component {
 
     const itemActions = [
       {
+        label: 'Kopiuj',
+        icon: require('./../../images/ic_action_content_copy.png'),
+        onClick: (itemData) => this.props.push('ComputerSetDetails', {
+          mode: 'copy',
+          id: itemData.id,
+        }),
+      },
+      {
         label: 'Edytuj',
         icon: require('./../../images/ic_action_edit.png'),
         onClick: (itemData) => this.props.push('ComputerSetDetails', {

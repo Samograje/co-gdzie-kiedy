@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Button,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import {Button, Platform, ScrollView, StyleSheet, View,} from 'react-native';
 import ResponsiveTable from '../ui/responsivetable/ResponsiveTable';
 import ErrorElement from '../ui/ErrorElement';
 import {mainColor} from '../../constValues';
@@ -88,6 +82,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
+    //alignSelf: 'stretch',
   },
   buttonContainer: {
     margin: 5,

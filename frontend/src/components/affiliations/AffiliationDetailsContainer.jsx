@@ -22,7 +22,7 @@ class AffiliationDetailsContainer extends Component {
 
   componentDidMount() {
     this._isMounted = true;
-    if (this.props.mode === 'edit') {
+    if (this.props.mode === 'edit' || this.props.mode === 'copy') {
       this.loadInitialData();
     }
   }
@@ -77,7 +77,7 @@ class AffiliationDetailsContainer extends Component {
 
     let url;
     let method;
-    if (mode === 'create') {
+    if (mode === 'create' || mode === 'copy') {
       url = '/api/affiliations';
       method = 'POST';
     }

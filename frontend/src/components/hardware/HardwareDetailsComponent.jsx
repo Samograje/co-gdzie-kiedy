@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {ScrollView, StyleSheet, Text, View,} from 'react-native';
 import AutoComplete from '../ui/form/AutoComplete';
 import CgkActivityIndicator from '../ui/CgkActivityIndicator';
 import CgkFormFooter from '../ui/form/CgkFormFooter';
@@ -21,8 +16,8 @@ const HardwareDetailsComponent = (props) => {
   let modeInfo;
   if (props.mode === 'edit')
     modeInfo = "edycji";
-  else if (props.mode === 'create')
-    modeInfo = "dodawania nowego";
+  else if (props.mode === 'create' || props.mode === 'copy')
+    modeInfo = "dodawania";
 
   return (
     <ScrollView>

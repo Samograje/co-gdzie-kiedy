@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {ScrollView, StyleSheet, Text, View,} from 'react-native';
 import CgkActivityIndicator from '../ui/CgkActivityIndicator';
 import CgkFormFooter from '../ui/form/CgkFormFooter';
 import CgkFormHeader from '../ui/form/CgkFormHeader';
@@ -18,7 +13,7 @@ const SoftwareDetailsComponent = (props) => {
   let mode;
   if (props.mode === 'edit')
     mode = "edycji";
-  else if (props.mode === 'create')
+  else if (props.mode === 'create' || props.mode === 'copy')
     mode = "dodawania nowego";
   else
     return "";

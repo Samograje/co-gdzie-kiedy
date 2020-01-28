@@ -25,8 +25,8 @@ const ComputerSetDetailsComponent = (props) => {
   let modeInfo;
   if (props.mode === 'edit')
     modeInfo = "edycji";
-  else if (props.mode === 'create')
-    modeInfo = "dodawania nowego";
+  else if (props.mode === 'create' || props.mode === 'copy')
+    modeInfo = "dodawania";
 
   return (
     <ScrollView>
