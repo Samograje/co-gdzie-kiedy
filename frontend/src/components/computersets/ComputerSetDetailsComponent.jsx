@@ -28,9 +28,6 @@ const ComputerSetDetailsComponent = (props) => {
       <View style={isWide ? styles.contentWide : styles.contentMobile}>
         <CgkFormHeader text={`Formularz ${modeInfo} zestawu komputerowego.`}/>
         <Text>Pola z * są obowiązkowe.</Text>
-        {isGrowlVisible && (
-          <SuccessElement text="Zapisano osobę / miejsce"/>
-        )}
         {isLoading && (
           <CgkActivityIndicator/>
         )}
@@ -88,6 +85,9 @@ const ComputerSetDetailsComponent = (props) => {
           onSubmit={props.onSubmit}
           onReject={props.onReject}
         />
+        {isGrowlVisible && (
+          <SuccessElement text="Zapisano osobę / miejsce"/>
+        )}
       </View>
     </ScrollView>
   );
