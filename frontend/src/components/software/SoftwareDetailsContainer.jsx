@@ -149,7 +149,6 @@ class SoftwareDetailsContainer extends Component {
   setKey = (value) => this.setState( {key: value});
   setAvailableKeys = (value) => this.setState({availableKeys: value});
   setDuration = (value) => this.setState({duration: value});
-  // setComputerSetIds = (values) => this.setState({computerSetIds: values});
   render() {
     const isWide = Dimensions.get('window').width > 450;
     return (
@@ -181,7 +180,6 @@ class SoftwareDetailsContainer extends Component {
         onRemoveComputerSetValues={this.onRemoveComputerSetValues}
         dataSourceComputerSets={this.state.dataSourceComputerSets}
         loadingComputerSets={this.state.loadingComputerSets}
-        // setComputerSetIds={this.setComputerSetIds}
       />
     );
   }
