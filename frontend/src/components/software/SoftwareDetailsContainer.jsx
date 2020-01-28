@@ -25,7 +25,7 @@ class SoftwareDetailsContainer extends Component {
   componentDidMount() {
     this._isMounted = true;
     this.fetchDataComputerSet();
-    if (this.props.mode === 'edit' || this.props.mode === 'copy') {
+    if (this.props.mode === 'edit' || this.props.mode === 'copy')
       this.getDataForEditCall();
   }
 
