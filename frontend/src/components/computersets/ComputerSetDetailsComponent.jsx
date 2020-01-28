@@ -8,6 +8,7 @@ import CgkLabelAndValidation from '../ui/form/CgkLabelAndValidation';
 import CgkTextInput from '../ui/form/CgkTextInput';
 import MultiSelect from '../ui/form/MultiSelect';
 import SuccessElement from '../ui/SuccessElement';
+import DecisionDialog from "../ui/dialogs/DecisionDialog";
 
 const ComputerSetDetailsComponent = (props) => {
 
@@ -16,6 +17,9 @@ const ComputerSetDetailsComponent = (props) => {
     isSubmitting,
     isWide,
     isGrowlVisible,
+    dialogOpened,
+    dialogHandleConfirm,
+    dialogHandleReject,
   } = props;
 
   let modeInfo;
@@ -26,6 +30,16 @@ const ComputerSetDetailsComponent = (props) => {
 
   return (
     <ScrollView>
+        {dialogOpened && (
+            <DecisionDialog
+                headerText="Uwaga!"
+                text="Zmiany nie zostaną zapisane, czy chcesz kontynuować?"
+                onConfirmText="Tak"
+                onConfirm={dialogHandleConfirm}
+                onRejectText="Nie"
+                onReject={dialogHandleReject}
+            />
+        )}
       <View style={isWide ? styles.contentWide : styles.contentMobile}>
         <CgkFormHeader text={`Formularz ${modeInfo} zestawu komputerowego.`}/>
         <Text>Pola z * są obowiązkowe.</Text>

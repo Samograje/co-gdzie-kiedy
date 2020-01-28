@@ -199,7 +199,9 @@ class ComputerSetDetailsContainer extends Component {
     else if (this.props.mode === 'edit')
       this.addOrEditCallCall('PUT', `/api/computer-sets/${this.props.id}`);
   };
-  onReject = () => this.props.goBack();
+  onReject = () => this.setState({dialogOpened: true});
+  closeDialog = () => this.setState({dialogOpened: false});
+  confirmDialog = () => this.props.goBack();
   setName = (value) => this.setState({name: value});
   setAffiliationID = (value) => this.setState({affiliationID: value});
   setHardwareIDs = (values) => this.setState({hardwareIDs: values});
@@ -281,6 +283,9 @@ class ComputerSetDetailsContainer extends Component {
         onAddSoftwareValues={this.onAddSoftwareValues}
         onRemoveSoftwareValues={this.onRemoveSoftwareValues}
         isWide={isWide}
+        dialogOpened={this.state.dialogOpened}
+        dialogHandleReject={this.closeDialog}
+        dialogHandleConfirm={this.confirmDialog}
       />
     );
   }

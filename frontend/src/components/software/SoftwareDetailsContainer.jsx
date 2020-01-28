@@ -161,7 +161,9 @@ class SoftwareDetailsContainer extends Component {
     else if (this.props.mode === 'edit')
       this.addOrEditCallCall('PUT', `/api/software/${this.props.id}`);
   };
-  onReject = () => this.props.goBack();
+  onReject = () => this.setState({dialogOpened: true});
+  closeDialog = () => this.setState({dialogOpened: false});
+  confirmDialog = () => this.props.goBack();
   setName = (value) => {this.setState({name: value});};
   setKey = (value) => this.setState( {key: value});
   setAvailableKeys = (value) => this.setState({availableKeys: value});
@@ -198,6 +200,9 @@ class SoftwareDetailsContainer extends Component {
         onRemoveComputerSetValues={this.onRemoveComputerSetValues}
         dataSourceComputerSets={this.state.dataSourceComputerSets}
         loadingComputerSets={this.state.loadingComputerSets}
+        dialogOpened={this.state.dialogOpened}
+        dialogHandleReject={this.closeDialog}
+        dialogHandleConfirm={this.confirmDialog}
       />
     );
   }
