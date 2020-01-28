@@ -153,6 +153,7 @@ class ComputerSetDetailsContainer extends Component {
         if (response.success) {
           this.setState({
             isGrowlVisible: true,
+            isSubmitting: false,
           });
           setTimeout(this.props.goBack, 2000);
         } else {
@@ -263,6 +264,7 @@ class ComputerSetDetailsContainer extends Component {
         mode={this.props.mode}
         name={this.state.name}
         isLoading={this.state.loadingAffiliations || this.state.loadingHardware || this.state.loadingSoftware}
+        isSubmitting={this.state.isSubmitting}
         affiliationID={this.state.affiliationID}
         hardwareIDs={this.state.hardwareIDs}
         softwareIDs={this.state.softwareIDs}

@@ -13,6 +13,7 @@ const ComputerSetDetailsComponent = (props) => {
 
   const {
     isLoading,
+    isSubmitting,
     isWide,
     isGrowlVisible,
   } = props;
@@ -85,6 +86,9 @@ const ComputerSetDetailsComponent = (props) => {
 
         {isGrowlVisible && (
           <SuccessElement text="Zapisano osobę / miejsce"/>
+        )}
+        {isSubmitting && (
+          <CgkActivityIndicator/>
         )}
       </View>
     </ScrollView>
