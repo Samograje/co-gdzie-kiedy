@@ -36,12 +36,6 @@ const ComputerSetsListComponent = (props) => {
       )}
 
       <ScrollView scrollEnabled={!dialogOpened}>
-        {error && (
-          <ErrorElement
-            message="Nie udało się pobrać danych z serwera"
-            type="error"
-          />
-        )}
         <View
           style={styles.container}
           pointerEvents={dialogOpened ? 'none' : null}
@@ -63,7 +57,12 @@ const ComputerSetsListComponent = (props) => {
               ))}
             </View>
           )}
-
+          {error && (
+            <ErrorElement
+              message="Nie udało się pobrać danych z serwera"
+              type="error"
+            />
+          )}
           <ResponsiveTable
             items={items}
             totalElements={totalElements}

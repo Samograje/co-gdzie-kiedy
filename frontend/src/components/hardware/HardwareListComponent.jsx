@@ -42,12 +42,6 @@ const HardwareListComponent = (props) => {
       )}
 
       <ScrollView scrollEnabled={!dialogOpened}>
-        {error && (
-          <ErrorElement
-            message="Nie udało się pobrać danych z serwera"
-            type="error"
-          />
-        )}
         <View
           style={styles.container}
           pointerEvents={dialogOpened ? 'none' : null}
@@ -68,6 +62,12 @@ const HardwareListComponent = (props) => {
                 </View>
               ))}
             </View>
+          )}
+          {error && (
+            <ErrorElement
+              message="Nie udało się pobrać danych z serwera"
+              type="error"
+            />
           )}
           <ResponsiveTable
             items={items}

@@ -40,12 +40,6 @@ const AffiliationsListComponent = (props) => {
         />
       )}
       <ScrollView scrollEnabled={!isDialogOpened}>
-        {error && (
-            <ErrorElement
-                message="Nie udało się pobrać danych z serwera"
-                type="error"
-            />
-        )}
         <View
           style={styles.container}
           pointerEvents={isDialogOpened ? 'none' : null}
@@ -65,6 +59,12 @@ const AffiliationsListComponent = (props) => {
                 </View>
               ))}
             </View>
+          )}
+          {error && (
+            <ErrorElement
+              message="Nie udało się pobrać danych z serwera"
+              type="error"
+            />
           )}
           <ResponsiveTable
             items={items}
