@@ -79,10 +79,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   groupActions: {
-      /*  flex: 1,
-        flexDirection: 'row',
-        flexWrap: 'wrap',*/
-      alignSelf: 'stretch',
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    //alignSelf: 'stretch',
   },
   buttonContainer: {
     margin: 5,

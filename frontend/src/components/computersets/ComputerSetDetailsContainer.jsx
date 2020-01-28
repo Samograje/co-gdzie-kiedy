@@ -28,7 +28,7 @@ class ComputerSetDetailsContainer extends Component {
     this.fetchDataHardware();
     this.fetchDataSoftware();
 
-    if (this.props.mode === 'edit')
+    if (this.props.mode === 'edit' || this.props.mode === 'copy')
       this.getDataForEditCall();
   }
 
@@ -188,7 +188,7 @@ class ComputerSetDetailsContainer extends Component {
   };
 
   onSubmit = () => {
-    if (this.props.mode === 'create')
+    if (this.props.mode === 'create' || this.props.mode === 'copy')
       this.addOrEditCallCall('POST', '/api/computer-sets');
     else if (this.props.mode === 'edit')
       this.addOrEditCallCall('PUT', `/api/computer-sets/${this.props.id}`);
