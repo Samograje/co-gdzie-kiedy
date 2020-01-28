@@ -19,6 +19,7 @@ class SoftwareDetailsContainer extends Component {
       dataSourceComputerSets: {"items": []},
       loadingComputerSets: true,
       isGrowlVisible: false,
+      isSubmitting: false,
     };
   }
 
@@ -34,6 +35,9 @@ class SoftwareDetailsContainer extends Component {
   }
 
   addOrEditCallCall = (method, path) => {
+    this.setState({
+      isSubmitting: true,
+    });
     let currentDate = new Date();
     let endDate = moment(currentDate).add(this.state.duration, 'month');
     let duration = endDate - currentDate; //to poleci jsonem
@@ -203,6 +207,7 @@ class SoftwareDetailsContainer extends Component {
         dialogOpened={this.state.dialogOpened}
         dialogHandleReject={this.closeDialog}
         dialogHandleConfirm={this.confirmDialog}
+        isSubmitting={this.state.isSubmitting}
       />
     );
   }
