@@ -9,6 +9,11 @@ import CgkTextInput from '../ui/form/CgkTextInput';
 import MultiSelect from "../ui/form/MultiSelect";
 
 const ComputerSetDetailsComponent = (props) => {
+
+  const {
+    isLoading,
+  } = props;
+
   let modeInfo;
   if (props.mode === 'edit')
     modeInfo = "edycji";
@@ -20,7 +25,10 @@ const ComputerSetDetailsComponent = (props) => {
         <View style={styles.addForm}>
           <CgkFormHeader text={`Formularz ${modeInfo} zestawu komputerowego.`}/>
           <Text>Pola z * są obowiązkowe.</Text>
-
+          {!isLoading}
+          {isLoading && (
+            <CgkActivityIndicator/>
+          )}
           {(props.loadingAffiliations || props.loadingHardware || props.loadingSoftware) && (
               <View style={styles.indicator}>
                 <CgkActivityIndicator/>

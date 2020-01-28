@@ -273,9 +273,7 @@ class ComputerSetDetailsContainer extends Component {
         setSoftwareIDs={this.setSoftwareIDs}
         mode={this.props.mode}
         name={this.state.name}
-        loadingAffiliations={this.state.loadingAffiliations}
-        loadingHardware={this.state.loadingHardware}
-        loadingSoftware={this.state.loadingSoftware}
+        isLoading={this.state.loadingAffiliations || this.state.loadingHardware || this.state.loadingSoftware}
         affiliationID={this.state.affiliationID}
         hardwareIDs={this.state.hardwareIDs}
         softwareIDs={this.state.softwareIDs}
