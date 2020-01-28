@@ -6,7 +6,7 @@ import CgkFormFooter from '../ui/form/CgkFormFooter';
 import CgkFormHeader from '../ui/form/CgkFormHeader';
 import CgkLabelAndValidation from '../ui/form/CgkLabelAndValidation';
 import CgkTextInput from '../ui/form/CgkTextInput';
-import MultiSelect from "../ui/form/MultiSelect";
+import MultiSelect from '../ui/form/MultiSelect';
 import SuccessElement from '../ui/SuccessElement';
 
 const ComputerSetDetailsComponent = (props) => {
@@ -28,16 +28,13 @@ const ComputerSetDetailsComponent = (props) => {
       <View style={isWide ? styles.contentWide : styles.contentMobile}>
         <CgkFormHeader text={`Formularz ${modeInfo} zestawu komputerowego.`}/>
         <Text>Pola z * są obowiązkowe.</Text>
+
         {isLoading && (
-          <CgkActivityIndicator/>
-        )}
-        {(props.loadingAffiliations || props.loadingHardware || props.loadingSoftware) && (
           <View style={styles.indicator}>
             <CgkActivityIndicator/>
           </View>
         )}
-
-        {!(props.loadingAffiliations || props.loadingHardware || props.loadingSoftware) && (
+        {!isLoading && (
           <>
 
             <CgkLabelAndValidation label="* Nazwa zestawu komputerowego:">
@@ -85,6 +82,7 @@ const ComputerSetDetailsComponent = (props) => {
           onSubmit={props.onSubmit}
           onReject={props.onReject}
         />
+
         {isGrowlVisible && (
           <SuccessElement text="Zapisano osobę / miejsce"/>
         )}
