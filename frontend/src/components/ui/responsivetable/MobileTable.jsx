@@ -151,6 +151,7 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
+    margin: 2,
   },
   label: {
     flex: 1,
@@ -180,8 +181,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   icon: {
-    height: 30,
-    width: 30,
+    height: 50,
+    width: 50,
   },
   text: {
     fontSize: 16,
