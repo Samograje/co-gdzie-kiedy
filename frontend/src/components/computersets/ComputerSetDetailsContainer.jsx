@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ComputerSetDetailsComponent from './ComputerSetDetailsComponent';
 import request from "../../APIClient";
+import {Dimensions} from "react-native";
 
 class ComputerSetDetailsContainer extends Component {
   constructor(props) {
@@ -263,6 +264,7 @@ class ComputerSetDetailsContainer extends Component {
   };
 
   render() {
+    const isWide = Dimensions.get('window').width > 450;
     return (
       <ComputerSetDetailsComponent
         onSubmit={this.onSubmit}
@@ -288,6 +290,7 @@ class ComputerSetDetailsContainer extends Component {
         onRemoveHardwareValues={this.onRemoveHardwareValues}
         onAddSoftwareValues={this.onAddSoftwareValues}
         onRemoveSoftwareValues={this.onRemoveSoftwareValues}
+        isWide={isWide}
       />
     );
   }
