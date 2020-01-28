@@ -79,7 +79,7 @@ const ComputerSetDetailsComponent = (props) => {
         )}
 
         <CgkFormFooter
-          isSubmitDisabled={props.isInvalid}
+          isSubmitDisabled={props.isLoading || props.isInvalid}
           onSubmit={props.onSubmit}
           onReject={props.onReject}
         />
