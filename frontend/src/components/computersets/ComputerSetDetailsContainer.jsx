@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ComputerSetDetailsComponent from './ComputerSetDetailsComponent';
 import request from "../../APIClient";
+import {Dimensions} from "react-native";
 
 class ComputerSetDetailsContainer extends Component {
   constructor(props) {
@@ -19,6 +20,7 @@ class ComputerSetDetailsContainer extends Component {
       dataSourceSoftware: [],
       isInvalid: true,
       isSubmitting: false,
+      isGrowlVisible: false,
     };
   }
 
@@ -149,7 +151,11 @@ class ComputerSetDetailsContainer extends Component {
     }).then((response) => response.json())
       .then((response) => {
         if (response.success) {
-          this.props.goBack();
+          this.setState({
+            isGrowlVisible: true,
+            isSubmitting: false,
+          });
+          setTimeout(this.props.goBack, 2000);
         } else {
           if (!this._isMounted) {
             return;
@@ -246,6 +252,7 @@ class ComputerSetDetailsContainer extends Component {
   };
 
   render() {
+    const isWide = Dimensions.get('window').width > 450;
     return (
       <ComputerSetDetailsComponent
         onSubmit={this.onSubmit}
@@ -256,9 +263,8 @@ class ComputerSetDetailsContainer extends Component {
         setSoftwareIDs={this.setSoftwareIDs}
         mode={this.props.mode}
         name={this.state.name}
-        loadingAffiliations={this.state.loadingAffiliations}
-        loadingHardware={this.state.loadingHardware}
-        loadingSoftware={this.state.loadingSoftware}
+        isLoading={this.state.loadingAffiliations || this.state.loadingHardware || this.state.loadingSoftware}
+        isSubmitting={this.state.isSubmitting}
         affiliationID={this.state.affiliationID}
         hardwareIDs={this.state.hardwareIDs}
         softwareIDs={this.state.softwareIDs}
@@ -266,6 +272,7 @@ class ComputerSetDetailsContainer extends Component {
         dataSourceHardware={this.state.dataSourceHardware}
         dataSourceSoftware={this.state.dataSourceSoftware}
         isInvalid={this.state.name === '' || this.state.affiliationID === ''}
+        isGrowlVisible={this.state.isGrowlVisible}
         updateAffiliations={this.fetchDataAffiliations}
         updateHardware={this.fetchDataHardware}
         updateSoftware={this.fetchDataSoftware}
@@ -273,6 +280,7 @@ class ComputerSetDetailsContainer extends Component {
         onRemoveHardwareValues={this.onRemoveHardwareValues}
         onAddSoftwareValues={this.onAddSoftwareValues}
         onRemoveSoftwareValues={this.onRemoveSoftwareValues}
+        isWide={isWide}
       />
     );
   }

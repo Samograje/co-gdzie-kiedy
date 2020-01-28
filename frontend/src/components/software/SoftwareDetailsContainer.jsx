@@ -15,14 +15,18 @@ class SoftwareDetailsContainer extends Component {
       validationStatus: false,
       loading: false,
       error: false,
+      computerSetIds: [],
+      dataSourceComputerSets: {"items": []},
+      loadingComputerSets: true,
+      isGrowlVisible: false,
     };
   }
 
   componentDidMount() {
     this._isMounted = true;
+    this.fetchDataComputerSet();
     if (this.props.mode === 'edit' || this.props.mode === 'copy') {
       this.getDataForEditCall();
-    }
   }
 
   componentWillUnmount() {
@@ -33,32 +37,48 @@ class SoftwareDetailsContainer extends Component {
     let currentDate = new Date();
     let endDate = moment(currentDate).add(this.state.duration, 'month');
     let duration = endDate - currentDate; //to poleci jsonem
-
     request(path,{
       method: method,
       body: JSON.stringify({
         "name": this.state.name,
         "key": this.state.key,
         "availableKeys": this.state.availableKeys,
-        "duration": duration
+        "duration": duration,
+        "computerSetIds": this.state.computerSetIds
       }),
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       }
-    }).then((response) => response.json())
-      .then((responseJson) => {
+    })
+      .then((response) => response.json())
+      .then((response) => {
         if (!this._isMounted) {
           return;
         }
-        console.log(responseJson);
-        return responseJson;
+        if (response.success) {
+          this.setState({
+            isGrowlVisible: true,
+          });
+          setTimeout(this.props.goBack, 2000);
+        } else {
+          if (!this._isMounted) {
+            return;
+          }
+          this.setState({
+            error: true,
+            isSubmitting: false,
+          });
+        }
       })
-      .catch((error) => {
+      .catch(() => {
         if (!this._isMounted) {
           return;
         }
-        console.error(error);
+        this.setState({
+          error: true,
+          isSubmitting: false,
+        });
       });
   };
 
@@ -78,9 +98,61 @@ class SoftwareDetailsContainer extends Component {
           key: response.key,
           availableKeys: response.availableKeys,
           duration: response.duration,
+          computerSetIds: response.computerSetIds,
           loading: false,
       });
       })
+  };
+
+  fetchDataComputerSet = (query) => {
+    const options = {
+      filters: {
+        name: query,
+      },
+    };
+    request('/api/computer-sets', options)
+      .then((response) => response.json())
+      .then((response) => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.setState({
+          loadingComputerSets: false,
+          dataSourceComputerSets: response
+        });
+      })
+      .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.setState({
+          loadingComputerSets: false,
+          error: true,
+        });
+      })
+  };
+
+  onAddComputerSetValues = (selectedId) => {
+    if(!selectedId){
+      return;
+    }
+    if(this.state.computerSetIds.includes(selectedId)){
+      return;
+    }
+    const prevIds = [...this.state.computerSetIds];
+    prevIds.push(selectedId);
+    this.setState({
+      computerSetIds: prevIds,
+    });
+  };
+
+  onRemoveComputerSetValues = (selectedId) => {
+    const index = this.state.computerSetIds.findIndex((id) => id === selectedId);
+    const prevIds = [...this.state.computerSetIds];
+    prevIds.splice(index, 1);
+    this.setState({
+      computerSetIds: prevIds,
+    });
   };
 
   onSubmit = () => {
@@ -93,8 +165,7 @@ class SoftwareDetailsContainer extends Component {
   setName = (value) => {this.setState({name: value});};
   setKey = (value) => this.setState( {key: value});
   setAvailableKeys = (value) => this.setState({availableKeys: value});
-  setDuration = (value) => this.setState({duration: value});;
-
+  setDuration = (value) => this.setState({duration: value});
   render() {
     const isWide = Dimensions.get('window').width > 450;
     return (
@@ -113,6 +184,7 @@ class SoftwareDetailsContainer extends Component {
         availableKeys={this.state.availableKeys}
         duration={this.state.duration}
         loading={this.state.loading}
+        isGrowlVisible={this.state.isGrowlVisible}
         validationEmptyStatus={this.state.name === '' || this.state.key === '' ||
                           this.state.availableKeys === '' || this.state.duration === ''}
         validationAvailableKeysIsNumberStatus={isNaN(this.state.availableKeys)}
@@ -120,6 +192,12 @@ class SoftwareDetailsContainer extends Component {
         validationDurationIsNumberStatus={this.state.duration === 'Licencja utraciła ważność' ? false : isNaN(this.state.duration)}
         validationDurationIsBiggerThan0NumberStatus={(this.state.duration === '' || this.state.duration === 'Licencja utraciła ważność') ? true : Number.parseInt(this.state.duration) > 0}
         validationDisableDuration={this.state.duration === 'Licencja utraciła ważność'}
+        computerSetIds={this.state.computerSetIds}
+        updateComputerSets={this.fetchDataComputerSet}
+        onAddComputerSetValues={this.onAddComputerSetValues}
+        onRemoveComputerSetValues={this.onRemoveComputerSetValues}
+        dataSourceComputerSets={this.state.dataSourceComputerSets}
+        loadingComputerSets={this.state.loadingComputerSets}
       />
     );
   }
