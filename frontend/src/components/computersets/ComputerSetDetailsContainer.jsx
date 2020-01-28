@@ -20,6 +20,7 @@ class ComputerSetDetailsContainer extends Component {
       dataSourceSoftware: [],
       isInvalid: true,
       isSubmitting: false,
+      isGrowlVisible: false,
     };
   }
 
@@ -150,7 +151,10 @@ class ComputerSetDetailsContainer extends Component {
     }).then((response) => response.json())
       .then((response) => {
         if (response.success) {
-          this.props.goBack();
+          this.setState({
+            isGrowlVisible: true,
+          });
+          setTimeout(this.props.goBack, 2000);
         } else {
           if (!this._isMounted) {
             return;
@@ -266,6 +270,7 @@ class ComputerSetDetailsContainer extends Component {
         dataSourceHardware={this.state.dataSourceHardware}
         dataSourceSoftware={this.state.dataSourceSoftware}
         isInvalid={this.state.name === '' || this.state.affiliationID === ''}
+        isGrowlVisible={this.state.isGrowlVisible}
         updateAffiliations={this.fetchDataAffiliations}
         updateHardware={this.fetchDataHardware}
         updateSoftware={this.fetchDataSoftware}

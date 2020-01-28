@@ -7,12 +7,14 @@ import CgkFormHeader from '../ui/form/CgkFormHeader';
 import CgkLabelAndValidation from '../ui/form/CgkLabelAndValidation';
 import CgkTextInput from '../ui/form/CgkTextInput';
 import MultiSelect from "../ui/form/MultiSelect";
+import SuccessElement from '../ui/SuccessElement';
 
 const ComputerSetDetailsComponent = (props) => {
 
   const {
     isLoading,
     isWide,
+    isGrowlVisible,
   } = props;
 
   let modeInfo;
@@ -24,68 +26,70 @@ const ComputerSetDetailsComponent = (props) => {
   return (
     <ScrollView>
       <View style={isWide ? styles.contentWide : styles.contentMobile}>
-          <CgkFormHeader text={`Formularz ${modeInfo} zestawu komputerowego.`}/>
-          <Text>Pola z * są obowiązkowe.</Text>
-          {!isLoading}
-          {isLoading && (
+        <CgkFormHeader text={`Formularz ${modeInfo} zestawu komputerowego.`}/>
+        <Text>Pola z * są obowiązkowe.</Text>
+        {isGrowlVisible && (
+          <SuccessElement text="Zapisano osobę / miejsce"/>
+        )}
+        {isLoading && (
+          <CgkActivityIndicator/>
+        )}
+        {(props.loadingAffiliations || props.loadingHardware || props.loadingSoftware) && (
+          <View style={styles.indicator}>
             <CgkActivityIndicator/>
-          )}
-          {(props.loadingAffiliations || props.loadingHardware || props.loadingSoftware) && (
-              <View style={styles.indicator}>
-                <CgkActivityIndicator/>
-              </View>
-          )}
+          </View>
+        )}
 
-          {!(props.loadingAffiliations || props.loadingHardware || props.loadingSoftware) && (
-              <>
+        {!(props.loadingAffiliations || props.loadingHardware || props.loadingSoftware) && (
+          <>
 
-                <CgkLabelAndValidation label="* Nazwa zestawu komputerowego:">
-                  <CgkTextInput
-                      placeholder="Wprowadź nazwę zestawu komputerowego"
-                      text={props.name}
-                      onChangeText={(name) => props.setName(name)}
-                  />
-                </CgkLabelAndValidation>
+            <CgkLabelAndValidation label="* Nazwa zestawu komputerowego:">
+              <CgkTextInput
+                placeholder="Wprowadź nazwę zestawu komputerowego"
+                text={props.name}
+                onChangeText={(name) => props.setName(name)}
+              />
+            </CgkLabelAndValidation>
 
-                <CgkLabelAndValidation label="* Przynależność:">
-                  <AutoComplete
-                      value={props.affiliationID}
-                      updateValue={props.setAffiliationID}
-                      options={props.dataSourceAffiliations.items}
-                      updateOptions={props.updateAffiliations}
-                  />
-                </CgkLabelAndValidation>
+            <CgkLabelAndValidation label="* Przynależność:">
+              <AutoComplete
+                value={props.affiliationID}
+                updateValue={props.setAffiliationID}
+                options={props.dataSourceAffiliations.items}
+                updateOptions={props.updateAffiliations}
+              />
+            </CgkLabelAndValidation>
 
-                <CgkLabelAndValidation label="* Sprzęty:">
-                  <MultiSelect
-                      values={props.hardwareIDs}
-                      onAddValue={props.onAddHardwareValues}
-                      onRemoveValue={props.onRemoveHardwareValues}
-                      options={props.dataSourceHardware.items}
-                      onUpdateOptions={props.updateHardware}
-                  />
-                </CgkLabelAndValidation>
+            <CgkLabelAndValidation label="* Sprzęty:">
+              <MultiSelect
+                values={props.hardwareIDs}
+                onAddValue={props.onAddHardwareValues}
+                onRemoveValue={props.onRemoveHardwareValues}
+                options={props.dataSourceHardware.items}
+                onUpdateOptions={props.updateHardware}
+              />
+            </CgkLabelAndValidation>
 
-                <CgkLabelAndValidation label="* Oprogramowanie:">
-                  <MultiSelect
-                      values={props.softwareIDs}
-                      onAddValue={props.onAddSoftwareValues}
-                      onRemoveValue={props.onRemoveSoftwareValues}
-                      options={props.dataSourceSoftware.items}
-                      onUpdateOptions={props.updateSoftware}
-                  />
-                </CgkLabelAndValidation>
+            <CgkLabelAndValidation label="* Oprogramowanie:">
+              <MultiSelect
+                values={props.softwareIDs}
+                onAddValue={props.onAddSoftwareValues}
+                onRemoveValue={props.onRemoveSoftwareValues}
+                options={props.dataSourceSoftware.items}
+                onUpdateOptions={props.updateSoftware}
+              />
+            </CgkLabelAndValidation>
 
-              </>
-          )}
+          </>
+        )}
 
-          <CgkFormFooter
-              isSubmitDisabled={props.isInvalid}
-              onSubmit={props.onSubmit}
-              onReject={props.onReject}
-          />
-        </View>
-      </ScrollView>
+        <CgkFormFooter
+          isSubmitDisabled={props.isInvalid}
+          onSubmit={props.onSubmit}
+          onReject={props.onReject}
+        />
+      </View>
+    </ScrollView>
   );
 };
 
