@@ -44,6 +44,7 @@ class AffiliationDetailsContainer extends Component {
         this.setState({
           data: response,
           isLoading: false,
+          validationError: this.isDataIncorrect(response),
         });
       })
       .catch(() => {
@@ -57,6 +58,8 @@ class AffiliationDetailsContainer extends Component {
       });
   };
 
+  isDataIncorrect = (data) => !data.firstName && !data.lastName && !data.location;
+
   onChange = (fieldName, value) => {
     const newData = {
       ...this.state.data,
@@ -65,7 +68,7 @@ class AffiliationDetailsContainer extends Component {
 
     this.setState({
       data: newData,
-      validationError: !newData.firstName && !newData.lastName && !newData.location,
+      validationError: this.isDataIncorrect(newData),
     });
   };
 
