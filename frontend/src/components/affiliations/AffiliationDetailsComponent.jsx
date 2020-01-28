@@ -41,17 +41,6 @@ const AffiliationDetailsComponent = (props) => {
   }
 
   const main = (
-  <>
-    {dialogOpened && (
-      <DecisionDialog
-          headerText="Uwaga!"
-          text="Zmiany nie zostaną zapisane, czy chcesz kontynuować?"
-          onConfirmText="Tak"
-          onConfirm={dialogHandleConfirm}
-          onRejectText="Nie"
-          onReject={dialogHandleReject}
-      />
-    )}
     <View style={styles.main}>
       <Text>Należy wpisać wartość w co najmniej jedno pole tekstowe</Text>
 
@@ -82,11 +71,20 @@ const AffiliationDetailsComponent = (props) => {
         />
       </CgkLabelAndValidation>
     </View>
-  </>
   );
 
   return (
     <ScrollView>
+      {dialogOpened && (
+          <DecisionDialog
+              headerText="Uwaga!"
+              text="Zmiany nie zostaną zapisane, czy chcesz kontynuować?"
+              onConfirmText="Tak"
+              onConfirm={dialogHandleConfirm}
+              onRejectText="Nie"
+              onReject={dialogHandleReject}
+          />
+      )}
       <View style={isWide ? styles.contentWide : styles.contentMobile}>
         <CgkFormHeader text={headerText}/>
         {!isLoading && main}

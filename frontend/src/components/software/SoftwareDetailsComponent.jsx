@@ -11,6 +11,7 @@ import CgkFormHeader from '../ui/form/CgkFormHeader';
 import CgkLabelAndValidation from '../ui/form/CgkLabelAndValidation';
 import CgkTextInput from '../ui/form/CgkTextInput';
 import SuccessElement from '../ui/SuccessElement';
+import DecisionDialog from "../ui/dialogs/DecisionDialog";
 
 const SoftwareDetailsComponent = (props) => {
   let mode;
@@ -22,6 +23,16 @@ const SoftwareDetailsComponent = (props) => {
     return "";
   return (
     <ScrollView>
+      {props.dialogOpened && (
+          <DecisionDialog
+              headerText="Uwaga!"
+              text="Zmiany nie zostaną zapisane, czy chcesz kontynuować?"
+              onConfirmText="Tak"
+              onConfirm={props.dialogHandleConfirm}
+              onRejectText="Nie"
+              onReject={props.dialogHandleReject}
+          />
+      )}
       <View style={props.isWide ? styles.contentWide : styles.contentMobile}>
         <CgkFormHeader text={`Formularz ${mode} oprogramowania.`}/>
       {(props.loading) && (

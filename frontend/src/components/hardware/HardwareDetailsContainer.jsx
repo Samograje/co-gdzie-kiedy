@@ -195,7 +195,9 @@ class HardwareDetailsContainer extends Component {
     else if (this.props.mode === 'edit')
       this.addOrEditCallCall('PUT', `/api/hardware/${this.props.id}`);
   };
-  onReject = () => this.props.goBack();
+  onReject = () => this.setState({dialogOpened: true});
+  closeDialog = () => this.setState({dialogOpened: false});
+  confirmDialog = () => this.props.goBack();
   setName = (value) => this.setState({name: value});
   setDictionaryID = (value) => this.setState({dictionaryID: value});
   setAffiliationID = (value) => this.setState({affiliationID: value});
@@ -228,6 +230,9 @@ class HardwareDetailsContainer extends Component {
         isWide={isWide}
         updateAffiliations={this.fetchDataAffiliations}
         updateComputerSets={this.fetchDataComputerSets}
+        dialogOpened={this.state.dialogOpened}
+        dialogHandleReject={this.closeDialog}
+        dialogHandleConfirm={this.confirmDialog}
       />
     );
   }
