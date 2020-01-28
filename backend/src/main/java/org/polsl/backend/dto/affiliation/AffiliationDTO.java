@@ -35,4 +35,23 @@ public class AffiliationDTO {
   public void setLocation(String location) {
     this.location = location;
   }
+
+  /**
+   * Waliduje dane z tej klasy.
+   *
+   * @return true, jeśli dane nie przechodzą walidacji, w przeciwnym wypadku false
+   */
+  public boolean isIncorrect() {
+    boolean correct = false;
+    if (firstName != null && firstName.length() > 0) {
+      correct = true;
+    }
+    if (lastName != null && lastName.length() > 0) {
+      correct = true;
+    }
+    if (location != null && location.length() > 0) {
+      correct = true;
+    }
+    return !correct;
+  }
 }

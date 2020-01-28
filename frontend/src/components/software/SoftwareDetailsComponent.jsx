@@ -21,7 +21,7 @@ const SoftwareDetailsComponent = (props) => {
   else
     return "";
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView>
       <View style={props.isWide ? styles.contentWide : styles.contentMobile}>
         <CgkFormHeader text={`Formularz ${mode} oprogramowania.`}/>
       {(props.loading) && (
@@ -99,11 +99,8 @@ const SoftwareDetailsComponent = (props) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
   contentWide: {
+    alignSelf: 'center',
     width: 400,
     margin: 10,
   },
