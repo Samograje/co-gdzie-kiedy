@@ -29,7 +29,7 @@ class HardwareDetailsContainer extends Component {
     this.fetchDataAffiliations();
     this.fetchDataComputerSets();
 
-    if (this.props.mode === 'edit')
+    if (this.props.mode === 'edit' || this.props.mode === 'copy')
       this.getDataForEditCall();
   }
 
@@ -186,7 +186,7 @@ class HardwareDetailsContainer extends Component {
   };
 
   onSubmit = () => {
-    if (this.props.mode === 'create')
+    if (this.props.mode === 'create' || this.props.mode === 'copy')
       this.addOrEditCallCall('POST', '/api/hardware');
     else if (this.props.mode === 'edit')
       this.addOrEditCallCall('PUT', `/api/hardware/${this.props.id}`);

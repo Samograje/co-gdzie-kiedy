@@ -22,7 +22,7 @@ const AffiliationDetailsComponent = (props) => {
   } = props;
 
   let headerText;
-  if (mode === 'create') {
+    if (mode === 'create' || props.mode === 'copy') {
     headerText = 'Dodawanie osoby / miejsca';
   }
   if (mode === 'edit') {
