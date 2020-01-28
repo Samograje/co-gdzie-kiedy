@@ -111,7 +111,7 @@ class AffiliationDetailsContainer extends Component {
     this.setState({
       isSubmitting: true,
     });
-    request(url,{
+    request(url, {
       method: method,
       body: JSON.stringify(this.state.data),
       headers: {
