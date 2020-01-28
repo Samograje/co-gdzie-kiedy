@@ -1,14 +1,9 @@
 import React from 'react';
-import {
-  Button,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
-import ResponsiveTable from '../ui/responsivetable/ResponsiveTable';
+import {Button, Platform, ScrollView, StyleSheet, View,} from 'react-native';
 import ErrorElement from '../ui/ErrorElement';
+import ResponsiveTable from '../ui/responsivetable/ResponsiveTable';
 import {mainColor} from '../../constValues';
+import DecisionDialog from "../ui/dialogs/DecisionDialog";
 import ScreenHeader from '../ui/ScreenHeader';
 
 const ComputerSetsListComponent = (props) => {
@@ -22,35 +17,52 @@ const ComputerSetsListComponent = (props) => {
     columns,
     itemActions,
     groupActions,
+    dialogOpened,
+    dialogHandleConfirm,
+    dialogHandleReject,
   } = props;
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        {Platform.OS === 'web' && (
-          <ScreenHeader title="Lista zestawów komputerowych"/>
-        )}
-        {groupActions && (
-          <View style={styles.groupActions}>
-            {groupActions.map((action, idx) => (
-              <View style={styles.buttonContainer} key={idx}>
-                <Button
-                  disabled={action.disabled}
-                  title={action.label}
-                  onPress={action.onClick}
-                  color={mainColor}
-                />
-              </View>
-            ))}
-          </View>
-        )}
-        {error && (
-          <ErrorElement
-            message="Nie udało się pobrać danych z serwera"
-            type="error"
-          />
-        )}
-        {!error && (
+    <>
+      {dialogOpened && (
+        <DecisionDialog
+          headerText="Uwaga!"
+          text="Czy na pewno chcesz usunąć ten zestaw komputerowy?"
+          onConfirmText="Tak"
+          onConfirm={dialogHandleConfirm}
+          onRejectText="Nie"
+          onReject={dialogHandleReject}
+        />
+      )}
+
+      <ScrollView scrollEnabled={!dialogOpened}>
+        <View
+          style={styles.container}
+          pointerEvents={dialogOpened ? 'none' : null}
+        >
+          {Platform.OS === 'web' && (
+            <ScreenHeader title="Lista zestawów komputerowych"/>
+          )}
+          {groupActions && (
+            <View style={styles.groupActions}>
+              {groupActions.map((action, idx) => (
+                <View style={styles.buttonContainer} key={idx}>
+                  <Button
+                    disabled={action.disabled}
+                    title={action.label}
+                    onPress={action.onClick}
+                    color={mainColor}
+                  />
+                </View>
+              ))}
+            </View>
+          )}
+          {error && (
+            <ErrorElement
+              message="Nie udało się pobrać danych z serwera"
+              type="error"
+            />
+          )}
           <ResponsiveTable
             items={items}
             totalElements={totalElements}
@@ -59,15 +71,19 @@ const ComputerSetsListComponent = (props) => {
             columns={columns}
             itemActions={itemActions}
           />
-        )}
-      </View>
-    </ScrollView>
+        </View>
+      </ScrollView>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1
+  },
+  responseText: {
     flex: 1,
+    flexDirection: 'row'
   },
   groupActions: {
     flex: 1,

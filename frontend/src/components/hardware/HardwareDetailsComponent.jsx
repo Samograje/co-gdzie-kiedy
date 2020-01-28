@@ -13,6 +13,7 @@ import CgkLabelAndValidation from '../ui/form/CgkLabelAndValidation';
 import CgkTextInput from '../ui/form/CgkTextInput';
 import PickerWithItems from '../ui/form/PickerWithItems';
 import ErrorElement from '../ui/ErrorElement';
+import SuccessElement from '../ui/SuccessElement';
 
 const HardwareDetailsComponent = (props) => {
 
@@ -23,7 +24,7 @@ const HardwareDetailsComponent = (props) => {
     modeInfo = "dodawania nowego";
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView>
       <View style={props.isWide ? styles.contentWide : styles.contentMobile}>
         <CgkFormHeader text={`Formularz ${modeInfo} sprzętu.`}/>
         <Text>Pola z * są obowiązkowe.</Text>
@@ -91,17 +92,17 @@ const HardwareDetailsComponent = (props) => {
         {props.isSubmitting && (
           <CgkActivityIndicator/>
         )}
+        {props.isGrowlVisible && (
+          <SuccessElement text="Zapisano sprzęt"/>
+        )}
       </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
   contentWide: {
+    alignSelf: 'center',
     width: 400,
     margin: 10,
   },

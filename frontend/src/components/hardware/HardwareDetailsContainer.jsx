@@ -20,6 +20,7 @@ class HardwareDetailsContainer extends Component {
       dataSourceDictionary: [],
       isInvalid: true,
       isSubmitting: false,
+      isGrowlVisible: false,
       isPreviewed: false,
     };
   }
@@ -152,7 +153,10 @@ class HardwareDetailsContainer extends Component {
     }).then((response) => response.json())
       .then((response) => {
         if (response.success) {
-          this.props.goBack();
+          this.setState({
+            isGrowlVisible: true,
+          });
+          setTimeout(this.props.goBack, 2000);
         } else {
           if (!this._isMounted) {
             return;
@@ -209,31 +213,32 @@ class HardwareDetailsContainer extends Component {
     const isWide = Dimensions.get('window').width > 450;
 
     return (
-      <HardwareDetailsComponent
-        onSubmit={this.onSubmit}
-        onReject={this.onReject}
-        onEdit={this.onEdit}
-        setName={this.setName}
-        setDictionaryID={this.setDictionaryID}
-        setAffiliationID={this.setAffiliationID}
-        setComputerSetID={this.setComputerSetID}
-        mode={this.props.mode}
-        name={this.state.name}
-        dictionaryID={this.state.dictionaryID}
-        affiliationID={this.state.affiliationID}
-        computerSetID={this.state.computerSetID}
-        dataSourceAffiliations={this.state.dataSourceAffiliations}
-        dataSourceComputerSets={this.state.dataSourceComputerSets}
-        dataSourceDictionary={this.state.dataSourceDictionary}
-        isInvalid={this.state.name === '' || this.state.dictionaryID === '' || this.state.affiliationID === ''}
-        isSubmitting={this.state.isSubmitting}
-        isLoading={this.state.loadingDictionary || this.state.loadingAffiliations || this.state.loadingComputerSets}
-        error={this.state.error}
-        isWide={isWide}
-        isPreviewed={this.state.isPreviewed}
-        updateAffiliations={this.fetchDataAffiliations}
-        updateComputerSets={this.fetchDataComputerSets}
-      />
+        <HardwareDetailsComponent
+            onSubmit={this.onSubmit}
+            onReject={this.onReject}
+            onEdit={this.onEdit}
+            setName={this.setName}
+            setDictionaryID={this.setDictionaryID}
+            setAffiliationID={this.setAffiliationID}
+            setComputerSetID={this.setComputerSetID}
+            mode={this.props.mode}
+            name={this.state.name}
+            dictionaryID={this.state.dictionaryID}
+            affiliationID={this.state.affiliationID}
+            computerSetID={this.state.computerSetID}
+            dataSourceAffiliations={this.state.dataSourceAffiliations}
+            dataSourceComputerSets={this.state.dataSourceComputerSets}
+            dataSourceDictionary={this.state.dataSourceDictionary}
+            isInvalid={this.state.name === '' || this.state.dictionaryID === '' || this.state.affiliationID === ''}
+            isSubmitting={this.state.isSubmitting}
+            isLoading={this.state.loadingDictionary || this.state.loadingAffiliations || this.state.loadingComputerSets}
+            isGrowlVisible={this.state.isGrowlVisible}
+            error={this.state.error}
+            isWide={isWide}
+            isPreviewed={this.state.isPreviewed}
+            updateAffiliations={this.fetchDataAffiliations}
+            updateComputerSets={this.fetchDataComputerSets}
+        />
     );
   }
 }

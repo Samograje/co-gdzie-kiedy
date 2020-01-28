@@ -10,6 +10,7 @@ import CgkFormFooter from '../ui/form/CgkFormFooter';
 import CgkFormHeader from '../ui/form/CgkFormHeader';
 import CgkLabelAndValidation from '../ui/form/CgkLabelAndValidation';
 import CgkTextInput from '../ui/form/CgkTextInput';
+import SuccessElement from '../ui/SuccessElement';
 
 const SoftwareDetailsComponent = (props) => {
   let mode;
@@ -20,7 +21,7 @@ const SoftwareDetailsComponent = (props) => {
   else
     return "";
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView>
       <View style={props.isWide ? styles.contentWide : styles.contentMobile}>
         <CgkFormHeader text={`Formularz ${mode} oprogramowania.`}/>
       {(props.loading) && (
@@ -95,17 +96,17 @@ const SoftwareDetailsComponent = (props) => {
           onReject={props.onReject}
           onEdit={props.onEdit}
         />
+        {props.isGrowlVisible && (
+          <SuccessElement text="Zapisano sprzęt"/>
+        )}
       </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
   contentWide: {
+    alignSelf: 'center',
     width: 400,
     margin: 10,
   },
