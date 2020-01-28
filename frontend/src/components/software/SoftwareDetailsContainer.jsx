@@ -17,7 +17,7 @@ class SoftwareDetailsContainer extends Component {
       error: false,
       computerSetIds: [],
       dataSourceComputerSets: {"items": []},
-      loadingComputerSets: false,
+      loadingComputerSets: true,
     };
   }
 
@@ -36,7 +36,6 @@ class SoftwareDetailsContainer extends Component {
     let currentDate = new Date();
     let endDate = moment(currentDate).add(this.state.duration, 'month');
     let duration = endDate - currentDate; //to poleci jsonem
-    console.log(this.state.computerSetIds);
     request(path,{
       method: method,
       body: JSON.stringify({
@@ -77,7 +76,6 @@ class SoftwareDetailsContainer extends Component {
         let duration = response.duration;
         let months = moment(duration).month() +  12 * (moment(duration).year() - moment(0).year());
         months <= 0 ? response.duration = "Licencja utraciła ważność" : response.duration = months;
-        console.log(response);
         this.setState({
           name: response.name,
           key: response.key,
@@ -95,7 +93,6 @@ class SoftwareDetailsContainer extends Component {
         name: query,
       },
     };
-
     request('/api/computer-sets', options)
       .then((response) => response.json())
       .then((response) => {
@@ -179,10 +176,11 @@ class SoftwareDetailsContainer extends Component {
         validationDurationIsBiggerThan0NumberStatus={(this.state.duration === '' || this.state.duration === 'Licencja utraciła ważność') ? true : Number.parseInt(this.state.duration) > 0}
         validationDisableDuration={this.state.duration === 'Licencja utraciła ważność'}
         computerSetIds={this.state.computerSetIds}
+        updateComputerSets={this.fetchDataComputerSet}
         onAddComputerSetValues={this.onAddComputerSetValues}
         onRemoveComputerSetValues={this.onRemoveComputerSetValues}
         dataSourceComputerSets={this.state.dataSourceComputerSets}
-        updateComputerSets={this.fetchDataComputerSet}
+        loadingComputerSets={this.state.loadingComputerSets}
         // setComputerSetIds={this.setComputerSetIds}
       />
     );

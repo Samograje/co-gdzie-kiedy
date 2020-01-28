@@ -27,7 +27,7 @@ const SoftwareDetailsComponent = (props) => {
       {(props.loading) && (
           <CgkActivityIndicator/>
       )}
-      {(!props.loading) && (
+      {!(props.loading || props.loadingComputerSets) && (
         <>
           <Text>Pola z * są obowiązkowe.</Text>
 
