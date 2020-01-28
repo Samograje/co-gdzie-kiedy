@@ -69,16 +69,14 @@ const HardwareListComponent = (props) => {
               type="error"
             />
           )}
-          {!error && (
-            <ResponsiveTable
-              items={items}
-              totalElements={totalElements}
-              loading={loading}
-              onFilterChange={onFilterChange}
-              columns={columns}
-              itemActions={itemActions}
-            />
-          )}
+          <ResponsiveTable
+            items={items}
+            totalElements={totalElements}
+            loading={loading}
+            onFilterChange={onFilterChange}
+            columns={columns}
+            itemActions={itemActions}
+          />
         </View>
       </ScrollView>
     </>

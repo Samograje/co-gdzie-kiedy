@@ -4,6 +4,7 @@ import org.polsl.backend.dto.PaginatedResult;
 import org.polsl.backend.dto.affiliation.AffiliationDTO;
 import org.polsl.backend.dto.affiliation.AffiliationListOutputDTO;
 import org.polsl.backend.entity.Affiliation;
+import org.polsl.backend.exception.BadRequestException;
 import org.polsl.backend.exception.NotFoundException;
 import org.polsl.backend.repository.AffiliationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +81,10 @@ public class AffiliationService {
   }
 
   public void createAffiliation(AffiliationDTO request) {
+    if (request.isIncorrect()) {
+      throw new BadRequestException("Należy podać co najmniej jedną z trzech wartości");
+    }
+
     Affiliation affiliation = new Affiliation();
     affiliation.setFirstName(request.getFirstName());
     affiliation.setLastName(request.getLastName());
@@ -88,6 +93,10 @@ public class AffiliationService {
   }
 
   public void editAffiliation(Long id, AffiliationDTO request) throws NotFoundException {
+    if (request.isIncorrect()) {
+      throw new BadRequestException("Należy podać co najmniej jedną z trzech wartości");
+    }
+
     Affiliation affiliation = affiliationRepository.findByIdAndIsDeletedIsFalse(id)
       .orElseThrow(() -> new NotFoundException("przynależność", "id", id));
     affiliation.setFirstName(request.getFirstName());

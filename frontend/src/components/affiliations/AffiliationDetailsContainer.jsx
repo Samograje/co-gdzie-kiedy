@@ -13,9 +13,10 @@ class AffiliationDetailsContainer extends Component {
         location: '',
       },
       error: false,
-      errors: {},
+      validationError: true,
       isLoading: false,
       isSubmitting: false,
+      isGrowlVisible: false,
     };
   }
 
@@ -56,41 +57,16 @@ class AffiliationDetailsContainer extends Component {
       });
   };
 
-  validateData = (data) => {
-    const errors = {};
-    if (!data.firstName && !data.lastName && !data.location) {
-      const errorMessage = 'Należy podać wartość w co najmniej jednym polu';
-      errors.firstName = errorMessage;
-      errors.lastName = errorMessage;
-      errors.location = errorMessage;
-    }
-    return errors;
-  };
-
   onChange = (fieldName, value) => {
     const newData = {
       ...this.state.data,
       [fieldName]: value,
     };
 
-    const newErrors = this.validateData(newData);
-
     this.setState({
       data: newData,
-      errors: newErrors,
+      validationError: !newData.firstName && !newData.lastName && !newData.location,
     });
-  };
-
-  onSubmit = () => {
-    const errors = this.validateData(this.state.data);
-    const noErrors = Object.keys(errors).length === 0;
-    if (!noErrors) {
-      this.setState({
-        errors,
-      });
-    } else {
-      this.sendData();
-    }
   };
 
   sendData = () => {
@@ -121,7 +97,10 @@ class AffiliationDetailsContainer extends Component {
       .then((response) => response.json())
       .then((response) => {
         if (response.success) {
-          this.props.goBack();
+          this.setState({
+            isGrowlVisible: true,
+          });
+          setTimeout(this.props.goBack, 2000);
         } else {
           if (!this._isMounted) {
             return;
@@ -151,9 +130,10 @@ class AffiliationDetailsContainer extends Component {
     const {
       data,
       error,
-      errors,
+      validationError,
       isLoading,
       isSubmitting,
+      isGrowlVisible,
     } = this.state;
 
     return (
@@ -161,11 +141,12 @@ class AffiliationDetailsContainer extends Component {
         data={data}
         mode={mode}
         error={error}
-        errors={errors}
+        validationError={validationError}
         isLoading={isLoading}
         isSubmitting={isSubmitting}
+        isGrowlVisible={isGrowlVisible}
         isWide={isWide}
-        onSubmit={this.onSubmit}
+        onSubmit={this.sendData}
         onReject={this.onReject}
         onChange={this.onChange}
       />
