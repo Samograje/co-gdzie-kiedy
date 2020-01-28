@@ -15,8 +15,8 @@ class SoftwareDetailsContainer extends Component {
       validationStatus: false,
       loading: false,
       error: false,
-      computerSetIDs: [],
-      dataSourceComputerSets: [],
+      computerSetIds: [],
+      dataSourceComputerSets: {"items": []},
       loadingComputerSets: false,
     };
   }
@@ -36,7 +36,7 @@ class SoftwareDetailsContainer extends Component {
     let currentDate = new Date();
     let endDate = moment(currentDate).add(this.state.duration, 'month');
     let duration = endDate - currentDate; //to poleci jsonem
-
+    console.log(this.state.computerSetIds);
     request(path,{
       method: method,
       body: JSON.stringify({
@@ -44,7 +44,7 @@ class SoftwareDetailsContainer extends Component {
         "key": this.state.key,
         "availableKeys": this.state.availableKeys,
         "duration": duration,
-        "computerSetIDs:": this.state.computerSetIDs
+        "computerSetIds": this.state.computerSetIds
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -77,12 +77,13 @@ class SoftwareDetailsContainer extends Component {
         let duration = response.duration;
         let months = moment(duration).month() +  12 * (moment(duration).year() - moment(0).year());
         months <= 0 ? response.duration = "Licencja utraciła ważność" : response.duration = months;
+        console.log(response);
         this.setState({
           name: response.name,
           key: response.key,
           availableKeys: response.availableKeys,
           duration: response.duration,
-          computerSetIDs: response.computerSetIDs,
+          computerSetIds: response.computerSetIds,
           loading: false,
       });
       })
@@ -118,25 +119,25 @@ class SoftwareDetailsContainer extends Component {
   };
 
   onAddComputerSetValues = (selectedId) => {
-    if (!selectedId) {
+    if(!selectedId){
       return;
     }
-    if (this.state.computerSetIDs.includes(selectedId)) {
+    if(this.state.computerSetIds.includes(selectedId)){
       return;
     }
-    const prevIds = [...this.state.computerSetIDs];
+    const prevIds = [...this.state.computerSetIds];
     prevIds.push(selectedId);
     this.setState({
-      computerSetIDs: prevIds,
+      computerSetIds: prevIds,
     });
   };
 
   onRemoveComputerSetValues = (selectedId) => {
-    const index = this.state.computerSetIDs.findIndex((id) => id === selectedId);
-    const prevIds = [...this.state.computerSetIDs];
+    const index = this.state.computerSetIds.findIndex((id) => id === selectedId);
+    const prevIds = [...this.state.computerSetIds];
     prevIds.splice(index, 1);
     this.setState({
-      computerSetIDs: prevIds,
+      computerSetIds: prevIds,
     });
   };
 
@@ -150,8 +151,8 @@ class SoftwareDetailsContainer extends Component {
   setName = (value) => {this.setState({name: value});};
   setKey = (value) => this.setState( {key: value});
   setAvailableKeys = (value) => this.setState({availableKeys: value});
-  setDuration = (value) => this.setState({duration: value});;
-
+  setDuration = (value) => this.setState({duration: value});
+  // setComputerSetIds = (values) => this.setState({computerSetIds: values});
   render() {
     const isWide = Dimensions.get('window').width > 450;
     return (
@@ -177,11 +178,12 @@ class SoftwareDetailsContainer extends Component {
         validationDurationIsNumberStatus={this.state.duration === 'Licencja utraciła ważność' ? false : isNaN(this.state.duration)}
         validationDurationIsBiggerThan0NumberStatus={(this.state.duration === '' || this.state.duration === 'Licencja utraciła ważność') ? true : Number.parseInt(this.state.duration) > 0}
         validationDisableDuration={this.state.duration === 'Licencja utraciła ważność'}
-        computerSetIDs={this.state.computerSetIDs}
+        computerSetIds={this.state.computerSetIds}
         onAddComputerSetValues={this.onAddComputerSetValues}
         onRemoveComputerSetValues={this.onRemoveComputerSetValues}
         dataSourceComputerSets={this.state.dataSourceComputerSets}
         updateComputerSets={this.fetchDataComputerSet}
+        // setComputerSetIds={this.setComputerSetIds}
       />
     );
   }

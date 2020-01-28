@@ -73,9 +73,10 @@ const SoftwareDetailsComponent = (props) => {
               onChangeText={(duration) => props.setDuration(duration)}
             />
           </CgkLabelAndValidation>
+
           <CgkLabelAndValidation label="Zestaw komputerowy:">
             <MultiSelect
-                values={props.computerSetIDs}
+                values={props.computerSetIds}
                 onAddValue={props.onAddComputerSetValues}
                 onRemoveValue={props.onRemoveComputerSetValues}
                 options={props.dataSourceComputerSets.items}
@@ -104,8 +105,7 @@ const SoftwareDetailsComponent = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    alignSelf: 'center',
   },
   contentWide: {
     width: 400,
