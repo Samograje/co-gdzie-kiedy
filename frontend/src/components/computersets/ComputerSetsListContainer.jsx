@@ -14,7 +14,7 @@ class ComputerSetsListContainer extends Component {
       totalElements: null,
       filters: {},
       itemToDeleteId: null,
-      isDialogOpened: false,
+      dialogOpened: false,
     };
   }
 
@@ -32,7 +32,6 @@ class ComputerSetsListContainer extends Component {
 
   componentWillUnmount() {
     this._isMounted = false;
-
     if (Platform.OS === 'android') {
       this.focusListener.remove();
     }
@@ -97,39 +96,31 @@ class ComputerSetsListContainer extends Component {
   };
 
   deleteItem = () => {
-    this.closeDialog();
+    console.log(this.state.itemToDeleteId);
     request(`/api/computer-sets/${this.state.itemToDeleteId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       }
-    })
-        .then((response) => response.json())
-        .then((response) => {
-          if (!this._isMounted) {
-            return;
-          }
-          if (!response.success) {
-            this.setState({
-              error: true,
-            });
-            return;
-          }
-          this.fetchData();
-        })
-        .catch(() => {
-          if (!this._isMounted) {
-            return;
-          }
-          this.setState({
-            error: true,
-          });
-        });
+    }).then((response) => response.json())
+      .then(() => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.closeDialog();
+        this.fetchData();
+      })
+      .catch((error) => {
+        if (!this._isMounted) {
+          return;
+        }
+        console.error(error);
+      });
   };
 
   closeDialog = () => this.setState({
-    isDialogOpened: false,
+    dialogOpened: false,
     itemToDeleteId: null,
   });
 
@@ -173,7 +164,7 @@ class ComputerSetsListContainer extends Component {
         label: 'Usuń',
         icon: require('./../../images/ic_action_delete.png'),
         onClick: (itemData) => this.setState({
-          isDialogOpened: true,
+          dialogOpened: true,
           itemToDeleteId: itemData.id,
         }),
       },
@@ -227,14 +218,18 @@ class ComputerSetsListContainer extends Component {
 
     return (
       <ComputerSetsListComponent
-          onFilterChange={this.handleFilterChange}
-          columns={columns}
-          itemActions={itemActions}
-          groupActions={groupActions}
-          dialogHandleConfirm={this.deleteItem}
-          dialogHandleReject={this.closeDialog}
-          isDialogOpened={this.state.isDialogOpened}
-          {...this.state}
+        error={this.state.error}
+        loading={this.state.loading}
+        items={this.state.items}
+        totalElements={this.state.totalElements}
+        filters={this.state.filters}
+        onFilterChange={this.handleFilterChange}
+        columns={columns}
+        itemActions={itemActions}
+        groupActions={groupActions}
+        dialogOpened={this.state.dialogOpened}
+        dialogHandleConfirm={this.deleteItem}
+        dialogHandleReject={this.closeDialog}
       />
     );
   }
