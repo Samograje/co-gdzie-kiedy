@@ -57,7 +57,7 @@ const ComputerSetDetailsComponent = (props) => {
               />
             </CgkLabelAndValidation>
 
-            <CgkLabelAndValidation label="* Sprzęty:">
+            <CgkLabelAndValidation label="Sprzęty:">
               <MultiSelect
                 values={props.hardwareIDs}
                 onAddValue={props.onAddHardwareValues}
@@ -67,7 +67,7 @@ const ComputerSetDetailsComponent = (props) => {
               />
             </CgkLabelAndValidation>
 
-            <CgkLabelAndValidation label="* Oprogramowanie:">
+            <CgkLabelAndValidation label="Oprogramowanie:">
               <MultiSelect
                 values={props.softwareIDs}
                 onAddValue={props.onAddSoftwareValues}
