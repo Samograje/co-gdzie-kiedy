@@ -70,7 +70,9 @@ const MobileTable = (props) => {
           {columns.map((column, key) => {
             let value = item[column.name];
 
-            // TODO: mapowanie wartości logicznych na stringi do wyświetlenia
+            if (typeof value === 'boolean') { // ładne wyświetlanie wartości logicznych
+              value = value ? 'TAK' : 'NIE';
+            }
 
             const array = [].concat(value); // opakowanie pojedynczej wartości w tablicę
 
@@ -91,7 +93,7 @@ const MobileTable = (props) => {
           {/* przyciski akcji */}
           {itemActions && (
             <View style={styles.icons}>
-              {itemActions.map((action, idx) => (
+              {itemActions.filter((action) => !action.disabledIfDeleted || !item.deleted).map((action, idx) => (
                 <TouchableOpacity
                   style={styles.opacity}
                   onPress={() => action.onClick(item)}

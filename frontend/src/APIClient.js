@@ -18,16 +18,21 @@ const request = (url, options) => {
     return fetch(finalUrl);
   }
 
-  const {filters, searchType, ...otherOptions} = options;
+  const {
+    filters,
+    searchType,
+    withHistory,
+    ...otherOptions
+  } = options;
 
   // dodanie parametrów do urlu
-  finalUrl = prepareUrl(finalUrl, {filters, searchType});
+  finalUrl = prepareUrl(finalUrl, {filters, searchType, withHistory});
 
   return fetch(finalUrl, otherOptions);
 };
 
 // dodaje parametry do urlu
-const prepareUrl = (url, {filters, searchType}) => {
+const prepareUrl = (url, {filters, searchType, withHistory}) => {
   let finalUrl = `${url}`;
 
   let filtersEnabled = false;
@@ -35,7 +40,7 @@ const prepareUrl = (url, {filters, searchType}) => {
     filtersEnabled = Object.values(filters).filter((filter) => filter).length > 0;
   }
 
-  if (filtersEnabled) {
+  if (filtersEnabled || withHistory) {
     finalUrl = `${finalUrl}?`;
   }
 
@@ -54,6 +59,14 @@ const prepareUrl = (url, {filters, searchType}) => {
     if (searchType) {
       finalUrl = `${finalUrl}&search-type=${searchType}`
     }
+  }
+
+  // dodanie parametru z historią
+  if (withHistory) {
+    if (filtersEnabled) {
+      finalUrl = `${finalUrl}&`
+    }
+    finalUrl = `${finalUrl}with-history=true`;
   }
 
   return finalUrl;
