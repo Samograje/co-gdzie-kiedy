@@ -14,9 +14,19 @@ const styles = StyleSheet.create({
   // TODO: większa wysokość + pozycjonowanie na środku
   container: {
     backgroundColor: 'darkred',
+    width: '80%',
+    alignSelf: 'center',
+    marginTop: '1%',
+    marginBottom: '1%',
+    borderRadius: 5,
   },
   text: {
-
+    alignSelf: 'center',
+    paddingTop: '1%',
+    paddingBottom: '1%',
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });
 

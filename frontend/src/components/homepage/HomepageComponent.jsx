@@ -62,7 +62,7 @@ const HomepageComponent = (props) => {
             type="error"
           />
         )}
-        {!loading && !error && (
+        {!loading  && (
           <View style={[styles.stats, layoutStyle]}>
             <StatisticsElement
               label="Osób i miejsc"
