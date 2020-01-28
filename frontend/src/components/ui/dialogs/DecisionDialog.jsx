@@ -32,9 +32,9 @@ const DecisionDialog = (props) => {
               color={mainColor}
           />
           <Button
-              title={onRejectText}
-              onPress={onReject}
-              color={mainColor}
+            title={onRejectText}
+            onPress={onReject}
+            color={mainColor}
           />
         </View>
       </View>
