@@ -67,26 +67,12 @@ const MobileTable = (props) => {
         <View style={styles.item} key={idx}>
 
           {/* wiersze z danymi */}
-          {columns.map((column, key) => {
-            let value = item[column.name];
-
-            // TODO: mapowanie wartości logicznych na stringi do wyświetlenia
-
-            const array = [].concat(value); // opakowanie pojedynczej wartości w tablicę
-
-            return (
-              <View style={styles.row} key={key}>
-                <View style={styles.label}>
-                  <Text style={styles.textLabel}>{column.label}</Text>
-                </View>
-                <View style={styles.value}>
-                  {array.map((text, key) => (
-                    <Text key={key} style={styles.textValue}>{text}</Text>
-                  ))}
-                </View>
-              </View>
-            );
-          })}
+          {columns.map((column, key) => (
+            <View style={styles.row} key={key}>
+              <Text style={[styles.text, styles.label]}>{column.label}</Text>
+              <Text style={[styles.text, styles.value]}>{item[column.name]}</Text>
+            </View>
+          ))}
 
           {/* przyciski akcji */}
           {itemActions && (
@@ -155,21 +141,13 @@ const styles = StyleSheet.create({
   },
   label: {
     flex: 1,
-    marginRight: 5,
-    justifyContent: 'center',
-  },
-  textLabel: {
-    fontSize: 16,
-    fontWeight: 'bold',
     textAlign: 'right',
+    marginRight: 5,
+    fontWeight: 'bold',
   },
   value: {
     marginLeft: 5,
     flex: 1,
-  },
-  textValue: {
-    fontSize: 16,
-    textAlign: 'left',
   },
   icons: {
     marginTop: 5,
