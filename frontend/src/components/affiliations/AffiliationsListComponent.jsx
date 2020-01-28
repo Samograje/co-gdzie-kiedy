@@ -93,6 +93,9 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     margin: 5,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
 });
 
