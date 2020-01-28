@@ -15,11 +15,15 @@ class SoftwareDetailsContainer extends Component {
       validationStatus: false,
       loading: false,
       error: false,
+      computerSetIDs: [],
+      dataSourceComputerSets: [],
+      loadingComputerSets: false,
     };
   }
 
   componentDidMount() {
     this._isMounted = true;
+    this.fetchDataComputerSet();
     if(this.props.mode === 'edit')
       this.getDataForEditCall();
   }
@@ -39,7 +43,8 @@ class SoftwareDetailsContainer extends Component {
         "name": this.state.name,
         "key": this.state.key,
         "availableKeys": this.state.availableKeys,
-        "duration": duration
+        "duration": duration,
+        "computerSetIDs:": this.state.computerSetIDs
       }),
       headers: {
         'Content-Type': 'application/json',
@@ -77,9 +82,62 @@ class SoftwareDetailsContainer extends Component {
           key: response.key,
           availableKeys: response.availableKeys,
           duration: response.duration,
+          computerSetIDs: response.computerSetIDs,
           loading: false,
       });
       })
+  };
+
+  fetchDataComputerSet = (query) => {
+    const options = {
+      filters: {
+        name: query,
+      },
+    };
+
+    request('/api/computer-sets', options)
+      .then((response) => response.json())
+      .then((response) => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.setState({
+          loadingComputerSets: false,
+          dataSourceComputerSets: response
+        });
+      })
+      .catch(() => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.setState({
+          loadingComputerSets: false,
+          error: true,
+        });
+      })
+  };
+
+  onAddComputerSetValues = (selectedId) => {
+    if (!selectedId) {
+      return;
+    }
+    if (this.state.computerSetIDs.includes(selectedId)) {
+      return;
+    }
+    const prevIds = [...this.state.computerSetIDs];
+    prevIds.push(selectedId);
+    this.setState({
+      computerSetIDs: prevIds,
+    });
+  };
+
+  onRemoveComputerSetValues = (selectedId) => {
+    const index = this.state.computerSetIDs.findIndex((id) => id === selectedId);
+    const prevIds = [...this.state.computerSetIDs];
+    prevIds.splice(index, 1);
+    this.setState({
+      computerSetIDs: prevIds,
+    });
   };
 
   onSubmit = () => {
@@ -119,6 +177,11 @@ class SoftwareDetailsContainer extends Component {
         validationDurationIsNumberStatus={this.state.duration === 'Licencja utraciła ważność' ? false : isNaN(this.state.duration)}
         validationDurationIsBiggerThan0NumberStatus={(this.state.duration === '' || this.state.duration === 'Licencja utraciła ważność') ? true : Number.parseInt(this.state.duration) > 0}
         validationDisableDuration={this.state.duration === 'Licencja utraciła ważność'}
+        computerSetIDs={this.state.computerSetIDs}
+        onAddComputerSetValues={this.onAddComputerSetValues}
+        onRemoveComputerSetValues={this.onRemoveComputerSetValues}
+        dataSourceComputerSets={this.state.dataSourceComputerSets}
+        updateComputerSets={this.fetchDataComputerSet}
       />
     );
   }

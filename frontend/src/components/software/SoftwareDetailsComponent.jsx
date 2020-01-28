@@ -10,6 +10,7 @@ import CgkFormFooter from '../ui/form/CgkFormFooter';
 import CgkFormHeader from '../ui/form/CgkFormHeader';
 import CgkLabelAndValidation from '../ui/form/CgkLabelAndValidation';
 import CgkTextInput from '../ui/form/CgkTextInput';
+import MultiSelect from "../ui/form/MultiSelect";
 
 const SoftwareDetailsComponent = (props) => {
   let mode;
@@ -24,9 +25,7 @@ const SoftwareDetailsComponent = (props) => {
       <View style={props.isWide ? styles.contentWide : styles.contentMobile}>
         <CgkFormHeader text={`Formularz ${mode} oprogramowania.`}/>
       {(props.loading) && (
-        <View style={styles.indicator}>
           <CgkActivityIndicator/>
-        </View>
       )}
       {(!props.loading) && (
         <>
@@ -72,6 +71,15 @@ const SoftwareDetailsComponent = (props) => {
               disabled={props.validationDisableDuration}
               text={props.duration.toString()}
               onChangeText={(duration) => props.setDuration(duration)}
+            />
+          </CgkLabelAndValidation>
+          <CgkLabelAndValidation label="Zestaw komputerowy:">
+            <MultiSelect
+                values={props.computerSetIDs}
+                onAddValue={props.onAddComputerSetValues}
+                onRemoveValue={props.onRemoveComputerSetValues}
+                options={props.dataSourceComputerSets.items}
+                onUpdateOptions={props.updateComputerSets}
             />
           </CgkLabelAndValidation>
         </>
