@@ -13,6 +13,9 @@ class ComputerSetsListContainer extends Component {
       items: [],
       totalElements: null,
       filters: {},
+      itemToDeleteId: null,
+      dialogOpened: false,
+      withHistory: false,
     };
   }
 
@@ -30,7 +33,6 @@ class ComputerSetsListContainer extends Component {
 
   componentWillUnmount() {
     this._isMounted = false;
-
     if (Platform.OS === 'android') {
       this.focusListener.remove();
     }
@@ -73,6 +75,7 @@ class ComputerSetsListContainer extends Component {
     });
     this.fetchData({
       filters: newFilters,
+      withHistory: this.state.withHistory,
     });
   };
 
@@ -93,6 +96,35 @@ class ComputerSetsListContainer extends Component {
         });
       });
   };
+
+  deleteItem = () => {
+    console.log(this.state.itemToDeleteId);
+    request(`/api/computer-sets/${this.state.itemToDeleteId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      }
+    }).then((response) => response.json())
+      .then(() => {
+        if (!this._isMounted) {
+          return;
+        }
+        this.closeDialog();
+        this.fetchData();
+      })
+      .catch((error) => {
+        if (!this._isMounted) {
+          return;
+        }
+        console.error(error);
+      });
+  };
+
+  closeDialog = () => this.setState({
+    dialogOpened: false,
+    itemToDeleteId: null,
+  });
 
   render() {
     const columns = [
@@ -120,6 +152,12 @@ class ComputerSetsListContainer extends Component {
         label: 'Numery inwentarzowe sprzętów',
       },
     ];
+    if (this.state.withHistory) {
+      columns.push({
+        name: 'deleted',
+        label: 'Usunięty',
+      })
+    }
 
     const itemActions = [
       {
@@ -129,13 +167,16 @@ class ComputerSetsListContainer extends Component {
           mode: 'edit',
           id: itemData.id,
         }),
+        disabledIfDeleted: true,
       },
       {
         label: 'Usuń',
         icon: require('./../../images/ic_action_delete.png'),
-        onClick: (itemData) => {
-          // TODO: usuwanie zestawu komputerowego
-        },
+        onClick: (itemData) => this.setState({
+          dialogOpened: true,
+          itemToDeleteId: itemData.id,
+        }),
+        disabledIfDeleted: true,
       },
       {
         label: 'Historia osób / miejsc',
@@ -171,6 +212,19 @@ class ComputerSetsListContainer extends Component {
           mode: 'create',
         }),
       },
+      {
+        label: this.state.withHistory ? 'Nie wyświetlaj archiwum' : 'Wyświetl archiwum',
+        onClick: () => {
+          const withHistory = !this.state.withHistory;
+          this.fetchData({
+            filters: this.state.filters,
+            withHistory,
+          });
+          this.setState({
+            withHistory,
+          });
+        },
+      },
     ];
     if (Platform.OS === 'web') {
       groupActions.push({
@@ -187,11 +241,18 @@ class ComputerSetsListContainer extends Component {
 
     return (
       <ComputerSetsListComponent
+        error={this.state.error}
+        loading={this.state.loading}
+        items={this.state.items}
+        totalElements={this.state.totalElements}
+        filters={this.state.filters}
         onFilterChange={this.handleFilterChange}
         columns={columns}
         itemActions={itemActions}
         groupActions={groupActions}
-        {...this.state}
+        dialogOpened={this.state.dialogOpened}
+        dialogHandleConfirm={this.deleteItem}
+        dialogHandleReject={this.closeDialog}
       />
     );
   }

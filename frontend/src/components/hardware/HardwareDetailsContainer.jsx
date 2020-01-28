@@ -20,7 +20,7 @@ class HardwareDetailsContainer extends Component {
       dataSourceDictionary: [],
       isInvalid: true,
       isSubmitting: false,
-      dialogOpened: false,
+      isGrowlVisible: false,
     };
   }
 
@@ -148,7 +148,10 @@ class HardwareDetailsContainer extends Component {
     }).then((response) => response.json())
       .then((response) => {
         if (response.success) {
-          this.props.goBack();
+          this.setState({
+            isGrowlVisible: true,
+          });
+          setTimeout(this.props.goBack, 2000);
         } else {
           if (!this._isMounted) {
             return;
@@ -192,43 +195,40 @@ class HardwareDetailsContainer extends Component {
     else if (this.props.mode === 'edit')
       this.addOrEditCallCall('PUT', `/api/hardware/${this.props.id}`);
   };
-  onReject = () => this.setState({dialogOpened: true});
+  onReject = () => this.props.goBack();
   setName = (value) => this.setState({name: value});
   setDictionaryID = (value) => this.setState({dictionaryID: value});
   setAffiliationID = (value) => this.setState({affiliationID: value});
   setComputerSetID = (value) => this.setState({computerSetID: value});
-  closeDialog = () => this.setState({dialogOpened: false});
-  confirmDialog = () => this.props.goBack();
+
   render() {
     const isWide = Dimensions.get('window').width > 450;
 
     return (
-        <HardwareDetailsComponent
-            onSubmit={this.onSubmit}
-            onReject={this.onReject}
-            setName={this.setName}
-            setDictionaryID={this.setDictionaryID}
-            setAffiliationID={this.setAffiliationID}
-            setComputerSetID={this.setComputerSetID}
-            mode={this.props.mode}
-            name={this.state.name}
-            dictionaryID={this.state.dictionaryID}
-            affiliationID={this.state.affiliationID}
-            computerSetID={this.state.computerSetID}
-            dataSourceAffiliations={this.state.dataSourceAffiliations}
-            dataSourceComputerSets={this.state.dataSourceComputerSets}
-            dataSourceDictionary={this.state.dataSourceDictionary}
-            isInvalid={this.state.name === '' || this.state.dictionaryID === '' || this.state.affiliationID === ''}
-            isSubmitting={this.state.isSubmitting}
-            isLoading={this.state.loadingDictionary || this.state.loadingAffiliations || this.state.loadingComputerSets}
-            error={this.state.error}
-            isWide={isWide}
-            updateAffiliations={this.fetchDataAffiliations}
-            updateComputerSets={this.fetchDataComputerSets}
-            dialogOpened={this.state.dialogOpened}
-            dialogHandleReject={this.closeDialog}
-            dialogHandleConfirm={this.confirmDialog}
-        />
+      <HardwareDetailsComponent
+        onSubmit={this.onSubmit}
+        onReject={this.onReject}
+        setName={this.setName}
+        setDictionaryID={this.setDictionaryID}
+        setAffiliationID={this.setAffiliationID}
+        setComputerSetID={this.setComputerSetID}
+        mode={this.props.mode}
+        name={this.state.name}
+        dictionaryID={this.state.dictionaryID}
+        affiliationID={this.state.affiliationID}
+        computerSetID={this.state.computerSetID}
+        dataSourceAffiliations={this.state.dataSourceAffiliations}
+        dataSourceComputerSets={this.state.dataSourceComputerSets}
+        dataSourceDictionary={this.state.dataSourceDictionary}
+        isInvalid={this.state.name === '' || this.state.dictionaryID === '' || this.state.affiliationID === ''}
+        isSubmitting={this.state.isSubmitting}
+        isLoading={this.state.loadingDictionary || this.state.loadingAffiliations || this.state.loadingComputerSets}
+        isGrowlVisible={this.state.isGrowlVisible}
+        error={this.state.error}
+        isWide={isWide}
+        updateAffiliations={this.fetchDataAffiliations}
+        updateComputerSets={this.fetchDataComputerSets}
+      />
     );
   }
 }

@@ -15,7 +15,7 @@ class SoftwareDetailsContainer extends Component {
       validationStatus: false,
       loading: false,
       error: false,
-      dialogOpened: false,
+      isGrowlVisible: false,
     };
   }
 
@@ -46,19 +46,35 @@ class SoftwareDetailsContainer extends Component {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       }
-    }).then((response) => response.json())
-      .then((responseJson) => {
+    })
+      .then((response) => response.json())
+      .then((response) => {
         if (!this._isMounted) {
           return;
         }
-        console.log(responseJson);
-        return responseJson;
+        if (response.success) {
+          this.setState({
+            isGrowlVisible: true,
+          });
+          setTimeout(this.props.goBack, 2000);
+        } else {
+          if (!this._isMounted) {
+            return;
+          }
+          this.setState({
+            error: true,
+            isSubmitting: false,
+          });
+        }
       })
-      .catch((error) => {
+      .catch(() => {
         if (!this._isMounted) {
           return;
         }
-        console.error(error);
+        this.setState({
+          error: true,
+          isSubmitting: false,
+        });
       });
   };
 
@@ -89,13 +105,12 @@ class SoftwareDetailsContainer extends Component {
     else if (this.props.mode === 'edit')
       this.addOrEditCallCall('PUT', `/api/software/${this.props.id}`);
   };
-  onReject = () => this.setState({dialogOpened: true});
+  onReject = () => this.props.goBack();
   setName = (value) => {this.setState({name: value});};
   setKey = (value) => this.setState( {key: value});
   setAvailableKeys = (value) => this.setState({availableKeys: value});
-  setDuration = (value) => this.setState({duration: value});
-  closeDialog = () => this.setState({dialogOpened: false,});
-  confirmDialog = () => this.props.goBack();
+  setDuration = (value) => this.setState({duration: value});;
+
   render() {
     const isWide = Dimensions.get('window').width > 450;
     return (
@@ -114,9 +129,7 @@ class SoftwareDetailsContainer extends Component {
         availableKeys={this.state.availableKeys}
         duration={this.state.duration}
         loading={this.state.loading}
-        dialogOpened={this.state.dialogOpened}
-        dialogHandleReject={this.closeDialog}
-        dialogHandleConfirm={this.confirmDialog}
+        isGrowlVisible={this.state.isGrowlVisible}
         validationEmptyStatus={this.state.name === '' || this.state.key === '' ||
                           this.state.availableKeys === '' || this.state.duration === ''}
         validationAvailableKeysIsNumberStatus={isNaN(this.state.availableKeys)}

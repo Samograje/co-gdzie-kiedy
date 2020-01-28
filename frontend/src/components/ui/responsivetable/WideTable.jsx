@@ -72,12 +72,16 @@ const WideTable = (props) => {
           {columns.map((column, key) => {
             let value = item[column.name];
 
-            // TODO: mapowanie wartości logicznych na stringi do wyświetlenia
+            if (typeof value === 'boolean') { // ładne wyświetlanie wartości logicznych
+              value = value ? 'TAK' : 'NIE';
+            }
 
             const array = [].concat(value); // opakowanie pojedynczej wartości w tablicę
 
             return (
               <View style={styles.cell} key={key}>
+
+                {/* elementy tablicy wartości */}
                 {array.map((text, key) => (
                   <Text key={key} style={styles.text}>{text}</Text>
                 ))}
@@ -88,7 +92,7 @@ const WideTable = (props) => {
           {/* komórka z akcjami */}
           {itemActions && (
             <View style={styles.cell}>
-              {itemActions.map((action, idx) => (
+              {itemActions.filter((action) => !action.disabledIfDeleted || !item.deleted).map((action, idx) => (
                 <TouchableOpacity
                   style={styles.opacity}
                   onPress={() => action.onClick(item)}
