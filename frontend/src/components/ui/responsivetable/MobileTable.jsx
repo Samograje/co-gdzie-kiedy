@@ -146,6 +146,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   value: {
+    textAlign: 'left',
     marginLeft: 5,
     flex: 1,
   },
