@@ -1,5 +1,10 @@
 import React from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import CgkActivityIndicator from '../ui/CgkActivityIndicator';
 import CgkFormFooter from '../ui/form/CgkFormFooter';
 import CgkFormHeader from '../ui/form/CgkFormHeader';
@@ -12,7 +17,7 @@ const AffiliationDetailsComponent = (props) => {
     data,
     mode,
     error,
-    errors,
+    validationError,
     isLoading,
     isSubmitting,
     isWide,
@@ -31,11 +36,9 @@ const AffiliationDetailsComponent = (props) => {
 
   const main = (
     <View style={styles.main}>
+      <Text>Należy wpisać wartość w co najmniej jedno pole tekstowe</Text>
 
-      <CgkLabelAndValidation
-        label="Imię"
-        errors={errors.firstName}
-      >
+      <CgkLabelAndValidation label="Imię">
         <CgkTextInput
           placeholder="Wprowadź imię"
           disabled={isSubmitting}
@@ -44,10 +47,7 @@ const AffiliationDetailsComponent = (props) => {
         />
       </CgkLabelAndValidation>
 
-      <CgkLabelAndValidation
-        label="Nazwisko"
-        errors={errors.lastName}
-      >
+      <CgkLabelAndValidation label="Nazwisko">
         <CgkTextInput
           placeholder="Wprowadź nazwisko"
           disabled={isSubmitting}
@@ -56,10 +56,7 @@ const AffiliationDetailsComponent = (props) => {
         />
       </CgkLabelAndValidation>
 
-      <CgkLabelAndValidation
-        label="Lokalizacja"
-        errors={errors.location}
-      >
+      <CgkLabelAndValidation label="Lokalizacja">
         <CgkTextInput
           placeholder="Wprowadź lokalizację"
           disabled={isSubmitting}
@@ -85,7 +82,7 @@ const AffiliationDetailsComponent = (props) => {
           />
         )}
         <CgkFormFooter
-          isSubmitDisabled={isLoading || isSubmitting}
+          isSubmitDisabled={isLoading || isSubmitting || validationError}
           isRejectDisabled={isSubmitting}
           onSubmit={onSubmit}
           onReject={onReject}
