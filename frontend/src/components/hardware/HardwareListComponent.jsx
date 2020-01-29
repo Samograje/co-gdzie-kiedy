@@ -86,10 +86,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   groupActions: {
-    flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    // alignSelf: 'stretch',
   },
   buttonContainer: {
     margin: 5,
