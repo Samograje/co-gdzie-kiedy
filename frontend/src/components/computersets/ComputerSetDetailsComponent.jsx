@@ -118,7 +118,6 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   contentMobile: {
-    flex: 1,
     margin: 10,
   },
   indicator: {
