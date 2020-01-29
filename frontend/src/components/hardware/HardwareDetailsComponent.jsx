@@ -20,17 +20,18 @@ const HardwareDetailsComponent = (props) => {
     modeInfo = "dodawania";
 
   return (
+  <>
+    {props.dialogOpened && (
+        <DecisionDialog
+            headerText="Uwaga!"
+            text="Zmiany nie zostaną zapisane, czy chcesz kontynuować?"
+            onConfirmText="Tak"
+            onConfirm={props.dialogHandleConfirm}
+            onRejectText="Nie"
+            onReject={props.dialogHandleReject}
+        />
+    )}
     <ScrollView>
-      {props.dialogOpened && (
-          <DecisionDialog
-              headerText="Uwaga!"
-              text="Zmiany nie zostaną zapisane, czy chcesz kontynuować?"
-              onConfirmText="Tak"
-              onConfirm={props.dialogHandleConfirm}
-              onRejectText="Nie"
-              onReject={props.dialogHandleReject}
-          />
-      )}
       <View style={props.isWide ? styles.contentWide : styles.contentMobile}>
         <CgkFormHeader text={`Formularz ${modeInfo} sprzętu.`}/>
         <Text>Pola z * są obowiązkowe.</Text>
@@ -101,6 +102,7 @@ const HardwareDetailsComponent = (props) => {
         )}
       </View>
     </ScrollView>
+  </>
   );
 };
 

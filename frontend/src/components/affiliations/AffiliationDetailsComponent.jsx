@@ -74,17 +74,18 @@ const AffiliationDetailsComponent = (props) => {
   );
 
   return (
-    <ScrollView>
+    <>
       {dialogOpened && (
-          <DecisionDialog
-              headerText="Uwaga!"
-              text="Zmiany nie zostaną zapisane, czy chcesz kontynuować?"
-              onConfirmText="Tak"
-              onConfirm={dialogHandleConfirm}
-              onRejectText="Nie"
-              onReject={dialogHandleReject}
-          />
+        <DecisionDialog
+          headerText="Uwaga!"
+          text="Zmiany nie zostaną zapisane, czy chcesz kontynuować?"
+          onConfirmText="Tak"
+          onConfirm={dialogHandleConfirm}
+          onRejectText="Nie"
+          onReject={dialogHandleReject}
+        />
       )}
+    <ScrollView>
       <View style={isWide ? styles.contentWide : styles.contentMobile}>
         <CgkFormHeader text={headerText}/>
         {!isLoading && main}
@@ -111,6 +112,7 @@ const AffiliationDetailsComponent = (props) => {
         )}
       </View>
     </ScrollView>
+  </>
   );
 };
 

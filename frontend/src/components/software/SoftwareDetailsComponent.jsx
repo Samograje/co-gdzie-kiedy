@@ -18,7 +18,7 @@ const SoftwareDetailsComponent = (props) => {
   else
     return "";
   return (
-    <ScrollView>
+    <>
       {props.dialogOpened && (
           <DecisionDialog
               headerText="Uwaga!"
@@ -29,6 +29,7 @@ const SoftwareDetailsComponent = (props) => {
               onReject={props.dialogHandleReject}
           />
       )}
+    <ScrollView>
       <View style={props.isWide ? styles.contentWide : styles.contentMobile}>
         <CgkFormHeader text={`Formularz ${mode} oprogramowania.`}/>
       {(props.loading || props.loadingComputerSets) && (
@@ -110,6 +111,7 @@ const SoftwareDetailsComponent = (props) => {
         )}
       </View>
     </ScrollView>
+  </>
   );
 };
 

@@ -29,17 +29,18 @@ const ComputerSetDetailsComponent = (props) => {
     modeInfo = "dodawania";
 
   return (
+    <>
+      {dialogOpened && (
+        <DecisionDialog
+            headerText="Uwaga!"
+            text="Zmiany nie zostaną zapisane, czy chcesz kontynuować?"
+            onConfirmText="Tak"
+            onConfirm={dialogHandleConfirm}
+            onRejectText="Nie"
+            onReject={dialogHandleReject}
+        />
+      )}
     <ScrollView>
-        {dialogOpened && (
-            <DecisionDialog
-                headerText="Uwaga!"
-                text="Zmiany nie zostaną zapisane, czy chcesz kontynuować?"
-                onConfirmText="Tak"
-                onConfirm={dialogHandleConfirm}
-                onRejectText="Nie"
-                onReject={dialogHandleReject}
-            />
-        )}
       <View style={isWide ? styles.contentWide : styles.contentMobile}>
         <CgkFormHeader text={`Formularz ${modeInfo} zestawu komputerowego.`}/>
         <Text>Pola z * są obowiązkowe.</Text>
@@ -106,6 +107,7 @@ const ComputerSetDetailsComponent = (props) => {
         )}
       </View>
     </ScrollView>
+      </>
   );
 };
 
